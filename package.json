@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install && chmod ug+x .husky/*"
+    "prepare": "husky install && chmod ug+x .husky/*",
+    "commit": "git-cz"
   },
   "dependencies": {
     "@next/font": "13.1.4",
@@ -24,6 +25,8 @@
     "@commitlint/config-conventional": "^17.4.2",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "@typescript-eslint/parser": "^5.48.2",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.32.0",
     "eslint-config-next": "^13.1.4",
     "eslint-config-prettier": "^8.6.0",
@@ -36,5 +39,10 @@
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
     "tsconfig-paths": "^4.1.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   }
 }
