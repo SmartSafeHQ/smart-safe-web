@@ -2,6 +2,8 @@ import { ReactNode } from 'react'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
 
+import { AuthProvider } from './AuthContext'
+
 import { queryClient } from '@lib/reactQuery'
 
 type AppProviderProps = {
@@ -11,7 +13,7 @@ type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
+      <AuthProvider>{children}</AuthProvider>
 
       <ToastContainer position="top-right" theme="colored" />
     </QueryClientProvider>

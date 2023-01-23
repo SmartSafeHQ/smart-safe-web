@@ -23,8 +23,6 @@ async function loginFunction(
     password: input.password
   })
 
-  console.log(response)
-
   const accessToken = response.signInUserSession.accessToken.jwtToken
 
   tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`

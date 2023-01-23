@@ -1,16 +1,24 @@
 import type { AppProps } from 'next/app'
+
+import { Fragment } from 'react'
 import Head from 'next/head'
 import { Amplify } from 'aws-amplify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
-import { AppProvider } from '@contexts/index'
+import { DashboardLayout } from '@/components/pages/Layouts/DashboardLayout'
 import { amplifyConfig } from '@lib/amplify'
+import { AppProvider } from '@contexts/index'
 
 Amplify.configure(amplifyConfig)
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps, ...appProps }: AppProps) {
+  const isDashboardLayoutNeeded =
+    appProps.router.pathname.startsWith('/dashboard')
+
+  const LayoutComponent = isDashboardLayoutNeeded ? DashboardLayout : Fragment
+
   return (
     <AppProvider>
       <Head>
@@ -18,7 +26,9 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
 
       <div className="min-w-screen min-h-screen flex flex-col">
-        <Component {...pageProps} />
+        <LayoutComponent>
+          <Component {...pageProps} />
+        </LayoutComponent>
       </div>
     </AppProvider>
   )
