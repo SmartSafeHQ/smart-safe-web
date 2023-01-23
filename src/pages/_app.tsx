@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
 import { AppProvider } from '@contexts/index'
-import { amplifyConfig } from '@/lib/amplify'
+import { amplifyConfig } from '@lib/amplify'
 
 Amplify.configure(amplifyConfig)
 

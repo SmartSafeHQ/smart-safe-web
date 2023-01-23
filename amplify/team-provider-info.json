@@ -17,6 +17,14 @@
           "appId": "d2qqxsxdg149lo",
           "type": "cicd"
         }
+      },
+      "auth": {
+        "toknendusersdashb4b449ec2": {
+          "userPoolId": "us-east-1_b6UoX6n0o",
+          "userPoolName": "walletless-ui-users",
+          "webClientId": "79nb73bv8o67v64q1vpgkmsf3j",
+          "nativeClientId": "79nb73bv8o67v64q1vpgkmsf3j"
+        }
       }
     }
   }

@@ -1,0 +1,17 @@
+{
+  "authSelections": "userPoolOnly",
+  "resourceName": "toknendusersdashb4b449ec2",
+  "serviceType": "imported",
+  "region": "us-east-1",
+  "usernameAttributes": ["email"],
+  "requiredAttributes": ["email"],
+  "passwordPolicyMinLength": 10,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Uppercase",
+    "Requires Numbers"
+  ],
+  "mfaConfiguration": "OFF",
+  "autoVerifiedAttributes": ["email"],
+  "mfaTypes": []
+}

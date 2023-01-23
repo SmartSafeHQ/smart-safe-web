@@ -5,5 +5,14 @@
       "type": "cicd",
       "lastPushTimeStamp": "2023-01-23T16:26:08.076Z"
     }
+  },
+  "auth": {
+    "toknendusersdashb4b449ec2": {
+      "service": "Cognito",
+      "serviceType": "imported",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
   }
 }
