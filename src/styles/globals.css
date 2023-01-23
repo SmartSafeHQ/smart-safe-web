@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --toastify-color-light: #fff !important;
+    --toastify-color-dark: #121212 !important;
+    --toastify-color-info: #06b6d4 !important;
+    --toastify-color-success: #22c55e !important;
+    --toastify-color-warning: #f59e0b !important;
+    --toastify-color-error: #ef4444 !important;
+    --toastify-color-transparent: rgba(255, 255, 255, 0.7) !important;
+  }
+}
