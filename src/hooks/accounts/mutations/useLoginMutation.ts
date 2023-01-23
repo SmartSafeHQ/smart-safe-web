@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
+import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
+import { tokenverseApi } from '@lib/axios'
 
 interface LoginFunctionInput {
   email: string
@@ -16,12 +18,21 @@ interface LoginFunctionOutput {
 async function loginFunction(
   input: LoginFunctionInput
 ): Promise<LoginFunctionOutput> {
-  console.log(input)
+  const response = await Auth.signIn({
+    username: input.email,
+    password: input.password
+  })
+
+  const accessToken = response.signInUserSession.accessToken.jwtToken
+
+  tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+
+  const sessionData = response.attributes
 
   return {
-    cognitoId: 'mock',
-    name: 'mock',
-    email: 'mock'
+    cognitoId: sessionData.sub,
+    name: sessionData.name,
+    email: sessionData.email
   }
 }
 

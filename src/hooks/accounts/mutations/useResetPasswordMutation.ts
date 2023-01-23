@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
 
@@ -11,7 +12,7 @@ interface ResetPasswordFunctionInput {
 async function resetPasswordFunction(
   input: ResetPasswordFunctionInput
 ): Promise<void> {
-  console.log(input)
+  await Auth.forgotPasswordSubmit(input.email, input.code, input.password)
 }
 
 export function useResetPasswordMutation() {

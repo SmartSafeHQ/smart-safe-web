@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
 
@@ -9,7 +10,7 @@ interface ResendConfirmCodeFunctionInput {
 async function resendConfirmCodeFunction(
   input: ResendConfirmCodeFunctionInput
 ): Promise<void> {
-  console.log(input)
+  await Auth.resendSignUp(input.email)
 }
 
 export function useResendConfirmCodeMutation() {

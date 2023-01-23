@@ -32,8 +32,7 @@ function TextInputRoot({
 
       <div
         className={clsx(
-          'flex items-center gap-3 h-12 px-3 rounded w-full outline-none focus-within:ring-2',
-
+          'flex items-center gap-3 h-12 px-3 rounded w-full outline-none ring-cyan-500 focus-within:ring-2',
           {
             'ring-2 ring-red-500': !!error
           },

@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
 
@@ -9,7 +10,7 @@ interface ForgotPasswordFunctionInput {
 async function forgotPasswordFunction(
   input: ForgotPasswordFunctionInput
 ): Promise<void> {
-  console.log(input)
+  await Auth.forgotPassword(input.email)
 }
 
 export function useForgotPasswordMutation() {

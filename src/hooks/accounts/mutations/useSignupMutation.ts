@@ -1,4 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
+import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
 
@@ -10,7 +11,16 @@ interface SignupFunctionInput {
 }
 
 async function signupFunction(input: SignupFunctionInput): Promise<void> {
-  console.log(input)
+  await Auth.signUp({
+    username: input.email,
+    password: input.password,
+    attributes: {
+      name: input.name
+    },
+    autoSignIn: {
+      enabled: false
+    }
+  })
 }
 
 export function useSignupMutation() {

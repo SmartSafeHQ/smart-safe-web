@@ -13,8 +13,8 @@ const validationSchema = z
     password: z
       .string()
       .regex(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
-        'at least 8 characters, lowercase, uppercase, one special, and number for greater security.'
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{10,})/,
+        'at least 10 characters, lowercase, uppercase, one special, and number for greater security.'
       ),
     confirmPassword: z
       .string()
