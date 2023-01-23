@@ -5,6 +5,7 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useLoginMutation } from './mutations/useLoginMutation'
+import { useAuth } from '@contexts/AuthContext'
 
 const validationSchema = z.object({
   email: z.string().email('invalid email'),
@@ -20,10 +21,13 @@ export const useLogin = () => {
   })
 
   const { mutateAsync } = useLoginMutation()
+  const { setCustomer } = useAuth()
 
   const onSubmit: SubmitHandler<LoginFieldValues> = async data => {
     try {
-      await mutateAsync(data)
+      const customer = await mutateAsync(data)
+
+      setCustomer(customer)
 
       router.push('/dashboard/home')
     } catch (error) {
