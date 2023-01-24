@@ -2,22 +2,20 @@ import { useState } from 'react'
 import { ArrowUp, ArrowDown } from 'phosphor-react'
 import Head from 'next/head'
 
-import { ErrorState } from '@components/FetchingStates/ErrorState'
-import { Text } from '@components/Text'
-import { ScrollArea } from '@components/ScrollArea'
-import { LoadingState } from '@components/FetchingStates/LoadingState'
-import { PaginationFetch } from '@components/pages/home/PaginationFetch'
-import { TokensTable } from '@components/pages/home/TokensTable'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
+import { TokensTab } from '@components/pages/home/TokensTab'
+import { Tabs } from '@components/Tabs'
 
 import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
-import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/constants/variables'
-import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
+
+type NavTabs = 'tokens' | 'transactions' | 'nfts'
 
 const AppUsers = () => {
   const [page, setPage] = useState(1)
+  const [tab, setTab] = useState<NavTabs>('tokens')
 
-  const { data, isLoading, isFetching, refetch, error } = usePortfolioTokens()
+  const { data, isLoading: tokensIsLoading } = usePortfolioTokens()
 
   return (
     <div className="flex flex-col px-2 pt-8 md:px-4">
@@ -31,7 +29,7 @@ const AppUsers = () => {
           <IncomesSummary.Item className="gap-1 md:gap-2">
             <IncomesSummary.Title>net worth</IncomesSummary.Title>
 
-            <Skeleton isLoading={!data} className="h-12">
+            <Skeleton isLoading={tokensIsLoading} className="h-12">
               <IncomesSummary.Value className="text-2xl md:text-4xl">
                 ${data?.tokensNetWorth}
               </IncomesSummary.Value>
@@ -44,7 +42,7 @@ const AppUsers = () => {
                 Incomes <ArrowUp className="w-4 h-4" weight="bold" />
               </IncomesSummary.Title>
 
-              <Skeleton isLoading={!data} className="h-12">
+              <Skeleton isLoading={tokensIsLoading} className="h-12">
                 <IncomesSummary.Value className="text-lg md:text-2xl">
                   ${data?.tokensIncome}
                 </IncomesSummary.Value>
@@ -56,7 +54,7 @@ const AppUsers = () => {
                 Outs <ArrowDown className="w-4 h-4" weight="bold" />
               </IncomesSummary.Title>
 
-              <Skeleton isLoading={!data} className="h-12">
+              <Skeleton isLoading={tokensIsLoading} className="h-12">
                 <IncomesSummary.Value className="text-lg md:text-2xl">
                   ${data?.tokensOut}
                 </IncomesSummary.Value>
@@ -65,66 +63,54 @@ const AppUsers = () => {
           </div>
         </IncomesSummary.Root>
 
-        <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-gray-800 rounded-md">
-          {isLoading && (
-            <LoadingState title="Loading networks tokens" className="mt-12" />
-          )}
+        <Tabs.Root
+          defaultValue="tokens"
+          onValueChange={tabValue => setTab(tabValue as NavTabs)}
+        >
+          <Tabs.List
+            aria-label="Manage your metrics"
+            className="w-full max-w-lg mb-6"
+          >
+            <Tabs.Trigger value="tokens" className="py-2 w-full max-w-[10rem]">
+              tokens
+            </Tabs.Trigger>
 
-          {(error as Error) && (
-            <ErrorState
-              title="Unable to complete the process :/"
-              description={(error as Error)?.message ?? 'Internal server error'}
-              className="mt-12"
-            />
-          )}
-
-          {data?.tokens.length === 0 ? (
-            <Text
-              asChild
-              className="w-full mt-5 text-center text-lg font-medium text-gray-300"
+            <Tabs.Trigger
+              value="transactions"
+              className="py-2 w-full max-w-[10rem]"
             >
-              <strong>No tokens registered in the account</strong>
-            </Text>
-          ) : (
-            <>
-              <PaginationFetch
-                registersPerPage={MAX_APPS_USERS_REGISTERS_PER_PAGE}
-                currentPage={page}
-                onPageChange={setPage}
-                totalCountOfRegisters={data?.count ?? 1}
-                isFetching={isFetching}
-                handleRefetch={refetch}
-              />
+              transactions
+            </Tabs.Trigger>
 
-              <ScrollArea className="w-full max-w-full lg:max-w-full">
-                <table className="w-full">
-                  <thead className="border-b-[0.5px] border-gray-600">
-                    <tr className="text-sm font-normal uppercase text-gray-500">
-                      <TokensTable.Th>name</TokensTable.Th>
-                      <TokensTable.Th>income</TokensTable.Th>
-                      <TokensTable.Th>price</TokensTable.Th>
-                      <TokensTable.Th>balance</TokensTable.Th>
-                    </tr>
-                  </thead>
+            <Tabs.Trigger
+              value="nfts"
+              className="py-2 w-full max-w-[10rem]"
+              disabled
+            >
+              nfts
+            </Tabs.Trigger>
+          </Tabs.List>
 
-                  <tbody>
-                    {data?.tokens.map(token => (
-                      <TokensTable.Tr
-                        key={token.symbol}
-                        name={token.name}
-                        symbol={token.symbol}
-                        avatar={token.avatar}
-                        income={token.income}
-                        price={token.price}
-                        balance={token.balance}
-                      />
-                    ))}
-                  </tbody>
-                </table>
-              </ScrollArea>
-            </>
-          )}
-        </section>
+          <Tabs.Content value="tokens">
+            <TokensTab
+              page={page}
+              setPage={setPage}
+              isEnabled={tab === 'tokens'}
+            />
+          </Tabs.Content>
+
+          <Tabs.Content value="transactions">
+            <TokensTab
+              page={page}
+              setPage={setPage}
+              isEnabled={tab === 'transactions'}
+            />
+          </Tabs.Content>
+
+          <Tabs.Content value="nfts" className="pt-6">
+            <p>coming soon</p>
+          </Tabs.Content>
+        </Tabs.Root>
       </div>
     </div>
   )

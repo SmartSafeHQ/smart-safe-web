@@ -15,7 +15,7 @@ export function IncomesSummaryRoot({
   return (
     <div
       className={clsx(
-        'w-full flex items-end justify-start gap-5 mb-8',
+        'w-full flex items-end justify-start gap-5 mb-7',
         className
       )}
       {...props}

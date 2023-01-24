@@ -36,7 +36,7 @@ const ButtonComponent: ForwardRefRenderFunction<
       ref={ref}
       disabled={isLoading}
       className={clsx(
-        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm w-full transition-colors focus:ring-2 ring-gray-100 disabled:cursor-not-allowed ',
+        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm w-full transition-colors focus:ring-2 ring-gray-100 disabled:cursor-not-allowed',
         {
           'cursor-not-allowed brightness-75': isLoading,
           'bg-cyan-500 text-black hover:bg-cyan-400 disabled:hover:bg-cyan-500':

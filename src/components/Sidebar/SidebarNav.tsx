@@ -12,7 +12,7 @@ import {
 
 export function SidebarNav() {
   return (
-    <div className="w-full flex flex-1 flex-col items-start justify-start gap-1">
+    <div className="w-full flex flex-1 flex-col items-start justify-start gap-6">
       {SIDEBAR_NAV_LINKS.map(navLink => (
         <DialogDrawer.Close key={navLink.title}>
           <NavLink

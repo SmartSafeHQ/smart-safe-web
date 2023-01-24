@@ -16,7 +16,7 @@ export function TokensTableTh({
   return (
     <th
       className={clsx(
-        'pb-2 whitespace-nowrap text-start font-semibold text-xs md:text-sm',
+        'first:pl-4 pb-2 whitespace-nowrap text-start font-semibold text-xs md:text-sm',
         className
       )}
       {...props}
@@ -37,7 +37,10 @@ interface TokensTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
     percentage: number
   }
   price: number
-  balance: number
+  balance: {
+    valueInDollar: number
+    valueInTokens: number
+  }
 }
 
 export function TokensTableTr({
@@ -58,7 +61,7 @@ export function TokensTableTr({
       )}
       {...props}
     >
-      <td className="py-3 min-w-[10rem]">
+      <td className="pl-4 py-3 min-w-[10rem]">
         <div className="flex items-center gap-4">
           <Avatar.Root
             fallbackName={symbol}
@@ -77,21 +80,31 @@ export function TokensTableTr({
 
       {income.stockStatus === 'up' ? (
         <td className="min-w-[5rem]">
-          <div className="flex items-center gap-1 font-medium text-green-500">
+          <div className="flex items-center gap-1 font-semibold text-green-500">
             +{income.percentage}%
           </div>
         </td>
       ) : (
         <td className="min-w-[5rem]">
-          <div className="flex items-center gap-1 font-medium text-red-500">
+          <div className="flex items-center gap-1 font-semibold text-red-500">
             -{income.percentage}%
           </div>
         </td>
       )}
 
-      <td className="min-w-[5rem]">${price}</td>
+      <td className="min-w-[5rem] font-semibold">${price}</td>
 
-      <td className="min-w-[5rem]">{balance}</td>
+      <td className="min-w-[5rem]">
+        <div className="flex flex-col">
+          <Text className="font-medium uppercase">
+            ${balance.valueInDollar}
+          </Text>
+
+          <Text className="uppercase text-sm text-gray-400">
+            {balance.valueInTokens} {symbol}
+          </Text>
+        </div>
+      </td>
     </tr>
   )
 }

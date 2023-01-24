@@ -9,7 +9,10 @@ interface TokenProps {
     percentage: number
   }
   price: number
-  balance: number
+  balance: {
+    valueInDollar: number
+    valueInTokens: number
+  }
 }
 
 interface FetchAppResponse {
@@ -32,7 +35,10 @@ async function fetchPortfolioTokens(): Promise<FetchAppResponse> {
         symbol: 'bnb',
         avatar:
           'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg',
-        balance: 10,
+        balance: {
+          valueInDollar: 110.5,
+          valueInTokens: 0.562
+        },
         income: {
           stockStatus: 'up',
           percentage: 20
@@ -44,7 +50,10 @@ async function fetchPortfolioTokens(): Promise<FetchAppResponse> {
         symbol: 'eth',
         avatar:
           'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/ethereum.svg',
-        balance: 40,
+        balance: {
+          valueInDollar: 15.6,
+          valueInTokens: 0.009
+        },
         income: {
           stockStatus: 'down',
           percentage: 5
@@ -55,10 +64,11 @@ async function fetchPortfolioTokens(): Promise<FetchAppResponse> {
   }
 }
 
-export function usePortfolioTokens() {
+export function usePortfolioTokens(enabled = true) {
   return useQuery({
     queryKey: ['portfolioTokens'],
     queryFn: () => fetchPortfolioTokens(),
+    enabled,
     staleTime: 1000 * 60 * 10 // 10 minutes
   })
 }

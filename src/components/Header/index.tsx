@@ -14,7 +14,7 @@ export function Header() {
   const customerShortName = customer?.name.substring(0, 2)
 
   return (
-    <header className="w-full py-3 px-4 fixed top-0 left-0 z-10 bg-gray-800 shadow-lg shadow-gray-900 md:px-7 md:py-3">
+    <header className="w-full py-2 px-4 fixed top-0 left-0 z-10 bg-gray-800 shadow-lg shadow-gray-900 md:px-7">
       <div className="w-full h-full max-w-8xl flex justify-between items-center">
         <div className="flex items-center gap-3">
           <DialogDrawer.Trigger>
