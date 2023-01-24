@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowUp, ArrowDown } from 'phosphor-react'
 import Head from 'next/head'
 
 import { ErrorState } from '@components/FetchingStates/ErrorState'
@@ -7,6 +8,7 @@ import { ScrollArea } from '@components/ScrollArea'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { TokensTable } from '@components/pages/home/TokensTable'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
 import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/constants/variables'
@@ -23,69 +25,117 @@ const AppUsers = () => {
         <meta name="description" content="Tokenverse dashboard home" />
       </Head>
 
-      <div className="flex flex-1 flex-col items-stretch">
-        <div className="w-full pt-6 px-2 md:px-1">
-          <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-gray-800 rounded-md">
-            {isLoading && (
-              <LoadingState title="Loading networks tokens" className="mt-12" />
-            )}
+      <div className="w-full flex flex-1 flex-col items-stretch px-2 md:px-1">
+        <div className="w-full flex items-end justify-start gap-6 mb-8">
+          <div className="flex flex-col items-start gap-1 md:gap-2">
+            <Text asChild className="font-medium text-gray-400 capitalize">
+              <strong>net worth</strong>
+            </Text>
 
-            {(error as Error) && (
-              <ErrorState
-                title="Unable to complete the process :/"
-                description={
-                  (error as Error)?.message ?? 'Internal server error'
-                }
-                className="mt-12"
-              />
-            )}
+            <Skeleton isLoading={!data} className="h-12">
+              <Text className="text-2xl font-bold text-gray-50 capitalize md:text-4xl">
+                ${data?.tokensNetWorth}
+              </Text>
+            </Skeleton>
+          </div>
 
-            {data?.tokens.length === 0 ? (
+          <div className="flex gap-4">
+            <div className="flex flex-col items-start ">
               <Text
                 asChild
-                className="w-full mt-5 text-center text-lg font-medium text-gray-300"
+                className="flex items-center gap-1 text-sm font-normal text-green-500 capitalize"
               >
-                <strong>No tokens registered in the account</strong>
+                <strong>
+                  Incomes <ArrowUp className="w-4 h-4" weight="bold" />
+                </strong>
               </Text>
-            ) : (
-              <>
-                <PaginationFetch
-                  registersPerPage={MAX_APPS_USERS_REGISTERS_PER_PAGE}
-                  currentPage={page}
-                  onPageChange={setPage}
-                  totalCountOfRegisters={data?.count ?? 1}
-                  isFetching={isFetching}
-                  handleRefetch={refetch}
-                />
 
-                <ScrollArea className="w-full max-w-full">
-                  <table className="w-full">
-                    <thead className="border-b-[0.5px] border-gray-600">
-                      <tr className="text-sm font-normal uppercase text-gray-500">
-                        <TokensTable.Th>token</TokensTable.Th>
-                        <TokensTable.Th>income</TokensTable.Th>
-                        <TokensTable.Th>price</TokensTable.Th>
-                        <TokensTable.Th>balance</TokensTable.Th>
-                      </tr>
-                    </thead>
+              <Skeleton isLoading={!data} className="h-12">
+                <Text className="text-lg font-bold text-gray-50 capitalize md:text-2xl">
+                  ${data?.tokensIncome}
+                </Text>
+              </Skeleton>
+            </div>
 
-                    <tbody>
-                      {data?.tokens.map(token => (
-                        <TokensTable.Tr
-                          key={token.name}
-                          name={token.name}
-                          income={token.income}
-                          price={token.price}
-                          balance={token.balance}
-                        />
-                      ))}
-                    </tbody>
-                  </table>
-                </ScrollArea>
-              </>
-            )}
-          </section>
+            <div className="flex flex-col items-start ">
+              <Text
+                asChild
+                className="flex items-center gap-1 text-sm font-normal text-red-500 capitalize"
+              >
+                <strong>
+                  Outs <ArrowDown className="w-4 h-4" weight="bold" />
+                </strong>
+              </Text>
+
+              <Skeleton isLoading={!data} className="h-12">
+                <Text className="text-lg font-bold text-gray-50 capitalize md:text-2xl">
+                  ${data?.tokensOut}
+                </Text>
+              </Skeleton>
+            </div>
+          </div>
         </div>
+
+        <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-gray-800 rounded-md">
+          {isLoading && (
+            <LoadingState title="Loading networks tokens" className="mt-12" />
+          )}
+
+          {(error as Error) && (
+            <ErrorState
+              title="Unable to complete the process :/"
+              description={(error as Error)?.message ?? 'Internal server error'}
+              className="mt-12"
+            />
+          )}
+
+          {data?.tokens.length === 0 ? (
+            <Text
+              asChild
+              className="w-full mt-5 text-center text-lg font-medium text-gray-300"
+            >
+              <strong>No tokens registered in the account</strong>
+            </Text>
+          ) : (
+            <>
+              <PaginationFetch
+                registersPerPage={MAX_APPS_USERS_REGISTERS_PER_PAGE}
+                currentPage={page}
+                onPageChange={setPage}
+                totalCountOfRegisters={data?.count ?? 1}
+                isFetching={isFetching}
+                handleRefetch={refetch}
+              />
+
+              <ScrollArea className="w-full max-w-full lg:max-w-full">
+                <table className="w-full">
+                  <thead className="border-b-[0.5px] border-gray-600">
+                    <tr className="text-sm font-normal uppercase text-gray-500">
+                      <TokensTable.Th>name</TokensTable.Th>
+                      <TokensTable.Th>income</TokensTable.Th>
+                      <TokensTable.Th>price</TokensTable.Th>
+                      <TokensTable.Th>balance</TokensTable.Th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {data?.tokens.map(token => (
+                      <TokensTable.Tr
+                        key={token.symbol}
+                        name={token.name}
+                        symbol={token.symbol}
+                        avatar={token.avatar}
+                        income={token.income}
+                        price={token.price}
+                        balance={token.balance}
+                      />
+                    ))}
+                  </tbody>
+                </table>
+              </ScrollArea>
+            </>
+          )}
+        </section>
       </div>
     </div>
   )

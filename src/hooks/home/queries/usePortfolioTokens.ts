@@ -2,31 +2,54 @@ import { useQuery } from '@tanstack/react-query'
 
 interface TokenProps {
   name: string
-  income: number
+  symbol: string
+  avatar: string
+  income: {
+    stockStatus: 'up' | 'down'
+    percentage: number
+  }
   price: number
   balance: number
 }
 
 interface FetchAppResponse {
-  inbound: number
-  outbound: number
-  total: number
+  tokensIncome: string
+  tokensOut: string
+  tokensNetWorth: string
   count: number
   tokens: TokenProps[]
 }
 
 async function fetchPortfolioTokens(): Promise<FetchAppResponse> {
   return {
-    inbound: 0,
-    outbound: 0,
-    total: 0,
+    tokensIncome: Number(50).toFixed(2),
+    tokensOut: Number(20.04).toFixed(2),
+    tokensNetWorth: Number(220.64).toFixed(2),
     count: 0,
     tokens: [
       {
+        name: 'Binance coin',
+        symbol: 'bnb',
+        avatar:
+          'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg',
         balance: 10,
-        income: 20,
-        name: 'BNB',
+        income: {
+          stockStatus: 'up',
+          percentage: 20
+        },
         price: 30.4
+      },
+      {
+        name: 'Ethereum',
+        symbol: 'eth',
+        avatar:
+          'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/ethereum.svg',
+        balance: 40,
+        income: {
+          stockStatus: 'down',
+          percentage: 5
+        },
+        price: 130.12
       }
     ]
   }

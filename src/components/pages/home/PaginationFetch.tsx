@@ -24,10 +24,6 @@ export function PaginationFetch({
 }: PaginationFetchProps) {
   const lastPage = Math.ceil(totalCountOfRegisters / registersPerPage)
 
-  console.log(lastPage)
-  console.log(totalCountOfRegisters)
-  console.log(registersPerPage)
-
   return (
     <header className="w-full flex items-center justify-between gap-4">
       <div className="flex items-center gap-2">

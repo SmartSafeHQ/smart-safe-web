@@ -45,7 +45,7 @@ export function Pagination({
         className="flex items-center justify-center p-1 text-gray-50 text-lg rounded-md bg-gray-900 transition-colors hover:text-cyan-500 disabled:brightness-75 disabled:bg-gray-800 disabled:cursor-not-allowed disabled:hover:text-gray-50"
         aria-label="Prev page"
         onClick={() => onPageChange(prev => prev + 1)}
-        disabled={currentPage === lastPage}
+        disabled={currentPage === Math.max(1, lastPage)}
       >
         <CaretRight weight="bold" />
       </button>

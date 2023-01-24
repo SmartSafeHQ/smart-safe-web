@@ -1,11 +1,9 @@
 import { List, Question, SignOut, User } from 'phosphor-react'
-import Link from 'next/link'
 
 import { TokenverseTextLogoWhite } from '@components/Logos/TokenverseTextLogoWhite'
 import { Avatar } from '@components/Avatar'
 import { DropdownMenu } from '@components/DropdownMenu'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
-import { Text } from '@components/Text'
 import { DropdownMenuUserInfos } from './DropdownMenuUserInfos'
 
 import { useAuth } from '@contexts/AuthContext'
@@ -28,51 +26,40 @@ export function Header() {
           <TokenverseTextLogoWhite className="w-40 h-5 md:w-56 md:h-6" />
         </div>
 
-        <div className="flex items-center gap-4">
-          <Text
-            asChild
-            className="text-md text-gray-300 transition-colors hover:text-gray-100"
-          >
-            <Link href="#" target="_blank">
-              Docs
-            </Link>
-          </Text>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <button aria-label="Customise options">
+              <Avatar.Root
+                fallbackName={customerShortName}
+                className="w-10 h-10 md:w-14 md:h-14"
+              >
+                <Avatar.Image src="#" alt={customer?.name} />
+              </Avatar.Root>
+            </button>
+          </DropdownMenu.Trigger>
 
-          <DropdownMenu.Root>
-            <DropdownMenu.Trigger>
-              <button aria-label="Customise options">
-                <Avatar.Root
-                  fallbackName={customerShortName}
-                  className="w-10 h-10 md:w-14 md:h-14"
-                >
-                  <Avatar.Image src="#" alt={customer?.name} />
-                </Avatar.Root>
-              </button>
-            </DropdownMenu.Trigger>
+          <DropdownMenu.Content sideOffset={18} align="end">
+            <DropdownMenuUserInfos
+              name={customer?.name ?? 'loading...'}
+              email={customer?.email ?? 'loading...'}
+              shortName={customerShortName}
+            />
 
-            <DropdownMenu.Content sideOffset={18} align="end">
-              <DropdownMenuUserInfos
-                name={customer?.name ?? 'loading...'}
-                email={customer?.email ?? 'loading...'}
-                shortName={customerShortName}
-              />
+            <DropdownMenu.Separator />
 
-              <DropdownMenu.Separator />
+            <DropdownMenu.Item LeftIcon={User} isDisabled>
+              my profile
+            </DropdownMenu.Item>
 
-              <DropdownMenu.Item LeftIcon={User} isDisabled>
-                my profile
-              </DropdownMenu.Item>
+            <DropdownMenu.Item LeftIcon={Question} isDisabled>
+              help center
+            </DropdownMenu.Item>
 
-              <DropdownMenu.Item LeftIcon={Question} isDisabled>
-                help center
-              </DropdownMenu.Item>
-
-              <DropdownMenu.Item LeftIcon={SignOut} onSelect={() => signOut()}>
-                logout
-              </DropdownMenu.Item>
-            </DropdownMenu.Content>
-          </DropdownMenu.Root>
-        </div>
+            <DropdownMenu.Item LeftIcon={SignOut} onSelect={() => signOut()}>
+              logout
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </div>
     </header>
   )
