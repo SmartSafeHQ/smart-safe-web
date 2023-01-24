@@ -1,0 +1,1 @@
+export const MAX_APPS_USERS_REGISTERS_PER_PAGE = 10
