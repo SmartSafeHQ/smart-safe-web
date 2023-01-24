@@ -43,7 +43,7 @@ export function AvatarImage({ className, ...props }: AvatarImageProps) {
   )
 }
 
-AvatarRoot.displayName = 'Avatar.Image'
+AvatarImage.displayName = 'Avatar.Image'
 
 export const Avatar = {
   Root: AvatarRoot,

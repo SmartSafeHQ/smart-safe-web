@@ -12,6 +12,7 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
 import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/constants/variables'
+import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
 
 const AppUsers = () => {
   const [page, setPage] = useState(1)
@@ -26,55 +27,43 @@ const AppUsers = () => {
       </Head>
 
       <div className="w-full flex flex-1 flex-col items-stretch px-2 md:px-1">
-        <div className="w-full flex items-end justify-start gap-6 mb-8">
-          <div className="flex flex-col items-start gap-1 md:gap-2">
-            <Text asChild className="font-medium text-gray-400 capitalize">
-              <strong>net worth</strong>
-            </Text>
+        <IncomesSummary.Root>
+          <IncomesSummary.Item className="gap-1 md:gap-2">
+            <IncomesSummary.Title>net worth</IncomesSummary.Title>
 
             <Skeleton isLoading={!data} className="h-12">
-              <Text className="text-2xl font-bold text-gray-50 capitalize md:text-4xl">
+              <IncomesSummary.Value className="text-2xl md:text-4xl">
                 ${data?.tokensNetWorth}
-              </Text>
+              </IncomesSummary.Value>
             </Skeleton>
-          </div>
+          </IncomesSummary.Item>
 
           <div className="flex gap-4">
-            <div className="flex flex-col items-start ">
-              <Text
-                asChild
-                className="flex items-center gap-1 text-sm font-normal text-green-500 capitalize"
-              >
-                <strong>
-                  Incomes <ArrowUp className="w-4 h-4" weight="bold" />
-                </strong>
-              </Text>
+            <IncomesSummary.Item>
+              <IncomesSummary.Title className="text-sm font-normal text-green-500">
+                Incomes <ArrowUp className="w-4 h-4" weight="bold" />
+              </IncomesSummary.Title>
 
               <Skeleton isLoading={!data} className="h-12">
-                <Text className="text-lg font-bold text-gray-50 capitalize md:text-2xl">
+                <IncomesSummary.Value className="text-lg md:text-2xl">
                   ${data?.tokensIncome}
-                </Text>
+                </IncomesSummary.Value>
               </Skeleton>
-            </div>
+            </IncomesSummary.Item>
 
-            <div className="flex flex-col items-start ">
-              <Text
-                asChild
-                className="flex items-center gap-1 text-sm font-normal text-red-500 capitalize"
-              >
-                <strong>
-                  Outs <ArrowDown className="w-4 h-4" weight="bold" />
-                </strong>
-              </Text>
+            <IncomesSummary.Item>
+              <IncomesSummary.Title className="text-sm font-normal text-red-500">
+                Outs <ArrowDown className="w-4 h-4" weight="bold" />
+              </IncomesSummary.Title>
 
               <Skeleton isLoading={!data} className="h-12">
-                <Text className="text-lg font-bold text-gray-50 capitalize md:text-2xl">
+                <IncomesSummary.Value className="text-lg md:text-2xl">
                   ${data?.tokensOut}
-                </Text>
+                </IncomesSummary.Value>
               </Skeleton>
-            </div>
+            </IncomesSummary.Item>
           </div>
-        </div>
+        </IncomesSummary.Root>
 
         <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-gray-800 rounded-md">
           {isLoading && (

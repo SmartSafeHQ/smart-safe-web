@@ -1,0 +1,2 @@
+export const TOKENVERSE_CONTACT_LINK = '#'
+export const TOKENVERSE_TERMS_OF_SERVICES_LINK = '#'

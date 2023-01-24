@@ -1,3 +1,4 @@
+import { ScrollArea } from '@/components/ScrollArea'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import clsx from 'clsx'
 import { IconProps, X } from 'phosphor-react'
@@ -115,7 +116,7 @@ function DialogDrawerContent({
 
       <RadixDialog.Content
         className={clsx(
-          'fixed top-0 left-0 z-50 w-full h-full max-w-xs p-6 overflow-auto bg-gray-800 shadow-lg text-gray-50 animate-dialog-open-left md:hidden',
+          'fixed top-0 left-0 z-50 w-full h-full max-w-xs overflow-auto bg-gray-800 shadow-lg text-gray-50 animate-dialog-open-left md:hidden',
           {
             'sm:max-w-xs': size === 'xs',
             'sm:max-w-sm': size === 'sm',
@@ -127,7 +128,11 @@ function DialogDrawerContent({
           }
         )}
       >
-        {children}
+        <ScrollArea className="w-full h-full">
+          <div className="w-full h-full min-h-full flex flex-1 flex-col p-6">
+            {children}
+          </div>
+        </ScrollArea>
       </RadixDialog.Content>
     </RadixDialog.Portal>
   )
