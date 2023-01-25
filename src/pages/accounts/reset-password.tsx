@@ -8,7 +8,7 @@ import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
-import { TokenverseTextLogoWhite } from '@components/Logos/TokenverseTextLogoWhite'
+import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
 
 export default function ResetPassword() {
   const {
@@ -27,7 +27,7 @@ export default function ResetPassword() {
       </Head>
 
       <header className="flex flex-col items-center">
-        <TokenverseTextLogoWhite className="w-72 h-6" />
+        <TokenverseTextLogo className="w-72 h-6" />
 
         <Heading className="mt-4 text-xl text-gray-500">Reset password</Heading>
 
@@ -103,7 +103,7 @@ export default function ResetPassword() {
       <footer className="flex flex-col items-center gap-4 mt-8">
         <Text
           asChild
-          className="w-full max-w-md text-md text-center text-gray-400 underline hover:text-gray-300"
+          className="w-full max-w-md text-md text-center text-gray-400 underline hover:dark:text-gray-300"
         >
           <Link href="/accounts/forgot-password">
             Didnt receive the code or entered the wrong email? <br />

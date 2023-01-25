@@ -59,8 +59,8 @@ export function IncomesSummaryTitle({
     <Text
       asChild
       className={clsx(
-        'flex items-center gap-1 font-medium text-gray-400 capitalize',
-        className
+        className,
+        'flex items-center gap-1 font-medium text-gray-600  dark:text-gray-400 capitalize'
       )}
     >
       <strong {...props}>{children}</strong>
@@ -81,7 +81,10 @@ export function IncomesSummaryValue({
 }: IncomesSummaryValueProps) {
   return (
     <Text
-      className={clsx('font-bold text-gray-50 capitalize', className)}
+      className={clsx(
+        'font-bold text-gray-800 dark:text-gray-50 capitalize',
+        className
+      )}
       {...props}
     >
       {children}

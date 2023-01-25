@@ -23,7 +23,7 @@ function TextInputRoot({
   labelText,
   error,
   className,
-  inputClassName = 'bg-gray-800',
+  inputClassName = 'bg-gray-200 dark:bg-gray-800',
   ...props
 }: TextInputRootProps) {
   return (
@@ -69,7 +69,7 @@ const TextInputInput: ForwardRefRenderFunction<
     <input
       ref={ref}
       className={clsx(
-        'flex flex-1 h-full outline-none text-gray-100 text-sm bg-transparent placeholder:text-gray-400',
+        'flex flex-1 h-full outline-none text-gray-800 dark:text-gray-100 text-sm bg-transparent placeholder:text-gray-400',
         className
       )}
       {...props}

@@ -29,7 +29,10 @@ export function ErrorState({
       {...props}
     >
       <div className="max-w-lg flex flex-col items-center gap-1 text-center">
-        <Text asChild className="text-lg font-medium text-gray-300">
+        <Text
+          asChild
+          className="text-lg font-medium text-gray-800 dark:text-gray-300"
+        >
           <strong>{title}</strong>
         </Text>
 

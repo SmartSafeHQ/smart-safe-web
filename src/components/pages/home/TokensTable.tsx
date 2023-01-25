@@ -56,7 +56,7 @@ export function TokensTableTr({
   return (
     <tr
       className={clsx(
-        'text-gray-50 font-medium border-b-[0.5px] border-gray-600',
+        'text-gray-800 dark:text-gray-50 font-medium border-b-[0.5px] border-gray-400 dark:border-gray-600',
         className
       )}
       {...props}
@@ -73,7 +73,9 @@ export function TokensTableTr({
           <div className="flex flex-col">
             <Text className="font-bold uppercase">{symbol}</Text>
 
-            <Text className="text-sm text-gray-400">{name}</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              {name}
+            </Text>
           </div>
         </div>
       </td>
@@ -100,7 +102,7 @@ export function TokensTableTr({
             ${balance.valueInDollar}
           </Text>
 
-          <Text className="uppercase text-sm text-gray-400">
+          <Text className="uppercase text-sm text-gray-500 dark:text-gray-400">
             {balance.valueInTokens} {symbol}
           </Text>
         </div>

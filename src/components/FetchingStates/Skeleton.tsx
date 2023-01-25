@@ -12,7 +12,12 @@ export function Skeleton({ isLoading, className, children }: SkeletonProps) {
     <>
       {isLoading ? (
         <div className="animate-pulse">
-          <div className={clsx('rounded-md bg-gray-700 h-8 w-40', className)} />
+          <div
+            className={clsx(
+              'rounded-md bg-gray-300 dark:bg-gray-700 h-8 w-40',
+              className
+            )}
+          />
         </div>
       ) : (
         children

@@ -6,7 +6,7 @@ import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { Text } from '@components/Text'
-import { TokenverseTextLogoWhite } from '@components/Logos/TokenverseTextLogoWhite'
+import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
 
 import { useForgotPassword } from '@hooks/accounts/useForgotPassword'
 
@@ -26,7 +26,7 @@ export default function ForgotPassword() {
       </Head>
 
       <header className="flex flex-col items-center">
-        <TokenverseTextLogoWhite className="w-72 h-6" />
+        <TokenverseTextLogo className="w-72 h-6" />
 
         <Heading className="text-xl mt-4 text-gray-500">
           Recovery password
@@ -65,7 +65,7 @@ export default function ForgotPassword() {
       <footer className="flex flex-col items-center gap-4 mt-8">
         <Text
           asChild
-          className="text-lg text-gray-400 underline hover:text-gray-300"
+          className="text-lg text-gray-400 underline hover:dark:text-gray-300"
         >
           <Link href="/accounts/login">Back</Link>
         </Text>

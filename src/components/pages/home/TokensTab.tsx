@@ -25,7 +25,7 @@ export function TokensTab({
     usePortfolioTokens(isEnabled)
 
   return (
-    <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-gray-800 rounded-md">
+    <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-white dark:bg-gray-800 rounded-md">
       {isLoading && (
         <LoadingState title="Loading networks tokens" className="mt-12" />
       )}
@@ -43,7 +43,7 @@ export function TokensTab({
           {data?.tokens.length === 0 ? (
             <Text
               asChild
-              className="w-full mt-5 text-center text-lg font-medium text-gray-300"
+              className="w-full mt-5 text-center text-lg font-medium text-gray-800 dark:text-gray-300"
             >
               <strong>No tokens registered in the account</strong>
             </Text>
@@ -60,8 +60,8 @@ export function TokensTab({
 
               <ScrollArea className="w-full max-w-full lg:max-w-full">
                 <table className="w-full">
-                  <thead className="border-b-[0.5px] border-gray-600">
-                    <tr className="text-sm font-normal uppercase text-gray-500">
+                  <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
+                    <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
                       <TokensTable.Th>name</TokensTable.Th>
                       <TokensTable.Th>income</TokensTable.Th>
                       <TokensTable.Th>price</TokensTable.Th>

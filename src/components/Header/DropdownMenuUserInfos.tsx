@@ -21,11 +21,11 @@ export function DropdownMenuUserInfos({
       </Avatar.Root>
 
       <div className="w-full flex flex-col items-start gap-1">
-        <strong className="text-gray-50 text-lg">
+        <strong className="text-gray-800 dark:text-gray-50 text-lg">
           {name.split(' ').slice(0, 2).join(' ')}
         </strong>
 
-        <span className="text-gray-300 text-sm">
+        <span className="text-gray-700 dark:text-gray-300 text-sm">
           {email.substring(0, 20)}...
         </span>
       </div>

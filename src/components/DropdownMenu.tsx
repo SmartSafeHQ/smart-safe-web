@@ -41,7 +41,7 @@ function DropdownMenuContent({
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.Content
         className={clsx(
-          'w-[100vw] min-w-[15rem] pb-4 bg-gray-800 rounded-md shadow-md animate-dropdown-menu-open md:w-full',
+          'w-[100vw] min-w-[15rem] pb-4 bg-gray-50 dark:bg-gray-800 rounded-md shadow-md animate-dropdown-menu-open md:w-full',
           className
         )}
         sideOffset={5}
@@ -63,7 +63,10 @@ function DropdownMenuSeparator({
 }: DropdownMenuSeparatorProps) {
   return (
     <RadixDropdownMenu.Separator
-      className={clsx('h-[1px] bg-gray-700 my-1 mx-3', className)}
+      className={clsx(
+        'h-[1px] bg-gray-300 dark:bg-gray-700 my-1 mx-3',
+        className
+      )}
       {...props}
     />
   )
@@ -87,9 +90,10 @@ function DropdownMenuItem({
   return (
     <RadixDropdownMenu.Item
       className={clsx(
-        'relative flex items-center justify-start gap-4 px-6 py-3 select-none outline-none text-base font-medium capitalize text-cyan-50 cursor-pointer hover:bg-gray-900 hover:bg-opacity-40 ',
+        'relative flex items-center justify-start gap-4 px-6 py-3 select-none outline-none text-base font-medium capitalize dark:text-cyan-50 cursor-pointer hover:bg-gray-300 hover:dark:bg-gray-900 hover:bg-opacity-40',
         {
-          'pointer-events-none brightness-50': isDisabled
+          'pointer-events-none text-gray-400 [&>*]:text-cyan-700 dark:brightness-50 dark:text-cyan-50':
+            isDisabled
         },
         className
       )}

@@ -4,7 +4,7 @@ import { SidebarNav } from './SidebarNav'
 export function SidebarDrawer() {
   return (
     <DialogDrawer.Content size="xs">
-      <DialogDrawer.Title className="text-2xl font-semibold text-gray-50">
+      <DialogDrawer.Title className="text-2xl font-semibold dark:text-gray-50">
         Navigation
       </DialogDrawer.Title>
 

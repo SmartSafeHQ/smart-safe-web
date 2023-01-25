@@ -71,7 +71,7 @@ export function TransactionsTableTr({
   return (
     <tr
       className={clsx(
-        'text-gray-50 font-medium border-b-[0.5px] border-gray-600',
+        'text-gray-800 dark:text-gray-50 font-medium border-b-[0.5px] border-gray-400 dark:border-gray-600',
         className
       )}
       {...props}
@@ -92,7 +92,7 @@ export function TransactionsTableTr({
               </Link>
             </Text>
 
-            <Text className="text-sm text-gray-400">
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
               {dayjs(contract.calledAt).format('DD/MM/YYYY hh:mm')}
             </Text>
           </div>
@@ -111,7 +111,9 @@ export function TransactionsTableTr({
           <div className="flex flex-col">
             <Text className="font-bold uppercase">{receiver.name}</Text>
 
-            <Text className="text-sm text-gray-400">{formattedWallet}</Text>
+            <Text className="text-sm text-gray-500 dark:text-gray-400">
+              {formattedWallet}
+            </Text>
           </div>
         </div>
       </td>
@@ -147,7 +149,7 @@ export function TransactionsTableTr({
       <td className="min-w-[10rem]">
         <Text
           asChild
-          className="w-full flex items-center gap-3 text-center text-gray-100 font-semibold transition-all hover:text-cyan-500"
+          className="w-full flex items-center gap-2 text-center text-gray-500 dark:text-gray-100 font-semibold transition-all hover:text-cyan-500"
         >
           <Link href={explorerLink} target="_blank">
             <Text>Explorer link</Text>

@@ -39,7 +39,7 @@ const AppUsers = () => {
 
           <div className="flex gap-4">
             <IncomesSummary.Item>
-              <IncomesSummary.Title className="text-sm font-normal text-green-500">
+              <IncomesSummary.Title className="text-sm font-normal !text-green-500">
                 Incomes <ArrowUp className="w-4 h-4" weight="bold" />
               </IncomesSummary.Title>
 
@@ -51,7 +51,7 @@ const AppUsers = () => {
             </IncomesSummary.Item>
 
             <IncomesSummary.Item>
-              <IncomesSummary.Title className="text-sm font-normal text-red-500">
+              <IncomesSummary.Title className="text-sm font-normal !text-red-500">
                 Outs <ArrowDown className="w-4 h-4" weight="bold" />
               </IncomesSummary.Title>
 

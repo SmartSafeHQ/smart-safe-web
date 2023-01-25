@@ -79,7 +79,7 @@ function DialogDrawerIconClose({ Icon = X }: DialogDrawerIconCloseProps) {
   return (
     <RadixDialog.Close
       asChild
-      className="flex items-center justify-center absolute top-6 right-6 text-gray-100 text-2xl hover:text-white-50 transition-colors"
+      className="flex items-center justify-center absolute top-6 right-6 dark:text-gray-100 text-2xl hover:text-white-50 transition-colors"
     >
       <button aria-label="Close">
         <Icon weight="bold" />
@@ -116,7 +116,7 @@ function DialogDrawerContent({
 
       <RadixDialog.Content
         className={clsx(
-          'fixed top-0 left-0 z-50 w-full h-full max-w-xs overflow-auto bg-gray-800 shadow-lg text-gray-50 animate-dialog-open-left md:hidden',
+          'fixed top-0 left-0 z-50 w-full h-full max-w-xs overflow-auto bg-gray-50 dark:bg-gray-800 shadow-lg text-gray-800 dark:text-gray-50 animate-dialog-open-left md:hidden',
           {
             'sm:max-w-xs': size === 'xs',
             'sm:max-w-sm': size === 'sm',
