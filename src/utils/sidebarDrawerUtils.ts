@@ -1,8 +1,8 @@
 import {
   ArrowsClockwise,
+  CurrencyDollar,
   Gear,
   House,
-  RocketLaunch,
   ShoppingCartSimple
 } from 'phosphor-react'
 
@@ -20,15 +20,15 @@ export const SIDEBAR_NAV_LINKS = [
     isDisabled: true
   },
   {
-    href: '/dashboard/marketplace',
-    icon: ShoppingCartSimple,
-    title: 'marketplace',
+    href: '/dashboard/buy',
+    icon: CurrencyDollar,
+    title: 'buy',
     isDisabled: true
   },
   {
-    href: '/dashboard/stake',
-    icon: RocketLaunch,
-    title: 'stake',
+    href: '/dashboard/marketplace',
+    icon: ShoppingCartSimple,
+    title: 'marketplace',
     isDisabled: true
   },
   {

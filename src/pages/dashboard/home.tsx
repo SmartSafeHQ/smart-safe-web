@@ -88,7 +88,7 @@ const AppUsers = () => {
               className="py-2 w-full max-w-[10rem]"
               disabled
             >
-              nfts
+              NFTs
             </Tabs.Trigger>
           </Tabs.List>
 

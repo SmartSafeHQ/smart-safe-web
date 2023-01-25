@@ -1,4 +1,4 @@
-import { List, Question, SignOut, User } from 'phosphor-react'
+import { List, Moon, Sun, Question, SignOut, User } from 'phosphor-react'
 
 import { TokenverseTextLogoWhite } from '@components/Logos/TokenverseTextLogoWhite'
 import { Avatar } from '@components/Avatar'
@@ -7,8 +7,11 @@ import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
 import { DropdownMenuUserInfos } from './DropdownMenuUserInfos'
 
 import { useAuth } from '@contexts/AuthContext'
+import useTheme from '@hooks/useTheme'
 
 export function Header() {
+  const { theme, toggleTheme } = useTheme()
+
   const { customer, signOut } = useAuth()
 
   const customerShortName = customer?.name.substring(0, 2)
@@ -49,6 +52,13 @@ export function Header() {
 
             <DropdownMenu.Item LeftIcon={User} isDisabled>
               my profile
+            </DropdownMenu.Item>
+
+            <DropdownMenu.Item
+              LeftIcon={theme === 'dark' ? Moon : Sun}
+              onClick={toggleTheme}
+            >
+              theme: {theme}
             </DropdownMenu.Item>
 
             <DropdownMenu.Item LeftIcon={Question} isDisabled>
