@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
 import { TokensTab } from '@components/pages/home/TokensTab'
+import { TransactionsTab } from '@components/pages/home/TransactionsTab'
 import { Tabs } from '@components/Tabs'
 
 import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
@@ -100,7 +101,7 @@ const AppUsers = () => {
           </Tabs.Content>
 
           <Tabs.Content value="transactions">
-            <TokensTab
+            <TransactionsTab
               page={page}
               setPage={setPage}
               isEnabled={tab === 'transactions'}

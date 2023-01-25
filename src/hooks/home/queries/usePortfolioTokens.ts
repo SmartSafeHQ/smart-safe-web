@@ -15,7 +15,7 @@ interface TokenProps {
   }
 }
 
-interface FetchAppResponse {
+interface FetchPortfolioTokensResponse {
   tokensIncome: string
   tokensOut: string
   tokensNetWorth: string
@@ -23,7 +23,7 @@ interface FetchAppResponse {
   tokens: TokenProps[]
 }
 
-async function fetchPortfolioTokens(): Promise<FetchAppResponse> {
+async function fetchPortfolioTokens(): Promise<FetchPortfolioTokensResponse> {
   return {
     tokensIncome: Number(50).toFixed(2),
     tokensOut: Number(20.04).toFixed(2),
