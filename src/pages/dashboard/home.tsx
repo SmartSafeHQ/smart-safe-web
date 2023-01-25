@@ -19,13 +19,13 @@ const AppUsers = () => {
   const { data, isLoading: tokensIsLoading } = usePortfolioTokens()
 
   return (
-    <div className="flex flex-col px-2 pt-8 md:px-4">
+    <div className="flex flex-col px-2 pt-8">
       <Head>
         <title>Tokenverse | Home</title>
         <meta name="description" content="Tokenverse dashboard home" />
       </Head>
 
-      <div className="w-full flex flex-1 flex-col items-stretch px-2 md:px-1">
+      <div className="w-full flex flex-1 flex-col items-stretch">
         <IncomesSummary.Root>
           <IncomesSummary.Item className="gap-1 md:gap-2">
             <IncomesSummary.Title>net worth</IncomesSummary.Title>

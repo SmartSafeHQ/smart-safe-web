@@ -14,10 +14,10 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <DialogDrawer.Root>
       <Header />
 
-      <div className="w-full max-w-full flex flex-1 pt-16 md:pt-20">
+      <div className="w-full max-w-full flex flex-1 pt-16 md:pt-16">
         <Sidebar />
 
-        <main className="w-full h-full max-w-[calc(1700px_-_1rem)] flex flex-col pb-3 px-2">
+        <main className="w-full h-full max-w-full flex flex-col pb-3 px-2 md:max-w-[calc(100vw_-_7.25rem)] lg:max-w-[calc(100vw_-_18rem)]">
           {children}
         </main>
       </div>

@@ -58,7 +58,7 @@ export function TransactionsTab({
                 handleRefetch={refetch}
               />
 
-              <ScrollArea className="w-full max-w-full lg:max-w-full">
+              <ScrollArea className="w-full max-w-full">
                 <table className="w-full">
                   <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
                     <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
