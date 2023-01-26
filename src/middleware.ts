@@ -3,8 +3,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const noAuthRequiredCase = request.nextUrl.pathname === '/'
-  const accountsCase = request.nextUrl.pathname.startsWith('/accounts')
+  const accountsCase = request.nextUrl.pathname === '/'
 
   const tokenKey = request.cookies
     .getAll()
@@ -14,14 +13,12 @@ export async function middleware(request: NextRequest) {
       ).test(key.name)
     )
 
-  if (noAuthRequiredCase) return NextResponse.next()
-
   if (tokenKey && request.cookies.get(tokenKey) && accountsCase) {
     return NextResponse.redirect(new URL('/dashboard/home', request.url))
   }
 
   if (!tokenKey && !accountsCase)
-    return NextResponse.redirect(new URL('/accounts/login', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
 
   return NextResponse.next()
 }

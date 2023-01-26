@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import Link from 'next/link'
 import { DiscordLogo, LinkedinLogo, TwitterLogo } from 'phosphor-react'
 
@@ -12,19 +13,24 @@ import {
   TOKENVERSE_TWITTER_LINK
 } from '@utils/constants/links'
 
-export function LoginTokenverseAccount() {
+const Login = () => {
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center px-4 md:px-6">
+    <div className="w-full flex flex-1 flex-col justify-center items-center px-2 pt-8">
+      <Head>
+        <title>Tokenverse | Login</title>
+        <meta name="description" content="Tokenverse dashboard home" />
+      </Head>
+
       <div className="w-full max-w-sm flex flex-col justify-center text-center md:max-w-md">
         <div className="w-full flex flex-col gap-4 mb-8">
           <Heading
             asChild
-            className="text-xl text-gray-800 dark:text-gray-50 md:text-2xl"
+            className="text-2xl font-semibold text-gray-800 dark:text-gray-50 md:text-3xl"
           >
             <h1>Connect your account</h1>
           </Heading>
 
-          <Heading className="font-normal text-base text-gray-600 dark:text-gray-500 md:text-lg">
+          <Heading className="font-normal text-base text-gray-600 dark:text-gray-400 md:text-lg">
             Connect your accounts and unlock the whole tokenverse experience
           </Heading>
         </div>
@@ -76,3 +82,5 @@ export function LoginTokenverseAccount() {
     </div>
   )
 }
+
+export default Login
