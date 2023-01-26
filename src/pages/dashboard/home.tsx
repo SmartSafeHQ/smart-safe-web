@@ -12,7 +12,7 @@ import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
 
 type NavTabs = 'tokens' | 'transactions' | 'nfts'
 
-const AppUsers = () => {
+const Home = () => {
   const [page, setPage] = useState(1)
   const [tab, setTab] = useState<NavTabs>('tokens')
 
@@ -117,4 +117,4 @@ const AppUsers = () => {
   )
 }
 
-export default AppUsers
+export default Home
