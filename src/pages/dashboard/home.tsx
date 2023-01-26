@@ -7,7 +7,9 @@ import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
 import { TokensTab } from '@components/pages/home/TokensTab'
 import { TransactionsTab } from '@components/pages/home/TransactionsTab'
 import { Tabs } from '@components/Tabs'
+import { LoginTokenverseAccount } from '@components/pages/Layouts/LoginTokenverseAccount'
 
+import { useAuth } from '@contexts/AuthContext'
 import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
 
 type NavTabs = 'tokens' | 'transactions' | 'nfts'
@@ -17,6 +19,11 @@ const AppUsers = () => {
   const [tab, setTab] = useState<NavTabs>('tokens')
 
   const { data, isLoading: tokensIsLoading } = usePortfolioTokens()
+  const { customer } = useAuth()
+
+  if (customer) {
+    return <LoginTokenverseAccount />
+  }
 
   return (
     <div className="flex flex-col px-2 pt-8">
