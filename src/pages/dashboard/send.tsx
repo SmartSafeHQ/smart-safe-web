@@ -7,7 +7,7 @@ import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { Avatar } from '@components/Avatar'
 
-import { useSend } from '@hooks/home/useSend'
+import { useSend } from '@hooks/send/useSend'
 
 const Send = () => {
   const {
@@ -40,7 +40,7 @@ const Send = () => {
           </Heading>
 
           <div className="w-full flex items-center justify-center gap-2">
-            <Text className="text-gray-600 dark:text-gray-300 text-xl font-semibold uppercase">
+            <Text className="text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
               {currentMaticAmount.toFixed(2)} {selectedCoin.id}
             </Text>
 
@@ -94,7 +94,7 @@ const Send = () => {
             />
           </TextInput.Root>
 
-          <div className="flex items-center text-gray-500 dark:text-gray-200">
+          <div className="flex items-center text-gray-800 dark:text-gray-200">
             <Text className="mr-2">Fee:</Text>
             <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
               <Avatar.Image
