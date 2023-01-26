@@ -19,7 +19,7 @@ export const SIDEBAR_NAV_LINKS = [
     href: '/dashboard/receive',
     icon: Wallet,
     title: 'receive',
-    isDisabled: true
+    isDisabled: false
   },
   {
     href: '/dashboard/send',

@@ -5,7 +5,7 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
-import { useSendMutation } from '@hooks/home/mutation/useSendMutation'
+import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
 
 const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'adrress required' }),
