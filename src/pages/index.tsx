@@ -1,6 +1,6 @@
+import { DiscordLogo, LinkedinLogo, TwitterLogo } from 'phosphor-react'
 import Head from 'next/head'
 import Link from 'next/link'
-import { DiscordLogo, LinkedinLogo, TwitterLogo } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
