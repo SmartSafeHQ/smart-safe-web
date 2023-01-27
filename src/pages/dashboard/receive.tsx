@@ -68,7 +68,7 @@ const Receive = () => {
                 </Text>
               </div>
 
-              <div className="flex flex-wrap flex-col items-start gap-1">
+              <div className="flex flex-wrap flex-col text-right gap-1 capitalize">
                 <Text asChild className="text-gray-700 dark:text-gray-50 ">
                   <strong>{customer?.name}</strong>
                 </Text>

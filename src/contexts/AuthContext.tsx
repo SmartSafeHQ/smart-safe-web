@@ -15,6 +15,7 @@ type Customer = {
   cognitoId: string
   wallet: {
     address: string
+    privateKey: string
   }
   name: string
   email: string
@@ -68,7 +69,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
           name: sessionData?.name // TEMP WHILE WIDGET DOESNT SAVE THE NAME TOO
             ? sessionData.name
             : sessionData?.email?.substring(0, 8),
-          wallet: apiResponse.data.wallets[0],
+          wallet: {
+            address: apiResponse.data.wallets[0].address,
+            privateKey: apiResponse.data.wallets[0].private_key
+          },
           email: sessionData.email
         })
       })

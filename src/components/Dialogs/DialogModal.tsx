@@ -77,7 +77,7 @@ function DialogModalIconClose({ Icon = X }: DialogModalIconCloseProps) {
   return (
     <RadixDialog.Close
       asChild
-      className="flex items-center justify-center p-2 absolute top-6 right-8 text-gray-400 text-2xl bg-transparent rounded-md hover:text-gray-50 hover:dark:bg-gray-500/10 transition-colors"
+      className="flex items-center justify-center p-2 absolute top-6 right-8 text-gray-700 dark:text-gray-400 text-2xl bg-transparent rounded-md hover:text-gray-600 hover:bg-gray-500/10 hover:dark:text-gray-50 hover:dark:bg-gray-500/10 transition-colors"
     >
       <button aria-label="Close">
         <Icon weight="bold" />
@@ -109,12 +109,12 @@ function DialogModalContent({
 }: DialogModalContentProps) {
   return (
     <RadixDialog.Portal className="relative" {...props}>
-      <RadixDialog.Overlay className="fixed z-50 inset-0 dark:bg-black bg-opacity-40 animate-dialog-open" />
+      <RadixDialog.Overlay className="fixed z-50 inset-0 bg-black bg-opacity-40 animate-dialog-open" />
 
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 p-0 md:p-8">
         <RadixDialog.Content
           className={clsx(
-            'w-full h-full max-w-full overflow-auto dark:bg-gray-800 shadow-lg text-gray-50 animate-dialog-open md:h-[50vh]  md:rounded-md',
+            'w-full h-full max-w-full overflow-auto bg-gray-100 dark:bg-gray-800 shadow-lg text-gray-50 animate-dialog-open md:h-[50vh]  md:rounded-md',
             className
           )}
         >

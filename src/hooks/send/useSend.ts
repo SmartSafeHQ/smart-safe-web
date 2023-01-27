@@ -6,7 +6,6 @@ import { z } from 'zod'
 import { useFeeData } from 'wagmi'
 
 import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
-import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
 import { useEndUserUsedTokens } from '@hooks/send/queries/useEndUserUsedTokens'
 import { useAuth } from '@contexts/AuthContext'
 
@@ -17,10 +16,20 @@ const validationSchema = z.object({
 
 type SendFieldValues = z.infer<typeof validationSchema>
 
-interface CoinProps {
+export interface CoinProps {
   id: string
   name: string
   avatar: string
+  chainId: number
+  rpcUrl: string
+}
+
+export interface TransactionProps {
+  to: string
+  fromWalletAddress: string
+  fromWalletPrivateKey: string
+  fromName: string
+  amount: number
   chainId: number
   rpcUrl: string
 }
@@ -39,34 +48,43 @@ export const useSend = () => {
     formatUnits: 'ether'
   })
 
+  const [isSendModalOpen, setIsSendModalOpen] = useState(false)
   const [selectedCoin] = useState<CoinProps>(ACCEPTED_COINS_LIST[0])
+  const [transactionData, setTransactionData] =
+    useState<TransactionProps | null>(null)
 
-  const { widgetProvider, customer } = useAuth()
   const { data } = useEndUserUsedTokens(
     true,
     Number(feeData?.formatted.gasPrice)
   )
-  const { mutateAsync } = useSendMutation()
+  const { customer } = useAuth()
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
+    if (!customer) {
+      toast.error(`Error. Invalid user`)
+
+      return
+    }
+
     try {
-      await mutateAsync({
+      setTransactionData({
+        to: data.sendWallet,
+        fromWalletAddress: customer?.wallet.address,
+        fromWalletPrivateKey: customer?.wallet.privateKey,
+        fromName: customer?.name,
         amount: data.amount,
-        sendWallet: data.sendWallet,
         chainId: selectedCoin.chainId,
         rpcUrl: selectedCoin.rpcUrl
       })
 
-      widgetProvider?.getProvider.overlay.show()
-
-      widgetProvider?.getProvider.sendTransaction({
-        currencyType: 'fiat',
-        amount: '200000000000000000',
-        to: customer?.wallet.address
-      })
+      setIsSendModalOpen(true)
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
+  }
+
+  function handleSendTransaction() {
+    console.log(transactionData)
   }
 
   const selectedCoinValue = data?.find(coin => coin.id === selectedCoin.id)
@@ -86,6 +104,10 @@ export const useSend = () => {
     errors,
     isSubmitting,
     onSubmit,
+    handleSendTransaction,
+    isSendModalOpen,
+    setIsSendModalOpen,
+    transactionData,
     selectedCoin,
     currentAmount,
     currentMaticAmount,

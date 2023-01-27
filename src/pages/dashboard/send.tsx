@@ -7,6 +7,8 @@ import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { Avatar } from '@components/Avatar'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { DialogModal } from '@components/Dialogs/DialogModal'
+import { SendModal } from '@components/pages/Send/SendModal'
 
 import { useSend } from '@hooks/send/useSend'
 
@@ -17,6 +19,10 @@ const Send = () => {
     errors,
     isSubmitting,
     onSubmit,
+    handleSendTransaction,
+    transactionData,
+    isSendModalOpen,
+    setIsSendModalOpen,
     selectedCoin,
     currentAmount,
     currentMaticAmount,
@@ -31,100 +37,115 @@ const Send = () => {
         <meta name="description" content="Tokenverse dashboard home" />
       </Head>
 
-      <div className="w-full max-w-lg flex flex-1 flex-col">
-        <div className="w-full flex items-center flex-col gap-4 mb-8">
-          <Heading
-            asChild
-            className="text-3xl font-semibold text-gray-800 dark:text-gray-50 md:text-4xl"
-          >
-            <h1>Send ${currentAmount.toFixed(2)}</h1>
-          </Heading>
-
-          <div className="w-full flex items-center justify-center gap-2">
-            <Skeleton
-              isLoading={!currentMaticAmount && currentMaticAmount !== 0}
-              className="h-8"
+      <DialogModal.Root
+        open={isSendModalOpen}
+        onOpenChange={setIsSendModalOpen}
+      >
+        <div className="w-full max-w-lg flex flex-1 flex-col">
+          <div className="w-full flex items-center flex-col gap-4 mb-8">
+            <Heading
+              asChild
+              className="text-3xl font-semibold text-gray-800 dark:text-gray-50 md:text-4xl"
             >
-              <Text className="text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                {currentMaticAmount?.toFixed(2)} {selectedCoin.id}
-              </Text>
-            </Skeleton>
+              <h1>Send ${currentAmount.toFixed(2)}</h1>
+            </Heading>
 
-            <Avatar.Root fallbackName={selectedCoin.id} className="w-6 h-6">
-              <Avatar.Image
-                src={selectedCoin.avatar}
-                alt={`${selectedCoin.name} icon`}
-              />
-            </Avatar.Root>
+            <div className="w-full flex items-center justify-center gap-2">
+              <Skeleton
+                isLoading={!currentMaticAmount && currentMaticAmount !== 0}
+                className="h-8"
+              >
+                <Text className="text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
+                  {currentMaticAmount?.toFixed(2)} {selectedCoin.id}
+                </Text>
+              </Skeleton>
+
+              <Avatar.Root fallbackName={selectedCoin.id} className="w-6 h-6">
+                <Avatar.Image
+                  src={selectedCoin.avatar}
+                  alt={`${selectedCoin.name} icon`}
+                />
+              </Avatar.Root>
+            </div>
           </div>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full flex flex-col gap-4 items-stretch"
+          >
+            <TextInput.Root
+              htmlFor="destination-wallet"
+              labelText="To"
+              error={errors.sendWallet?.message}
+            >
+              <TextInput.Icon>
+                <Wallet />
+              </TextInput.Icon>
+
+              <TextInput.Input
+                {...register('sendWallet')}
+                required
+                id="destination-wallet"
+                placeholder="Enter account address"
+              />
+            </TextInput.Root>
+
+            <TextInput.Root
+              htmlFor="amount"
+              labelText="Amount"
+              error={errors.amount?.message}
+            >
+              <TextInput.Icon>
+                <CurrencyDollar />
+              </TextInput.Icon>
+
+              <TextInput.Input
+                {...register('amount', { valueAsNumber: true })}
+                type="number"
+                required
+                id="amount"
+                min={1}
+                defaultValue={1}
+                placeholder="Enter amount in dollar"
+              />
+            </TextInput.Root>
+
+            <div className="flex items-center text-gray-800 dark:text-gray-200">
+              <Text className="mr-2">Fee:</Text>
+
+              <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
+                <Avatar.Image
+                  src={selectedCoin.avatar}
+                  alt={`${selectedCoin.name} icon`}
+                />
+              </Avatar.Root>
+
+              <Skeleton
+                isLoading={!currentMaticFee && currentMaticFee !== 0}
+                className="h-6"
+              >
+                <Text className="font-semibold">
+                  {currentMaticFee?.toFixed(2)} (${currentDollarFee.toFixed(2)})
+                </Text>
+              </Skeleton>
+            </div>
+
+            <Button type="submit" className="mt-1">
+              Send
+            </Button>
+          </form>
+
+          <SendModal
+            transaction={transactionData}
+            coin={selectedCoin}
+            coinFee={currentMaticFee}
+            dollarFee={currentDollarFee}
+            coinAmount={currentMaticAmount}
+            isSubmitting={isSubmitting}
+            handleSendTransaction={handleSendTransaction}
+          />
         </div>
-
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full flex flex-col gap-4 items-stretch"
-        >
-          <TextInput.Root
-            htmlFor="destination-wallet"
-            labelText="To"
-            error={errors.sendWallet?.message}
-          >
-            <TextInput.Icon>
-              <Wallet />
-            </TextInput.Icon>
-
-            <TextInput.Input
-              {...register('sendWallet')}
-              required
-              id="destination-wallet"
-              placeholder="Enter account address"
-            />
-          </TextInput.Root>
-
-          <TextInput.Root
-            htmlFor="amount"
-            labelText="Amount"
-            error={errors.amount?.message}
-          >
-            <TextInput.Icon>
-              <CurrencyDollar />
-            </TextInput.Icon>
-
-            <TextInput.Input
-              {...register('amount', { valueAsNumber: true })}
-              type="number"
-              required
-              id="amount"
-              min={1}
-              defaultValue={1}
-              placeholder="Enter amount in dollar"
-            />
-          </TextInput.Root>
-
-          <div className="flex items-center text-gray-800 dark:text-gray-200">
-            <Text className="mr-2">Fee:</Text>
-
-            <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
-              <Avatar.Image
-                src={selectedCoin.avatar}
-                alt={`${selectedCoin.name} icon`}
-              />
-            </Avatar.Root>
-
-            <Skeleton
-              isLoading={!currentMaticFee && currentMaticFee !== 0}
-              className="h-6"
-            >
-              <Text className="font-semibold">
-                {currentMaticFee?.toFixed(2)} (${currentDollarFee.toFixed(2)})
-              </Text>
-            </Skeleton>
-          </div>
-
-          <Button isLoading={isSubmitting} className="mt-1">
-            Send
-          </Button>
-        </form>
-      </div>
+      </DialogModal.Root>
     </div>
   )
 }
