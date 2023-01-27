@@ -65,7 +65,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setCustomer({
           cognitoId: sessionData.sub,
-          name: sessionData.name,
+          name: sessionData?.name // TEMP WHILE WIDGET DOESNT SAVE THE NAME TOO
+            ? sessionData.name
+            : sessionData?.email?.substring(0, 8),
           wallet: apiResponse.data.wallets[0],
           email: sessionData.email
         })

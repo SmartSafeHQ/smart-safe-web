@@ -10,6 +10,7 @@ import '../styles/globals.css'
 import { DashboardLayout } from '@/components/pages/Layouts/DashboardLayout'
 import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
+import { TokenverseWidget } from '@components/TokenverseWidget'
 
 Amplify.configure(amplifyConfig)
 
@@ -24,6 +25,8 @@ export default function App({ Component, pageProps, ...appProps }: AppProps) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
+
+      <TokenverseWidget />
 
       <div className="min-w-screen min-h-screen flex flex-col">
         <LayoutComponent>

@@ -16,6 +16,8 @@ type LoginFieldValues = z.infer<typeof validationSchema>
 
 export const useLogin = () => {
   const router = useRouter()
+  const { widgetProvider } = useAuth()
+
   const { register, handleSubmit, formState } = useForm<LoginFieldValues>({
     resolver: zodResolver(validationSchema)
   })
@@ -35,5 +37,9 @@ export const useLogin = () => {
     }
   }
 
-  return { register, handleSubmit, formState, onSubmit }
+  function handleSignupWidget() {
+    widgetProvider?.getProvider.overlay.show()
+  }
+
+  return { register, handleSubmit, formState, onSubmit, handleSignupWidget }
 }

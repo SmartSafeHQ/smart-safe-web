@@ -1,11 +1,9 @@
 import Head from 'next/head'
-import Link from 'next/link'
 import { Envelope, Lock } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
-import { Text } from '@components/Text'
 import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
 
 import { useLogin } from '@hooks/accounts/useLogin'
@@ -15,7 +13,8 @@ export default function Login() {
     formState: { errors, isSubmitting },
     handleSubmit,
     onSubmit,
-    register
+    register,
+    handleSignupWidget
   } = useLogin()
 
   return (
@@ -28,7 +27,7 @@ export default function Login() {
       <header className="flex flex-col items-center">
         <TokenverseTextLogo className="w-72 h-6" />
 
-        <Heading className="mt-4 text-xl text-gray-500">
+        <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
           Login and start using!
         </Heading>
       </header>
@@ -74,12 +73,13 @@ export default function Login() {
             />
           </TextInput.Root>
 
-          <Text
-            asChild
-            className="text-md text-cyan-400 font-semibold hover:text-cyan-300"
+          <button
+            type="button"
+            onClick={handleSignupWidget}
+            className="text-left text-md text-cyan-500 dark:text-cyan-400 font-semibold hover:text-cyan-400 hover:dark:text-cyan-300"
           >
-            <Link href="/accounts/forgot-password">Forgot my password</Link>
-          </Text>
+            Forgot my password
+          </button>
 
           <Button type="submit" isLoading={isSubmitting} className="mt-1">
             Login
@@ -88,14 +88,12 @@ export default function Login() {
       </main>
 
       <footer className="flex flex-col items-center gap-4 mt-8">
-        <Text
-          asChild
-          className="text-lg text-gray-400 underline hover:dark:text-gray-300"
+        <button
+          onClick={handleSignupWidget}
+          className="text-lg text-gray-700 dark:text-gray-300 font-medium underline transition-colors hover:text-gray-900 hover:dark:text-gray-100"
         >
-          <Link href="/accounts/signup">
-            Don’t have an account? Create Now!
-          </Link>
-        </Text>
+          Don’t have an account? Create Now!
+        </button>
       </footer>
     </div>
   )
