@@ -24,6 +24,8 @@ type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
 
 type AuthContextData = {
   customer: Customer | null
+  widgetProvider: any | null
+  setWidgetProvider: (_widgetProvider: any) => void
   setCustomer: (_customer: Customer) => void
   signOut: () => void
 }
@@ -33,6 +35,7 @@ const AuthContext = createContext({} as AuthContextData)
 export function AuthProvider({ children }: AuthProviderProps) {
   const { push, asPath } = useRouter()
   const [customer, setCustomer] = useState<Customer | null>(null)
+  const [widgetProvider, setWidgetProvider] = useState(null)
 
   async function signOut() {
     try {
@@ -82,6 +85,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
     <AuthContext.Provider
       value={{
         customer,
+        widgetProvider,
+        setWidgetProvider,
         setCustomer,
         signOut
       }}

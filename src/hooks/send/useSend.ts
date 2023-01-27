@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
 import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
 import { useEndUserUsedTokens } from '@hooks/send/queries/useEndUserUsedTokens'
+import { useAuth } from '@contexts/AuthContext'
 
 const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'adrress required' }),
@@ -35,6 +36,7 @@ export const useSend = () => {
 
   const [selectedCoin] = useState<CoinProps>(ACCEPTED_COINS_LIST[0])
 
+  const { widgetProvider, customer } = useAuth()
   const { data } = useEndUserUsedTokens()
   const { mutateAsync } = useSendMutation()
 
@@ -47,7 +49,13 @@ export const useSend = () => {
         rpcUrl: selectedCoin.rpcUrl
       })
 
-      toast.success('Transaction done successfully.')
+      widgetProvider?.getProvider.overlay.show()
+
+      widgetProvider?.getProvider.sendTransaction({
+        currencyType: 'fiat',
+        amount: '200000000000000000',
+        to: customer?.wallet.address
+      })
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
