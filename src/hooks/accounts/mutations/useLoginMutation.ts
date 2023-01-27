@@ -13,6 +13,13 @@ interface LoginFunctionOutput {
   cognitoId: string
   name: string
   email: string
+  wallet: {
+    address: string
+  }
+}
+
+export interface FetchEndUserWalletsResponse {
+  wallets: { address: string }[]
 }
 
 async function loginFunction(
@@ -23,15 +30,20 @@ async function loginFunction(
     password: input.password
   })
 
-  const accessToken = response.signInUserSession.accessToken.jwtToken
+  const accessToken = response.signInUserSession.idToken.jwtToken
 
   tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+
+  const apiResponse = await tokenverseApi.get<FetchEndUserWalletsResponse>(
+    '/widget/wallets'
+  )
 
   const sessionData = response.attributes
 
   return {
     cognitoId: sessionData.sub,
     name: sessionData.name,
+    wallet: apiResponse.data.wallets[0],
     email: sessionData.email
   }
 }

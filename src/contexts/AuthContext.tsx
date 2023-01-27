@@ -8,10 +8,14 @@ import {
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 
+import { FetchEndUserWalletsResponse } from '@/hooks/accounts/mutations/useLoginMutation'
 import { tokenverseApi } from '@lib/axios'
 
 type Customer = {
   cognitoId: string
+  wallet: {
+    address: string
+  }
   name: string
   email: string
 }
@@ -44,16 +48,22 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser()
-      .then(response => {
+      .then(async response => {
         const sessionData = response.attributes
 
-        const accessToken = response.signInUserSession.accessToken.jwtToken
+        const accessToken = response.signInUserSession.idToken.jwtToken
 
         tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+
+        const apiResponse =
+          await tokenverseApi.get<FetchEndUserWalletsResponse>(
+            '/widget/wallets'
+          )
 
         setCustomer({
           cognitoId: sessionData.sub,
           name: sessionData.name,
+          wallet: apiResponse.data.wallets[0],
           email: sessionData.email
         })
       })

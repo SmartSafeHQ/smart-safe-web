@@ -5,6 +5,7 @@ import { CopySimple, Export, Wallet } from 'phosphor-react'
 import { Text } from '@components/Text'
 import { useAuth } from '@contexts/AuthContext'
 import { ActionButton } from '@components/pages/Receive/ActionButton'
+import { LoadingState } from '@components/FetchingStates/LoadingState'
 
 import { useReceive } from '@hooks/receive/useReceive'
 
@@ -29,12 +30,18 @@ const Receive = () => {
         </div>
 
         <section className="w-full flex flex-col gap-4 items-stretch">
-          <div className="w-full flex flex-col gap-4 items-center justify-center p-6 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md">
-            <QRCodeCanvas value="https://reactjs.org/" size={240} />
+          <div className="w-full min-h-[20.5rem] flex flex-col gap-4 items-center justify-center p-6 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md">
+            {!customer && <LoadingState title="Loading QRCode" />}
 
-            <Text className="mt-auto text-sm break-all text-gray-800 dark:text-gray-50 sm:text-base">
-              821q7ehup0ew2djpawomjpafjmeapfvmjvndeicopw
-            </Text>
+            {customer && (
+              <>
+                <QRCodeCanvas value={customer.wallet.address} size={240} />
+
+                <Text className="mt-auto text-sm break-all text-gray-800 dark:text-gray-50 sm:text-base">
+                  {customer?.wallet.address}
+                </Text>
+              </>
+            )}
           </div>
 
           <div className="w-full flex items-center justify-center gap-3">
