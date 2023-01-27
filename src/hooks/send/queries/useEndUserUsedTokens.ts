@@ -3,30 +3,42 @@ import axios from 'axios'
 
 import { getTokenPriceUrl } from '@utils/sendUtils'
 
+interface FetchEndUserUsedTokenInput {
+  feeEthValue: number
+}
+
 interface FetchEndUserUsedTokenResponse {
   id: string
   price: number
+  feeUsdPrice: number
 }
 
 interface GetTokenPricesResponse {
   USD: number
 }
 
-async function fetchEndUserUsedTokens(): Promise<
-  FetchEndUserUsedTokenResponse[]
-> {
+async function fetchEndUserUsedTokens({
+  feeEthValue
+}: FetchEndUserUsedTokenInput): Promise<FetchEndUserUsedTokenResponse[]> {
   const getMaticPriceUrl = getTokenPriceUrl('MATIC', 'USD')
+  const getEthPriceUrl = getTokenPriceUrl('ETH', 'USD')
 
-  const response = await axios.get<GetTokenPricesResponse>(getMaticPriceUrl)
+  const [maticPrice, ethPrice] = await Promise.all([
+    axios.get<GetTokenPricesResponse>(getMaticPriceUrl),
+    axios.get<GetTokenPricesResponse>(getEthPriceUrl)
+  ])
 
-  return [{ id: 'matic', price: response.data.USD }]
+  // Convert ETH to USD
+  const usdPrice = feeEthValue * ethPrice.data.USD
+
+  return [{ id: 'matic', price: maticPrice.data.USD, feeUsdPrice: usdPrice }]
 }
 
-export function useEndUserUsedTokens(enabled = true) {
+export function useEndUserUsedTokens(enabled = true, feeEthValue = 0) {
   return useQuery({
-    queryKey: ['endUserUsedTokens'],
-    queryFn: () => fetchEndUserUsedTokens(),
+    queryKey: ['endUserUsedTokens', feeEthValue],
+    queryFn: () => fetchEndUserUsedTokens({ feeEthValue }),
     enabled,
-    staleTime: 1000 * 60 * 5 // 5 minutes
+    staleTime: 1000 * 60 * 2 // 2 minutes
   })
 }

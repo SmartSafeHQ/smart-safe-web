@@ -41,7 +41,10 @@ const Send = () => {
           </Heading>
 
           <div className="w-full flex items-center justify-center gap-2">
-            <Skeleton isLoading={!currentMaticAmount} className="h-8">
+            <Skeleton
+              isLoading={!currentMaticAmount && currentMaticAmount !== 0}
+              className="h-8"
+            >
               <Text className="text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
                 {currentMaticAmount?.toFixed(2)} {selectedCoin.id}
               </Text>
@@ -107,7 +110,10 @@ const Send = () => {
               />
             </Avatar.Root>
 
-            <Skeleton isLoading={!currentMaticFee} className="h-6">
+            <Skeleton
+              isLoading={!currentMaticFee && currentMaticFee !== 0}
+              className="h-6"
+            >
               <Text className="font-semibold">
                 {currentMaticFee?.toFixed(2)} (${currentDollarFee.toFixed(2)})
               </Text>

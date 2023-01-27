@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
+import { useFeeData } from 'wagmi'
 
 import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
 import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
@@ -33,11 +34,18 @@ export const useSend = () => {
   } = useForm<SendFieldValues>({
     resolver: zodResolver(validationSchema)
   })
+  const { data: feeData } = useFeeData({
+    chainId: 80001,
+    formatUnits: 'ether'
+  })
 
   const [selectedCoin] = useState<CoinProps>(ACCEPTED_COINS_LIST[0])
 
   const { widgetProvider, customer } = useAuth()
-  const { data } = useEndUserUsedTokens()
+  const { data } = useEndUserUsedTokens(
+    true,
+    Number(feeData?.formatted.gasPrice)
+  )
   const { mutateAsync } = useSendMutation()
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
@@ -63,13 +71,14 @@ export const useSend = () => {
 
   const selectedCoinValue = data?.find(coin => coin.id === selectedCoin.id)
 
-  const currentAmount = watch().amount ?? 1
-  const currentMaticAmount = selectedCoinValue
-    ? currentAmount / selectedCoinValue?.price
-    : 0
+  const coinUsdValue = Number(selectedCoinValue?.price)
+  const feeUsdValue = Number(selectedCoinValue?.feeUsdPrice)
 
-  const currentMaticFee = 2
-  const currentDollarFee = 4
+  const currentAmount = !watch().amount ? 0 : watch().amount
+  const currentMaticAmount = currentAmount / coinUsdValue
+
+  const currentDollarFee = feeUsdValue * currentAmount
+  const currentMaticFee = currentDollarFee / coinUsdValue
 
   return {
     register,
