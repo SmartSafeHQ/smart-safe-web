@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { WagmiConfig } from 'wagmi'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { ToastContainer } from 'react-toastify'
 
@@ -6,6 +7,7 @@ import { AuthProvider } from './AuthContext'
 import { ThemeProvider } from './ThemeContext'
 
 import { queryClient } from '@lib/reactQuery'
+import { wagmiClient } from '@/lib/wagmi'
 
 type AppProviderProps = {
   children: ReactNode
@@ -14,11 +16,13 @@ type AppProviderProps = {
 export function AppProvider({ children }: AppProviderProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-      </AuthProvider>
+      <WagmiConfig client={wagmiClient}>
+        <AuthProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthProvider>
 
-      <ToastContainer position="top-right" theme="colored" />
+        <ToastContainer position="top-right" theme="colored" />
+      </WagmiConfig>
     </QueryClientProvider>
   )
 }

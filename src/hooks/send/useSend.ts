@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
 import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
+import { useEndUserUsedTokens } from '@hooks/send/queries/useEndUserUsedTokens'
 
 const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'adrress required' }),
@@ -34,6 +35,7 @@ export const useSend = () => {
 
   const [selectedCoin] = useState<CoinProps>(ACCEPTED_COINS_LIST[0])
 
+  const { data } = useEndUserUsedTokens()
   const { mutateAsync } = useSendMutation()
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
@@ -51,11 +53,15 @@ export const useSend = () => {
     }
   }
 
-  const currentAmount = watch().amount ?? 1
-  const currentMaticAmount = Number(currentAmount) / 3
+  const selectedCoinValue = data?.find(coin => coin.id === selectedCoin.id)
 
-  const currentMaticFee = currentMaticAmount / 2
-  const currentDollarFee = currentAmount / 2
+  const currentAmount = watch().amount ?? 1
+  const currentMaticAmount = selectedCoinValue
+    ? currentAmount / selectedCoinValue?.price
+    : 0
+
+  const currentMaticFee = 2
+  const currentDollarFee = 4
 
   return {
     register,

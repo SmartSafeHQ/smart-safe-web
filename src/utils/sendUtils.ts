@@ -8,3 +8,7 @@ export const ACCEPTED_COINS_LIST = [
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/'
   }
 ]
+
+export function getTokenPriceUrl(coin: string, currency: string) {
+  return `https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=${currency}`
+}
