@@ -1,25 +1,36 @@
 import { useMutation } from '@tanstack/react-query'
+// import { providers, Wallet, BigNumber, utils } from 'ethers'
 
 import { queryClient } from '@lib/reactQuery'
 
 interface SendFunctionInput {
-  sendWallet: string
+  to: string
+  fromWalletAddress: string
+  fromWalletPrivateKey: string
   amount: number
   chainId: number
   rpcUrl: string
 }
 
 async function sendFunction(input: SendFunctionInput): Promise<void> {
-  console.log(input)
+  // const provider = new providers.JsonRpcProvider(input.rpcUrl)
+  // const userWallet = new Wallet(input.fromWalletAddress, provider)
+  // const nonce = await userWallet.getTransactionCount()
+  // const { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
+  // const signedTransaction = await userWallet.signTransaction({
+  //   from: userWallet.address,
+  //   to: input?.to,
+  //   value: BigNumber.from(input?.amount),
+  //   nonce,
+  //   chainId: input?.chainId,
+  //   gasLimit: '21000',
+  //   maxPriorityFeePerGas: maxPriorityFeePerGas || utils.parseUnits('5', 'gwei'),
+  //   maxFeePerGas: maxFeePerGas || utils.parseUnits('5', 'gwei'),
+  //   type: 2
+  // })
+  // await provider.sendTransaction(signedTransaction)
 
-  // const customer = await mutateAsync(data)
-
-  // const provider = new ethers.providers.Web3Provider(library)
-  //   const signer = provider.getSigner()
-  //   const tx = await signer.sendTransaction({
-  //     to: destination,
-  //     value: ethers.utils.parseEther(amount)
-  //   })
+  console.log({ chainId: input.chainId })
 }
 
 export function useSendMutation() {

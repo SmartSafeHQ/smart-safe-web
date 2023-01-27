@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { useFeeData } from 'wagmi'
 
 import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
+import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
 import { useEndUserUsedTokens } from '@hooks/send/queries/useEndUserUsedTokens'
 import { useAuth } from '@contexts/AuthContext'
 
@@ -57,6 +58,7 @@ export const useSend = () => {
     true,
     Number(feeData?.formatted.gasPrice)
   )
+  const { mutateAsync } = useSendMutation()
   const { customer } = useAuth()
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
@@ -83,8 +85,22 @@ export const useSend = () => {
     }
   }
 
-  function handleSendTransaction() {
-    console.log(transactionData)
+  async function handleSendTransaction() {
+    try {
+      if (!transactionData) {
+        toast.error(`Error. Invalid transaction infos`)
+
+        return
+      }
+
+      await mutateAsync(transactionData)
+
+      toast.success('Transaction done successfully')
+
+      setIsSendModalOpen(false)
+    } catch (error) {
+      toast.error(`Error. ${(error as Error).message}`)
+    }
   }
 
   const selectedCoinValue = data?.find(coin => coin.id === selectedCoin.id)
