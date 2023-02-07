@@ -12,7 +12,7 @@ import { useAuth } from '@contexts/AuthContext'
 
 const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'adrress required' }),
-  amount: z.number().min(1, { message: 'min $1' })
+  amount: z.number().min(0, { message: 'min $0' })
 })
 
 type SendFieldValues = z.infer<typeof validationSchema>
@@ -31,7 +31,8 @@ export interface TransactionProps {
   fromWalletAddress: string
   fromWalletPrivateKey: string
   fromName: string
-  amount: number
+  usdAmount: number
+  coinAmount: number
   chainId: number
   rpcUrl: string
 }
@@ -63,6 +64,17 @@ export const useSend = () => {
   const { mutateAsync, isLoading: isSendingTx } = useSendMutation()
   const { customer } = useAuth()
 
+  const selectedCoinValue = data?.find(coin => coin.id === selectedCoin.id)
+
+  const coinUsdValue = Number(selectedCoinValue?.price)
+  const feeUsdValue = Number(selectedCoinValue?.feeUsdPrice)
+
+  const currentAmount = !watch().amount ? 0 : watch().amount
+  const currentMaticAmount = currentAmount / coinUsdValue
+
+  const currentDollarFee = feeUsdValue * currentAmount
+  const currentMaticFee = currentDollarFee / coinUsdValue
+
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
     if (!customer) {
       toast.error(`Error. Invalid user`)
@@ -76,7 +88,8 @@ export const useSend = () => {
         fromWalletAddress: customer?.wallet.address,
         fromWalletPrivateKey: customer?.wallet.privateKey,
         fromName: customer?.name,
-        amount: data.amount,
+        usdAmount: data.amount,
+        coinAmount: currentMaticAmount,
         chainId: selectedCoin.chainId,
         rpcUrl: selectedCoin.rpcUrl
       })
@@ -95,7 +108,10 @@ export const useSend = () => {
         return
       }
 
-      const response = await mutateAsync(transactionData)
+      const response = await mutateAsync({
+        ...transactionData,
+        amount: transactionData.coinAmount
+      })
 
       const transactionUrl = `${selectedCoin.explorerUrl}/tx/${response.transactionHash}`
 
@@ -106,17 +122,6 @@ export const useSend = () => {
       toast.error(`Error. ${(error as Error).message}`)
     }
   }
-
-  const selectedCoinValue = data?.find(coin => coin.id === selectedCoin.id)
-
-  const coinUsdValue = Number(selectedCoinValue?.price)
-  const feeUsdValue = Number(selectedCoinValue?.feeUsdPrice)
-
-  const currentAmount = !watch().amount ? 0 : watch().amount
-  const currentMaticAmount = currentAmount / coinUsdValue
-
-  const currentDollarFee = feeUsdValue * currentAmount
-  const currentMaticFee = currentDollarFee / coinUsdValue
 
   return {
     register,

@@ -50,18 +50,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
           cookie.trim().startsWith('CognitoIdentityServiceProvider')
         )
 
-      authCookies.forEach(
-        cookie =>
-          (document.cookie =
-            cookie +
-            '=' +
-            (location.pathname ? ';path=' + location.pathname : '') +
-            (location.host ? ';domain=' + location.host : '') +
-            ';expires=Thu, 01 Jan 1970 00:00:01 GMT')
-      )
+      authCookies.forEach(cookie => {
+        document.cookie = cookie
+          .replace(/^ +/, '')
+          .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
+      })
+    } finally {
+      push('/accounts/login')
     }
-
-    push('/accounts/login')
   }
 
   useEffect(() => {

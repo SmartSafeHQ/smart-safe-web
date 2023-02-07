@@ -1,4 +1,4 @@
-import { providers, Wallet, utils, BigNumber } from 'ethers'
+import { providers, Wallet, utils } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
@@ -26,12 +26,10 @@ async function sendFunction(
 
   const { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
 
-  console.log(input)
-
   const signedTransaction = await wallet.signTransaction({
     from: wallet.address,
     to: input?.to,
-    value: BigNumber.from(input?.amount),
+    value: utils.parseEther(input?.amount.toFixed(6)),
     nonce,
     chainId: input?.chainId,
     gasLimit: '21000',

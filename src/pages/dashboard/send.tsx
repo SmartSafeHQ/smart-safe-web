@@ -52,7 +52,7 @@ const Send = () => {
               asChild
               className="text-3xl font-semibold text-gray-800 dark:text-gray-50 md:text-4xl"
             >
-              <h1>Send ${currentAmount.toFixed(2)}</h1>
+              <h1>Send ${currentAmount}</h1>
             </Heading>
 
             <div className="w-full flex items-center justify-center gap-2">
@@ -61,7 +61,7 @@ const Send = () => {
                 className="h-8"
               >
                 <Text className="text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                  {currentMaticAmount?.toFixed(2)} {selectedCoin.id}
+                  {currentMaticAmount?.toFixed(4)} {selectedCoin.id}
                 </Text>
               </Skeleton>
 
@@ -109,8 +109,9 @@ const Send = () => {
                 type="number"
                 required
                 id="amount"
-                min={1}
-                defaultValue={1}
+                min={0}
+                step={0.0001}
+                defaultValue={0}
                 placeholder="Enter amount in dollar"
               />
             </TextInput.Root>
@@ -146,7 +147,6 @@ const Send = () => {
             coin={selectedCoin}
             coinFee={currentMaticFee}
             dollarFee={currentDollarFee}
-            coinAmount={currentMaticAmount}
             isSending={isSendingTx}
             handleSendTransaction={handleSendTransaction}
           />

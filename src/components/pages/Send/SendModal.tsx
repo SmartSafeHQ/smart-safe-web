@@ -13,7 +13,6 @@ interface SendModalProps {
   coin: CoinProps
   coinFee: number
   dollarFee: number
-  coinAmount: number
   isSending: boolean
   handleSendTransaction: () => void
 }
@@ -24,7 +23,6 @@ export function SendModal({
   coin,
   coinFee,
   dollarFee,
-  coinAmount,
   handleSendTransaction,
   isSending
 }: SendModalProps) {
@@ -33,16 +31,18 @@ export function SendModal({
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-            Send ${transaction?.amount?.toFixed(2)}
+            Send ${transaction?.usdAmount}
           </DialogModal.Title>
 
           <div className="w-full flex items-center justify-center gap-2">
             <Skeleton
-              isLoading={!coinAmount && coinAmount !== 0}
+              isLoading={
+                !transaction?.coinAmount && transaction?.coinAmount !== 0
+              }
               className="h-8"
             >
               <DialogModal.Description className="text-center text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                {coinAmount?.toFixed(2)} {coin.id}
+                {transaction?.coinAmount?.toFixed(4)} {coin.id}
               </DialogModal.Description>
             </Skeleton>
 
