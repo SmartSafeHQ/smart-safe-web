@@ -41,13 +41,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function signOut() {
     try {
       await Auth.signOut({ global: true })
-
-      push('/accounts/login')
     } catch (error) {
-      console.log(error)
+      console.error(error)
 
-      throw new Error((error as Error).message)
+      const authCookies = document.cookie
+        .split(';')
+        .filter(cookie =>
+          cookie.trim().startsWith('CognitoIdentityServiceProvider')
+        )
+
+      authCookies.forEach(
+        cookie =>
+          (document.cookie =
+            cookie +
+            '=' +
+            (location.pathname ? ';path=' + location.pathname : '') +
+            (location.host ? ';domain=' + location.host : '') +
+            ';expires=Thu, 01 Jan 1970 00:00:01 GMT')
+      )
     }
+
+    push('/accounts/login')
   }
 
   useEffect(() => {
