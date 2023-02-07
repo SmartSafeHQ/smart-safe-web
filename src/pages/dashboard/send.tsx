@@ -17,8 +17,10 @@ const Send = () => {
     register,
     handleSubmit,
     errors,
-    isSubmitting,
+    isSendingTx,
     onSubmit,
+    transactionUrl,
+    setTransactionUrl,
     handleSendTransaction,
     transactionData,
     isSendModalOpen,
@@ -38,8 +40,11 @@ const Send = () => {
       </Head>
 
       <DialogModal.Root
-        open={isSendModalOpen}
-        onOpenChange={setIsSendModalOpen}
+        open={isSendModalOpen || isSendingTx}
+        onOpenChange={() => {
+          setIsSendModalOpen(!isSendModalOpen)
+          setTransactionUrl(null)
+        }}
       >
         <div className="w-full max-w-lg flex flex-1 flex-col">
           <div className="w-full flex items-center flex-col gap-4 mb-8">
@@ -137,11 +142,12 @@ const Send = () => {
 
           <SendModal
             transaction={transactionData}
+            transactionUrl={transactionUrl}
             coin={selectedCoin}
             coinFee={currentMaticFee}
             dollarFee={currentDollarFee}
             coinAmount={currentMaticAmount}
-            isSubmitting={isSubmitting}
+            isSending={isSendingTx}
             handleSendTransaction={handleSendTransaction}
           />
         </div>

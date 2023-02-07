@@ -1,4 +1,4 @@
-import { PaperPlaneTilt, Wallet } from 'phosphor-react'
+import { ArrowSquareOut, PaperPlaneTilt, Wallet } from 'phosphor-react'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -9,25 +9,27 @@ import { CoinProps, TransactionProps } from '@/hooks/send/useSend'
 
 interface SendModalProps {
   transaction: TransactionProps | null
+  transactionUrl: string | null
   coin: CoinProps
   coinFee: number
   dollarFee: number
   coinAmount: number
-  isSubmitting: boolean
+  isSending: boolean
   handleSendTransaction: () => void
 }
 
 export function SendModal({
   transaction,
+  transactionUrl,
   coin,
   coinFee,
   dollarFee,
   coinAmount,
   handleSendTransaction,
-  isSubmitting
+  isSending
 }: SendModalProps) {
   return (
-    <DialogModal.Content className="md:max-w-[32rem] min-h-[62vh]">
+    <DialogModal.Content className="md:max-w-[32rem] min-h-[65vh]">
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
@@ -126,11 +128,30 @@ export function SendModal({
 
         <Button
           onClick={handleSendTransaction}
-          isLoading={isSubmitting}
-          className="mt-8"
+          isLoading={isSending}
+          className="mt-6"
         >
           Send
         </Button>
+
+        {transactionUrl && (
+          <Text className="mt-4 text-gray-800 dark:text-gray-200">
+            See on:
+            <a
+              href={transactionUrl}
+              target="_blank"
+              className="ml-1 font-semibold text-cyan-500 hover:text-cyan-600"
+              rel="noreferrer"
+            >
+              <Text>{transactionUrl?.slice(0, 30)}...</Text>
+
+              <ArrowSquareOut
+                className="w-4 h-4 ml-1 md:hidden lg:inline"
+                weight="bold"
+              />
+            </a>
+          </Text>
+        )}
       </div>
 
       <DialogModal.IconClose />

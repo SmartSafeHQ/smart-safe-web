@@ -1,5 +1,5 @@
+import { providers, Wallet, utils, BigNumber } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
-// import { providers, Wallet, BigNumber, utils } from 'ethers'
 
 import { queryClient } from '@lib/reactQuery'
 
@@ -12,25 +12,38 @@ interface SendFunctionInput {
   rpcUrl: string
 }
 
-async function sendFunction(input: SendFunctionInput): Promise<void> {
-  // const provider = new providers.JsonRpcProvider(input.rpcUrl)
-  // const userWallet = new Wallet(input.fromWalletAddress, provider)
-  // const nonce = await userWallet.getTransactionCount()
-  // const { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
-  // const signedTransaction = await userWallet.signTransaction({
-  //   from: userWallet.address,
-  //   to: input?.to,
-  //   value: BigNumber.from(input?.amount),
-  //   nonce,
-  //   chainId: input?.chainId,
-  //   gasLimit: '21000',
-  //   maxPriorityFeePerGas: maxPriorityFeePerGas || utils.parseUnits('5', 'gwei'),
-  //   maxFeePerGas: maxFeePerGas || utils.parseUnits('5', 'gwei'),
-  //   type: 2
-  // })
-  // await provider.sendTransaction(signedTransaction)
+interface SendFunctionOutput {
+  transactionHash: string
+}
 
-  console.log({ chainId: input.chainId })
+async function sendFunction(
+  input: SendFunctionInput
+): Promise<SendFunctionOutput> {
+  const provider = new providers.JsonRpcProvider(input.rpcUrl)
+  const wallet = new Wallet(input.fromWalletPrivateKey, provider)
+
+  const nonce = await wallet.getTransactionCount()
+
+  const { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
+
+  console.log(input)
+
+  const signedTransaction = await wallet.signTransaction({
+    from: wallet.address,
+    to: input?.to,
+    value: BigNumber.from(input?.amount),
+    nonce,
+    chainId: input?.chainId,
+    gasLimit: '21000',
+    maxPriorityFeePerGas: maxPriorityFeePerGas || utils.parseUnits('5', 'gwei'),
+    maxFeePerGas: maxFeePerGas || utils.parseUnits('5', 'gwei'),
+    type: 2
+  })
+
+  const transaction = await provider.sendTransaction(signedTransaction)
+  const response = await transaction.wait()
+
+  return { transactionHash: response.transactionHash }
 }
 
 export function useSendMutation() {

@@ -23,6 +23,7 @@ export interface CoinProps {
   avatar: string
   chainId: number
   rpcUrl: string
+  explorerUrl: string
 }
 
 export interface TransactionProps {
@@ -40,7 +41,7 @@ export const useSend = () => {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isSubmitting }
+    formState: { errors }
   } = useForm<SendFieldValues>({
     resolver: zodResolver(validationSchema)
   })
@@ -50,6 +51,7 @@ export const useSend = () => {
   })
 
   const [isSendModalOpen, setIsSendModalOpen] = useState(false)
+  const [transactionUrl, setTransactionUrl] = useState<null | string>(null)
   const [selectedCoin] = useState<CoinProps>(ACCEPTED_COINS_LIST[0])
   const [transactionData, setTransactionData] =
     useState<TransactionProps | null>(null)
@@ -58,7 +60,7 @@ export const useSend = () => {
     true,
     Number(feeData?.formatted.gasPrice)
   )
-  const { mutateAsync } = useSendMutation()
+  const { mutateAsync, isLoading: isSendingTx } = useSendMutation()
   const { customer } = useAuth()
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
@@ -93,11 +95,13 @@ export const useSend = () => {
         return
       }
 
-      await mutateAsync(transactionData)
+      const response = await mutateAsync(transactionData)
 
-      toast.success('Transaction done successfully')
+      const transactionUrl = `${selectedCoin.explorerUrl}/tx/${response.transactionHash}`
 
-      setIsSendModalOpen(false)
+      toast.success(`Transaction done successfully`)
+
+      setTransactionUrl(transactionUrl)
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
@@ -118,7 +122,9 @@ export const useSend = () => {
     register,
     handleSubmit,
     errors,
-    isSubmitting,
+    isSendingTx,
+    transactionUrl,
+    setTransactionUrl,
     onSubmit,
     handleSendTransaction,
     isSendModalOpen,
