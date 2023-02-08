@@ -4,7 +4,7 @@ import axios from 'axios'
 import { getCoinPriceUrl } from '@utils/global/coins'
 
 interface FetchCoinValueInUsdInput {
-  coinId: string
+  coinSymbol: string
 }
 
 interface FetchCoinValueInUsdResponse {
@@ -16,9 +16,9 @@ interface GetCoinPricesResponse {
 }
 
 async function fetchCoinValueInUsd({
-  coinId
+  coinSymbol
 }: FetchCoinValueInUsdInput): Promise<FetchCoinValueInUsdResponse> {
-  const reqUrl = getCoinPriceUrl(coinId.toUpperCase(), 'USD')
+  const reqUrl = getCoinPriceUrl(coinSymbol.toUpperCase(), 'USD')
 
   const response = await axios.get<GetCoinPricesResponse>(reqUrl)
 
@@ -27,10 +27,10 @@ async function fetchCoinValueInUsd({
   }
 }
 
-export function useCoinValueInUsd(coinId: string) {
+export function useCoinValueInUsd(coinSymbol: string) {
   return useQuery({
-    queryKey: ['coinValueInUsd', coinId],
-    queryFn: () => fetchCoinValueInUsd({ coinId }),
+    queryKey: ['coinValueInUsd', coinSymbol],
+    queryFn: () => fetchCoinValueInUsd({ coinSymbol }),
     staleTime: 1000 * 60 * 2 // 2 minutes
   })
 }

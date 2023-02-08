@@ -13,16 +13,16 @@ import { usePortfolioTransactions } from '@hooks/home/queries/usePortfolioTransa
 interface TransactionsTabProps {
   page: number
   setPage: Dispatch<SetStateAction<number>>
-  isEnabled?: boolean
+  isTabActive?: boolean
 }
 
 export function TransactionsTab({
   page,
-  isEnabled = false,
+  isTabActive = false,
   setPage
 }: TransactionsTabProps) {
   const { data, isLoading, isFetching, refetch, error } =
-    usePortfolioTransactions(isEnabled)
+    usePortfolioTransactions(isTabActive)
 
   return (
     <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-white dark:bg-gray-800 rounded-md">

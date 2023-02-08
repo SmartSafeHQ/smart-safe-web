@@ -22,7 +22,7 @@ async function fetchCoinFeeData({
   const gasEstimate = await provider.getGasPrice()
 
   const gasCostInWei = gasEstimate.mul(DEFAULT_GAS_LIMIT)
-  const gasCostInCoin = gasCostInWei.toNumber() / coinDecimals
+  const gasCostInCoin = gasCostInWei.toNumber() / 10 ** coinDecimals
 
   return {
     valueInWei: gasCostInWei.toString(),

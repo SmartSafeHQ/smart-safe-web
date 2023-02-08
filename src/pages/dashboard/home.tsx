@@ -3,19 +3,15 @@ import Head from 'next/head'
 
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
-import { TokensTab } from '@components/pages/home/TokensTab'
+import { CoinsTab } from '@components/pages/home/CoinsTab'
 import { TransactionsTab } from '@components/pages/home/TransactionsTab'
 import { Tabs } from '@components/Tabs'
 
-import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
-
-type NavTabs = 'tokens' | 'transactions' | 'nfts'
+type NavTabs = 'coins' | 'transactions' | 'nfts'
 
 const Home = () => {
   const [page, setPage] = useState(1)
-  const [tab, setTab] = useState<NavTabs>('tokens')
-
-  const { data, isLoading: tokensIsLoading } = usePortfolioTokens()
+  const [tab, setTab] = useState<NavTabs>('coins')
 
   return (
     <div className="flex flex-col px-2 pt-8">
@@ -29,24 +25,24 @@ const Home = () => {
           <IncomesSummary.Item className="gap-1 md:gap-2">
             <IncomesSummary.Title>account balance</IncomesSummary.Title>
 
-            <Skeleton isLoading={tokensIsLoading} className="h-12">
+            <Skeleton isLoading={false} className="h-12">
               <IncomesSummary.Value className="text-2xl md:text-4xl">
-                ${data?.tokensNetWorth}
+                ${(10).toFixed(2)}
               </IncomesSummary.Value>
             </Skeleton>
           </IncomesSummary.Item>
         </IncomesSummary.Root>
 
         <Tabs.Root
-          defaultValue="tokens"
+          defaultValue="coins"
           onValueChange={tabValue => setTab(tabValue as NavTabs)}
         >
           <Tabs.List
             aria-label="Manage your metrics"
             className="w-full max-w-lg mb-6"
           >
-            <Tabs.Trigger value="tokens" className="py-2 w-full max-w-[10rem]">
-              tokens
+            <Tabs.Trigger value="coins" className="py-2 w-full max-w-[10rem]">
+              coins
             </Tabs.Trigger>
 
             <Tabs.Trigger
@@ -65,11 +61,11 @@ const Home = () => {
             </Tabs.Trigger>
           </Tabs.List>
 
-          <Tabs.Content value="tokens">
-            <TokensTab
+          <Tabs.Content value="coins">
+            <CoinsTab
               page={page}
               setPage={setPage}
-              isEnabled={tab === 'tokens'}
+              isTabActive={tab === 'coins'}
             />
           </Tabs.Content>
 
@@ -77,7 +73,7 @@ const Home = () => {
             <TransactionsTab
               page={page}
               setPage={setPage}
-              isEnabled={tab === 'transactions'}
+              isTabActive={tab === 'transactions'}
             />
           </Tabs.Content>
 

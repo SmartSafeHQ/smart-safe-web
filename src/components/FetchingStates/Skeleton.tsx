@@ -14,7 +14,7 @@ export function Skeleton({ isLoading, className, children }: SkeletonProps) {
         <div className="animate-pulse">
           <div
             className={clsx(
-              'rounded-md bg-gray-300 dark:bg-gray-700 h-8 w-40',
+              'w-full rounded-md bg-gray-300 dark:bg-gray-700',
               className
             )}
           />
