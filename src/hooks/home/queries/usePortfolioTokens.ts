@@ -4,7 +4,7 @@ interface TokenProps {
   name: string
   symbol: string
   avatar: string
-  income: {
+  change: {
     stockStatus: 'up' | 'down'
     percentage: number
   }
@@ -39,7 +39,7 @@ async function fetchPortfolioTokens(): Promise<FetchPortfolioTokensResponse> {
           valueInDollar: 110.5,
           valueInTokens: 0.562
         },
-        income: {
+        change: {
           stockStatus: 'up',
           percentage: 20
         },
@@ -54,7 +54,7 @@ async function fetchPortfolioTokens(): Promise<FetchPortfolioTokensResponse> {
           valueInDollar: 15.6,
           valueInTokens: 0.009
         },
-        income: {
+        change: {
           stockStatus: 'down',
           percentage: 5
         },

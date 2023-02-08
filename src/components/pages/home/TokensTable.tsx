@@ -16,7 +16,7 @@ export function TokensTableTh({
   return (
     <th
       className={clsx(
-        'first:pl-4 pb-2 whitespace-nowrap text-start font-semibold text-xs md:text-sm',
+        'first:pl-4 px-2 pb-2 whitespace-nowrap text-start font-semibold text-xs md:text-sm md:px-0',
         className
       )}
       {...props}
@@ -32,7 +32,7 @@ interface TokensTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   name: string
   symbol: string
   avatar: string
-  income: {
+  change: {
     stockStatus: 'up' | 'down'
     percentage: number
   }
@@ -47,7 +47,7 @@ export function TokensTableTr({
   name,
   symbol,
   avatar,
-  income,
+  change,
   balance,
   price,
   className,
@@ -80,17 +80,13 @@ export function TokensTableTr({
         </div>
       </td>
 
-      {income.stockStatus === 'up' ? (
+      {change.stockStatus === 'up' ? (
         <td className="min-w-[5rem]">
-          <div className="flex items-center gap-1 font-semibold text-green-500">
-            +{income.percentage}%
-          </div>
+          <Text className="text-green-500">+{change.percentage}%</Text>
         </td>
       ) : (
         <td className="min-w-[5rem]">
-          <div className="flex items-center gap-1 font-semibold text-red-500">
-            -{income.percentage}%
-          </div>
+          <Text className="text-red-500">-{change.percentage}%</Text>
         </td>
       )}
 

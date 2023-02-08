@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 
 interface TransactionProps {
-  explorerLink: string
-  contract: {
-    address: string
-    calledAt: Date
-    link: string
+  transactionLink: string
+  transactedAt: Date
+  category: 'debit' | 'credit'
+  sender: {
+    name: string
+    walletAddress: string
   }
   receiver: {
-    email: string
     name: string
     walletAddress: string
   }
@@ -16,9 +16,8 @@ interface TransactionProps {
     symbol: string
     avatar: string
   }
-  category: 'swap' | 'send' | 'mint' | 'receive'
   value: {
-    type: 'withdraw' | 'income'
+    type: 'debit' | 'credit'
     valueInDollar: number
     valueInTokens: number
   }
@@ -40,25 +39,24 @@ async function fetchPortfolioTransactions(): Promise<FetchPortfolioTransactionsR
     count: 0,
     transactions: [
       {
-        contract: {
-          address: '123',
-          calledAt: new Date(),
-          link: 'http'
+        transactedAt: new Date(),
+        category: 'credit',
+        transactionLink: 'http',
+        sender: {
+          name: 'Paulo Reis 2',
+          walletAddress: '0xFAfF8e4A458EAB9Df7364fd24ab65492aA973A83'
         },
         receiver: {
-          email: 'paulo@gmail.com',
           name: 'Paulo Reis',
           walletAddress: '0xFAfF8e4A458EAB9Df7364fd24ab65492aA973A83'
         },
-        explorerLink: 'http',
         token: {
           symbol: 'bnb',
           avatar:
             'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg'
         },
-        category: 'mint',
         value: {
-          type: 'income',
+          type: 'credit',
           valueInDollar: 110.5,
           valueInTokens: 0.562
         }

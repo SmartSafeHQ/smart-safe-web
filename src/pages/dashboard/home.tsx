@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { ArrowUp, ArrowDown } from 'phosphor-react'
 import Head from 'next/head'
 
 import { Skeleton } from '@components/FetchingStates/Skeleton'
@@ -36,32 +35,6 @@ const Home = () => {
               </IncomesSummary.Value>
             </Skeleton>
           </IncomesSummary.Item>
-
-          <div className="flex gap-4">
-            <IncomesSummary.Item>
-              <IncomesSummary.Title className="text-sm font-normal !text-green-500">
-                Incomes <ArrowUp className="w-4 h-4" weight="bold" />
-              </IncomesSummary.Title>
-
-              <Skeleton isLoading={tokensIsLoading} className="h-12">
-                <IncomesSummary.Value className="text-lg md:text-2xl">
-                  ${data?.tokensIncome}
-                </IncomesSummary.Value>
-              </Skeleton>
-            </IncomesSummary.Item>
-
-            <IncomesSummary.Item>
-              <IncomesSummary.Title className="text-sm font-normal !text-red-500">
-                Outs <ArrowDown className="w-4 h-4" weight="bold" />
-              </IncomesSummary.Title>
-
-              <Skeleton isLoading={tokensIsLoading} className="h-12">
-                <IncomesSummary.Value className="text-lg md:text-2xl">
-                  ${data?.tokensOut}
-                </IncomesSummary.Value>
-              </Skeleton>
-            </IncomesSummary.Item>
-          </div>
         </IncomesSummary.Root>
 
         <Tabs.Root

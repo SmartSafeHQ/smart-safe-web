@@ -63,7 +63,7 @@ export function TokensTab({
                   <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
                     <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
                       <TokensTable.Th>name</TokensTable.Th>
-                      <TokensTable.Th>income</TokensTable.Th>
+                      <TokensTable.Th>change (24h)</TokensTable.Th>
                       <TokensTable.Th>price</TokensTable.Th>
                       <TokensTable.Th>balance</TokensTable.Th>
                     </tr>
@@ -76,7 +76,7 @@ export function TokensTab({
                         name={token.name}
                         symbol={token.symbol}
                         avatar={token.avatar}
-                        income={token.income}
+                        change={token.change}
                         price={token.price}
                         balance={token.balance}
                       />
