@@ -2,6 +2,7 @@ import { providers, Wallet, utils } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
+import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
 
 interface SendFunctionInput {
   to: string
@@ -32,7 +33,7 @@ async function sendFunction(
     value: utils.parseEther(input?.amount.toFixed(6)),
     nonce,
     chainId: input?.chainId,
-    gasLimit: '21000',
+    gasLimit: DEFAULT_GAS_LIMIT,
     maxPriorityFeePerGas: maxPriorityFeePerGas || utils.parseUnits('5', 'gwei'),
     maxFeePerGas: maxFeePerGas || utils.parseUnits('5', 'gwei'),
     type: 2

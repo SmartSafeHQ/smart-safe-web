@@ -7,7 +7,7 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { TransactionsTable } from '@components/pages/home/TransactionsTable'
 
-import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/constants/variables'
+import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@/utils/global/constants/variables'
 import { usePortfolioTransactions } from '@hooks/home/queries/usePortfolioTransactions'
 
 interface TransactionsTabProps {

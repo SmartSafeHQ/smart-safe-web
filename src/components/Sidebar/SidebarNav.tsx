@@ -8,7 +8,7 @@ import { Text } from '@components/Text'
 import {
   TOKENVERSE_CONTACT_LINK,
   TOKENVERSE_TERMS_OF_SERVICES_LINK
-} from '@/utils/constants/links'
+} from '@/utils/global/constants/links'
 
 export function SidebarNav() {
   return (

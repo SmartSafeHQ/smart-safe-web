@@ -9,7 +9,3 @@ export const ACCEPTED_COINS_LIST = [
     explorerUrl: 'https://mumbai.polygonscan.com/'
   }
 ]
-
-export function getTokenPriceUrl(coin: string, currency: string) {
-  return `https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=${currency}`
-}

@@ -7,7 +7,7 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { TokensTable } from '@components/pages/home/TokensTable'
 
-import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/constants/variables'
+import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@/utils/global/constants/variables'
 import { usePortfolioTokens } from '@hooks/home/queries/usePortfolioTokens'
 
 interface TokensTabProps {

@@ -28,7 +28,7 @@ const Home = () => {
       <div className="w-full flex flex-1 flex-col items-stretch">
         <IncomesSummary.Root>
           <IncomesSummary.Item className="gap-1 md:gap-2">
-            <IncomesSummary.Title>net worth</IncomesSummary.Title>
+            <IncomesSummary.Title>account balance</IncomesSummary.Title>
 
             <Skeleton isLoading={tokensIsLoading} className="h-12">
               <IncomesSummary.Value className="text-2xl md:text-4xl">

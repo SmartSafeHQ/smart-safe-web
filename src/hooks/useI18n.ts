@@ -6,7 +6,7 @@ import {
   SupportedLanguages,
   i18nLocales,
   NEXT_LOCALE_COOKIE_MAX_AGE
-} from '../utils/constants/i18n'
+} from '../utils/global/constants/i18n'
 
 export const useI18n = () => {
   const { push, pathname, asPath, query, locale } = useRouter()

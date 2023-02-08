@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
-import { getTokenPriceUrl } from '@utils/sendUtils'
+import { getCoinPriceUrl } from '@utils/global/coins'
 
 interface FetchEndUserUsedTokenInput {
   feeEthValue: number
@@ -20,8 +20,8 @@ interface GetTokenPricesResponse {
 async function fetchEndUserUsedTokens({
   feeEthValue
 }: FetchEndUserUsedTokenInput): Promise<FetchEndUserUsedTokenResponse[]> {
-  const getMaticPriceUrl = getTokenPriceUrl('MATIC', 'USD')
-  const getEthPriceUrl = getTokenPriceUrl('ETH', 'USD')
+  const getMaticPriceUrl = getCoinPriceUrl('MATIC', 'USD')
+  const getEthPriceUrl = getCoinPriceUrl('ETH', 'USD')
 
   const [maticPrice, ethPrice] = await Promise.all([
     axios.get<GetTokenPricesResponse>(getMaticPriceUrl),
