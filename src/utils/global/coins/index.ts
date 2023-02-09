@@ -1,7 +1,7 @@
 export const DEFAULT_COINS_ATTRIBUTES = [
   {
     symbol: 'matic',
-    network: 'polygon',
+    network: 'maticmum',
     avatar:
       'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/matic.svg',
     chainId: 80001,
@@ -14,17 +14,21 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     network: 'binance smart chain',
     avatar:
       'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg',
-    chainId: 56,
+    chainId: 97,
     decimals: 18,
-    rpcUrl: 'https://bsc-dataseed.binance.org/',
-    explorerUrl: 'https://bscscan.com/'
+    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    explorerUrl: 'https://testnet.bscscan.com'
   }
 ]
 
-export function getCoinPriceUrl(coin: string, currency: string) {
-  return `https://min-api.cryptocompare.com/data/price?fsym=${coin}&tsyms=${currency}`
+export function getCoinPriceUrl(coin: string, currency = 'usdt') {
+  return `https://api.binance.us/api/v3/ticker/price?symbol=${coin.toUpperCase()}${currency.toUpperCase()}`
 }
 
-export function getCoinChangePercentUrl(coin: string, period = '24hr') {
-  return `https://api.binance.com/api/v1/ticker/${period}?symbol=${coin}USDT`
+export function getCoinChangePercentUrl(
+  coin: string,
+  period = '24hr',
+  currency = 'usdt'
+) {
+  return `https://api.binance.com/api/v3/ticker/${period}?symbol=${coin.toUpperCase()}${currency.toUpperCase()}`
 }

@@ -38,7 +38,7 @@ async function fetchCoinPortfolio({
   const balance = await provider.getBalance(account)
   const formattedBalance = utils.formatEther(balance)
 
-  const reqUrl = getCoinChangePercentUrl(coin.symbol.toUpperCase())
+  const reqUrl = getCoinChangePercentUrl(coin.symbol)
   const response = await axios.get<GetCoinChangePercentResponse>(reqUrl)
 
   const formattedChangePercent = Number(response.data.priceChangePercent)

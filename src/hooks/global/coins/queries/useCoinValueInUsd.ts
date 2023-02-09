@@ -12,18 +12,18 @@ interface FetchCoinValueInUsdResponse {
 }
 
 interface GetCoinPricesResponse {
-  USD: number
+  price: string
 }
 
 async function fetchCoinValueInUsd({
   coinSymbol
 }: FetchCoinValueInUsdInput): Promise<FetchCoinValueInUsdResponse> {
-  const reqUrl = getCoinPriceUrl(coinSymbol.toUpperCase(), 'USD')
+  const reqUrl = getCoinPriceUrl(coinSymbol)
 
   const response = await axios.get<GetCoinPricesResponse>(reqUrl)
 
   return {
-    valueInUsd: response.data.USD
+    valueInUsd: Number(response.data.price)
   }
 }
 

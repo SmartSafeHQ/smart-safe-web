@@ -47,7 +47,6 @@ interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
     avatar: string
   }
   value: {
-    type: 'debit' | 'credit'
     valueInDollar: number
     valueInTokens: number
   }
@@ -99,7 +98,7 @@ export function TransactionsTableTr({
       </td>
 
       <td className="min-w-[7rem]">
-        {value.type === 'credit' ? (
+        {category === 'credit' ? (
           <div className="flex flex-col">
             <Text className="uppercase text-green-500">
               {value.valueInTokens} {token.symbol}

@@ -20,8 +20,8 @@ interface GetTokenPricesResponse {
 async function fetchEndUserUsedTokens({
   feeEthValue
 }: FetchEndUserUsedTokenInput): Promise<FetchEndUserUsedTokenResponse[]> {
-  const getMaticPriceUrl = getCoinPriceUrl('MATIC', 'USD')
-  const getEthPriceUrl = getCoinPriceUrl('ETH', 'USD')
+  const getMaticPriceUrl = getCoinPriceUrl('matic')
+  const getEthPriceUrl = getCoinPriceUrl('eth')
 
   const [maticPrice, ethPrice] = await Promise.all([
     axios.get<GetTokenPricesResponse>(getMaticPriceUrl),
