@@ -91,7 +91,7 @@ export function CoinsTableTr({
           isRefetching={usdValueIsRefetching}
           error={!!usdValueError}
         >
-          {usdValueData && `${usdValueData.valueInUsd.toFixed(2)}$`}
+          {usdValueData && `$${usdValueData.valueInUsd.toFixed(2)}`}
         </CoinsTableDataFetching>
       </td>
 
@@ -105,9 +105,9 @@ export function CoinsTableTr({
           >
             {portfolioData &&
               usdValueData &&
-              `${(portfolioData?.balance * usdValueData?.valueInUsd).toFixed(
+              `$${(portfolioData?.balance * usdValueData?.valueInUsd).toFixed(
                 2
-              )}$`}
+              )}`}
           </CoinsTableDataFetching>
 
           <CoinsTableDataFetching

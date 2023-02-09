@@ -4,14 +4,8 @@ interface TransactionProps {
   transactionLink: string
   transactedAt: Date
   category: 'debit' | 'credit'
-  sender: {
-    name: string
-    walletAddress: string
-  }
-  receiver: {
-    name: string
-    walletAddress: string
-  }
+  sender: string
+  receiver: string
   token: {
     symbol: string
     avatar: string
@@ -40,14 +34,8 @@ async function fetchAccountTransactions({
       transactedAt: new Date(),
       category: 'credit',
       transactionLink: 'http',
-      sender: {
-        name: 'Paulo Reis 2',
-        walletAddress: '0xFAfF8e4A458EAB9Df7364fd24ab65492aA973A83'
-      },
-      receiver: {
-        name: 'Paulo Reis',
-        walletAddress: '0xFAfF8e4A458EAB9Df7364fd24ab65492aA973A83'
-      },
+      sender: '0xfaff8e4a458eab9df7364fd24ab65492aa973a83',
+      receiver: '0xfaff8e4a458eab9df7364fd24ab65492aa973a83',
       token: {
         symbol: 'bnb',
         avatar:

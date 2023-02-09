@@ -61,7 +61,7 @@ export function TransactionsTab({
                 <ScrollArea className="w-full max-w-full">
                   <table className="w-full">
                     <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
-                      <tr className="text-sm font-normal uppercase text-gray-500">
+                      <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
                         <TransactionsTable.Th>sender</TransactionsTable.Th>
                         <TransactionsTable.Th>receiver</TransactionsTable.Th>
                         <TransactionsTable.Th>value</TransactionsTable.Th>
