@@ -14,6 +14,8 @@ type FetchCustomerCoinsResponse = {
   decimals: number
   rpcUrl: string
   explorerUrl: string
+  balance?: number
+  valueInUsd?: number
 }[]
 
 async function fetchCustomerCoins(

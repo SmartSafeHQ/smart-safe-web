@@ -8,7 +8,7 @@ import {
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 
-import { FetchEndUserWalletsResponse } from '@/hooks/accounts/mutations/useLoginMutation'
+import { FetchEndUserWalletsResponse } from '@hooks/accounts/mutations/useLoginMutation'
 import { tokenverseApi } from '@lib/axios'
 
 type Customer = {

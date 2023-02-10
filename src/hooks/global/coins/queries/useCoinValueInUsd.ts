@@ -7,7 +7,7 @@ interface FetchCoinValueInUsdInput {
   coinSymbol: string
 }
 
-interface FetchCoinValueInUsdResponse {
+export interface FetchCoinValueInUsdResponse {
   valueInUsd: number
 }
 

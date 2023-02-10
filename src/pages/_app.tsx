@@ -7,10 +7,11 @@ import { Amplify } from 'aws-amplify'
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
-import { DashboardLayout } from '@/components/pages/Layouts/DashboardLayout'
+import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
+import { TokenverseWidget } from '@components/TokenverseWidget'
+
 import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
-import { TokenverseWidget } from '@components/TokenverseWidget'
 
 Amplify.configure(amplifyConfig)
 

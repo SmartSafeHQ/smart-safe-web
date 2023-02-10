@@ -24,7 +24,7 @@ export function AvatarRoot({
       {children}
 
       <RadixAvatar.Fallback className="w-full min-h-full flex flex-1 items-center justify-center uppercase text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-cyan-500 md:text-lg">
-        {fallbackName}
+        {fallbackName.substring(0, 3)}
       </RadixAvatar.Fallback>
     </RadixAvatar.Root>
   )

@@ -1,17 +1,22 @@
-import { useState } from 'react'
 import Head from 'next/head'
 
 import { Skeleton } from '@components/FetchingStates/Skeleton'
-import { IncomesSummary } from '@/components/pages/home/IncomesSummary'
+import { IncomesSummary } from '@components/pages/home/IncomesSummary'
 import { CoinsTab } from '@components/pages/home/CoinsTab'
 import { TransactionsTab } from '@components/pages/home/TransactionsTab'
 import { Tabs } from '@components/Tabs'
 
-type NavTabs = 'coins' | 'transactions' | 'nfts'
+import { NavTabs, useHome } from '@hooks/home/useHome'
 
 const Home = () => {
-  const [page, setPage] = useState(1)
-  const [tab, setTab] = useState<NavTabs>('coins')
+  const {
+    isAccountBalanceLoading,
+    coinsBalanceData,
+    page,
+    setPage,
+    tab,
+    setTab
+  } = useHome()
 
   return (
     <div className="flex flex-col px-2 pt-8">
@@ -25,10 +30,12 @@ const Home = () => {
           <IncomesSummary.Item className="gap-1 md:gap-2">
             <IncomesSummary.Title>account balance</IncomesSummary.Title>
 
-            <Skeleton isLoading={false} className="h-12">
-              <IncomesSummary.Value className="text-2xl md:text-4xl">
-                ${(10).toFixed(2)}
-              </IncomesSummary.Value>
+            <Skeleton isLoading={isAccountBalanceLoading} className="w-40 h-10">
+              {coinsBalanceData?.balanceTotal && (
+                <IncomesSummary.Value className="text-2xl md:text-4xl">
+                  ${coinsBalanceData.balanceTotal.toFixed(2)}
+                </IncomesSummary.Value>
+              )}
             </Skeleton>
           </IncomesSummary.Item>
         </IncomesSummary.Root>

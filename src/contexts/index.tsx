@@ -7,7 +7,7 @@ import { AuthProvider } from './AuthContext'
 import { ThemeProvider } from './ThemeContext'
 
 import { queryClient } from '@lib/reactQuery'
-import { wagmiClient } from '@/lib/wagmi'
+import { wagmiClient } from '@lib/wagmi'
 
 type AppProviderProps = {
   children: ReactNode

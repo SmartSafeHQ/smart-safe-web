@@ -11,7 +11,7 @@ import {
   TOKENVERSE_DISCORD_LINK,
   TOKENVERSE_LINKEDIN_LINK,
   TOKENVERSE_TWITTER_LINK
-} from '@/utils/global/constants/links'
+} from '@utils/global/constants/links'
 
 const Login = () => {
   return (

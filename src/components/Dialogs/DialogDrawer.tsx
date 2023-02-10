@@ -1,4 +1,4 @@
-import { ScrollArea } from '@/components/ScrollArea'
+import { ScrollArea } from '@components/ScrollArea'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import clsx from 'clsx'
 import { IconProps, X } from 'phosphor-react'

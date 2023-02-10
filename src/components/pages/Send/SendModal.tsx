@@ -5,7 +5,8 @@ import { Text } from '@components/Text'
 import { Avatar } from '@components/Avatar'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
-import { CoinProps, TransactionProps } from '@/hooks/send/useSend'
+
+import { CoinProps, TransactionProps } from '@hooks/send/useSend'
 
 interface SendModalProps {
   transaction: TransactionProps | null
