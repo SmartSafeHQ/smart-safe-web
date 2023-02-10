@@ -14,7 +14,7 @@ interface FetchEndUserUsedTokenResponse {
 }
 
 interface GetTokenPricesResponse {
-  USD: number
+  price: number
 }
 
 async function fetchEndUserUsedTokens({
@@ -29,9 +29,9 @@ async function fetchEndUserUsedTokens({
   ])
 
   // Convert ETH to USD
-  const usdPrice = feeEthValue * ethPrice.data.USD
+  const usdPrice = feeEthValue * ethPrice.data.price
 
-  return [{ id: 'matic', price: maticPrice.data.USD, feeUsdPrice: usdPrice }]
+  return [{ id: 'matic', price: maticPrice.data.price, feeUsdPrice: usdPrice }]
 }
 
 export function useEndUserUsedTokens(enabled = true, feeEthValue = 0) {
