@@ -4,6 +4,9 @@ import clsx from 'clsx'
 import { ArrowSquareOut } from 'phosphor-react'
 
 import { Text } from '@components/Text'
+import { HoverCard } from '@components/HoverCard'
+
+import { handleCopyToClipboard } from '@utils/global'
 
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   transactionLink: string
@@ -41,19 +44,41 @@ export function TransactionsTableTr({
       {...props}
     >
       <td className="py-6">
-        <div className="flex items-center gap-4">
-          <Text className="">
-            {`${sender.slice(0, 6)}...${sender.slice(-6)}`}
-          </Text>
-        </div>
+        <HoverCard.Root openDelay={100}>
+          <HoverCard.Trigger asChild>
+            <button
+              onClick={() => handleCopyToClipboard(sender)}
+            >{`${sender.slice(0, 6)}...${sender.slice(-6)}`}</button>
+          </HoverCard.Trigger>
+
+          <HoverCard.Content
+            side="top"
+            variant="highlighted"
+            className="text-sm"
+          >
+            Copy addres
+            <HoverCard.Arrow />
+          </HoverCard.Content>
+        </HoverCard.Root>
       </td>
 
       <td className="py-3">
-        <div className="flex items-center gap-4">
-          <Text className="">
-            {`${receiver.slice(0, 6)}...${receiver.slice(-6)}`}
-          </Text>
-        </div>
+        <HoverCard.Root openDelay={100}>
+          <HoverCard.Trigger asChild>
+            <button
+              onClick={() => handleCopyToClipboard(receiver)}
+            >{`${receiver.slice(0, 6)}...${receiver.slice(-6)}`}</button>
+          </HoverCard.Trigger>
+
+          <HoverCard.Content
+            side="top"
+            variant="highlighted"
+            className="text-sm"
+          >
+            Copy addres
+            <HoverCard.Arrow />
+          </HoverCard.Content>
+        </HoverCard.Root>
       </td>
 
       <td>

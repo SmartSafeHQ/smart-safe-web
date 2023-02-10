@@ -8,10 +8,11 @@ import { ActionButton } from '@components/pages/Receive/ActionButton'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 
 import { useReceive } from '@hooks/receive/useReceive'
+import { handleCopyToClipboardToastMessage } from '@utils/global'
 
 const Receive = () => {
   const { customer } = useAuth()
-  const { handleCopyWalletAddress, handleShareQrCode } = useReceive()
+  const { handleShareQrCode } = useReceive()
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-2 pt-4">
@@ -48,7 +49,12 @@ const Receive = () => {
             <ActionButton
               title="copy"
               Icon={CopySimple}
-              onClick={handleCopyWalletAddress}
+              onClick={() =>
+                handleCopyToClipboardToastMessage(
+                  customer?.wallet.address ?? '',
+                  'Address copied to clipboard'
+                )
+              }
             />
 
             <ActionButton
