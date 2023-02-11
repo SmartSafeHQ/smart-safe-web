@@ -11,6 +11,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendModal } from '@components/pages/Send/SendModal'
 
 import { useSend } from '@hooks/send/useSend'
+import { useI18n } from '@hooks/useI18n'
 
 const Send = () => {
   const {
@@ -31,12 +32,13 @@ const Send = () => {
     currentMaticFee,
     currentDollarFee
   } = useSend()
+  const { t } = useI18n()
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-2 pt-24">
       <Head>
-        <title>Tokenverse | Send</title>
-        <meta name="description" content="Tokenverse dashboard home" />
+        <title>{t.send.headTitle}</title>
+        <meta name="description" content={t.send.headDescription} />
       </Head>
 
       <DialogModal.Root
@@ -52,7 +54,9 @@ const Send = () => {
               asChild
               className="text-3xl font-semibold text-gray-800 dark:text-gray-50 md:text-4xl"
             >
-              <h1>Send ${currentAmount}</h1>
+              <h1>
+                {t.send.send} ${currentAmount}
+              </h1>
             </Heading>
 
             <div className="w-full flex items-center justify-center gap-2">
@@ -80,7 +84,7 @@ const Send = () => {
           >
             <TextInput.Root
               htmlFor="destination-wallet"
-              labelText="To"
+              labelText={t.send.to}
               error={errors.sendWallet?.message}
             >
               <TextInput.Icon>
@@ -91,13 +95,13 @@ const Send = () => {
                 {...register('sendWallet')}
                 required
                 id="destination-wallet"
-                placeholder="Enter account address"
+                placeholder={t.send.toPlaceholder}
               />
             </TextInput.Root>
 
             <TextInput.Root
               htmlFor="amount"
-              labelText="Amount"
+              labelText={t.send.amount}
               error={errors.amount?.message}
             >
               <TextInput.Icon>
@@ -112,12 +116,12 @@ const Send = () => {
                 min={0}
                 step={0.0001}
                 defaultValue={0}
-                placeholder="Enter amount in dollar"
+                placeholder={t.send.amountPlaceholder}
               />
             </TextInput.Root>
 
             <div className="flex items-center text-gray-800 dark:text-gray-200">
-              <Text className="mr-2">Fee:</Text>
+              <Text className="mr-2">{t.send.fee}:</Text>
 
               <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
                 <Avatar.Image
@@ -137,7 +141,7 @@ const Send = () => {
             </div>
 
             <Button type="submit" className="mt-1">
-              Send
+              {t.send.send}
             </Button>
           </form>
 

@@ -4,6 +4,8 @@ import { Dispatch, HTMLAttributes, SetStateAction } from 'react'
 
 import { Text } from '@components/Text'
 
+import { useI18n } from '@hooks/useI18n'
+
 interface PaginationRootProps extends HTMLAttributes<HTMLDivElement> {
   currentPage: number
   lastPage: number
@@ -17,6 +19,8 @@ export function Pagination({
   lastPage,
   ...props
 }: PaginationRootProps) {
+  const { t } = useI18n()
+
   return (
     <div
       className={clsx('w-full flex items-center gap-2', className)}
@@ -37,7 +41,7 @@ export function Pagination({
         </Text>
 
         <Text className="text-sm text-gray-500 dark:text-gray-400">
-          of {Math.max(1, lastPage)}
+          {t.pagination.of} {Math.max(1, lastPage)}
         </Text>
       </div>
 

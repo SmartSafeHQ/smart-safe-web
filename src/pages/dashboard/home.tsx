@@ -7,6 +7,7 @@ import { TransactionsTab } from '@components/pages/home/TransactionsTab'
 import { Tabs } from '@components/Tabs'
 
 import { NavTabs, useHome } from '@hooks/home/useHome'
+import { useI18n } from '@/hooks/useI18n'
 
 const Home = () => {
   const {
@@ -18,6 +19,8 @@ const Home = () => {
     setTab
   } = useHome()
 
+  const { t } = useI18n()
+
   return (
     <div className="flex flex-col px-2 pt-8">
       <Head>
@@ -28,7 +31,7 @@ const Home = () => {
       <div className="w-full flex flex-1 flex-col items-stretch">
         <IncomesSummary.Root>
           <IncomesSummary.Item className="gap-1 md:gap-2">
-            <IncomesSummary.Title>account balance</IncomesSummary.Title>
+            <IncomesSummary.Title>{t.home.accountBalance}</IncomesSummary.Title>
 
             <Skeleton isLoading={isAccountBalanceLoading} className="w-40 h-10">
               {coinsBalanceData?.balanceTotal && (
@@ -45,18 +48,18 @@ const Home = () => {
           onValueChange={tabValue => setTab(tabValue as NavTabs)}
         >
           <Tabs.List
-            aria-label="Manage your metrics"
+            aria-label={t.home.manageMetrics}
             className="w-full max-w-lg mb-6"
           >
             <Tabs.Trigger value="coins" className="py-2 w-full max-w-[10rem]">
-              coins
+              {t.home.coins}
             </Tabs.Trigger>
 
             <Tabs.Trigger
               value="transactions"
               className="py-2 w-full max-w-[10rem]"
             >
-              transactions
+              {t.home.transactions}
             </Tabs.Trigger>
 
             <Tabs.Trigger
@@ -64,7 +67,7 @@ const Home = () => {
               className="py-2 w-full max-w-[10rem]"
               disabled
             >
-              NFTs
+              {t.home.nfts}
             </Tabs.Trigger>
           </Tabs.List>
 
@@ -85,7 +88,7 @@ const Home = () => {
           </Tabs.Content>
 
           <Tabs.Content value="nfts" className="pt-6">
-            <p>coming soon</p>
+            <p>{t.home.comingSoon}</p>
           </Tabs.Content>
         </Tabs.Root>
       </div>

@@ -5,6 +5,8 @@ import { Dispatch, SetStateAction } from 'react'
 import { Pagination } from '@components/Pagination'
 import { Text } from '@components/Text'
 
+import { useI18n } from '@hooks/useI18n'
+
 interface PaginationFetchProps {
   registersPerPage: number
   totalCountOfRegisters: number
@@ -22,6 +24,8 @@ export function PaginationFetch({
   onPageChange,
   isFetching
 }: PaginationFetchProps) {
+  const { t } = useI18n()
+
   const lastPage = Math.ceil(totalCountOfRegisters / registersPerPage)
 
   return (
@@ -29,7 +33,7 @@ export function PaginationFetch({
       <div className="flex items-center gap-2">
         <button
           className="flex items-center justify-center group p-2 rounded-md bg-gray-100 dark:bg-gray-900 text-gray-500 transition-colors hover:text-cyan-500 disabled:brightness-75 disabled:cursor-not-allowed disabled:hover:text-gray-400"
-          aria-label="Refetching data"
+          aria-label={t.pagination.refetchingData}
           onClick={handleRefetch}
           disabled={isFetching}
         >
@@ -42,7 +46,9 @@ export function PaginationFetch({
         </button>
 
         {isFetching && (
-          <Text className="text-sm font-semibold text-gray-400">Fetching</Text>
+          <Text className="text-sm font-semibold text-gray-400">
+            {t.pagination.fetching}
+          </Text>
         )}
       </div>
 

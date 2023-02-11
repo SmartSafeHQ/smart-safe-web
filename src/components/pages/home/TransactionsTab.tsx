@@ -10,6 +10,7 @@ import { TransactionsTable } from '@components/pages/home/TransactionsTable'
 import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/global/constants/variables'
 import { useAccountTransactions } from '@hooks/home/queries/useAccountTransactions'
 import { useAuth } from '@contexts/AuthContext'
+import { useI18n } from '@hooks/useI18n'
 
 interface TransactionsTabProps {
   page: number
@@ -23,6 +24,7 @@ export function TransactionsTab({
   setPage
 }: TransactionsTabProps) {
   const { customer } = useAuth()
+  const { t } = useI18n()
 
   const { data, isLoading, isFetching, refetch, error } =
     useAccountTransactions(customer?.wallet.address, isTabActive)
@@ -31,12 +33,12 @@ export function TransactionsTab({
     <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-white dark:bg-gray-800 rounded-md">
       {error ? (
         <ErrorState
-          title="Unable to complete the process :/"
+          title={t.home.errorState}
           description={(error as Error)?.message ?? 'Internal server error'}
           className="mt-12"
         />
       ) : isLoading ? (
-        <LoadingState title="Loading transactions" className="mt-12" />
+        <LoadingState title={t.home.loadingTransactions} className="mt-12" />
       ) : (
         data && (
           <>
@@ -45,7 +47,7 @@ export function TransactionsTab({
                 asChild
                 className="w-full mt-5 text-center text-lg font-medium text-gray-800 dark:text-gray-300"
               >
-                <strong>No transactions registered in the account</strong>
+                <strong>{t.home.noTransactions}</strong>
               </Text>
             ) : (
               <>
@@ -62,13 +64,28 @@ export function TransactionsTab({
                   <table className="w-full">
                     <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
                       <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
-                        <TransactionsTable.Th>sender</TransactionsTable.Th>
-                        <TransactionsTable.Th>receiver</TransactionsTable.Th>
-                        <TransactionsTable.Th>value</TransactionsTable.Th>
-                        <TransactionsTable.Th>category</TransactionsTable.Th>
-                        <TransactionsTable.Th>made at</TransactionsTable.Th>
                         <TransactionsTable.Th>
-                          Go to invoice
+                          {t.home.sender}
+                        </TransactionsTable.Th>
+
+                        <TransactionsTable.Th>
+                          {t.home.receiver}
+                        </TransactionsTable.Th>
+
+                        <TransactionsTable.Th>
+                          {t.home.value}
+                        </TransactionsTable.Th>
+
+                        <TransactionsTable.Th>
+                          {t.home.category}
+                        </TransactionsTable.Th>
+
+                        <TransactionsTable.Th>
+                          {t.home.madeAt}
+                        </TransactionsTable.Th>
+
+                        <TransactionsTable.Th>
+                          {t.home.goToInvoice}
                         </TransactionsTable.Th>
                       </tr>
                     </thead>

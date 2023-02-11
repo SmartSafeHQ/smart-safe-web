@@ -60,7 +60,7 @@ export function Header() {
               LeftIcon={theme === 'dark' ? Moon : Sun}
               onClick={toggleTheme}
             >
-              {t.header.theme}: {theme}
+              {t.header.theme}: {t.header[theme]}
             </DropdownMenu.Item>
 
             <DropdownLocales />

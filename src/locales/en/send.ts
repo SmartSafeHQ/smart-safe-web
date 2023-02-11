@@ -1,0 +1,13 @@
+export const send = {
+  headTitle: 'Tokenverse | Send',
+  headDescription: 'Tokenverse dashboard send',
+  send: 'Send',
+  to: 'To',
+  toPlaceholder: 'Enter account address',
+  amount: 'Amount',
+  amountPlaceholder: 'Enter amount in dollar',
+  fee: 'Fee',
+  from: 'From',
+  address: 'Address',
+  seeOn: 'See on'
+}

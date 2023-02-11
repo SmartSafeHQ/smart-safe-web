@@ -18,6 +18,8 @@ export const header = {
   },
   myProfile: 'meu perfil',
   theme: 'tema',
+  dark: 'escuro',
+  light: 'claro',
   helpCenter: 'centro de ajuda',
   logout: 'sair'
 }

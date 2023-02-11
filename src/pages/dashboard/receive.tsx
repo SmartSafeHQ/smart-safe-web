@@ -9,30 +9,32 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 
 import { useReceive } from '@hooks/receive/useReceive'
 import { handleCopyToClipboardToastMessage } from '@utils/global'
+import { useI18n } from '@hooks/useI18n'
 
 const Receive = () => {
   const { customer } = useAuth()
   const { handleShareQrCode } = useReceive()
+  const { t } = useI18n()
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-2 pt-4">
       <Head>
-        <title>Tokenverse | Receive</title>
-        <meta name="description" content="Tokenverse dashboard home" />
+        <title>{t.receive.headTitle}</title>
+        <meta name="description" content={t.receive.headDescription} />
       </Head>
 
       <div className="w-full max-w-lg flex flex-1 flex-col">
         <div className="w-full flex items-center flex-col gap-3 mb-4">
           <div className="w-full flex items-center justify-start gap-2">
             <Text className="text-gray-700 dark:text-gray-50 text-xl font-semibold">
-              Scan the QRCode to receive funds
+              {t.receive.scanTitle}
             </Text>
           </div>
         </div>
 
         <section className="w-full flex flex-col gap-4 items-stretch">
           <div className="w-full min-h-[20.5rem] flex flex-col gap-4 items-center justify-center p-6 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md">
-            {!customer && <LoadingState title="Loading QRCode" />}
+            {!customer && <LoadingState title={t.receive.loading} />}
 
             {customer && (
               <>
@@ -47,18 +49,18 @@ const Receive = () => {
 
           <div className="w-full flex items-center justify-center gap-3">
             <ActionButton
-              title="copy"
+              title={t.receive.copy}
               Icon={CopySimple}
               onClick={() =>
                 handleCopyToClipboardToastMessage(
                   customer?.wallet.address ?? '',
-                  'Address copied to clipboard'
+                  t.receive.copiedMessage
                 )
               }
             />
 
             <ActionButton
-              title="share"
+              title={t.receive.share}
               Icon={Export}
               onClick={handleShareQrCode}
             />
@@ -70,7 +72,7 @@ const Receive = () => {
                 <Wallet className="w-7 h-7 text-cyan-500" />
 
                 <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-300 sm:text-lg">
-                  destiny
+                  {t.receive.destiny}
                 </Text>
               </div>
 

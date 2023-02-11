@@ -7,6 +7,7 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { CoinProps, TransactionProps } from '@hooks/send/useSend'
+import { useI18n } from '@hooks/useI18n'
 
 interface SendModalProps {
   transaction: TransactionProps | null
@@ -27,12 +28,14 @@ export function SendModal({
   handleSendTransaction,
   isSending
 }: SendModalProps) {
+  const { t } = useI18n()
+
   return (
     <DialogModal.Content className="md:max-w-[32rem] min-h-[65vh]">
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-            Send ${transaction?.usdAmount}
+            {t.send.send} ${transaction?.usdAmount}
           </DialogModal.Title>
 
           <div className="w-full flex items-center justify-center gap-2">
@@ -59,7 +62,7 @@ export function SendModal({
               <PaperPlaneTilt className="w-7 h-7 text-cyan-500" />
 
               <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-300 sm:text-lg">
-                From
+                {t.send.from}
               </Text>
             </div>
 
@@ -88,7 +91,7 @@ export function SendModal({
               <Wallet className="w-7 h-7 text-cyan-500" />
 
               <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-300 sm:text-lg">
-                To
+                {t.send.to}
               </Text>
             </div>
 
@@ -97,7 +100,7 @@ export function SendModal({
                 asChild
                 className="text-gray-700 dark:text-gray-50 capitalize"
               >
-                <strong>Address</strong>
+                <strong>{t.send.address}</strong>
               </Text>
 
               <Text
@@ -113,7 +116,7 @@ export function SendModal({
           </div>
 
           <div className="flex items-center text-gray-800 dark:text-gray-200">
-            <Text className="mr-2">Fee:</Text>
+            <Text className="mr-2">{t.send.fee}:</Text>
 
             <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
               <Avatar.Image src={coin.avatar} alt={`${coin.name} icon`} />
@@ -132,12 +135,12 @@ export function SendModal({
           isLoading={isSending}
           className="mt-6"
         >
-          Send
+          {t.send.send}
         </Button>
 
         {transactionUrl && (
           <Text className="mt-4 text-gray-800 dark:text-gray-200">
-            See on:
+            {t.send.seeOn}:
             <a
               href={transactionUrl}
               target="_blank"

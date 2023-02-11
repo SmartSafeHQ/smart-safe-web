@@ -9,6 +9,7 @@ import { CoinsTable } from '@components/pages/home/CoinsTable'
 import { useAuth } from '@contexts/AuthContext'
 import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/global/constants/variables'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
+import { useI18n } from '@/hooks/useI18n'
 
 interface CoinsTabProps {
   page: number
@@ -22,6 +23,7 @@ export function CoinsTab({
   setPage
 }: CoinsTabProps) {
   const { customer } = useAuth()
+  const { t } = useI18n()
 
   const { data, isLoading, isFetching, refetch, error } = useCustomerCoins(
     customer?.wallet.address,
@@ -32,12 +34,12 @@ export function CoinsTab({
     <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-white dark:bg-gray-800 rounded-md">
       {error ? (
         <ErrorState
-          title="Unable to complete the process :/"
+          title={t.home.errorState}
           description={(error as Error)?.message ?? 'Internal server error'}
           className="mt-12"
         />
       ) : isLoading ? (
-        <LoadingState title="Loading networks coins" className="mt-12" />
+        <LoadingState title={t.home.loadingNetworksCoins} className="mt-12" />
       ) : (
         data && (
           <>
@@ -54,10 +56,10 @@ export function CoinsTab({
               <table className="w-full">
                 <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
                   <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
-                    <CoinsTable.Th>name</CoinsTable.Th>
-                    <CoinsTable.Th>change (24h)</CoinsTable.Th>
-                    <CoinsTable.Th>price</CoinsTable.Th>
-                    <CoinsTable.Th>balance</CoinsTable.Th>
+                    <CoinsTable.Th>{t.home.name}</CoinsTable.Th>
+                    <CoinsTable.Th>{t.home.change24h}</CoinsTable.Th>
+                    <CoinsTable.Th>{t.home.price}</CoinsTable.Th>
+                    <CoinsTable.Th>{t.home.balance}</CoinsTable.Th>
                   </tr>
                 </thead>
 

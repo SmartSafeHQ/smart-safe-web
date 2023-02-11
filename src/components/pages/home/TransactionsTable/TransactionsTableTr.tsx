@@ -7,6 +7,7 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 
 import { handleCopyToClipboard } from '@utils/global'
+import { useI18n } from '@hooks/useI18n'
 
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   transactionLink: string
@@ -35,6 +36,8 @@ export function TransactionsTableTr({
   className,
   ...props
 }: TransactionsTableTrProps) {
+  const { t } = useI18n()
+
   return (
     <tr
       className={clsx(
@@ -56,7 +59,7 @@ export function TransactionsTableTr({
             variant="highlighted"
             className="text-sm"
           >
-            Copy addres
+            {t.home.copyAddres}
             <HoverCard.Arrow />
           </HoverCard.Content>
         </HoverCard.Root>
@@ -75,7 +78,7 @@ export function TransactionsTableTr({
             variant="highlighted"
             className="text-sm"
           >
-            Copy addres
+            {t.home.copyAddres}
             <HoverCard.Arrow />
           </HoverCard.Content>
         </HoverCard.Root>
