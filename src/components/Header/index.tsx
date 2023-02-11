@@ -4,14 +4,17 @@ import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
 import { Avatar } from '@components/Avatar'
 import { DropdownMenu } from '@components/DropdownMenu'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
+import { DropdownLocales } from '@components/Header/DropdownLocales'
 import { DropdownMenuUserInfos } from './DropdownMenuUserInfos'
 
 import { useAuth } from '@contexts/AuthContext'
 import { useTheme } from '@contexts/ThemeContext'
+import { useI18n } from '@hooks/useI18n'
 
 export function Header() {
   const { customer, signOut } = useAuth()
   const { theme, toggleTheme } = useTheme()
+  const { t } = useI18n()
 
   const customerShortName = customer?.name.substring(0, 2)
 
@@ -42,30 +45,32 @@ export function Header() {
 
           <DropdownMenu.Content sideOffset={18} align="end">
             <DropdownMenuUserInfos
-              name={customer?.name ?? 'loading...'}
-              email={customer?.email ?? 'loading...'}
+              name={customer?.name ?? '...'}
+              email={customer?.email ?? '...'}
               shortName={customerShortName}
             />
 
             <DropdownMenu.Separator />
 
             <DropdownMenu.Item LeftIcon={User} isDisabled>
-              my profile
+              {t.header.myProfile}
             </DropdownMenu.Item>
 
             <DropdownMenu.Item
               LeftIcon={theme === 'dark' ? Moon : Sun}
               onClick={toggleTheme}
             >
-              theme: {theme}
+              {t.header.theme}: {theme}
             </DropdownMenu.Item>
 
+            <DropdownLocales />
+
             <DropdownMenu.Item LeftIcon={Question} isDisabled>
-              help center
+              {t.header.helpCenter}
             </DropdownMenu.Item>
 
             <DropdownMenu.Item LeftIcon={SignOut} onSelect={() => signOut()}>
-              logout
+              {t.header.logout}
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>

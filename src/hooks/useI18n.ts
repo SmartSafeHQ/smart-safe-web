@@ -11,21 +11,18 @@ import {
 export const useI18n = () => {
   const { push, pathname, asPath, query, locale } = useRouter()
 
-  function getLocaleItemProps() {
-    return i18nLocales[(locale as SupportedLanguages) ?? 'pt']
-  }
-
   function handleLanguageSwitch(localeId: SupportedLanguages) {
     document.cookie = `NEXT_LOCALE=${localeId}; max-age=${NEXT_LOCALE_COOKIE_MAX_AGE}; path=/`
 
     push({ pathname, query }, asPath, { locale: localeId })
   }
 
+  const currentLocaleProps = i18nLocales[(locale as SupportedLanguages) ?? 'pt']
   const t = locales[(locale as SupportedLanguages) ?? 'pt']
 
   return {
     t,
-    getLocaleItemProps,
+    currentLocaleProps,
     handleLanguageSwitch
   }
 }
