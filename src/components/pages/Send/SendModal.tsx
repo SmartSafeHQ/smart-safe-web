@@ -35,7 +35,7 @@ export function SendModal({
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-            {t.send.send} ${transaction?.usdAmount}
+            {t.send.send} {transaction?.usdAmount}
           </DialogModal.Title>
 
           <div className="w-full flex items-center justify-center gap-2">

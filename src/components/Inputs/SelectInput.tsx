@@ -50,7 +50,7 @@ function SelectInputRoot({
       <RadixSelect.Root {...props}>
         <RadixSelect.Trigger
           className={clsx(
-            'w-full gap-3 h-12 inline-flex items-center justify-between rounded px-4 text-sm shadow-sm dark:shadow-md outline-none ring-cyan-500 !bg-gray-200 dark:!bg-gray-800 focus-within:ring-2 data-[placeholder]:text-gray-400',
+            'w-full gap-3 min-h-[3rem] inline-flex items-center justify-between rounded px-4 text-sm shadow-sm dark:shadow-md outline-none ring-cyan-500 !bg-gray-200 dark:!bg-gray-800 focus-within:ring-2 data-[placeholder]:text-gray-400',
             {
               'ring-2 ring-red-500': !!error,
               '!bg-gray-50 dark:!bg-gray-900': variant === 'secondary'

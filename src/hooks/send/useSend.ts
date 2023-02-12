@@ -9,10 +9,11 @@ import { ACCEPTED_COINS_LIST } from '@utils/sendUtils'
 import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
 import { useEndUserUsedTokens } from '@hooks/send/queries/useEndUserUsedTokens'
 import { useAuth } from '@contexts/AuthContext'
+import { formatCurrencyToNumber } from '@utils/global'
 
 const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'adrress required' }),
-  amount: z.number().min(0, { message: 'min $0' })
+  amount: z.string().min(4, { message: 'min 0.0001' })
 })
 
 type SendFieldValues = z.infer<typeof validationSchema>
@@ -31,7 +32,7 @@ export interface TransactionProps {
   fromWalletAddress: string
   fromWalletPrivateKey: string
   fromName: string
-  usdAmount: number
+  usdAmount: string
   coinAmount: number
   chainId: number
   rpcUrl: string
@@ -41,6 +42,7 @@ export const useSend = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     watch,
     formState: { errors }
   } = useForm<SendFieldValues>({
@@ -69,7 +71,9 @@ export const useSend = () => {
   const coinUsdValue = Number(selectedCoinValue?.price)
   const feeUsdValue = Number(selectedCoinValue?.feeUsdPrice)
 
-  const currentAmount = !watch().amount ? 0 : watch().amount
+  const currentAmount = !watch().amount
+    ? 0
+    : formatCurrencyToNumber(watch().amount)
   const currentMaticAmount = currentAmount / coinUsdValue
 
   const currentDollarFee = feeUsdValue * currentAmount
@@ -127,6 +131,7 @@ export const useSend = () => {
     register,
     handleSubmit,
     errors,
+    setValue,
     isSendingTx,
     transactionUrl,
     setTransactionUrl,

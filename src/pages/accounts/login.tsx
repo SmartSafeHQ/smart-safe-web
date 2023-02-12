@@ -37,40 +37,40 @@ export default function Login() {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 items-stretch w-full"
         >
-          <TextInput.Root
-            htmlFor="email"
-            labelText="E-mail address"
-            error={errors.email?.message}
-          >
-            <TextInput.Icon>
-              <Envelope />
-            </TextInput.Icon>
+          <TextInput.Root htmlFor="email" error={errors.email?.message}>
+            <TextInput.Label>E-mail</TextInput.Label>
 
-            <TextInput.Input
-              {...register('email')}
-              required
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-            />
+            <TextInput.Content>
+              <TextInput.Icon>
+                <Envelope />
+              </TextInput.Icon>
+
+              <TextInput.Input
+                {...register('email')}
+                required
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+              />
+            </TextInput.Content>
           </TextInput.Root>
 
-          <TextInput.Root
-            htmlFor="password"
-            labelText="Password"
-            error={errors.password?.message}
-          >
-            <TextInput.Icon>
-              <Lock />
-            </TextInput.Icon>
+          <TextInput.Root htmlFor="password" error={errors.password?.message}>
+            <TextInput.Label>Password</TextInput.Label>
 
-            <TextInput.Input
-              {...register('password')}
-              required
-              type="password"
-              id="password"
-              placeholder="************"
-            />
+            <TextInput.Content>
+              <TextInput.Icon>
+                <Lock />
+              </TextInput.Icon>
+
+              <TextInput.Input
+                {...register('password')}
+                required
+                type="password"
+                id="password"
+                placeholder="************"
+              />
+            </TextInput.Content>
           </TextInput.Root>
 
           <button

@@ -1,6 +1,7 @@
 import {
   forwardRef,
   ForwardRefRenderFunction,
+  HTMLAttributes,
   InputHTMLAttributes,
   LabelHTMLAttributes,
   ReactNode
@@ -8,39 +9,32 @@ import {
 import { clsx } from 'clsx'
 import { Slot } from '@radix-ui/react-slot'
 
-import { Text } from '@components/Text'
+import { Text, TextProps } from '@components/Text'
 
 export interface TextInputRootProps
   extends LabelHTMLAttributes<HTMLLabelElement> {
   children: ReactNode
-  labelText?: string
   error?: string
-  inputClassName?: string
 }
 
 function TextInputRoot({
   children,
-  labelText,
   error,
   className,
-  inputClassName = 'bg-gray-200 dark:bg-gray-800',
   ...props
 }: TextInputRootProps) {
   return (
-    <label className={clsx('flex flex-col gap-2', className)} {...props}>
-      {labelText && <Text className="font-semibold">{labelText}</Text>}
-
-      <div
-        className={clsx(
-          'flex items-center gap-3 h-12 px-3 rounded w-full outline-none ring-cyan-500 focus-within:ring-2',
-          {
-            'ring-2 ring-red-500': !!error
-          },
-          inputClassName
-        )}
-      >
-        {children}
-      </div>
+    <label
+      className={clsx(
+        'flex flex-col gap-2',
+        {
+          '[&>div:has(input)]:ring-2 [&>div:has(input)]:ring-red-500': !!error
+        },
+        className
+      )}
+      {...props}
+    >
+      {children}
 
       {error && <Text className="text-red-500">{error}</Text>}
     </label>
@@ -48,6 +42,48 @@ function TextInputRoot({
 }
 
 TextInputRoot.displayName = 'TextInput.Root'
+
+export interface TextInputContentProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
+}
+
+function TextInputContent({
+  children,
+  className,
+  ...props
+}: TextInputContentProps) {
+  return (
+    <div
+      className={clsx(
+        'flex items-center gap-3 min-h-[3rem] px-3 rounded w-full outline-none ring-cyan-500 bg-gray-200 dark:bg-gray-800 focus-within:ring-2',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+}
+
+TextInputContent.displayName = 'TextInput.Content'
+
+export interface TextInputLabelProps extends TextProps {
+  children: ReactNode
+}
+
+function TextInputLabel({
+  children,
+  className,
+  ...props
+}: TextInputLabelProps) {
+  return (
+    <Text className={clsx('font-semibold', className)} {...props}>
+      {children}
+    </Text>
+  )
+}
+
+TextInputLabel.displayName = 'TextInput.Label'
 
 export interface TextInputIconProps {
   children: ReactNode
@@ -69,7 +105,7 @@ const TextInputInput: ForwardRefRenderFunction<
     <input
       ref={ref}
       className={clsx(
-        'flex flex-1 h-full outline-none text-gray-800 dark:text-gray-100 text-sm bg-transparent placeholder:text-gray-400',
+        'flex flex-1 w-full h-full outline-none text-gray-800 dark:text-gray-100 text-sm bg-transparent placeholder:text-gray-400',
         className
       )}
       {...props}
@@ -81,6 +117,8 @@ TextInputInput.displayName = 'TextInput.Input'
 
 export const TextInput = {
   Root: TextInputRoot,
+  Content: TextInputContent,
+  Label: TextInputLabel,
   Input: forwardRef(TextInputInput),
   Icon: TextInputIcon
 }

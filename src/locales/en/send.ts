@@ -2,6 +2,7 @@ export const send = {
   headTitle: 'Tokenverse | Send',
   headDescription: 'Tokenverse dashboard send',
   send: 'Send',
+  balance: 'balance',
   to: 'To',
   toPlaceholder: 'Enter account address',
   amount: 'Amount',
