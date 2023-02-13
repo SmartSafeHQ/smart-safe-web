@@ -1,4 +1,5 @@
 import Head from 'next/head'
+import clsx from 'clsx'
 import { ArrowsClockwise, Wallet } from 'phosphor-react'
 
 import { Button } from '@components/Button'
@@ -9,21 +10,30 @@ import { Avatar } from '@components/Avatar'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendModal } from '@components/pages/Send/SendModal'
 import { SelectInput } from '@components/Inputs/SelectInput'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSend } from '@hooks/send/useSend'
-import { useI18n } from '@hooks/useI18n'
-import { formatCurrencyToNumber } from '@utils/global'
 
 const Send = () => {
   const {
+    t,
+    coinsData,
+    coinsIsLoading,
+    coinInUsdIsFetching,
+    setSelectedCoin,
+    portfolioData,
+    portfolioIsLoading,
+    amountInUsd,
+    amountInputType,
     register,
     handleSubmit,
-    setValue,
     errors,
     isSendingTx,
     onSubmit,
     transactionUrl,
     setTransactionUrl,
+    handleChangeAmountInput,
+    handleToggleAmountInputType,
     handleSendTransaction,
     transactionData,
     isSendModalOpen,
@@ -32,7 +42,6 @@ const Send = () => {
     currentMaticFee,
     currentDollarFee
   } = useSend()
-  const { t } = useI18n()
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-2 pt-12">
@@ -57,43 +66,82 @@ const Send = () => {
               <h1>Send using:</h1>
             </Heading>
 
-            <SelectInput.Root className="w-full">
-              <SelectInput.Group>
-                <SelectInput.Item value="temp" className="py-1">
-                  <div className="w-full flex items-center justify-start gap-1">
-                    <Avatar.Root fallbackName="MA" className="w-7 h-7">
-                      <Avatar.Image
-                        src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/matic.svg"
-                        alt="matic"
-                      />
-                    </Avatar.Root>
+            <Skeleton isLoading={coinsIsLoading} className="h-12">
+              {coinsData && (
+                <SelectInput.Root
+                  className="w-full"
+                  defaultValue="0"
+                  onValueChange={coinIndex => {
+                    const coin = coinsData[Number(coinIndex)]
 
-                    <Text className="text-xl font-bold dark:text-gray-50 uppercase">
-                      matic
-                    </Text>
-                  </div>
-                </SelectInput.Item>
-              </SelectInput.Group>
-            </SelectInput.Root>
+                    setSelectedCoin(coin)
+                  }}
+                >
+                  <SelectInput.Group>
+                    {coinsData.map((coin, index) => (
+                      <SelectInput.Item
+                        key={coin.symbol}
+                        value={String(index)}
+                        className="py-1"
+                      >
+                        <div className="w-full flex items-center justify-start gap-2">
+                          <Avatar.Root
+                            fallbackName={coin.symbol}
+                            className="w-7 h-7"
+                          >
+                            <Avatar.Image
+                              src={coin.avatar}
+                              alt={`${coin.symbol} coin`}
+                            />
+                          </Avatar.Root>
+
+                          <Text className="text-xl font-bold dark:text-gray-50 uppercase">
+                            {coin.symbol}
+                          </Text>
+                        </div>
+                      </SelectInput.Item>
+                    ))}
+                  </SelectInput.Group>
+                </SelectInput.Root>
+              )}
+            </Skeleton>
           </div>
 
-          <div className="w-full flex items-center justify-center gap-3">
-            <Avatar.Root fallbackName={selectedCoin.id} className="w-24 h-24">
-              <Avatar.Image
-                src="https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/matic.svg"
-                alt="matic coin"
-              />
-            </Avatar.Root>
+          <Skeleton
+            isLoading={coinsIsLoading}
+            className="max-w-[13rem] h-24 mx-auto"
+          >
+            {selectedCoin && (
+              <div className="w-full flex items-center justify-center gap-3">
+                <Avatar.Root
+                  fallbackName={selectedCoin.symbol}
+                  className="w-24 h-24"
+                >
+                  <Avatar.Image
+                    src={selectedCoin.avatar}
+                    alt={`${selectedCoin.symbol} coin`}
+                  />
+                </Avatar.Root>
 
-            <div className="flex flex-col justify-center items-start">
-              <Heading className="text-3xl uppercase">matic</Heading>
+                <div className="flex flex-col justify-center items-start">
+                  <Heading className="text-3xl uppercase">
+                    {selectedCoin.symbol}
+                  </Heading>
 
-              <div className="flex items-center gap-1">
-                <Text className="capitalize">{t.send.balance}:</Text>
-                <Text className="font-semibold">0.1969</Text>
+                  <Skeleton isLoading={portfolioIsLoading} className="w-28 h-6">
+                    {portfolioData && (
+                      <div className="flex items-center gap-1">
+                        <Text className="capitalize">{t.send.balance}:</Text>
+                        <Text className="font-semibold">
+                          {portfolioData?.balance}
+                        </Text>
+                      </div>
+                    )}
+                  </Skeleton>
+                </div>
               </div>
-            </div>
-          </div>
+            )}
+          </Skeleton>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
@@ -126,7 +174,7 @@ const Send = () => {
                 <button
                   className="w-6 h-6 flex items-center justify-center text-cyan-500 rounded-md shadow-md ring-gray-100 bg-gray-200 dark:bg-gray-800 focus:ring-2"
                   aria-label="Toggle coin input"
-                  onClick={e => e.preventDefault()}
+                  onClick={handleToggleAmountInputType}
                   formTarget="amount"
                 >
                   <ArrowsClockwise className="w-4 h-w-4" />
@@ -138,23 +186,20 @@ const Send = () => {
                   {...register('amount')}
                   required
                   id="amount"
-                  defaultValue="$0.0 USD"
+                  defaultValue={amountInputType.defaultValue}
                   placeholder={t.send.amountPlaceholder}
-                  onChange={e => {
-                    const floatAmount = formatCurrencyToNumber(e.target.value)
-
-                    const formattedAmount = new Intl.NumberFormat('en-US', {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2
-                    }).format(floatAmount)
-
-                    setValue('amount', `$${formattedAmount} USD`)
-                  }}
-                  className="text-2xl font-semibold"
+                  onChange={handleChangeAmountInput}
+                  className="text-2xl font-semibold uppercase"
                 />
 
-                <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 uppercase">
-                  0.75 MATIC
+                <Text
+                  className={clsx(
+                    'text-sm font-medium text-gray-700 dark:text-gray-300 uppercase',
+                    { 'animate-pulse': coinInUsdIsFetching }
+                  )}
+                >
+                  {amountInUsd.toFixed(amountInputType.availableDecimals)}{' '}
+                  {amountInputType?.reverseValueName}
                 </Text>
               </TextInput.Content>
             </TextInput.Root>
@@ -164,15 +209,17 @@ const Send = () => {
             </Button>
           </form>
 
-          <SendModal
-            transaction={transactionData}
-            transactionUrl={transactionUrl}
-            coin={selectedCoin}
-            coinFee={currentMaticFee}
-            dollarFee={currentDollarFee}
-            isSending={isSendingTx}
-            handleSendTransaction={handleSendTransaction}
-          />
+          {selectedCoin && (
+            <SendModal
+              transaction={transactionData}
+              transactionUrl={transactionUrl}
+              coin={selectedCoin}
+              coinFee={currentMaticFee}
+              dollarFee={currentDollarFee}
+              isSending={isSendingTx}
+              handleSendTransaction={handleSendTransaction}
+            />
+          )}
         </div>
       </DialogModal.Root>
     </div>

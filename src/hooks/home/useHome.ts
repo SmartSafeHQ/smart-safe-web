@@ -9,7 +9,7 @@ export type NavTabs = 'coins' | 'transactions' | 'nfts'
 export const useHome = () => {
   const [page, setPage] = useState(1)
   const [tab, setTab] = useState<NavTabs>('coins')
-  const [isAccountBalanceLoading, setIsAccountBalance] = useState(false)
+  const [isAccountBalanceLoading, setIsAccountBalanceLoading] = useState(false)
 
   const { data: coinsBalanceData } = useCoinsBalanceInUsd()
 
@@ -18,13 +18,17 @@ export const useHome = () => {
 
   useEffect(() => {
     if (coinPortfolioQueries.length === 0) {
-      setIsAccountBalance(true)
+      setIsAccountBalanceLoading(true)
       return
     }
 
-    const isSomeQueryLoading = coinPortfolioQueries.some(query => !query[1])
+    const isSomeQueryLoading = coinPortfolioQueries.some(query => {
+      const isNoArgsQuery = query[0][1]
 
-    setIsAccountBalance(isSomeQueryLoading)
+      return !!isNoArgsQuery && !query[1]
+    })
+
+    setIsAccountBalanceLoading(isSomeQueryLoading)
   }, [coinPortfolioQueries])
 
   return {

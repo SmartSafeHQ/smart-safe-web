@@ -35,7 +35,7 @@ export function SendModal({
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-            {t.send.send} {transaction?.usdAmount}
+            {t.send.send} ${transaction?.usdAmount.toFixed(2)}
           </DialogModal.Title>
 
           <div className="w-full flex items-center justify-center gap-2">
@@ -46,12 +46,12 @@ export function SendModal({
               className="h-8"
             >
               <DialogModal.Description className="text-center text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                {transaction?.coinAmount?.toFixed(4)} {coin.id}
+                {transaction?.coinAmount?.toFixed(4)} {coin?.symbol}
               </DialogModal.Description>
             </Skeleton>
 
-            <Avatar.Root fallbackName={coin.id} className="w-6 h-6">
-              <Avatar.Image src={coin.avatar} alt={`${coin.name} icon`} />
+            <Avatar.Root fallbackName={coin?.symbol} className="w-6 h-6">
+              <Avatar.Image src={coin?.avatar} alt={`${coin?.symbol} icon`} />
             </Avatar.Root>
           </div>
         </header>
@@ -119,7 +119,7 @@ export function SendModal({
             <Text className="mr-2">{t.send.fee}:</Text>
 
             <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
-              <Avatar.Image src={coin.avatar} alt={`${coin.name} icon`} />
+              <Avatar.Image src={coin?.avatar} alt={`${coin?.symbol} icon`} />
             </Avatar.Root>
 
             <Skeleton isLoading={!coinFee && coinFee !== 0} className="h-6">

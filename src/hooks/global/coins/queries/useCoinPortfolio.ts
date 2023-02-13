@@ -18,7 +18,7 @@ interface CoinProps {
 }
 
 interface FetchCoinPortfolioInput {
-  coin: CoinAttributesInput
+  coin?: CoinAttributesInput
   account?: string
 }
 
@@ -34,6 +34,10 @@ async function fetchCoinPortfolio({
 }: FetchCoinPortfolioInput): Promise<FetchCoinPortfolioResponse> {
   if (!account) {
     throw new Error('account is required')
+  }
+
+  if (!coin) {
+    throw new Error('coin is required')
   }
 
   const provider = new providers.JsonRpcProvider(coin.rpcUrl)
@@ -53,15 +57,19 @@ async function fetchCoinPortfolio({
 }
 
 export function useCoinPortfolio(
-  coin: CoinAttributesInput,
+  coin?: CoinAttributesInput,
   account?: string,
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['coinPortfolio', coin.rpcUrl],
+    queryKey: ['coinPortfolio', coin?.rpcUrl],
     queryFn: () => fetchCoinPortfolio({ account, coin }),
     onSuccess: async data => {
       // onSuccess used to update account ballance
+
+      if (!coin) {
+        throw new Error('coin is required')
+      }
 
       const coinValueInUsd =
         await queryClient.ensureQueryData<FetchCoinValueInUsdResponse>({
@@ -121,7 +129,7 @@ export function useCoinPortfolio(
         }
       )
     },
-    enabled: enabled && !!account,
+    enabled: enabled && !!account && !!coin,
     staleTime: 1000 * 60 * 2 // 2 minutes
   })
 }

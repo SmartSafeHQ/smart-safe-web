@@ -6,7 +6,7 @@ export const send = {
   to: 'To',
   toPlaceholder: 'Enter account address',
   amount: 'Amount',
-  amountPlaceholder: 'Enter amount in dollar',
+  amountPlaceholder: 'Enter the amount',
   fee: 'Fee',
   from: 'From',
   address: 'Address',
