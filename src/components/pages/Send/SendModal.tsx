@@ -1,4 +1,4 @@
-import { ArrowSquareOut, PaperPlaneTilt, Wallet } from 'phosphor-react'
+import { PaperPlaneTilt, Wallet } from 'phosphor-react'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -11,7 +11,6 @@ import { useI18n } from '@hooks/useI18n'
 
 interface SendModalProps {
   transaction: TransactionProps | null
-  transactionUrl: string | null
   coin: CoinProps
   coinFee: number
   dollarFee: number
@@ -21,7 +20,6 @@ interface SendModalProps {
 
 export function SendModal({
   transaction,
-  transactionUrl,
   coin,
   coinFee,
   dollarFee,
@@ -31,7 +29,11 @@ export function SendModal({
   const { t } = useI18n()
 
   return (
-    <DialogModal.Content className="md:max-w-[32rem] min-h-[65vh]">
+    <DialogModal.Content
+      className="md:max-w-[32rem] min-h-[65vh]"
+      onInteractOutside={e => isSending && e.preventDefault()}
+      onEscapeKeyDown={e => isSending && e.preventDefault()}
+    >
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
@@ -137,28 +139,9 @@ export function SendModal({
         >
           {t.send.send}
         </Button>
-
-        {transactionUrl && (
-          <Text className="mt-4 text-gray-800 dark:text-gray-200">
-            {t.send.seeOn}:
-            <a
-              href={transactionUrl}
-              target="_blank"
-              className="ml-1 font-semibold text-cyan-500 hover:text-cyan-600"
-              rel="noreferrer"
-            >
-              <Text>{transactionUrl?.slice(0, 30)}...</Text>
-
-              <ArrowSquareOut
-                className="w-4 h-4 ml-1 md:hidden lg:inline"
-                weight="bold"
-              />
-            </a>
-          </Text>
-        )}
       </div>
 
-      <DialogModal.IconClose />
+      {!isSending && <DialogModal.IconClose />}
     </DialogModal.Content>
   )
 }

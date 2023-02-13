@@ -23,24 +23,18 @@ const Send = () => {
     setSelectedCoin,
     portfolioData,
     portfolioIsLoading,
-    amountInUsd,
+    amounInReverseCoin,
     amountInputType,
     register,
     handleSubmit,
     errors,
     isSendingTx,
     onSubmit,
-    transactionUrl,
-    setTransactionUrl,
     handleChangeAmountInput,
     handleToggleAmountInputType,
     handleSendTransaction,
     transactionData,
-    isSendModalOpen,
-    setIsSendModalOpen,
-    selectedCoin,
-    currentMaticFee,
-    currentDollarFee
+    selectedCoin
   } = useSend()
 
   return (
@@ -50,13 +44,7 @@ const Send = () => {
         <meta name="description" content={t.send.headDescription} />
       </Head>
 
-      <DialogModal.Root
-        open={isSendModalOpen || isSendingTx}
-        onOpenChange={() => {
-          setIsSendModalOpen(!isSendModalOpen)
-          setTransactionUrl(null)
-        }}
-      >
+      <DialogModal.Root>
         <div className="w-full max-w-lg flex flex-1 flex-col gap-7">
           <div className="flex flex-col items-start gap-6">
             <Heading
@@ -198,24 +186,27 @@ const Send = () => {
                     { 'animate-pulse': coinInUsdIsFetching }
                   )}
                 >
-                  {amountInUsd.toFixed(amountInputType.availableDecimals)}{' '}
-                  {amountInputType?.reverseValueName}
+                  {amounInReverseCoin.toFixed(
+                    amountInputType.availableDecimals
+                  )}{' '}
+                  {amountInputType?.reverseSymbol}
                 </Text>
               </TextInput.Content>
             </TextInput.Root>
 
-            <Button type="submit" className="mt-3">
-              {t.send.send}
-            </Button>
+            <DialogModal.Trigger>
+              <Button type="submit" className="mt-3">
+                {t.send.send}
+              </Button>
+            </DialogModal.Trigger>
           </form>
 
           {selectedCoin && (
             <SendModal
               transaction={transactionData}
-              transactionUrl={transactionUrl}
               coin={selectedCoin}
-              coinFee={currentMaticFee}
-              dollarFee={currentDollarFee}
+              coinFee={0}
+              dollarFee={0}
               isSending={isSendingTx}
               handleSendTransaction={handleSendTransaction}
             />

@@ -3,13 +3,15 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
-import { useFeeData } from 'wagmi'
 
+import {
+  getUsdAmountInCoinExchangeRate,
+  getCoinAmountInUsd
+} from '@utils/global/coins'
 import { formatCurrencyToNumber } from '@utils/global'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
-import { useEndUserUsedTokens } from '@hooks/send/queries/useEndUserUsedTokens'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
 import { useCoinValueInUsd } from '@hooks/global/coins/queries/useCoinValueInUsd'
@@ -41,18 +43,20 @@ export interface TransactionProps {
 }
 
 interface AmountInputType {
-  name: 'usd' | string
+  symbol: 'usd' | string
   defaultValue: string
   availableDecimals: number
-  symbol?: string
-  reverseValueName?: string
+  convertCoins: (_amount: number, _usdPerCoin: number) => number
+  currency?: string
+  reverseSymbol?: string
 }
 
-export const DEFAULT_AMOUNT_INPUT_TYPE = {
-  name: 'usd',
+export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
+  symbol: 'usd',
   defaultValue: '$ 0.00 USD',
-  availableDecimals: 2,
-  symbol: '$'
+  availableDecimals: 4,
+  convertCoins: getUsdAmountInCoinExchangeRate,
+  currency: '$'
 }
 
 export const useSend = () => {
@@ -65,19 +69,12 @@ export const useSend = () => {
   } = useForm<SendFieldValues>({
     resolver: zodResolver(validationSchema)
   })
-  const { data: feeData } = useFeeData({
-    chainId: 80001,
-    formatUnits: 'ether'
-  })
-
-  const [isSendModalOpen, setIsSendModalOpen] = useState(false)
-  const [transactionUrl, setTransactionUrl] = useState<null | string>(null)
-  const [amountInputType, setAmountInputType] = useState<AmountInputType>(
-    DEFAULT_AMOUNT_INPUT_TYPE
-  )
 
   const [transactionData, setTransactionData] =
     useState<TransactionProps | null>(null)
+  const [amountInputType, setAmountInputType] = useState<AmountInputType>(
+    DEFAULT_AMOUNT_INPUT_TYPE
+  )
 
   const { customer } = useAuth()
   const { t } = useI18n()
@@ -111,37 +108,25 @@ export const useSend = () => {
 
     setAmountInputType({
       ...amountInputType,
-      name: selectedCoin.symbol,
-      availableDecimals: 4,
-      symbol: undefined,
-      reverseValueName: 'usd'
+      symbol: selectedCoin.symbol,
+      availableDecimals: 2,
+      convertCoins: getCoinAmountInUsd,
+      reverseSymbol: 'usd'
     })
 
     setValue('amount', `${currentAmount.toFixed(2)} ${selectedCoin?.symbol}`)
   }, [selectedCoin])
 
-  const { data } = useEndUserUsedTokens(
-    true,
-    Number(feeData?.formatted.gasPrice)
-  )
   const { mutateAsync, isLoading: isSendingTx } = useSendMutation()
-
-  const selectedCoinValue = data?.find(coin => coin.id === selectedCoin?.symbol)
-
-  const coinUsdValue = Number(selectedCoinValue?.price)
-  const feeUsdValue = Number(selectedCoinValue?.feeUsdPrice)
 
   const currentAmount = !watch().amount
     ? 0
     : formatCurrencyToNumber(watch().amount)
 
-  const selectedCoiInAmount = currentAmount / (coinInUsdData?.valueInUsd ?? 0)
-  const usdAmount = currentAmount * (coinInUsdData?.valueInUsd ?? 0)
-
-  const amountInUsd = currentAmount * (coinInUsdData?.valueInUsd ?? 0)
-
-  const currentDollarFee = feeUsdValue * currentAmount
-  const currentMaticFee = currentDollarFee / coinUsdValue
+  const amounInReverseCoin = amountInputType.convertCoins(
+    currentAmount,
+    coinInUsdData?.valueInUsd ?? 0
+  )
 
   function handleChangeAmountInput(event: ChangeEvent<HTMLInputElement>) {
     const floatAmount = formatCurrencyToNumber(event.target.value)
@@ -153,8 +138,8 @@ export const useSend = () => {
 
     setValue(
       'amount',
-      `${amountInputType?.symbol ?? ''}${formattedAmount} ${
-        amountInputType.name
+      `${amountInputType?.currency ?? ''}${formattedAmount} ${
+        amountInputType.symbol
       }`
     )
   }
@@ -162,19 +147,20 @@ export const useSend = () => {
   function handleToggleAmountInputType(event: MouseEvent) {
     event.preventDefault()
 
-    if (amountInputType.name === 'usd') {
+    if (amountInputType.symbol === 'usd') {
       setAmountInputType({
-        name: selectedCoin?.symbol ?? 'usd',
+        symbol: selectedCoin?.symbol ?? 'usd',
         defaultValue: `0.00 ${selectedCoin?.symbol}`,
-        availableDecimals: 4,
-        reverseValueName: 'usd'
+        availableDecimals: 2,
+        convertCoins: getCoinAmountInUsd,
+        reverseSymbol: 'usd'
       })
 
       setValue('amount', `${currentAmount.toFixed(2)} ${selectedCoin?.symbol}`)
     } else {
       setAmountInputType({
         ...DEFAULT_AMOUNT_INPUT_TYPE,
-        reverseValueName: selectedCoin?.symbol
+        reverseSymbol: selectedCoin?.symbol
       })
 
       setValue('amount', `$${currentAmount.toFixed(2)} usd`)
@@ -182,31 +168,28 @@ export const useSend = () => {
   }
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
-    if (!customer) {
-      toast.error(`Error. Invalid user`)
-
-      return
-    }
-
-    if (!selectedCoin) {
-      toast.error(`Error. Invalid coin`)
+    if (!customer || !selectedCoin) {
+      toast.error(`Error. Invalid transaction infos`)
 
       return
     }
 
     try {
+      const amounts =
+        amountInputType.symbol === 'usd'
+          ? { usdAmount: currentAmount, coinAmount: amounInReverseCoin }
+          : { usdAmount: amounInReverseCoin, coinAmount: currentAmount }
+
       setTransactionData({
         to: data.sendWallet,
         fromWalletAddress: customer?.wallet.address,
         fromWalletPrivateKey: customer?.wallet.privateKey,
         fromName: customer?.name,
-        usdAmount,
-        coinAmount: selectedCoiInAmount,
+        usdAmount: amounts.usdAmount,
+        coinAmount: amounts.coinAmount,
         chainId: selectedCoin.chainId,
         rpcUrl: selectedCoin.rpcUrl
       })
-
-      setIsSendModalOpen(true)
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
@@ -214,14 +197,8 @@ export const useSend = () => {
 
   async function handleSendTransaction() {
     try {
-      if (!transactionData) {
+      if (!transactionData || !selectedCoin) {
         toast.error(`Error. Invalid transaction infos`)
-
-        return
-      }
-
-      if (!selectedCoin) {
-        toast.error(`Error. Invalid coin`)
 
         return
       }
@@ -233,9 +210,9 @@ export const useSend = () => {
 
       const transactionUrl = `${selectedCoin.explorerUrl}/tx/${response.transactionHash}`
 
-      toast.success(`Transaction done successfully`)
+      console.log(transactionUrl)
 
-      setTransactionUrl(transactionUrl)
+      toast.success(`Transaction done successfully`)
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
@@ -251,7 +228,7 @@ export const useSend = () => {
     setSelectedCoin,
     portfolioData,
     portfolioIsLoading,
-    amountInUsd,
+    amounInReverseCoin,
     amountInputType,
     setAmountInputType,
     currentAmount,
@@ -260,16 +237,10 @@ export const useSend = () => {
     errors,
     setValue,
     isSendingTx,
-    transactionUrl,
-    setTransactionUrl,
     handleToggleAmountInputType,
     handleChangeAmountInput,
     onSubmit,
     handleSendTransaction,
-    isSendModalOpen,
-    setIsSendModalOpen,
-    transactionData,
-    currentMaticFee,
-    currentDollarFee
+    transactionData
   }
 }

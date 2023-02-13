@@ -32,3 +32,16 @@ export function getCoinChangePercentUrl(
 ) {
   return `https://api.binance.com/api/v3/ticker/${period}?symbol=${coin.toUpperCase()}${currency.toUpperCase()}`
 }
+
+// coins amount in usd
+export function getCoinAmountInUsd(amountInCoins: number, usdPerCoin: number) {
+  return amountInCoins * usdPerCoin
+}
+
+// usd amount in converted into coin exchange rate
+export function getUsdAmountInCoinExchangeRate(
+  amountInUsd: number,
+  usdPerCoin: number
+) {
+  return amountInUsd / usdPerCoin
+}
