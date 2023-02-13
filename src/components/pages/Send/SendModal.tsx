@@ -6,54 +6,41 @@ import { Avatar } from '@components/Avatar'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { CoinProps, TransactionProps } from '@hooks/send/useSend'
-import { useI18n } from '@hooks/useI18n'
+import { useSendTransaction } from '@hooks/send/useSendTransaction'
+import { CoinProps } from '@hooks/send/interfaces'
 
 interface SendModalProps {
-  transaction: TransactionProps | null
+  usdAmount: number
+  coinAmount: number
+  to: string
   coin: CoinProps
-  coinFee: number
-  dollarFee: number
-  isSending: boolean
-  handleSendTransaction: () => void
 }
 
-export function SendModal({
-  transaction,
-  coin,
-  coinFee,
-  dollarFee,
-  handleSendTransaction,
-  isSending
-}: SendModalProps) {
-  const { t } = useI18n()
+export function SendModal({ coinAmount, usdAmount, to, coin }: SendModalProps) {
+  const {
+    t,
+    isSendingTx,
+    customer,
+    coinFeeData,
+    coinFeeIsLoading,
+    handleSendTransaction
+  } = useSendTransaction({ coin })
 
   return (
-    <DialogModal.Content
-      className="md:max-w-[32rem] min-h-[65vh]"
-      onInteractOutside={e => isSending && e.preventDefault()}
-      onEscapeKeyDown={e => isSending && e.preventDefault()}
-    >
+    <DialogModal.Content className="md:max-w-[32rem] min-h-[62vh]">
       <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         <header className="w-full flex items-center flex-col gap-3 mb-6">
           <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-            {t.send.send} ${transaction?.usdAmount.toFixed(2)}
+            {t.send.send} ${usdAmount.toFixed(2)}
           </DialogModal.Title>
 
           <div className="w-full flex items-center justify-center gap-2">
-            <Skeleton
-              isLoading={
-                !transaction?.coinAmount && transaction?.coinAmount !== 0
-              }
-              className="h-8"
-            >
-              <DialogModal.Description className="text-center text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                {transaction?.coinAmount?.toFixed(4)} {coin?.symbol}
-              </DialogModal.Description>
-            </Skeleton>
+            <DialogModal.Description className="text-center text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
+              {coinAmount.toFixed(4)} {coin.symbol}
+            </DialogModal.Description>
 
-            <Avatar.Root fallbackName={coin?.symbol} className="w-6 h-6">
-              <Avatar.Image src={coin?.avatar} alt={`${coin?.symbol} icon`} />
+            <Avatar.Root fallbackName={coin.symbol} className="w-6 h-6">
+              <Avatar.Image src={coin.avatar} alt={`${coin.symbol} icon`} />
             </Avatar.Root>
           </div>
         </header>
@@ -73,17 +60,17 @@ export function SendModal({
                 asChild
                 className="text-gray-700 dark:text-gray-50 capitalize"
               >
-                <strong>{transaction?.fromName}</strong>
+                <strong>{customer?.email.slice(0, 6)}</strong>
               </Text>
 
               <Text
                 asChild
                 className="text-sm text-gray-600 dark:text-gray-300"
               >
-                <span>{`${transaction?.fromWalletAddress?.slice(
+                <span>{`${customer?.wallet.address?.slice(
                   0,
                   6
-                )}...${transaction?.fromWalletAddress?.slice(-6)}`}</span>
+                )}...${customer?.wallet.address?.slice(-6)}`}</span>
               </Text>
             </div>
           </div>
@@ -109,39 +96,45 @@ export function SendModal({
                 asChild
                 className="text-sm text-gray-600 dark:text-gray-300"
               >
-                <span>{`${transaction?.to?.slice(
-                  0,
-                  6
-                )}...${transaction?.to?.slice(-6)}`}</span>
+                <span>{`${to.slice(0, 6)}...${to.slice(-6)}`}</span>
               </Text>
             </div>
           </div>
 
           <div className="flex items-center text-gray-800 dark:text-gray-200">
-            <Text className="mr-2">{t.send.fee}:</Text>
+            <Skeleton isLoading={coinFeeIsLoading} className="h-7">
+              <Text className="mr-2">{t.send.fee}:</Text>
 
-            <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
-              <Avatar.Image src={coin?.avatar} alt={`${coin?.symbol} icon`} />
-            </Avatar.Root>
+              <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
+                <Avatar.Image src={coin?.avatar} alt={`${coin?.symbol} icon`} />
+              </Avatar.Root>
 
-            <Skeleton isLoading={!coinFee && coinFee !== 0} className="h-6">
-              <Text className="font-semibold">
-                {coinFee?.toFixed(2)} (${dollarFee.toFixed(2)})
-              </Text>
+              {coinFeeData && (
+                <Text className="font-semibold">
+                  {coinFeeData.valueInCoin.slice(0, 6)} ($
+                  {coinFeeData.feeInUSD.slice(0, 4)})
+                </Text>
+              )}
             </Skeleton>
           </div>
         </div>
 
         <Button
-          onClick={handleSendTransaction}
-          isLoading={isSending}
+          onClick={() =>
+            handleSendTransaction({
+              ...coin,
+              to,
+              amount: coinAmount
+            })
+          }
+          isLoading={isSendingTx}
           className="mt-6"
         >
           {t.send.send}
         </Button>
       </div>
 
-      {!isSending && <DialogModal.IconClose />}
+      {!isSendingTx && <DialogModal.IconClose />}
     </DialogModal.Content>
   )
 }

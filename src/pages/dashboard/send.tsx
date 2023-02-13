@@ -20,20 +20,18 @@ const Send = () => {
     coinsData,
     coinsIsLoading,
     coinInUsdIsFetching,
-    setSelectedCoin,
+    handleChangeCoin,
     portfolioData,
     portfolioIsLoading,
     amounInReverseCoin,
     amountInputType,
+    transaction,
     register,
     handleSubmit,
-    errors,
-    isSendingTx,
     onSubmit,
+    errors,
     handleChangeAmountInput,
     handleToggleAmountInputType,
-    handleSendTransaction,
-    transactionData,
     selectedCoin
   } = useSend()
 
@@ -59,11 +57,7 @@ const Send = () => {
                 <SelectInput.Root
                   className="w-full"
                   defaultValue="0"
-                  onValueChange={coinIndex => {
-                    const coin = coinsData[Number(coinIndex)]
-
-                    setSelectedCoin(coin)
-                  }}
+                  onValueChange={handleChangeCoin}
                 >
                   <SelectInput.Group>
                     {coinsData.map((coin, index) => (
@@ -121,7 +115,7 @@ const Send = () => {
                       <div className="flex items-center gap-1">
                         <Text className="capitalize">{t.send.balance}:</Text>
                         <Text className="font-semibold">
-                          {portfolioData?.balance}
+                          {portfolioData.balance}
                         </Text>
                       </div>
                     )}
@@ -160,7 +154,7 @@ const Send = () => {
                 <TextInput.Label>{t.send.amount}</TextInput.Label>
 
                 <button
-                  className="w-6 h-6 flex items-center justify-center text-cyan-500 rounded-md shadow-md ring-gray-100 bg-gray-200 dark:bg-gray-800 focus:ring-2"
+                  className="w-6 h-6 flex items-center justify-center text-cyan-500 rounded-md shadow-sm ring-gray-100 bg-gray-200 dark:bg-gray-800 focus:ring-2"
                   aria-label="Toggle coin input"
                   onClick={handleToggleAmountInputType}
                   formTarget="amount"
@@ -201,14 +195,12 @@ const Send = () => {
             </DialogModal.Trigger>
           </form>
 
-          {selectedCoin && (
+          {selectedCoin && transaction && !errors.sendWallet && (
             <SendModal
-              transaction={transactionData}
               coin={selectedCoin}
-              coinFee={0}
-              dollarFee={0}
-              isSending={isSendingTx}
-              handleSendTransaction={handleSendTransaction}
+              coinAmount={transaction.coinAmount}
+              to={transaction.to}
+              usdAmount={transaction.usdAmount}
             />
           )}
         </div>

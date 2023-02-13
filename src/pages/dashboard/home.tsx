@@ -34,8 +34,8 @@ const Home = () => {
             <IncomesSummary.Title>{t.home.accountBalance}</IncomesSummary.Title>
 
             <Skeleton isLoading={isAccountBalanceLoading} className="w-40 h-10">
-              {coinsBalanceData?.balanceTotal && (
-                <IncomesSummary.Value className="text-2xl md:text-4xl">
+              {coinsBalanceData?.balanceTotal !== undefined && (
+                <IncomesSummary.Value className="text-2xl md:text-5xl">
                   ${coinsBalanceData.balanceTotal.toFixed(2)}
                 </IncomesSummary.Value>
               )}

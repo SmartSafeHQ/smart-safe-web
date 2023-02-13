@@ -46,7 +46,7 @@ export const sidebar = {
     {
       href: '/dashboard/marketplace',
       icon: ShoppingCartSimple,
-      title: 'mercado',
+      title: 'promoções',
       isDisabled: true
     },
     {
