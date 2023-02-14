@@ -59,26 +59,22 @@ export function TransactionsTableTr({
             variant="highlighted"
             className="text-sm"
           >
-            {t.home.copyAddres}
+            {t.home.copyAddress}
             <HoverCard.Arrow />
           </HoverCard.Content>
         </HoverCard.Root>
       </td>
 
       <td className="py-3">
-        <HoverCard.Root openDelay={100}>
+        <HoverCard.Root>
           <HoverCard.Trigger asChild>
             <button
               onClick={() => handleCopyToClipboard(receiver)}
             >{`${receiver.slice(0, 6)}...${receiver.slice(-6)}`}</button>
           </HoverCard.Trigger>
 
-          <HoverCard.Content
-            side="top"
-            variant="highlighted"
-            className="text-sm"
-          >
-            {t.home.copyAddres}
+          <HoverCard.Content variant="highlighted" className="text-sm">
+            {t.home.copyAddress}
             <HoverCard.Arrow />
           </HoverCard.Content>
         </HoverCard.Root>

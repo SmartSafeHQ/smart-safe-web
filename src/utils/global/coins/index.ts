@@ -1,7 +1,7 @@
 export const DEFAULT_COINS_ATTRIBUTES = [
   {
     symbol: 'matic',
-    network: 'maticmum',
+    network: 'matic',
     avatar:
       'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/matic.svg',
     chainId: 80001,

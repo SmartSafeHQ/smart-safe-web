@@ -26,7 +26,7 @@ export function DropdownMenuUserInfos({
         </strong>
 
         <span className="text-gray-700 dark:text-gray-300 text-sm">
-          {email.substring(0, 20)}...
+          {email.substring(0, 18)}...
         </span>
       </div>
     </div>

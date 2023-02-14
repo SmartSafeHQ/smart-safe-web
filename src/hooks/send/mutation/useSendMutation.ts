@@ -42,7 +42,9 @@ async function sendFunction(
   const transaction = await provider.sendTransaction(signedTransaction)
   const response = await transaction.wait()
 
-  return { transactionHash: response.transactionHash }
+  return {
+    transactionHash: response.transactionHash
+  }
 }
 
 export function useSendMutation() {

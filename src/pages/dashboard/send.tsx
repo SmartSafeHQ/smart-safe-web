@@ -9,8 +9,8 @@ import { Text } from '@components/Text'
 import { Avatar } from '@components/Avatar'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendModal } from '@components/pages/Send/SendModal'
-import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { CoinsDropDownInput } from '@components/Inputs/CoinsDropDownInput'
 
 import { useSend } from '@hooks/send/useSend'
 
@@ -25,11 +25,15 @@ const Send = () => {
     portfolioIsLoading,
     amounInReverseCoin,
     amountInputType,
+    txData,
+    isSendingTx,
     transaction,
     register,
     handleSubmit,
     onSubmit,
     errors,
+    reset,
+    handleSendTransaction,
     handleChangeAmountInput,
     handleToggleAmountInputType,
     selectedCoin
@@ -42,7 +46,7 @@ const Send = () => {
         <meta name="description" content={t.send.headDescription} />
       </Head>
 
-      <DialogModal.Root>
+      <DialogModal.Root onOpenChange={() => reset()}>
         <div className="w-full max-w-lg flex flex-1 flex-col gap-7">
           <div className="flex flex-col items-start gap-6">
             <Heading
@@ -54,37 +58,10 @@ const Send = () => {
 
             <Skeleton isLoading={coinsIsLoading} className="h-12">
               {coinsData && (
-                <SelectInput.Root
-                  className="w-full"
-                  defaultValue="0"
+                <CoinsDropDownInput
+                  coins={coinsData}
                   onValueChange={handleChangeCoin}
-                >
-                  <SelectInput.Group>
-                    {coinsData.map((coin, index) => (
-                      <SelectInput.Item
-                        key={coin.symbol}
-                        value={String(index)}
-                        className="py-1"
-                      >
-                        <div className="w-full flex items-center justify-start gap-2">
-                          <Avatar.Root
-                            fallbackName={coin.symbol}
-                            className="w-7 h-7"
-                          >
-                            <Avatar.Image
-                              src={coin.avatar}
-                              alt={`${coin.symbol} coin`}
-                            />
-                          </Avatar.Root>
-
-                          <Text className="text-xl font-bold dark:text-gray-50 uppercase">
-                            {coin.symbol}
-                          </Text>
-                        </div>
-                      </SelectInput.Item>
-                    ))}
-                  </SelectInput.Group>
-                </SelectInput.Root>
+                />
               )}
             </Skeleton>
           </div>
@@ -157,7 +134,6 @@ const Send = () => {
                   className="w-6 h-6 flex items-center justify-center text-cyan-500 rounded-md shadow-sm ring-gray-100 bg-gray-200 dark:bg-gray-800 focus:ring-2"
                   aria-label="Toggle coin input"
                   onClick={handleToggleAmountInputType}
-                  formTarget="amount"
                 >
                   <ArrowsClockwise className="w-4 h-w-4" />
                 </button>
@@ -180,9 +156,7 @@ const Send = () => {
                     { 'animate-pulse': coinInUsdIsFetching }
                   )}
                 >
-                  {amounInReverseCoin.toFixed(
-                    amountInputType.availableDecimals
-                  )}{' '}
+                  {amounInReverseCoin.toFixed(amountInputType.decimals)}{' '}
                   {amountInputType?.reverseSymbol}
                 </Text>
               </TextInput.Content>
@@ -201,6 +175,9 @@ const Send = () => {
               coinAmount={transaction.coinAmount}
               to={transaction.to}
               usdAmount={transaction.usdAmount}
+              isSendingTx={isSendingTx}
+              txData={txData}
+              handleSendTransaction={handleSendTransaction}
             />
           )}
         </div>

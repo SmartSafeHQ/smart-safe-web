@@ -8,8 +8,8 @@ interface HoverCardRootProps extends RadixHoverCard.HoverCardProps {
 
 function HoverCardRoot({
   children,
-  openDelay = 200,
-  closeDelay = 200,
+  openDelay = 0,
+  closeDelay = 0,
   ...props
 }: HoverCardRootProps) {
   return (
@@ -47,6 +47,7 @@ interface HoverCardContentProps extends RadixHoverCard.HoverCardContentProps {
 function HoverCardContent({
   children,
   variant,
+  side = 'top',
   className,
   sideOffset = 5,
   ...props
@@ -55,7 +56,7 @@ function HoverCardContent({
     <RadixHoverCard.Portal>
       <RadixHoverCard.Content
         className={clsx(
-          '[&>*]:fill-gray-50 [&>*]:dark:fill-gray-800 w-full flex flex-col justify-center items-center p-2 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md animate-dialog-open',
+          '[&>*]:fill-gray-50 [&>*]:dark:fill-gray-800 z-50 w-full flex flex-col justify-center items-center p-2 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md animate-dialog-open',
           {
             'dark:bg-gray-900 [&>*]:dark:fill-gray-900':
               variant === 'highlighted'
@@ -63,6 +64,7 @@ function HoverCardContent({
           className
         )}
         sideOffset={sideOffset}
+        side={side}
         {...props}
       >
         {children}
