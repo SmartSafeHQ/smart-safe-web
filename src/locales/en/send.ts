@@ -12,7 +12,7 @@ export const send = {
   address: 'Address',
   seeOn: 'See on',
   sent: 'sent',
-  copyAddresss: 'Copy address',
+  copyAddress: 'Copy address',
   date: 'date',
   invoice: 'invoice',
   goToInvoice: 'Go to invoice',

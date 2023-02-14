@@ -57,7 +57,7 @@ export function SendSuccess({
             </HoverCard.Trigger>
 
             <HoverCard.Content variant="highlighted" className="text-sm">
-              {t.send.copyAddresss}
+              {t.send.copyAddress}
               <HoverCard.Arrow />
             </HoverCard.Content>
           </HoverCard.Root>

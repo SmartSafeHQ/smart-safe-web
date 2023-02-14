@@ -12,7 +12,7 @@ export const send = {
   address: 'Endereço',
   seeOn: 'Ver em',
   sent: 'Enviado',
-  copyAddresss: 'Copiar endereço',
+  copyAddress: 'Copiar endereço',
   date: 'data',
   invoice: 'fatura',
   goToInvoice: 'Ir para fatura',

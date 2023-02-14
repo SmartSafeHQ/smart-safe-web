@@ -10,6 +10,16 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     explorerUrl: 'https://mumbai.polygonscan.com/'
   },
   {
+    symbol: 'celo',
+    network: 'celo',
+    avatar:
+      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/celo.svg',
+    chainId: 44787,
+    decimals: 18,
+    rpcUrl: 'https://alfajores-forno.celo-testnet.org/',
+    explorerUrl: 'https://alfajores-blockscout.celo-testnet.org/'
+  },
+  {
     symbol: 'bnb',
     network: 'binance smart chain',
     avatar:
@@ -23,6 +33,10 @@ export const DEFAULT_COINS_ATTRIBUTES = [
 
 export function getCoinPriceUrl(coin: string, currency = 'usdt') {
   return `https://api.binance.us/api/v3/ticker/price?symbol=${coin.toUpperCase()}${currency.toUpperCase()}`
+}
+
+export function getCoinWindowPriceUrl(coin: string, date: number) {
+  return `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${date}`
 }
 
 export function getCoinChangePercentUrl(

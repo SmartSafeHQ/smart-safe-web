@@ -14,7 +14,7 @@ export const home = {
   category: 'category',
   madeAt: 'made at',
   goToInvoice: 'Go to invoice',
-  copyAddresss: 'Copy address',
+  copyAddress: 'Copy address',
   loadingNetworksCoins: 'Loading networks coins',
   name: 'name',
   change24h: 'change (24h)',
