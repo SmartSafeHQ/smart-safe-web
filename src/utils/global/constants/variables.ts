@@ -1,2 +1,2 @@
 export const MAX_APPS_USERS_REGISTERS_PER_PAGE = 10
-export const DEFAULT_GAS_LIMIT = '21000'
+export const DEFAULT_GAS_LIMIT = 21000

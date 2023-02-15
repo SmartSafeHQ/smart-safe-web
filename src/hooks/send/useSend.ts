@@ -190,7 +190,6 @@ export const useSend = () => {
       await mutateAsync({
         chainId,
         rpcUrl,
-        fromWalletAddress: customer.wallet.address,
         fromWalletPrivateKey: customer.wallet.privateKey,
         to,
         amount
