@@ -30,11 +30,7 @@ interface HoverCardTriggerProps extends RadixHoverCard.HoverCardTriggerProps {
 }
 
 function HoverCardTrigger({ children, ...props }: HoverCardTriggerProps) {
-  return (
-    <RadixHoverCard.Trigger asChild {...props}>
-      {children}
-    </RadixHoverCard.Trigger>
-  )
+  return <RadixHoverCard.Trigger {...props}>{children}</RadixHoverCard.Trigger>
 }
 
 HoverCardTrigger.displayName = 'HoverCard.Trigger'

@@ -1,3 +1,5 @@
+import dayjs from 'dayjs'
+
 export const DEFAULT_COINS_ATTRIBUTES = [
   {
     symbol: 'matic',
@@ -8,7 +10,7 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     decimals: 18,
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     explorerUrl: 'https://mumbai.polygonscan.com/',
-    scanUrl: 'https://api-testnet.polygonscan.com/api'
+    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
     symbol: 'bnb',
@@ -19,7 +21,7 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     decimals: 18,
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     explorerUrl: 'https://testnet.bscscan.com',
-    scanUrl: 'https://api-testnet.bscscan.com/api'
+    scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   }
 ]
 
@@ -27,8 +29,19 @@ export function getCoinPriceUrl(coin: string, currency = 'usdt') {
   return `https://api.binance.us/api/v3/ticker/price?symbol=${coin.toUpperCase()}${currency.toUpperCase()}`
 }
 
-export function getCoinWindowPriceUrl(coin: string, date: number) {
-  return `https://api.coingecko.com/api/v3/coins/${coin}/history?date=${date}`
+const coingeckoCoinsIdMap = new Map([
+  ['matic', 'matic-network'],
+  ['bnb', 'binancecoin']
+])
+
+export function getCoinWindowPriceUrl(coin: string, date: Date) {
+  const coinId = coingeckoCoinsIdMap.get(coin)
+
+  if (!coinId) return
+
+  const formattedDate = dayjs(date).format('DD-MM-YYYY')
+
+  return `https://api.coingecko.com/api/v3/coins/${coinId}/history?date=${formattedDate}`
 }
 
 export function getCoinChangePercentUrl(

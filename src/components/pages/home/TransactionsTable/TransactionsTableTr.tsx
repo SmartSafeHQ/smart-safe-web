@@ -5,6 +5,7 @@ import { ArrowSquareOut } from 'phosphor-react'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
+import { Avatar } from '@components/Avatar'
 
 import { handleCopyToClipboard } from '@utils/global'
 import { useI18n } from '@hooks/useI18n'
@@ -15,7 +16,7 @@ interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   category: 'debit' | 'credit'
   sender: string
   receiver: string
-  token: {
+  coin: {
     symbol: string
     avatar: string
   }
@@ -30,7 +31,7 @@ export function TransactionsTableTr({
   sender,
   transactedAt,
   receiver,
-  token,
+  coin,
   category,
   value,
   className,
@@ -41,33 +42,48 @@ export function TransactionsTableTr({
   return (
     <tr
       className={clsx(
-        '[&>*]:min-w-[9rem] text-gray-800 dark:text-gray-50 font-medium border-b-[0.5px] border-gray-400 dark:border-gray-600',
+        'text-gray-800 dark:text-gray-50 font-medium border-b-[0.5px] border-gray-400 dark:border-gray-600',
         className
       )}
       {...props}
     >
-      <td className="py-6">
+      <td className="min-w-[4rem] pl-2 md:pl-3">
         <HoverCard.Root openDelay={100}>
-          <HoverCard.Trigger asChild>
+          <HoverCard.Trigger>
+            <Avatar.Root fallbackName={coin.symbol} className="w-10 h-10">
+              <Avatar.Image src={coin.avatar} alt={`${coin.symbol} contract`} />
+            </Avatar.Root>
+          </HoverCard.Trigger>
+
+          <HoverCard.Content
+            side="right"
+            variant="highlighted"
+            className="text-sm uppercase"
+          >
+            {coin.symbol}
+            <HoverCard.Arrow />
+          </HoverCard.Content>
+        </HoverCard.Root>
+      </td>
+
+      <td className="min-w-[8rem] py-6">
+        <HoverCard.Root openDelay={100}>
+          <HoverCard.Trigger>
             <button
               onClick={() => handleCopyToClipboard(sender)}
             >{`${sender.slice(0, 4)}...${sender.slice(-4)}`}</button>
           </HoverCard.Trigger>
 
-          <HoverCard.Content
-            side="top"
-            variant="highlighted"
-            className="text-sm"
-          >
+          <HoverCard.Content variant="highlighted" className="text-sm">
             {t.home.copyAddress}
             <HoverCard.Arrow />
           </HoverCard.Content>
         </HoverCard.Root>
       </td>
 
-      <td className="py-3">
+      <td className="min-w-[8rem] py-3">
         <HoverCard.Root>
-          <HoverCard.Trigger asChild>
+          <HoverCard.Trigger>
             <button
               onClick={() => handleCopyToClipboard(receiver)}
             >{`${receiver.slice(0, 4)}...${receiver.slice(-4)}`}</button>
@@ -80,7 +96,7 @@ export function TransactionsTableTr({
         </HoverCard.Root>
       </td>
 
-      <td>
+      <td className="min-w-[8rem]">
         <div className="flex flex-col">
           <Text
             className={clsx('uppercase', {
@@ -88,7 +104,7 @@ export function TransactionsTableTr({
               'text-red-500': category === 'debit'
             })}
           >
-            {value.valueInTokens} {token.symbol}
+            {value.valueInTokens} {coin.symbol}
           </Text>
 
           <Text className="text-sm text-gray-500 dark:text-gray-400">
@@ -97,9 +113,9 @@ export function TransactionsTableTr({
         </div>
       </td>
 
-      <td className="capitalize">{category}</td>
+      <td className="min-w-[7rem] capitalize">{category}</td>
 
-      <td>
+      <td className="min-w-[8rem]">
         <Text className="inline-block w-[5.5rem] text-sm break-all">
           {dayjs(transactedAt).format('DD/MM/YYYY hh:mm')}
         </Text>

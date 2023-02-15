@@ -1,48 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 
-interface TransactionCoinProps {
-  scanUrl: string
-  explorerUrl: string
-  symbol: string
-  avatar: string
-  decimals: number
-}
-
-interface TransactionProps {
-  transactionLink: string
-  transactedAt: Date
-  category: 'debit' | 'credit'
-  sender: string
-  receiver: string
-  token: {
-    symbol: string
-    avatar: string
-  }
-  value: {
-    valueInDollar: number
-    valueInTokens: number
-  }
-}
-
-interface FetchAllNetworksTransactionsInput {
-  coins?: TransactionCoinProps[]
-  page: number
-  offset: number
-  account?: string
-}
-
-interface GetNetworkTrasactionResponse {
-  result: {
-    timeStamp: string
-    hash: string
-    from: string
-    to: string
-    value: string
-  }[]
-}
-
-type FetchAllNetworksTransactionsResponse = TransactionProps[]
+import {
+  FetchAllNetworksTransactionsInput,
+  FetchAllNetworksTransactionsResponse,
+  GetCoinWindowPriceResponse,
+  GetNetworkTrasactionResponse,
+  TransactionProps,
+  TransactionCoinProps
+} from '@hooks/home/queries/interfaces'
+import { getCoinWindowPriceUrl } from '@utils/global/coins'
 
 async function fetchAllNetworksTransactions({
   account,
@@ -75,24 +42,53 @@ async function fetchAllNetworksTransactions({
       }
     )
 
-    data.result.forEach(tx => {
-      formattedTransactions.push({
-        transactedAt: new Date(Number(tx.timeStamp) * 1000),
-        category:
-          tx.from.toLowerCase() === account.toLowerCase() ? 'debit' : 'credit',
-        transactionLink: `${coin.explorerUrl}/tx/${tx.hash}`,
-        sender: tx.from,
-        receiver: tx.to,
-        token: {
-          symbol: coin.symbol,
-          avatar: coin.avatar
-        },
-        value: {
-          valueInDollar: 0.1,
-          valueInTokens: Number(tx.value) / Math.pow(10, coin.decimals)
+    const transactionsPromise = data.result.map<Promise<TransactionProps>>(
+      async tx => {
+        const transactedAt = new Date(Number(tx.timeStamp) * 1000)
+
+        const coinWindowPriceUrl = getCoinWindowPriceUrl(
+          coin.symbol,
+          transactedAt
+        )
+
+        let transactionUsdValue = 0
+
+        if (coinWindowPriceUrl) {
+          try {
+            const { data } = await axios.get<GetCoinWindowPriceResponse>(
+              coinWindowPriceUrl
+            )
+
+            transactionUsdValue = data.market_data.current_price.usd
+          } catch (error) {
+            console.log(error)
+          }
         }
-      })
-    })
+
+        const txCategory =
+          tx.from.toLowerCase() === account.toLowerCase() ? 'debit' : 'credit'
+
+        return {
+          transactedAt,
+          category: txCategory,
+          transactionLink: `${coin.explorerUrl}/tx/${tx.hash}`,
+          sender: tx.from,
+          receiver: tx.to,
+          token: {
+            symbol: coin.symbol,
+            avatar: coin.avatar
+          },
+          value: {
+            valueInDollar: Number(transactionUsdValue.toFixed(2)),
+            valueInTokens: Number(tx.value) / Math.pow(10, coin.decimals)
+          }
+        }
+      }
+    )
+
+    const transactions = await Promise.all(transactionsPromise)
+
+    formattedTransactions.push(...transactions)
   })
 
   await Promise.all(transactionsPromise)

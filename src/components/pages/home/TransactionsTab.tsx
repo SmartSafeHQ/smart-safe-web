@@ -74,6 +74,8 @@ export function TransactionsTab({
                   <table className="w-full">
                     <thead className="border-b-[0.5px] border-gray-400 dark:border-gray-600">
                       <tr className="text-sm font-normal uppercase text-gray-400 dark:text-gray-500">
+                        <TransactionsTable.Th> </TransactionsTable.Th>
+
                         <TransactionsTable.Th>
                           {t.home.sender}
                         </TransactionsTable.Th>
@@ -101,18 +103,23 @@ export function TransactionsTab({
                     </thead>
 
                     <tbody>
-                      {data?.map(transaction => (
-                        <TransactionsTable.Tr
-                          key={transaction.transactionLink}
-                          transactionLink={transaction.transactionLink}
-                          sender={transaction.sender}
-                          transactedAt={transaction.transactedAt}
-                          receiver={transaction.receiver}
-                          token={transaction.token}
-                          category={transaction.category}
-                          value={transaction.value}
-                        />
-                      ))}
+                      {data
+                        ?.sort(
+                          (a, b) =>
+                            b.transactedAt.getTime() - a.transactedAt.getTime()
+                        )
+                        .map(transaction => (
+                          <TransactionsTable.Tr
+                            key={transaction.transactionLink}
+                            transactionLink={transaction.transactionLink}
+                            sender={transaction.sender}
+                            transactedAt={transaction.transactedAt}
+                            receiver={transaction.receiver}
+                            coin={transaction.token}
+                            category={transaction.category}
+                            value={transaction.value}
+                          />
+                        ))}
                     </tbody>
                   </table>
                 </ScrollArea>
