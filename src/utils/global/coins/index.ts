@@ -7,17 +7,8 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     chainId: 80001,
     decimals: 18,
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
-    explorerUrl: 'https://mumbai.polygonscan.com/'
-  },
-  {
-    symbol: 'celo',
-    network: 'celo',
-    avatar:
-      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/celo.svg',
-    chainId: 44787,
-    decimals: 18,
-    rpcUrl: 'https://alfajores-forno.celo-testnet.org/',
-    explorerUrl: 'https://alfajores-blockscout.celo-testnet.org/'
+    explorerUrl: 'https://mumbai.polygonscan.com/',
+    scanUrl: 'https://api-testnet.polygonscan.com/api'
   },
   {
     symbol: 'bnb',
@@ -27,7 +18,8 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     chainId: 97,
     decimals: 18,
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-    explorerUrl: 'https://testnet.bscscan.com'
+    explorerUrl: 'https://testnet.bscscan.com',
+    scanUrl: 'https://api-testnet.bscscan.com/api'
   }
 ]
 

@@ -8,7 +8,8 @@ import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { TransactionsTable } from '@components/pages/home/TransactionsTable'
 
 import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/global/constants/variables'
-import { useAccountTransactions } from '@hooks/home/queries/useAccountTransactions'
+import { useAllNetworksTransactions } from '@hooks/home/queries/useAllNetworksTransactions'
+import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 
@@ -26,8 +27,17 @@ export function TransactionsTab({
   const { customer } = useAuth()
   const { t } = useI18n()
 
+  const { data: customerCoinsData } = useCustomerCoins(
+    customer?.wallet.address,
+    isTabActive
+  )
+
   const { data, isLoading, isFetching, refetch, error } =
-    useAccountTransactions(customer?.wallet.address, isTabActive)
+    useAllNetworksTransactions(
+      customerCoinsData,
+      customer?.wallet.address,
+      isTabActive
+    )
 
   return (
     <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-white dark:bg-gray-800 rounded-md">

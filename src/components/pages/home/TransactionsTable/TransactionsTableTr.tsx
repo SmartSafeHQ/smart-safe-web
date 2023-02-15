@@ -51,7 +51,7 @@ export function TransactionsTableTr({
           <HoverCard.Trigger asChild>
             <button
               onClick={() => handleCopyToClipboard(sender)}
-            >{`${sender.slice(0, 6)}...${sender.slice(-6)}`}</button>
+            >{`${sender.slice(0, 4)}...${sender.slice(-4)}`}</button>
           </HoverCard.Trigger>
 
           <HoverCard.Content
@@ -70,7 +70,7 @@ export function TransactionsTableTr({
           <HoverCard.Trigger asChild>
             <button
               onClick={() => handleCopyToClipboard(receiver)}
-            >{`${receiver.slice(0, 6)}...${receiver.slice(-6)}`}</button>
+            >{`${receiver.slice(0, 4)}...${receiver.slice(-4)}`}</button>
           </HoverCard.Trigger>
 
           <HoverCard.Content variant="highlighted" className="text-sm">
