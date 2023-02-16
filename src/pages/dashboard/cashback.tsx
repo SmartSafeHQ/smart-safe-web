@@ -16,13 +16,15 @@ const Cashback = () => {
       </Head>
 
       <div className="flex flex-col gap-5">
-        <div className="flex gap-5 flex-col">
+        <div className="flex gap-2 flex-col">
           <Balance />
 
-          <h1>{t.cashback.cashbackDescription}</h1>
+          <div className="border-t border-gray-800"></div>
         </div>
 
-        <div className="flex items-center gap-5 justify-between max-w-screen-md">
+        <h1>{t.cashback.cashbackDescription}</h1>
+
+        <div className="flex items-center gap-5 max-w-screen-md flex-wrap">
           <Card companyImageUrl="/cashback/c&a.png" companyName="C&A" />
           <Card companyImageUrl="/cashback/ifood.png" companyName="iFood" />
           <Card companyImageUrl="/cashback/amazon.png" companyName="Amazon" />
