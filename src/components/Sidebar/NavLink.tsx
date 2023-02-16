@@ -37,7 +37,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
     <Text
       asChild
       className={clsx(
-        'w-full flex flex-row items-center gap-5 text-lg capitalize font-medium transition-all hover:brightness-110 hover:dark:brightness-75 md:flex-col md:gap-1 md:text-xs lg:flex-row lg:gap-5 lg:text-base',
+        'w-full flex flex-row items-center gap-5 text-lg capitalize font-medium transition-all hover:brightness-110 hover:dark:brightness-75 md:flex-col md:gap-1 md:text-xs lg:flex-row lg:gap-5 lg:text-base text-center',
         {
           'text-cyan-500': isActive,
           'pointer-events-none text-gray-400 dark:brightness-50': isDisabled

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
 
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { Text } from '@components/Text'
@@ -7,25 +7,21 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { TransactionsTable } from '@components/pages/home/TransactionsTable'
 
-import { MAX_APPS_USERS_REGISTERS_PER_PAGE } from '@utils/global/constants/variables'
+import { MAX_PAGINATION_TRANSACTIONS_PER_PAGE } from '@utils/global/constants/variables'
 import { useAllNetworksTransactions } from '@hooks/home/queries/useAllNetworksTransactions'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 
 interface TransactionsTabProps {
-  page: number
-  setPage: Dispatch<SetStateAction<number>>
   isTabActive?: boolean
 }
 
-export function TransactionsTab({
-  page,
-  isTabActive = false,
-  setPage
-}: TransactionsTabProps) {
+export function TransactionsTab({ isTabActive = false }: TransactionsTabProps) {
   const { customer } = useAuth()
   const { t } = useI18n()
+
+  const [page, setPage] = useState(1)
 
   const { data: customerCoinsData } = useCustomerCoins(
     customer?.wallet.address,
@@ -34,10 +30,13 @@ export function TransactionsTab({
 
   const { data, isLoading, isFetching, refetch, error } =
     useAllNetworksTransactions(
-      customerCoinsData,
+      customerCoinsData?.coins,
       customer?.wallet.address,
       isTabActive
     )
+
+  const paginationStart = (page - 1) * MAX_PAGINATION_TRANSACTIONS_PER_PAGE
+  const paginationEnd = paginationStart + MAX_PAGINATION_TRANSACTIONS_PER_PAGE
 
   return (
     <section className="w-full h-full min-h-[30rem] p-6 flex flex-col justify-start items-stretch gap-4 bg-white dark:bg-gray-800 rounded-md">
@@ -52,7 +51,7 @@ export function TransactionsTab({
       ) : (
         data && (
           <>
-            {data?.length === 0 ? (
+            {data.totalCount === 0 ? (
               <Text
                 asChild
                 className="w-full mt-5 text-center text-lg font-medium text-gray-800 dark:text-gray-300"
@@ -62,10 +61,10 @@ export function TransactionsTab({
             ) : (
               <>
                 <PaginationFetch
-                  registersPerPage={MAX_APPS_USERS_REGISTERS_PER_PAGE}
+                  registersPerPage={10}
                   currentPage={page}
                   onPageChange={setPage}
-                  totalCountOfRegisters={data?.length ?? 1}
+                  totalCountOfRegisters={data.totalCount}
                   isFetching={isFetching}
                   handleRefetch={refetch}
                 />
@@ -89,25 +88,22 @@ export function TransactionsTab({
                         </TransactionsTable.Th>
 
                         <TransactionsTable.Th>
-                          {t.home.category}
-                        </TransactionsTable.Th>
-
-                        <TransactionsTable.Th>
                           {t.home.madeAt}
                         </TransactionsTable.Th>
 
                         <TransactionsTable.Th>
-                          {t.home.goToInvoice}
+                          {t.home.proof}
                         </TransactionsTable.Th>
                       </tr>
                     </thead>
 
                     <tbody>
-                      {data
-                        ?.sort(
+                      {data.transactions
+                        .sort(
                           (a, b) =>
                             b.transactedAt.getTime() - a.transactedAt.getTime()
                         )
+                        .slice(paginationStart, paginationEnd)
                         .map(transaction => (
                           <TransactionsTable.Tr
                             key={transaction.transactionLink}

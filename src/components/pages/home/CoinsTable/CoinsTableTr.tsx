@@ -67,35 +67,6 @@ export function CoinsTableTr({
       </td>
 
       <td>
-        <CoinsTableDataFetching
-          isLoading={portfolioIsLoading}
-          isRefetching={portfolioIsRefetching}
-          error={!!portfolioError}
-          classObject={
-            portfolioData && {
-              'text-green-500': portfolioData?.changePercent > 0,
-              'text-red-500': portfolioData?.changePercent < 0
-            }
-          }
-        >
-          {portfolioData &&
-            `${new Intl.NumberFormat('en-US', {
-              signDisplay: 'exceptZero'
-            }).format(Number(portfolioData?.changePercent.toFixed(2)))}%`}
-        </CoinsTableDataFetching>
-      </td>
-
-      <td>
-        <CoinsTableDataFetching
-          isLoading={usdValueIsLoading}
-          isRefetching={usdValueIsRefetching}
-          error={!!usdValueError}
-        >
-          {usdValueData && `$${usdValueData.valueInUsd.toFixed(2)}`}
-        </CoinsTableDataFetching>
-      </td>
-
-      <td>
         <div className="flex flex-col">
           <CoinsTableDataFetching
             isLoading={usdValueIsLoading || portfolioIsLoading}
@@ -120,6 +91,35 @@ export function CoinsTableTr({
             {portfolioData && `${portfolioData.balance} ${symbol}`}
           </CoinsTableDataFetching>
         </div>
+      </td>
+
+      <td>
+        <CoinsTableDataFetching
+          isLoading={usdValueIsLoading}
+          isRefetching={usdValueIsRefetching}
+          error={!!usdValueError}
+        >
+          {usdValueData && `$${usdValueData.valueInUsd.toFixed(2)}`}
+        </CoinsTableDataFetching>
+      </td>
+
+      <td>
+        <CoinsTableDataFetching
+          isLoading={portfolioIsLoading}
+          isRefetching={portfolioIsRefetching}
+          error={!!portfolioError}
+          classObject={
+            portfolioData && {
+              'text-green-500': portfolioData?.changePercent > 0,
+              'text-red-500': portfolioData?.changePercent < 0
+            }
+          }
+        >
+          {portfolioData &&
+            `${new Intl.NumberFormat('en-US', {
+              signDisplay: 'exceptZero'
+            }).format(Number(portfolioData?.changePercent.toFixed(2)))}%`}
+        </CoinsTableDataFetching>
       </td>
     </tr>
   )

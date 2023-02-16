@@ -13,7 +13,7 @@ export const home = {
   value: 'value',
   category: 'category',
   madeAt: 'made at',
-  goToInvoice: 'Go to invoice',
+  proof: 'proof',
   copyAddress: 'Copy address',
   loadingNetworksCoins: 'Loading networks coins',
   name: 'name',

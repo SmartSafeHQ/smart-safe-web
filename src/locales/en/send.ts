@@ -14,7 +14,7 @@ export const send = {
   sent: 'sent',
   copyAddress: 'Copy address',
   date: 'date',
-  invoice: 'invoice',
-  goToInvoice: 'Go to invoice',
+  proof: 'proof',
+  viewProof: 'view proof',
   backToSend: 'Back to send'
 }

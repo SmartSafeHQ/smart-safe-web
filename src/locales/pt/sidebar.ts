@@ -16,7 +16,7 @@ export const sidebar = {
     {
       href: '/dashboard/home',
       icon: House,
-      title: 'pricipal',
+      title: 'principal',
       isDisabled: false
     },
     {
