@@ -109,7 +109,7 @@ function DialogModalContent({
 }: DialogModalContentProps) {
   return (
     <RadixDialog.Portal className="relative">
-      <RadixDialog.Overlay className="fixed z-50 inset-0 bg-black bg-opacity-40 animate-dialog-open" />
+      <RadixDialog.Overlay className="fixed z-20 inset-0 bg-black bg-opacity-40 animate-dialog-open" />
 
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 p-0 md:p-8">
         <RadixDialog.Content

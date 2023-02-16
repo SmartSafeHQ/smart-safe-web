@@ -12,8 +12,6 @@ export function Heading({ asChild, children, className }: HeadingProps) {
   const Comp = asChild ? Slot : 'h2'
 
   return (
-    <Comp className={clsx('dark:text-gray-100 font-bold font-sans', className)}>
-      {children}
-    </Comp>
+    <Comp className={clsx('font-bold font-sans', className)}>{children}</Comp>
   )
 }

@@ -6,6 +6,7 @@ import { Text } from '@components/Text'
 import { useAuth } from '@contexts/AuthContext'
 import { ActionButton } from '@components/pages/Receive/ActionButton'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
+import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
 
 import { useReceive } from '@hooks/receive/useReceive'
 import { handleCopyToClipboardToastMessage } from '@utils/global'
@@ -67,28 +68,22 @@ const Receive = () => {
           </div>
 
           <div className="pt-5 border-t-2 border-t-gray-300 dark:border-t-gray-700">
-            <div className="w-full flex gap-4 items-center justify-between p-3 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md sm:p-5">
-              <div className="flex items-center gap-3">
-                <Wallet className="w-7 h-7 text-cyan-500" />
+            <WalletInfos
+              title={t.receive.destiny}
+              Icon={Wallet}
+              className="p-5"
+            >
+              <Text asChild className="text-gray-700 dark:text-gray-50 ">
+                <strong>{customer?.name}</strong>
+              </Text>
 
-                <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-300 sm:text-lg">
-                  {t.receive.destiny}
-                </Text>
-              </div>
-
-              <div className="flex flex-wrap flex-col text-right gap-1 capitalize">
-                <Text asChild className="text-gray-700 dark:text-gray-50 ">
-                  <strong>{customer?.name}</strong>
-                </Text>
-
-                <Text
-                  asChild
-                  className="text-xs text-gray-600 dark:text-gray-300"
-                >
-                  <span>{customer?.email.substring(0, 25)}...</span>
-                </Text>
-              </div>
-            </div>
+              <Text
+                asChild
+                className="text-xs text-gray-600 dark:text-gray-300"
+              >
+                <span>{customer?.email.substring(0, 20)}...</span>
+              </Text>
+            </WalletInfos>
           </div>
         </section>
       </div>

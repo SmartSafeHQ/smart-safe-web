@@ -6,7 +6,6 @@ import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
 
 interface SendFunctionInput {
   to: string
-  fromWalletAddress: string
   fromWalletPrivateKey: string
   amount: number
   chainId: number
@@ -23,26 +22,28 @@ async function sendFunction(
   const provider = new providers.JsonRpcProvider(input.rpcUrl)
   const wallet = new Wallet(input.fromWalletPrivateKey, provider)
 
+  const amountToSend = utils.parseEther(input?.amount.toFixed(6))
+
   const nonce = await wallet.getTransactionCount()
 
-  const { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
+  const gasPrice = await provider.getGasPrice()
 
   const signedTransaction = await wallet.signTransaction({
     from: wallet.address,
     to: input?.to,
-    value: utils.parseEther(input?.amount.toFixed(6)),
+    value: amountToSend,
     nonce,
     chainId: input?.chainId,
     gasLimit: DEFAULT_GAS_LIMIT,
-    maxPriorityFeePerGas: maxPriorityFeePerGas || utils.parseUnits('5', 'gwei'),
-    maxFeePerGas: maxFeePerGas || utils.parseUnits('5', 'gwei'),
-    type: 2
+    gasPrice
   })
 
   const transaction = await provider.sendTransaction(signedTransaction)
   const response = await transaction.wait()
 
-  return { transactionHash: response.transactionHash }
+  return {
+    transactionHash: response.transactionHash
+  }
 }
 
 export function useSendMutation() {

@@ -14,7 +14,7 @@ export const home = {
   category: 'categoria',
   madeAt: 'realizado em',
   goToInvoice: 'Ir para fatura',
-  copyAddres: 'Copiar endereço',
+  copyAddress: 'Copiar endereço',
   loadingNetworksCoins: 'Carregando moedas da rede',
   name: 'nome',
   change24h: 'percentual (24h)',

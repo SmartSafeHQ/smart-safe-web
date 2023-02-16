@@ -14,9 +14,11 @@ import { useI18n } from '@hooks/useI18n'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
 import { useCoinValueInUsd } from '@hooks/global/coins/queries/useCoinValueInUsd'
+import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
 import {
   AmountInputType,
   CoinProps,
+  HandleSendTransactionProps,
   TransactionProps
 } from '@hooks/send/interfaces'
 
@@ -29,8 +31,8 @@ type SendFieldValues = z.infer<typeof validationSchema>
 
 export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
   symbol: 'usd',
-  defaultValue: '$ 0.00 USD',
-  availableDecimals: 4,
+  defaultValue: '$0.00 USD',
+  decimals: 4,
   convertCoins: getUsdAmountInCoinExchangeRate,
   currency: '$'
 }
@@ -73,6 +75,13 @@ export const useSend = () => {
   const { data: coinInUsdData, isFetching: coinInUsdIsFetching } =
     useCoinValueInUsd(selectedCoin?.symbol)
 
+  const {
+    mutateAsync,
+    isLoading: isSendingTx,
+    data: txData,
+    reset
+  } = useSendMutation()
+
   useEffect(() => {
     if (!coinsData || selectedCoin) {
       return
@@ -101,7 +110,7 @@ export const useSend = () => {
 
     setValue(
       'amount',
-      `${amountInputType?.currency ?? ''} ${formattedAmount} ${
+      `${amountInputType?.currency ?? ''}${formattedAmount} ${
         amountInputType.symbol
       }`
     )
@@ -114,7 +123,7 @@ export const useSend = () => {
       setAmountInputType({
         symbol: selectedCoin?.symbol ?? 'usd',
         defaultValue: `0.00 ${selectedCoin?.symbol}`,
-        availableDecimals: 2,
+        decimals: 2,
         convertCoins: getCoinAmountInUsd,
         reverseSymbol: 'usd'
       })
@@ -141,7 +150,7 @@ export const useSend = () => {
     setAmountInputType({
       ...amountInputType,
       symbol: coin.symbol,
-      availableDecimals: 2,
+      decimals: 2,
       convertCoins: getCoinAmountInUsd,
       reverseSymbol: 'usd'
     })
@@ -169,6 +178,29 @@ export const useSend = () => {
     }
   }
 
+  async function handleSendTransaction({
+    chainId,
+    rpcUrl,
+    amount,
+    to
+  }: HandleSendTransactionProps) {
+    if (!customer) return
+
+    try {
+      await mutateAsync({
+        chainId,
+        rpcUrl,
+        fromWalletPrivateKey: customer.wallet.privateKey,
+        to,
+        amount
+      })
+
+      toast.success(`Transaction done successfully`)
+    } catch (error) {
+      toast.error(`Error. ${(error as Error).message}`)
+    }
+  }
+
   return {
     t,
     coinsData,
@@ -180,11 +212,15 @@ export const useSend = () => {
     amounInReverseCoin,
     amountInputType,
     handleSubmit,
+    isSendingTx,
+    txData,
+    reset,
     onSubmit,
     register,
     errors,
     handleChangeAmountInput,
     handleToggleAmountInputType,
+    handleSendTransaction,
     selectedCoin,
     transaction,
     customer,

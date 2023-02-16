@@ -43,9 +43,7 @@ async function loginFunction(
 
   return {
     cognitoId: sessionData.sub,
-    name: sessionData?.name // TEMP WHILE WIDGET DOESNT SAVE THE NAME TOO
-      ? sessionData.name
-      : sessionData?.email?.substring(0, 8),
+    name: sessionData.name,
     wallet: {
       address: apiResponse.data.wallets[0].address,
       privateKey: apiResponse.data.wallets[0].private_key

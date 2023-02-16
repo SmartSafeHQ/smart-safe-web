@@ -10,7 +10,7 @@ export interface CoinProps {
 export interface AmountInputType {
   symbol: 'usd' | string
   defaultValue: string
-  availableDecimals: number
+  decimals: number
   convertCoins: (_amount: number, _usdPerCoin: number) => number
   currency?: string
   reverseSymbol?: string
@@ -25,7 +25,6 @@ export interface TransactionProps {
 export interface HandleSendTransactionProps {
   chainId: number
   rpcUrl: string
-  explorerUrl: string
   amount: number
   to: string
 }

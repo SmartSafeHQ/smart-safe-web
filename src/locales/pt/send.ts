@@ -10,5 +10,11 @@ export const send = {
   fee: 'Taxa',
   from: 'De',
   address: 'Endereço',
-  seeOn: 'Ver em'
+  seeOn: 'Ver em',
+  sent: 'Enviado',
+  copyAddress: 'Copiar endereço',
+  date: 'data',
+  invoice: 'fatura',
+  goToInvoice: 'Ir para fatura',
+  backToSend: 'Voltar ao envio'
 }
