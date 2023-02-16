@@ -9,7 +9,7 @@ interface FetchCustomerCoinsInput {
   offset: number
 }
 
-interface FetchCustomerCoinsResponse {
+export interface FetchCustomerCoinsResponse {
   coins: {
     symbol: string
     network: string

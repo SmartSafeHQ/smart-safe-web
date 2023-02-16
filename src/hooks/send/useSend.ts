@@ -62,7 +62,7 @@ export const useSend = () => {
   )
 
   const [selectedCoin, setSelectedCoin] = useState<CoinProps | null>(
-    (coinsData && coinsData[0]) ?? null
+    (coinsData && coinsData.coins[0]) ?? null
   )
 
   const [amountInputType, setAmountInputType] = useState<AmountInputType>(
@@ -87,11 +87,11 @@ export const useSend = () => {
       return
     }
 
-    setSelectedCoin(coinsData[0])
+    setSelectedCoin(coinsData.coins[0])
 
     setAmountInputType({
       ...DEFAULT_AMOUNT_INPUT_TYPE,
-      reverseSymbol: coinsData[0]?.symbol
+      reverseSymbol: coinsData.coins[0]?.symbol
     })
   }, [coinsData])
 
@@ -142,7 +142,7 @@ export const useSend = () => {
   function handleChangeCoin(coinIndex: string) {
     if (!coinsData) return
 
-    const coin = coinsData[Number(coinIndex)]
+    const coin = coinsData.coins[Number(coinIndex)]
 
     setSelectedCoin(coin)
     setValue('amount', `${currentAmount.toFixed(2)} ${coin.symbol}`)

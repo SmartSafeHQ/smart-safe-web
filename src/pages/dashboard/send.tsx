@@ -59,7 +59,7 @@ const Send = () => {
             <Skeleton isLoading={coinsIsLoading} className="h-12">
               {coinsData && (
                 <CoinsDropDownInput
-                  coins={coinsData}
+                  coins={coinsData.coins}
                   onValueChange={handleChangeCoin}
                 />
               )}

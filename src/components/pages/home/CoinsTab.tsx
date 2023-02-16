@@ -1,30 +1,26 @@
-import { useState } from 'react'
-
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { ScrollArea } from '@components/ScrollArea'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { CoinsTable } from '@components/pages/home/CoinsTable'
 
-import { useAuth } from '@contexts/AuthContext'
 import { MAX_PAGINATION_COINS_PER_PAGE } from '@utils/global/constants/variables'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
-import { useI18n } from '@/hooks/useI18n'
+import { useHomeCoinsTab } from '@hooks/home/useHomeCoinsTab'
 
 interface CoinsTabProps {
   isTabActive?: boolean
 }
 
 export function CoinsTab({ isTabActive = false }: CoinsTabProps) {
-  const { customer } = useAuth()
-  const { t } = useI18n()
+  const { t, customer, page, setPage, isFetching, handleRefetchCoins } =
+    useHomeCoinsTab()
 
-  const [page, setPage] = useState(1)
-
-  const { data, isLoading, isFetching, refetch, error } = useCustomerCoins(
+  const { data, isLoading, error } = useCustomerCoins(
     customer?.wallet.address,
     isTabActive,
-    page
+    page,
+    MAX_PAGINATION_COINS_PER_PAGE
   )
 
   return (
@@ -46,7 +42,7 @@ export function CoinsTab({ isTabActive = false }: CoinsTabProps) {
               onPageChange={setPage}
               totalCountOfRegisters={data.totalCount}
               isFetching={isFetching}
-              handleRefetch={refetch}
+              handleRefetch={() => handleRefetchCoins(page)}
             />
 
             <ScrollArea className="w-full max-w-full">
