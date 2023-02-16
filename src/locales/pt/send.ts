@@ -14,7 +14,7 @@ export const send = {
   sent: 'Enviado',
   copyAddress: 'Copiar endereço',
   date: 'data',
-  invoice: 'fatura',
-  goToInvoice: 'Ir para fatura',
+  proof: 'comprovante',
+  viewProof: 'ver comprovante',
   backToSend: 'Voltar ao envio'
 }

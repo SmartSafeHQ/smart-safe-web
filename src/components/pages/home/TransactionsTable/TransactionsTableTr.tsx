@@ -1,7 +1,7 @@
 import { HTMLAttributes } from 'react'
 import dayjs from 'dayjs'
 import clsx from 'clsx'
-import { ArrowSquareOut } from 'phosphor-react'
+import { ArrowDown, ArrowSquareOut, ArrowUp } from 'phosphor-react'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
@@ -42,7 +42,7 @@ export function TransactionsTableTr({
   return (
     <tr
       className={clsx(
-        'text-gray-800 dark:text-gray-50 font-medium border-b-[0.5px] border-gray-400 dark:border-gray-600',
+        'text-gray-800 dark:text-gray-50 font-medium border-b-[0.5px] last:border-b-0 border-gray-400 dark:border-gray-600',
         className
       )}
       {...props}
@@ -98,22 +98,29 @@ export function TransactionsTableTr({
 
       <td className="min-w-[8rem]">
         <div className="flex flex-col">
-          <Text
-            className={clsx('uppercase', {
-              'text-green-500': category === 'credit',
-              'text-red-500': category === 'debit'
-            })}
-          >
-            {value.valueInTokens} {coin.symbol}
-          </Text>
+          {category === 'credit' ? (
+            <div className="w-full flex items-center gap-1 text-green-500">
+              <ArrowUp className="w-4 h-w-4" />
+
+              <Text className="uppercase">
+                {value.valueInTokens} {coin.symbol}
+              </Text>
+            </div>
+          ) : (
+            <div className="w-full flex items-center gap-1 text-red-500">
+              <ArrowDown className="w-4 h-w-4 " />
+
+              <Text className="uppercase">
+                {value.valueInTokens} {coin.symbol}
+              </Text>
+            </div>
+          )}
 
           <Text className="text-sm text-gray-500 dark:text-gray-400">
             ${value.valueInDollar}
           </Text>
         </div>
       </td>
-
-      <td className="min-w-[7rem] capitalize">{category}</td>
 
       <td className="min-w-[8rem]">
         <Text className="inline-block w-[5.5rem] text-sm break-all">

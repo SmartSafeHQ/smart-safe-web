@@ -16,7 +16,7 @@ export const sidebar = {
     {
       href: '/dashboard/home',
       icon: House,
-      title: 'pricipal',
+      title: 'principal',
       isDisabled: false
     },
     {
@@ -40,13 +40,13 @@ export const sidebar = {
     {
       href: '/dashboard/buy',
       icon: CurrencyDollar,
-      title: 'comprar',
+      title: 'comprar crypto',
       isDisabled: true
     },
     {
       href: '/dashboard/marketplace',
       icon: ShoppingCartSimple,
-      title: 'promoções',
+      title: 'cashback',
       isDisabled: true
     },
     {

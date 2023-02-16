@@ -7,7 +7,6 @@ import { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinP
 export type NavTabs = 'coins' | 'transactions' | 'nfts'
 
 export const useHome = () => {
-  const [page, setPage] = useState(1)
   const [tab, setTab] = useState<NavTabs>('coins')
   const [isAccountBalanceLoading, setIsAccountBalanceLoading] = useState(false)
 
@@ -32,8 +31,6 @@ export const useHome = () => {
   }, [coinPortfolioQueries])
 
   return {
-    page,
-    setPage,
     tab,
     setTab,
     isAccountBalanceLoading,

@@ -13,9 +13,7 @@ import { getCoinWindowPriceUrl } from '@utils/global/coins'
 
 async function fetchAllNetworksTransactions({
   account,
-  coins,
-  page,
-  offset
+  coins
 }: FetchAllNetworksTransactionsInput): Promise<FetchAllNetworksTransactionsResponse> {
   if (!account) {
     throw new Error('account is required')
@@ -35,8 +33,8 @@ async function fetchAllNetworksTransactions({
           module: 'account',
           action: 'txlist',
           address: account,
-          page,
-          offset,
+          page: 1,
+          offset: 10,
           sort: 'desc'
         }
       }
@@ -93,21 +91,22 @@ async function fetchAllNetworksTransactions({
 
   await Promise.all(transactionsPromise)
 
-  return formattedTransactions
+  return {
+    transactions: formattedTransactions,
+    totalCount: formattedTransactions.length
+  }
 }
 
 export function useAllNetworksTransactions(
   coins?: TransactionCoinProps[],
   account?: string,
-  enabled = true,
-  page = 1,
-  offset = 2
+  enabled = true
 ) {
   return useQuery({
     queryKey: ['allNetworksTransactions', account],
-    queryFn: () =>
-      fetchAllNetworksTransactions({ account, coins, page, offset }),
+    queryFn: () => fetchAllNetworksTransactions({ account, coins }),
     enabled: enabled && !!account && !!coins,
+    keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes
   })
 }

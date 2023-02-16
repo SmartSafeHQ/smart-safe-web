@@ -91,7 +91,7 @@ export function SendSuccess({
 
         <div className="w-full flex items-start justify-between gap-1">
           <Heading asChild className="dark:text-gray-400 capitalize">
-            <h3>{t.send.invoice}</h3>
+            <h3>{t.send.proof}</h3>
           </Heading>
 
           <Text
@@ -99,7 +99,7 @@ export function SendSuccess({
             className="flex items-center gap-1 text-sm font-semibold transition-colors text-cyan-500 hover:text-cyan-600"
           >
             <a href={transactionUrl} target="_blank" rel="noopener noreferrer">
-              <Text>{t.send.goToInvoice}</Text>
+              <Text>{t.send.viewProof}</Text>
 
               <ArrowSquareOut
                 className="w-3 h-3 md:hidden lg:inline"

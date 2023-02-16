@@ -10,14 +10,7 @@ import { NavTabs, useHome } from '@hooks/home/useHome'
 import { useI18n } from '@/hooks/useI18n'
 
 const Home = () => {
-  const {
-    isAccountBalanceLoading,
-    coinsBalanceData,
-    page,
-    setPage,
-    tab,
-    setTab
-  } = useHome()
+  const { isAccountBalanceLoading, coinsBalanceData, tab, setTab } = useHome()
 
   const { t } = useI18n()
 
@@ -72,19 +65,11 @@ const Home = () => {
           </Tabs.List>
 
           <Tabs.Content value="coins">
-            <CoinsTab
-              page={page}
-              setPage={setPage}
-              isTabActive={tab === 'coins'}
-            />
+            <CoinsTab isTabActive={tab === 'coins'} />
           </Tabs.Content>
 
           <Tabs.Content value="transactions">
-            <TransactionsTab
-              page={page}
-              setPage={setPage}
-              isTabActive={tab === 'transactions'}
-            />
+            <TransactionsTab isTabActive={tab === 'transactions'} />
           </Tabs.Content>
 
           <Tabs.Content value="nfts" className="pt-6">

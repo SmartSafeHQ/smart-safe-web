@@ -24,8 +24,6 @@ export interface TransactionProps {
 
 export interface FetchAllNetworksTransactionsInput {
   coins?: TransactionCoinProps[]
-  page: number
-  offset: number
   account?: string
 }
 
@@ -47,4 +45,7 @@ export interface GetCoinWindowPriceResponse {
   }
 }
 
-export type FetchAllNetworksTransactionsResponse = TransactionProps[]
+export type FetchAllNetworksTransactionsResponse = {
+  transactions: TransactionProps[]
+  totalCount: number
+}
