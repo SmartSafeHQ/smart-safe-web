@@ -5,6 +5,7 @@ import { Text } from '@components/Text'
 import { Avatar } from '@components/Avatar'
 import { CoinsTableDataFetching } from './CoinsTableDataFetching'
 
+import { formatToCurrency } from '@utils/global/coins'
 import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
 import { useCoinValueInUsd } from '@hooks/global/coins/queries/useCoinValueInUsd'
 
@@ -116,9 +117,10 @@ export function CoinsTableTr({
           }
         >
           {portfolioData &&
-            `${new Intl.NumberFormat('en-US', {
+            `${formatToCurrency({
+              floatAmount: portfolioData.changePercent,
               signDisplay: 'exceptZero'
-            }).format(Number(portfolioData?.changePercent.toFixed(2)))}%`}
+            })}%`}
         </CoinsTableDataFetching>
       </td>
     </tr>

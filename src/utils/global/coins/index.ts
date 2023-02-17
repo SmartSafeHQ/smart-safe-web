@@ -22,6 +22,39 @@ export const DEFAULT_COINS_ATTRIBUTES = [
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     explorerUrl: 'https://testnet.bscscan.com',
     scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'celo',
+    network: 'celo',
+    avatar:
+      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/celo.svg',
+    chainId: 44787,
+    decimals: 18,
+    rpcUrl: 'https://alfajores-forno.celo-testnet.org/',
+    explorerUrl: 'https://alfajores-blockscout.celo-testnet.org/',
+    scanUrl: `https://explorer.celo.org/alfajores/api`
+  },
+  {
+    symbol: 'avax',
+    network: 'Avalanche',
+    avatar:
+      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/avalanche.svg',
+    chainId: 43113,
+    decimals: 18,
+    rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
+    explorerUrl: 'https://testnet.snowtrace.io/',
+    scanUrl: `https://api-testnet.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'ETH',
+    network: 'ethereum',
+    avatar:
+      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/ethereum.svg',
+    chainId: 5,
+    decimals: 18,
+    rpcUrl: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    explorerUrl: 'https://goerli.etherscan.io/',
+    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   }
 ]
 
@@ -63,4 +96,31 @@ export function getUsdAmountInCoinExchangeRate(
   usdPerCoin: number
 ) {
   return amountInUsd / usdPerCoin
+}
+
+export function getTransactionTimestampDate(timeStamp: string) {
+  return new Date(Number(timeStamp) * 1000)
+}
+
+export function getWeiToCoinValue(valueInWei: string, coinDecimals = 18) {
+  return Number(valueInWei) / Math.pow(10, coinDecimals)
+}
+
+interface FormatToCurrencyProps extends Intl.NumberFormatOptions {
+  floatAmount: number
+  locale?: string
+}
+
+export function formatToCurrency({
+  floatAmount,
+  locale = 'en-US',
+  minimumFractionDigits = 2,
+  maximumFractionDigits = 2,
+  ...props
+}: FormatToCurrencyProps) {
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits,
+    maximumFractionDigits,
+    ...props
+  }).format(floatAmount)
 }

@@ -9,7 +9,11 @@ import {
   TransactionProps,
   TransactionCoinProps
 } from '@hooks/home/queries/interfaces'
-import { getCoinWindowPriceUrl } from '@utils/global/coins'
+import {
+  getCoinWindowPriceUrl,
+  getTransactionTimestampDate,
+  getWeiToCoinValue
+} from '@utils/global/coins'
 
 async function fetchAllNetworksTransactions({
   account,
@@ -42,7 +46,7 @@ async function fetchAllNetworksTransactions({
 
     const transactionsPromise = data.result.map<Promise<TransactionProps>>(
       async tx => {
-        const transactedAt = new Date(Number(tx.timeStamp) * 1000)
+        const transactedAt = getTransactionTimestampDate(tx.timeStamp)
 
         const coinWindowPriceUrl = getCoinWindowPriceUrl(
           coin.symbol,
@@ -78,7 +82,7 @@ async function fetchAllNetworksTransactions({
           },
           value: {
             valueInDollar: Number(transactionUsdValue.toFixed(2)),
-            valueInTokens: Number(tx.value) / Math.pow(10, coin.decimals)
+            valueInTokens: getWeiToCoinValue(tx.value, coin.decimals)
           }
         }
       }
