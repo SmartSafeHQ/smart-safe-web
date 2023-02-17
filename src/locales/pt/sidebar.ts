@@ -5,7 +5,8 @@ import {
   House,
   PaperPlaneTilt,
   ShoppingCartSimple,
-  Wallet
+  Wallet,
+  Money
 } from 'phosphor-react'
 
 export const sidebar = {
@@ -29,6 +30,12 @@ export const sidebar = {
       href: '/dashboard/send',
       icon: PaperPlaneTilt,
       title: 'enviar',
+      isDisabled: false
+    },
+    {
+      href: '/dashboard/payment',
+      icon: Money,
+      title: 'pagamento',
       isDisabled: false
     },
     {
