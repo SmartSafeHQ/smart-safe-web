@@ -6,6 +6,7 @@ import { pagination } from './pagination'
 import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
+import { cashback } from './cashback'
 
 export const pt = {
   signIn,
@@ -15,5 +16,6 @@ export const pt = {
   pagination,
   home,
   receive,
-  send
+  send,
+  cashback
 }
