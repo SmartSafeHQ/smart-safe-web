@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { DEFAULT_COINS_ATTRIBUTES } from '@utils/global/coins'
+import { COINS_ATTRIBUTES } from '@utils/global/coins/config'
 import { MAX_PAGINATION_COINS_PER_PAGE } from '@utils/global/constants/variables'
 
 interface FetchCustomerCoinsInput {
@@ -35,9 +35,9 @@ export async function fetchCustomerCoins({
   const start = (page - 1) * offset
   const end = start + offset
 
-  const paginattedCoins = DEFAULT_COINS_ATTRIBUTES.slice(start, end)
+  const paginattedCoins = COINS_ATTRIBUTES.slice(start, end)
 
-  return { coins: paginattedCoins, totalCount: DEFAULT_COINS_ATTRIBUTES.length }
+  return { coins: paginattedCoins, totalCount: COINS_ATTRIBUTES.length }
 }
 
 export function useCustomerCoins(
