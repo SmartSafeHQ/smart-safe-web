@@ -9,12 +9,12 @@ import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useHomeCoinsTab } from '@hooks/home/useHomeCoinsTab'
 
 interface CoinsTabProps {
+  isFetching: boolean
   isTabActive?: boolean
 }
 
-export function CoinsTab({ isTabActive = false }: CoinsTabProps) {
-  const { t, customer, page, setPage, isFetching, handleRefetchCoins } =
-    useHomeCoinsTab()
+export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
+  const { t, customer, page, setPage, handleRefetchCoins } = useHomeCoinsTab()
 
   const { data, isLoading, error } = useCustomerCoins(
     customer?.wallet.address,

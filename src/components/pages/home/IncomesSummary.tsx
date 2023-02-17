@@ -72,17 +72,20 @@ IncomesSummaryTitle.displayName = 'IncomesSummary.Title'
 
 interface IncomesSummaryValueProps extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode
+  isFetching?: boolean
 }
 
 export function IncomesSummaryValue({
   children,
   className,
+  isFetching = false,
   ...props
 }: IncomesSummaryValueProps) {
   return (
     <Text
       className={clsx(
         'font-bold text-gray-800 dark:text-gray-50 capitalize',
+        { 'animate-pulse': isFetching },
         className
       )}
       {...props}

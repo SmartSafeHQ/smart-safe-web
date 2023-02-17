@@ -1,4 +1,3 @@
-import { useIsFetching } from '@tanstack/react-query'
 import { useState } from 'react'
 
 import { queryClient } from '@lib/reactQuery'
@@ -11,17 +10,6 @@ export const useHomeCoinsTab = () => {
   const { customer } = useAuth()
 
   const [page, setPage] = useState(1)
-
-  const coinPortfolioFetchingQueries = useIsFetching({
-    queryKey: ['coinPortfolio']
-  })
-
-  const coinValueInUsdFetchingQueries = useIsFetching({
-    queryKey: ['coinValueInUsd']
-  })
-
-  const isFetching =
-    !!coinPortfolioFetchingQueries || !!coinValueInUsdFetchingQueries
 
   function handleRefetchCoins(page: number) {
     const query = queryClient.getQueryData<FetchCustomerCoinsResponse>([
@@ -49,7 +37,6 @@ export const useHomeCoinsTab = () => {
     customer,
     page,
     setPage,
-    isFetching,
     handleRefetchCoins
   }
 }

@@ -181,6 +181,7 @@ export const useSend = () => {
   async function handleSendTransaction({
     chainId,
     rpcUrl,
+    symbol,
     amount,
     to
   }: HandleSendTransactionProps) {
@@ -190,6 +191,7 @@ export const useSend = () => {
       await mutateAsync({
         chainId,
         rpcUrl,
+        symbol,
         fromWalletPrivateKey: customer.wallet.privateKey,
         to,
         amount

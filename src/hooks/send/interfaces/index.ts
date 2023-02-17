@@ -25,6 +25,7 @@ export interface TransactionProps {
 export interface HandleSendTransactionProps {
   chainId: number
   rpcUrl: string
+  symbol: string
   amount: number
   to: string
 }

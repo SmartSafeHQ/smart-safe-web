@@ -23,7 +23,7 @@ export interface FetchCustomerCoinsResponse {
   totalCount: number
 }
 
-async function fetchCustomerCoins({
+export async function fetchCustomerCoins({
   page,
   offset,
   account
