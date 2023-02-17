@@ -3,12 +3,16 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
+import { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
+import { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
+import { FetchCoinFeeDataResponse } from '@hooks/global/coins/queries/useCoinFeeData'
 
 interface SendFunctionInput {
   to: string
   fromWalletPrivateKey: string
   amount: number
   chainId: number
+  symbol: string
   rpcUrl: string
 }
 
@@ -50,8 +54,62 @@ export function useSendMutation() {
   return useMutation({
     mutationKey: ['send'],
     mutationFn: (input: SendFunctionInput) => sendFunction(input),
-    onSuccess: async () => {
+    onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries(['send'])
+
+      const gasFeeUsed =
+        await queryClient.ensureQueryData<FetchCoinFeeDataResponse>([
+          'coinFeeData',
+          variables.rpcUrl
+        ])
+
+      const txAmountWithFee = variables.amount + Number(gasFeeUsed.valueInCoin)
+
+      queryClient.setQueryData<FetchCoinPortfolioResponse>(
+        ['coinPortfolio', variables.rpcUrl],
+        prevCoin => {
+          if (!prevCoin) return
+
+          const newBalance = prevCoin.balance - txAmountWithFee
+
+          return {
+            balance: Number(newBalance.toFixed(6)),
+            changePercent: prevCoin.changePercent
+          }
+        }
+      )
+
+      queryClient.setQueryData<FetchCoinsBalanceInUsdResponse>(
+        ['coinsBalanceInUsd'],
+        prevBalance => {
+          if (!prevBalance) return
+
+          const prevCoinIndex = prevBalance.coinsBalance.findIndex(
+            prevCoin => prevCoin.coinSymbol === variables.symbol
+          )
+
+          const prevCoinBalance = prevBalance.coinsBalance[prevCoinIndex]
+
+          const newBalance = prevCoinBalance.amount - txAmountWithFee
+
+          const updattedCoin = {
+            coinSymbol: prevCoinBalance.coinSymbol,
+            amount: newBalance,
+            valueInUsd: prevCoinBalance.valueInUsd
+          }
+
+          const updattedCoins = prevBalance.coinsBalance
+          updattedCoins[prevCoinIndex] = updattedCoin
+
+          const updattedBalanceAmount =
+            (prevBalance.balanceTotal ?? 0) - txAmountWithFee
+
+          return {
+            balanceTotal: updattedBalanceAmount,
+            coinsBalance: updattedCoins
+          }
+        }
+      )
     }
   })
 }

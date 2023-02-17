@@ -28,7 +28,7 @@ interface GetCoinChangePercentResponse {
   priceChangePercent: string
 }
 
-async function fetchCoinPortfolio({
+export async function fetchCoinPortfolio({
   account,
   coin
 }: FetchCoinPortfolioInput): Promise<FetchCoinPortfolioResponse> {

@@ -9,7 +9,7 @@ interface FetchCustomerCoinsInput {
   offset: number
 }
 
-interface FetchCustomerCoinsResponse {
+export interface FetchCustomerCoinsResponse {
   coins: {
     symbol: string
     network: string
@@ -23,7 +23,7 @@ interface FetchCustomerCoinsResponse {
   totalCount: number
 }
 
-async function fetchCustomerCoins({
+export async function fetchCustomerCoins({
   page,
   offset,
   account

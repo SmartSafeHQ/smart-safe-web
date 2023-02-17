@@ -7,12 +7,16 @@ import { TransactionsTab } from '@components/pages/home/TransactionsTab'
 import { Tabs } from '@components/Tabs'
 
 import { NavTabs, useHome } from '@hooks/home/useHome'
-import { useI18n } from '@/hooks/useI18n'
 
 const Home = () => {
-  const { isAccountBalanceLoading, coinsBalanceData, tab, setTab } = useHome()
-
-  const { t } = useI18n()
+  const {
+    t,
+    isAccountBalanceLoading,
+    isFetching,
+    coinsBalanceData,
+    tab,
+    setTab
+  } = useHome()
 
   return (
     <div className="flex flex-col px-2 pt-8">
@@ -28,7 +32,10 @@ const Home = () => {
 
             <Skeleton isLoading={isAccountBalanceLoading} className="w-40 h-10">
               {coinsBalanceData?.balanceTotal !== undefined && (
-                <IncomesSummary.Value className="text-2xl md:text-5xl">
+                <IncomesSummary.Value
+                  isFetching={isFetching}
+                  className="text-2xl md:text-5xl"
+                >
                   ${coinsBalanceData.balanceTotal.toFixed(2)}
                 </IncomesSummary.Value>
               )}
@@ -65,7 +72,7 @@ const Home = () => {
           </Tabs.List>
 
           <Tabs.Content value="coins">
-            <CoinsTab isTabActive={tab === 'coins'} />
+            <CoinsTab isFetching={isFetching} isTabActive={tab === 'coins'} />
           </Tabs.Content>
 
           <Tabs.Content value="transactions">
