@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router'
 
 import { locales } from '../locales'
+import { pt } from '../locales/pt'
 
 import {
   SupportedLanguages,
   i18nLocales,
+  i18nLocalesMap,
   NEXT_LOCALE_COOKIE_MAX_AGE
 } from '../utils/global/constants/i18n'
 
@@ -17,8 +19,10 @@ export const useI18n = () => {
     push({ pathname, query }, asPath, { locale: localeId })
   }
 
-  const currentLocaleProps = i18nLocales[(locale as SupportedLanguages) ?? 'pt']
-  const t = locales[(locale as SupportedLanguages) ?? 'pt']
+  const currentLocaleProps =
+    i18nLocalesMap.get((locale as SupportedLanguages) ?? 'pt') ?? i18nLocales.pt
+
+  const t = locales.get(locale ?? 'pt') ?? pt
 
   return {
     t,
