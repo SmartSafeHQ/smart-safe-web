@@ -6,6 +6,7 @@ import { z } from 'zod'
 
 import { useLoginMutation } from './mutations/useLoginMutation'
 import { useAuth } from '@contexts/AuthContext'
+import { useI18n } from '@hooks/useI18n'
 
 const validationSchema = z.object({
   email: z.string().email('invalid email'),
@@ -16,14 +17,14 @@ type LoginFieldValues = z.infer<typeof validationSchema>
 
 export const useLogin = () => {
   const router = useRouter()
-  const { widgetProvider } = useAuth()
+  const { widgetProvider, setCustomer } = useAuth()
+  const { t } = useI18n()
 
   const { register, handleSubmit, formState } = useForm<LoginFieldValues>({
     resolver: zodResolver(validationSchema)
   })
 
   const { mutateAsync } = useLoginMutation()
-  const { setCustomer } = useAuth()
 
   const onSubmit: SubmitHandler<LoginFieldValues> = async data => {
     try {
@@ -38,8 +39,8 @@ export const useLogin = () => {
   }
 
   function handleSignupWidget() {
-    widgetProvider?.getProvider.overlay.show()
+    widgetProvider?.provider.overlay.show()
   }
 
-  return { register, handleSubmit, formState, onSubmit, handleSignupWidget }
+  return { t, register, handleSubmit, formState, onSubmit, handleSignupWidget }
 }

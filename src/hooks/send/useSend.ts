@@ -6,9 +6,10 @@ import { z } from 'zod'
 
 import {
   getUsdAmountInCoinExchangeRate,
-  getCoinAmountInUsd
+  getCoinAmountInUsd,
+  formatToCurrency
 } from '@utils/global/coins'
-import { formatCurrencyToNumber } from '@utils/global'
+import { formatCurrencyToNumber, getEthersErrorCode } from '@utils/global'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
@@ -103,10 +104,7 @@ export const useSend = () => {
   function handleChangeAmountInput(event: ChangeEvent<HTMLInputElement>) {
     const floatAmount = formatCurrencyToNumber(event.target.value)
 
-    const formattedAmount = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(floatAmount)
+    const formattedAmount = formatToCurrency({ floatAmount })
 
     setValue(
       'amount',
@@ -199,7 +197,17 @@ export const useSend = () => {
 
       toast.success(`Transaction done successfully`)
     } catch (error) {
-      toast.error(`Error. ${(error as Error).message}`)
+      console.error(error)
+
+      let errorMessage
+
+      const errorCode = getEthersErrorCode(error)
+
+      if (errorCode) {
+        errorMessage = t.errors.ether.get(errorCode)?.message
+      }
+
+      toast.error(errorMessage ?? t.errors.default)
     }
   }
 

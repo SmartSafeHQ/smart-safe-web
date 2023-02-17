@@ -33,6 +33,12 @@ export const sidebar = {
       isDisabled: false
     },
     {
+      href: '/dashboard/cashback',
+      icon: ShoppingCartSimple,
+      title: 'cashback',
+      isDisabled: false
+    },
+    {
       href: '/dashboard/swap',
       icon: ArrowsClockwise,
       title: 'swap',
@@ -47,13 +53,7 @@ export const sidebar = {
     {
       href: '/dashboard/buy',
       icon: CurrencyDollar,
-      title: 'buy',
-      isDisabled: true
-    },
-    {
-      href: '/dashboard/marketplace',
-      icon: ShoppingCartSimple,
-      title: 'marketplace',
+      title: 'buy crypto',
       isDisabled: true
     },
     {

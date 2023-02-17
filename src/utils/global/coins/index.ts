@@ -1,30 +1,5 @@
 import dayjs from 'dayjs'
 
-export const DEFAULT_COINS_ATTRIBUTES = [
-  {
-    symbol: 'matic',
-    network: 'matic',
-    avatar:
-      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/matic.svg',
-    chainId: 80001,
-    decimals: 18,
-    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
-    explorerUrl: 'https://mumbai.polygonscan.com/',
-    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'bnb',
-    network: 'binance smart chain',
-    avatar:
-      'https://token.metaswap.codefi.network/assets/nativeCurrencyLogos/binanceCoin.svg',
-    chainId: 97,
-    decimals: 18,
-    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-    explorerUrl: 'https://testnet.bscscan.com',
-    scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
-  }
-]
-
 export function getCoinPriceUrl(coin: string, currency = 'usdt') {
   return `https://api.binance.us/api/v3/ticker/price?symbol=${coin.toUpperCase()}${currency.toUpperCase()}`
 }
@@ -63,4 +38,31 @@ export function getUsdAmountInCoinExchangeRate(
   usdPerCoin: number
 ) {
   return amountInUsd / usdPerCoin
+}
+
+export function getTransactionTimestampDate(timeStamp: string) {
+  return new Date(Number(timeStamp) * 1000)
+}
+
+export function getWeiToCoinValue(valueInWei: string, coinDecimals = 18) {
+  return Number(valueInWei) / Math.pow(10, coinDecimals)
+}
+
+interface FormatToCurrencyProps extends Intl.NumberFormatOptions {
+  floatAmount: number
+  locale?: string
+}
+
+export function formatToCurrency({
+  floatAmount,
+  locale = 'en-US',
+  minimumFractionDigits = 2,
+  maximumFractionDigits = 2,
+  ...props
+}: FormatToCurrencyProps) {
+  return new Intl.NumberFormat(locale, {
+    minimumFractionDigits,
+    maximumFractionDigits,
+    ...props
+  }).format(floatAmount)
 }

@@ -53,7 +53,7 @@ const Send = () => {
               asChild
               className="text-gray-800 dark:text-gray-50 text-4xl"
             >
-              <h1>Send using:</h1>
+              <h1>{t.send.sendUsing}:</h1>
             </Heading>
 
             <Skeleton isLoading={coinsIsLoading} className="h-12">
