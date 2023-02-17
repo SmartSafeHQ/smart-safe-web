@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
-import { Card } from '../../components/pages/Cashback/Card'
-import { Balance } from '../../components/pages/Cashback/Balance'
+import { Card } from '@components/pages/Cashback/Card'
+import { Balance } from '@components/pages/Cashback/Balance'
 
 import { useI18n } from '@hooks/useI18n'
 

@@ -4,6 +4,83 @@ import { EthereumErrorProps } from '@utils/global/types'
 export const web3Errors = {
   ether: new Map<etherErrors, EthereumErrorProps>([
     [
+      etherErrors.INVALID_ARGUMENT,
+      {
+        code: etherErrors.INVALID_ARGUMENT,
+        message:
+          'Argumento inválido. Verifique sua solicitação e tente novamente.'
+      }
+    ],
+    [
+      etherErrors.INSUFFICIENT_FUNDS,
+      {
+        code: etherErrors.INSUFFICIENT_FUNDS,
+        message: 'Saldo insuficiente para completar a transação.'
+      }
+    ],
+    [
+      etherErrors.MISSING_ARGUMENT,
+      {
+        code: etherErrors.MISSING_ARGUMENT,
+        message:
+          'Argumentos inválidos, argumentos ausentes. Verifique sua solicitação e tente novamente.'
+      }
+    ],
+    [
+      etherErrors.UNEXPECTED_ARGUMENT,
+      {
+        code: etherErrors.UNEXPECTED_ARGUMENT,
+        message:
+          'Argumentos inválidos. Verifique sua solicitação e tente novamente.'
+      }
+    ],
+    [
+      etherErrors.CALL_EXCEPTION,
+      {
+        code: etherErrors.CALL_EXCEPTION,
+        message: 'Erro de exceção na chamada. Tente novamente mais tarde.'
+      }
+    ],
+    [
+      etherErrors.NONCE_EXPIRED,
+      {
+        code: etherErrors.NONCE_EXPIRED,
+        message:
+          'O nonce da transação expirou. Tente novamente com uma nova transação.'
+      }
+    ],
+    [
+      etherErrors.REPLACEMENT_UNDERPRICED,
+      {
+        code: etherErrors.REPLACEMENT_UNDERPRICED,
+        message:
+          'Substituição de transação com preço insuficiente. Tente novamente com um preço de gás mais alto.'
+      }
+    ],
+    [
+      etherErrors.UNPREDICTABLE_GAS_LIMIT,
+      {
+        code: etherErrors.UNPREDICTABLE_GAS_LIMIT,
+        message:
+          'Limite de gás imprevisível. Não conseguimos estimar o valor da taxa.'
+      }
+    ],
+    [
+      etherErrors.TRANSACTION_REPLACED,
+      {
+        code: etherErrors.TRANSACTION_REPLACED,
+        message: 'Transação foi invalidada. Tente novamente mais tarde.'
+      }
+    ],
+    [
+      etherErrors.ACTION_REJECTED,
+      {
+        code: etherErrors.ACTION_REJECTED,
+        message:
+          'Transação foi rejeitada pelo usuário. Tente novamente mais tarde.'
+      }
+    ],
+    [
       etherErrors.UNKNOWN_ERROR,
       {
         code: etherErrors.UNKNOWN_ERROR,
@@ -65,83 +142,6 @@ export const web3Errors = {
       {
         code: etherErrors.MISSING_NEW,
         message: 'Erro operador não encontrado. Tente novamente mais tarde.'
-      }
-    ],
-    [
-      etherErrors.INVALID_ARGUMENT,
-      {
-        code: etherErrors.INVALID_ARGUMENT,
-        message:
-          'Argumento inválido. Verifique sua solicitação e tente novamente.'
-      }
-    ],
-    [
-      etherErrors.MISSING_ARGUMENT,
-      {
-        code: etherErrors.MISSING_ARGUMENT,
-        message:
-          'Argumentos inválidos, argumentos ausentes. Verifique sua solicitação e tente novamente.'
-      }
-    ],
-    [
-      etherErrors.UNEXPECTED_ARGUMENT,
-      {
-        code: etherErrors.UNEXPECTED_ARGUMENT,
-        message:
-          'Argumentos inválidos. Verifique sua solicitação e tente novamente.'
-      }
-    ],
-    [
-      etherErrors.CALL_EXCEPTION,
-      {
-        code: etherErrors.CALL_EXCEPTION,
-        message: 'Erro de exceção na chamada. Tente novamente mais tarde.'
-      }
-    ],
-    [
-      etherErrors.INSUFFICIENT_FUNDS,
-      {
-        code: etherErrors.INSUFFICIENT_FUNDS,
-        message: 'Saldo insuficiente para completar a transação.'
-      }
-    ],
-    [
-      etherErrors.NONCE_EXPIRED,
-      {
-        code: etherErrors.NONCE_EXPIRED,
-        message:
-          'O nonce da transação expirou. Tente novamente com uma nova transação.'
-      }
-    ],
-    [
-      etherErrors.REPLACEMENT_UNDERPRICED,
-      {
-        code: etherErrors.REPLACEMENT_UNDERPRICED,
-        message:
-          'Substituição de transação com preço insuficiente. Tente novamente com um preço de gás mais alto.'
-      }
-    ],
-    [
-      etherErrors.UNPREDICTABLE_GAS_LIMIT,
-      {
-        code: etherErrors.UNPREDICTABLE_GAS_LIMIT,
-        message:
-          'Limite de gás imprevisível. Não conseguimos estimar o valor da taxa.'
-      }
-    ],
-    [
-      etherErrors.TRANSACTION_REPLACED,
-      {
-        code: etherErrors.TRANSACTION_REPLACED,
-        message: 'Transação foi invalidada. Tente novamente mais tarde.'
-      }
-    ],
-    [
-      etherErrors.ACTION_REJECTED,
-      {
-        code: etherErrors.ACTION_REJECTED,
-        message:
-          'Transação foi rejeitada pelo usuário. Tente novamente mais tarde.'
       }
     ]
   ]),
