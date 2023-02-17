@@ -15,7 +15,7 @@ interface GetCoinPricesResponse {
   price: string
 }
 
-async function fetchCoinValueInUsd({
+export async function fetchCoinValueInUsd({
   coinSymbol
 }: FetchCoinValueInUsdInput): Promise<FetchCoinValueInUsdResponse> {
   if (!coinSymbol) {

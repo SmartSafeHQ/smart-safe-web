@@ -11,7 +11,7 @@ interface FetchCoinFeeDataInput {
   coinDecimals: number
 }
 
-interface FetchCoinFeeDataResponse {
+export interface FetchCoinFeeDataResponse {
   valueInCoin: string
   valueInWei: string
   feeInUSD: string
