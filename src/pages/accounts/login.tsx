@@ -10,6 +10,7 @@ import { useLogin } from '@hooks/accounts/useLogin'
 
 export default function Login() {
   const {
+    t,
     formState: { errors, isSubmitting },
     handleSubmit,
     onSubmit,
@@ -20,15 +21,15 @@ export default function Login() {
   return (
     <div className="h-screen flex flex-col items-center justify-center px-3">
       <Head>
-        <title>Login | Tokenverse</title>
-        <meta name="description" content="Login to Tokenverse" />
+        <title>{t.signIn.headTitle}</title>
+        <meta name="description" content={t.signIn.headDescription} />
       </Head>
 
       <header className="flex flex-col items-center">
         <TokenverseTextLogo className="w-72 h-6" />
 
         <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
-          Login and start using!
+          {t.signIn.title}
         </Heading>
       </header>
 
@@ -38,7 +39,7 @@ export default function Login() {
           className="flex flex-col gap-4 items-stretch w-full"
         >
           <TextInput.Root htmlFor="email" error={errors.email?.message}>
-            <TextInput.Label>E-mail</TextInput.Label>
+            <TextInput.Label>{t.signIn.email}</TextInput.Label>
 
             <TextInput.Content>
               <TextInput.Icon>
@@ -50,13 +51,13 @@ export default function Login() {
                 required
                 type="email"
                 id="email"
-                placeholder="Enter your email"
+                placeholder={t.signIn.emailPlaceholder}
               />
             </TextInput.Content>
           </TextInput.Root>
 
           <TextInput.Root htmlFor="password" error={errors.password?.message}>
-            <TextInput.Label>Password</TextInput.Label>
+            <TextInput.Label>{t.signIn.password}</TextInput.Label>
 
             <TextInput.Content>
               <TextInput.Icon>
@@ -78,11 +79,11 @@ export default function Login() {
             onClick={handleSignupWidget}
             className="text-left text-md text-cyan-500 dark:text-cyan-400 font-semibold hover:text-cyan-400 hover:dark:text-cyan-300"
           >
-            Forgot my password
+            {t.signIn.forgotPassword}
           </button>
 
           <Button type="submit" isLoading={isSubmitting} className="mt-1">
-            Login
+            {t.signIn.login}
           </Button>
         </form>
       </main>
@@ -92,7 +93,7 @@ export default function Login() {
           onClick={handleSignupWidget}
           className="text-lg text-gray-700 dark:text-gray-300 font-medium underline transition-colors hover:text-gray-900 hover:dark:text-gray-100"
         >
-          Don’t have an account? Create Now!
+          {t.signIn.createAccount}
         </button>
       </footer>
     </div>
