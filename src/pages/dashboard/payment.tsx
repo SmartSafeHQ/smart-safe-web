@@ -1,5 +1,7 @@
 import Head from 'next/head'
 
+import { QrCodeScanner } from '@components/pages/Payment/QrCodeScanner'
+
 import { useI18n } from '@hooks/useI18n'
 
 const Payment = () => {
@@ -12,8 +14,10 @@ const Payment = () => {
         <meta name="description" content={t.payment.headDescription} />
       </Head>
 
-      <div>
+      <div className="flex gap-5 flex-col">
         <h1>{t.payment.pageHeadingTitle}</h1>
+
+        <QrCodeScanner />
       </div>
     </div>
   )
