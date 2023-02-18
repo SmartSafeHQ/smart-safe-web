@@ -6,6 +6,7 @@ import { pagination } from './pagination'
 import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
+import { payment } from './payment'
 import { cashback } from './cashback'
 
 export const en = {
@@ -17,5 +18,6 @@ export const en = {
   home,
   receive,
   send,
+  payment,
   cashback
 }
