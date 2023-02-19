@@ -7,7 +7,10 @@ import { Button } from '@components/Button'
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
-import { useCameraAccessStatus } from '@hooks/payment'
+import {
+  useCameraAccessStatus,
+  useListUsersCameraDevices
+} from '@hooks/payment'
 
 import { ScannerContainer } from './ScannerContainer'
 
@@ -21,12 +24,17 @@ export function QrCodeScanner() {
   const { customer } = useAuth()
   const { t, currentLocaleProps } = useI18n()
   const { accessStatus, grantAccess } = useCameraAccessStatus()
+  const { usersCameraDevices } = useListUsersCameraDevices()
   const { data: nativeCurrencies } = useCustomerCoins(customer?.wallet.address)
 
   return (
     <div className="flex flex-col sm:flex-row gap-5">
-      {accessStatus === 'granted' ? (
-        <ScannerContainer setQrCodeDecodedData={setQrCodeDecodedData} />
+      {accessStatus === 'granted' &&
+      (usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId) ? (
+        <ScannerContainer
+          setQrCodeDecodedData={setQrCodeDecodedData}
+          usersCameraDevices={usersCameraDevices}
+        />
       ) : (
         <div className="flex flex-col gap-2 items-center justify-center w-full max-w-xl h-60 rounded-lg border-gray-700 border-1 p-1">
           <Button className="w-52" onClick={grantAccess}>

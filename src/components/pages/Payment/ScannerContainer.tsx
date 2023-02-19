@@ -2,18 +2,18 @@ import { useZxing } from 'react-zxing'
 
 import { ScannerStrategy, QrCodeScanner } from './ScannerStrategy'
 
-import { useListUsersCameraDevices } from '@hooks/payment'
-
 import type { QrCodeData } from './ScannerStrategy'
 import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
+  usersCameraDevices: { frontCameraId: string; backCameraId: string }
   setQrCodeDecodedData: Dispatch<SetStateAction<QrCodeData | undefined>>
 }
 
-export function ScannerContainer({ setQrCodeDecodedData }: Props) {
-  const { usersCameraDevices } = useListUsersCameraDevices()
-
+export function ScannerContainer({
+  setQrCodeDecodedData,
+  usersCameraDevices
+}: Props) {
   const { ref } = useZxing({
     onResult(codeData) {
       const scannerStrategy = new ScannerStrategy(new QrCodeScanner())
@@ -29,8 +29,8 @@ export function ScannerContainer({ setQrCodeDecodedData }: Props) {
   return (
     <div className="rounded-lg overflow-hidden w-64 h-64 sm:w-96">
       <video
-        autoPlay={true}
         ref={ref}
+        autoPlay={true}
         className="border-1 border-red-500 w-64 h-64"
       />
     </div>
