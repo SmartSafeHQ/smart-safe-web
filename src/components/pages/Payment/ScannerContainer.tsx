@@ -1,25 +1,25 @@
 import { useEffect, useRef } from 'react'
 // import { useZxing } from 'react-zxing'
-import {
-  BarcodeFormat,
-  DecodeHintType,
-  BrowserMultiFormatReader
-} from '@zxing/library'
+// import {
+//   BarcodeFormat,
+//   DecodeHintType,
+//   BrowserMultiFormatReader
+// } from '@zxing/library'
 
-import { ScannerStrategy, QrCodeScanner } from './ScannerStrategy'
+// import { ScannerStrategy, QrCodeScanner } from './ScannerStrategy'
 
-import type { QrCodeData } from './ScannerStrategy'
-import type { Dispatch, SetStateAction } from 'react'
+// import type { QrCodeData } from './ScannerStrategy'
+// import type { Dispatch, SetStateAction } from 'react'
 
-type Props = {
-  usersCameraDevices: { frontCameraId: string; backCameraId: string }
-  setQrCodeDecodedData: Dispatch<SetStateAction<QrCodeData | undefined>>
-}
+// type Props = {
+//   usersCameraDevices: { frontCameraId: string; backCameraId: string }
+//   setQrCodeDecodedData: Dispatch<SetStateAction<QrCodeData | undefined>>
+// }
 
-export function ScannerContainer({
+export function ScannerContainer(/* {
   setQrCodeDecodedData
 }: // usersCameraDevices
-Props) {
+Props */) {
   // const { ref } = useZxing({
   //   onResult(codeData) {
   //     const scannerStrategy = new ScannerStrategy(new QrCodeScanner())
@@ -35,34 +35,38 @@ Props) {
   const videoStream = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    window.navigator.mediaDevices
-      .getUserMedia({
-        video: { facingMode: 'environment' }
-      })
-      .then(mediaStream => {
-        const hints = new Map()
-        const formats = [BarcodeFormat.QR_CODE]
-        hints.set(DecodeHintType.POSSIBLE_FORMATS, formats)
+    if (videoStream.current instanceof HTMLVideoElement) {
+      window.navigator.mediaDevices
+        .getUserMedia({
+          video: { facingMode: 'environment' }
+        })
+        .then(mediaStream => {
+          videoStream.current!.srcObject = mediaStream
 
-        const reader = new BrowserMultiFormatReader(hints)
+          // const hints = new Map()
+          // const formats = [BarcodeFormat.QR_CODE]
+          // hints.set(DecodeHintType.POSSIBLE_FORMATS, formats)
 
-        reader.timeBetweenDecodingAttempts = 1000
+          // const reader = new BrowserMultiFormatReader(hints)
 
-        reader.decodeFromStream(
-          mediaStream,
-          videoStream.current as HTMLVideoElement,
-          result => {
-            if (result) {
-              const scannerStrategy = new ScannerStrategy(new QrCodeScanner())
+          // reader.timeBetweenDecodingAttempts = 1000
 
-              const scanResult = scannerStrategy.scan(result.getText())
+          // reader.decodeFromStream(
+          //   mediaStream,
+          //   videoStream.current as HTMLVideoElement,
+          //   result => {
+          //     if (result) {
+          //       const scannerStrategy = new ScannerStrategy(new QrCodeScanner())
 
-              setQrCodeDecodedData(scanResult as QrCodeData)
-            }
-          }
-        )
-      })
-  }, [])
+          //       const scanResult = scannerStrategy.scan(result.getText())
+
+          //       setQrCodeDecodedData(scanResult as QrCodeData)
+          //     }
+          //   }
+          // )
+        })
+    }
+  }, [videoStream.current])
 
   return (
     <div className="rounded-lg overflow-hidden w-64 h-64 sm:w-96">

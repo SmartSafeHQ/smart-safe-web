@@ -17,7 +17,7 @@ import { ScannerContainer } from './ScannerContainer'
 import type { QrCodeData } from './ScannerStrategy'
 
 export function QrCodeScanner() {
-  const [qrCodeDecodedData, setQrCodeDecodedData] = useState<QrCodeData>()
+  const [qrCodeDecodedData /* ,setQrCodeDecodedData */] = useState<QrCodeData>()
   const [currencySelectedForPayment, setCurrencySelectedForPayment] =
     useState('')
 
@@ -32,8 +32,8 @@ export function QrCodeScanner() {
       {accessStatus === 'granted' &&
       (usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId) ? (
         <ScannerContainer
-          setQrCodeDecodedData={setQrCodeDecodedData}
-          usersCameraDevices={usersCameraDevices}
+        // setQrCodeDecodedData={setQrCodeDecodedData}
+        // usersCameraDevices={usersCameraDevices}
         />
       ) : (
         <div className="flex flex-col gap-2 items-center justify-center w-full max-w-xl h-60 rounded-lg border-gray-700 border-1 p-1">
