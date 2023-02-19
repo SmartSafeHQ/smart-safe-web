@@ -28,7 +28,11 @@ export function ScannerContainer({ setQrCodeDecodedData }: Props) {
 
   return (
     <div className="rounded-lg overflow-hidden w-64 h-64 sm:w-96">
-      <video autoPlay={true} ref={ref} className="border-1 border-red-500" />
+      <video
+        autoPlay={true}
+        ref={ref}
+        className="border-1 border-red-500 w-64 h-64"
+      />
     </div>
   )
 }
