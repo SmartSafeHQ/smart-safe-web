@@ -15,7 +15,9 @@ export function useCameraAccessStatus() {
   }, [])
 
   async function grantAccess() {
-    await window.navigator.mediaDevices.getUserMedia({ video: true })
+    await window.navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user' }
+    })
 
     setAccessStatus('granted')
   }

@@ -14,8 +14,6 @@ type Props = {
 export function ScannerContainer({ setQrCodeDecodedData }: Props) {
   const { usersCameraDevices } = useListUsersCameraDevices()
 
-  console.log({ usersCameraDevices })
-
   const { ref } = useZxing({
     onResult(codeData) {
       const scannerStrategy = new ScannerStrategy(new QrCodeScanner())
@@ -30,8 +28,7 @@ export function ScannerContainer({ setQrCodeDecodedData }: Props) {
 
   return (
     <div className="rounded-lg overflow-hidden w-full sm:w-96">
-      {JSON.stringify(usersCameraDevices)}
-      <video ref={ref} />
+      <video autoPlay={true} ref={ref} />
     </div>
   )
 }
