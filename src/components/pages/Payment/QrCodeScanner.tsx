@@ -7,7 +7,7 @@ import { Button } from '@components/Button'
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
-import { useCameraAccessStatus } from '@hooks/payment/useCameraAccessStatus'
+import { useCameraAccessStatus } from '@hooks/payment'
 
 import { ScannerContainer } from './ScannerContainer'
 
