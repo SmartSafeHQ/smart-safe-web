@@ -23,7 +23,7 @@ export function ScannerContainer({
       setQrCodeDecodedData(scanResult as QrCodeData)
     },
     constraints: {
-      video: { facingMode: 'environment', width: 323, height: 634 }
+      video: { facingMode: 'environment' } // , width: 323, height: 634
     },
     deviceId:
       usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
