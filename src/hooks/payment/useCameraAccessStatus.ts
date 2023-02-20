@@ -21,7 +21,7 @@ export function useCameraAccessStatus() {
     await window.navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: 'environment',
-        width: 323,
+        width: 323, // width and height are needed, otherwise the video stream will not start on mobile
         height: 634,
         deviceId:
           usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
