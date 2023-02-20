@@ -22,16 +22,19 @@ export function ScannerContainer({
 
       setQrCodeDecodedData(scanResult as QrCodeData)
     },
+    constraints: {
+      video: { facingMode: 'environment' }
+    },
     deviceId:
       usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
   })
 
   return (
-    <div className="rounded-lg overflow-hidden w-64 h-64 sm:w-96">
+    <div className="rounded-lg overflow-hidden w-full max-w-xl h-full absolute top-0 left-0">
       <video
         ref={ref}
         autoPlay={true}
-        className="border-1 border-red-500 w-64 h-64"
+        className="border-1 border-red-500 w-screen h-screen"
       />
     </div>
   )
