@@ -31,6 +31,10 @@ async function loginFunction(
     password: input.password
   })
 
+  if ('AndroidInterface' in window) {
+    window.AndroidInterface.saveBiometric(input.email, input.password)
+  }
+
   const accessToken = response.signInUserSession.idToken.jwtToken
 
   tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
