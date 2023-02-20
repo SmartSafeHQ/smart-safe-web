@@ -13,7 +13,7 @@ const validationSchema = z.object({
   password: z.string().min(1, { message: 'password required' })
 })
 
-type LoginFieldValues = z.infer<typeof validationSchema>
+export type LoginFieldValues = z.infer<typeof validationSchema>
 
 export const useLogin = () => {
   const router = useRouter()

@@ -4,11 +4,31 @@ import LegacySignClient from '@walletconnect/client'
 import { EIP155_SIGNING_METHODS } from '@utils/walletConnect'
 import { approveEIP155Request } from '@utils/walletConnect/EIP155RequestHandlerUtil'
 
+interface CreateLegacySignClientProps {
+  uri?: string
+  wallet?: {
+    address: string
+    privateKey: string
+  }
+}
+
+interface OnCallRequestProps {
+  id: number
+  method: string
+  params: any[]
+  walletPrivateKey: string
+}
+
 export let legacySignClient: LegacySignClient
 
-export function createLegacySignClient({ uri }: { uri?: string } = {}) {
+export function createLegacySignClient({
+  uri,
+  wallet
+}: CreateLegacySignClientProps) {
   // If URI is passed always create a new session,
   // otherwise fall back to cached session if client isn't already instantiated.
+  if (!wallet) return
+
   if (uri) {
     deleteCachedLegacySession()
     legacySignClient = new LegacySignClient({ uri })
@@ -29,7 +49,7 @@ export function createLegacySignClient({ uri }: { uri?: string } = {}) {
     const { chainId } = payload
 
     legacySignClient.approveSession({
-      accounts: ['0x574E1D58B0208f7EbB12851FDab54ab06bb5cd45'],
+      accounts: [wallet.address],
       chainId: chainId ?? 1
     })
   })
@@ -46,7 +66,7 @@ export function createLegacySignClient({ uri }: { uri?: string } = {}) {
     if (error) {
       throw new Error(`legacySignClient > call_request failed: ${error}`)
     }
-    onCallRequest(payload)
+    onCallRequest({ ...payload, walletPrivateKey: wallet.privateKey })
   })
 
   legacySignClient.on('disconnect', async () => {
@@ -54,11 +74,7 @@ export function createLegacySignClient({ uri }: { uri?: string } = {}) {
   })
 }
 
-const onCallRequest = async (payload: {
-  id: number
-  method: string
-  params: any[]
-}) => {
+const onCallRequest = async (payload: OnCallRequestProps) => {
   switch (payload.method) {
     case EIP155_SIGNING_METHODS.ETH_SIGN:
     case EIP155_SIGNING_METHODS.PERSONAL_SIGN: {
@@ -73,7 +89,10 @@ const onCallRequest = async (payload: {
         }
       }
 
-      const { result } = await approveEIP155Request('aa', test)
+      const { result } = await approveEIP155Request(
+        payload.walletPrivateKey,
+        test
+      )
 
       legacySignClient.approveRequest({
         id: payload.id,
