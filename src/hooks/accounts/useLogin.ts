@@ -42,5 +42,12 @@ export const useLogin = () => {
     widgetProvider?.provider.overlay.show()
   }
 
-  return { t, register, handleSubmit, formState, onSubmit, handleSignupWidget }
+  return {
+    t,
+    register,
+    handleSubmit,
+    formState,
+    onSubmit,
+    handleSignupWidget
+  }
 }

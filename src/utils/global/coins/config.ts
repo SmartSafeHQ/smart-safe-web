@@ -104,8 +104,6 @@ const MAINNET_COINS_ATTRIBUTES = [
   }
 ]
 
-console.log(process?.env?.NEXT_PUBLIC_ENV)
-
 const NETWORKS_COINS_ATTRIBUTES = new Map([
   ['production', MAINNET_COINS_ATTRIBUTES],
   ['development', TESTNET_COINS_ATTRIBUTES]
