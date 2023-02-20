@@ -23,12 +23,18 @@ export function QrCodeScanner() {
   const { customer } = useAuth()
   const { t, currentLocaleProps } = useI18n()
   const { data: nativeCurrencies } = useCustomerCoins(customer?.wallet.address)
-  const { isAppReadyToDisplayVideoStream, usersCameraDevices } =
+  const { isAppReadyToDisplayVideoStream, usersCameraDevices, grantAccess } =
     useCameraDevice()
 
   return (
     <div className="flex flex-col sm:flex-row gap-5">
-      {!isAppReadyToDisplayVideoStream && <RequestCameraAccesss />}
+      {!isAppReadyToDisplayVideoStream && (
+        <RequestCameraAccesss
+          grantAccess={grantAccess}
+          setIsScannerOpen={setIsScannerOpen}
+          usersCameraDevices={usersCameraDevices}
+        />
+      )}
 
       {isAppReadyToDisplayVideoStream && !qrCodeDecodedData && (
         <ScannerContainer setIsScannerOpen={setIsScannerOpen} />

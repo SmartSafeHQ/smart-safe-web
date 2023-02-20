@@ -85,7 +85,9 @@ export function Scanner({
           </p>
         </div>
 
-        <Button onClick={() => setIsScannerOpen(false)}>Fechar câmera</Button>
+        <Button onClick={() => setIsScannerOpen(false)}>
+          {t.payment.closeCameraButtonTrigger}
+        </Button>
       </div>
     </div>
   )

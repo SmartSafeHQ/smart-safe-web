@@ -5,6 +5,7 @@ export const payment = {
   grantCameraAccess: 'Grant access',
   grantCameraAccessDescription: 'You need to grant access to your camera.',
   scanQrCodeButtonTrigger: 'Scan QR Code',
+  closeCameraButtonTrigger: 'Close camera',
   paymentData: {
     paymentTitle: 'Paying',
     to: 'to',
