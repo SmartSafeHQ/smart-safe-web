@@ -33,7 +33,10 @@ export function QrCodeScanner() {
         />
       ) : (
         <div className="flex flex-col gap-2 items-center justify-center w-full max-w-xl h-60 rounded-lg p-1 bg-gray-200 dark:bg-gray-800">
-          <Button className="w-52" onClick={grantAccess}>
+          <Button
+            className="w-52"
+            onClick={() => grantAccess(usersCameraDevices)}
+          >
             {t.payment.grantCameraAccess}
           </Button>
 

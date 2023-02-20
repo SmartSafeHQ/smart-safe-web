@@ -14,9 +14,18 @@ export function useCameraAccessStatus() {
       .catch(() => setAccessStatus('denied'))
   }, [])
 
-  async function grantAccess() {
+  async function grantAccess(usersCameraDevices: {
+    frontCameraId: string
+    backCameraId: string
+  }) {
     await window.navigator.mediaDevices.getUserMedia({
-      video: true
+      video: {
+        facingMode: 'environment',
+        width: 323,
+        height: 634,
+        deviceId:
+          usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
+      }
     })
 
     setAccessStatus('granted')
