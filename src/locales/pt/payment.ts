@@ -4,6 +4,7 @@ export const payment = {
   pageHeadingTitle: 'Utilize suas cripto moedas para realizar pagamentos.',
   grantCameraAccess: 'Permitir acesso',
   grantCameraAccessDescription: 'Você precisa conceder acesso à sua câmera.',
+  scanQrCodeButtonTrigger: 'Escanear QR Code',
   paymentData: {
     paymentTitle: 'Pagando',
     to: 'para',

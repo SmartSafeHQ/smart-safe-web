@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import { useState } from 'react'
-import { Camera } from 'phosphor-react'
 
 import { Button } from '@components/Button'
+import { RequestCameraAccesss } from '@components/pages/Payment/RequestCameraAccess'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
@@ -10,10 +10,12 @@ import { useCameraDevice } from '@hooks/payment'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 
 import { ScannerContainer } from './ScannerContainer'
+import { Scanner } from './Scanner'
 
 import type { QrCodeData } from './ScannerStrategy'
 
 export function QrCodeScanner() {
+  const [isScannerOpen, setIsScannerOpen] = useState(false)
   const [qrCodeDecodedData, setQrCodeDecodedData] = useState<QrCodeData>()
   const [currencySelectedForPayment, setCurrencySelectedForPayment] =
     useState('')
@@ -21,32 +23,26 @@ export function QrCodeScanner() {
   const { customer } = useAuth()
   const { t, currentLocaleProps } = useI18n()
   const { data: nativeCurrencies } = useCustomerCoins(customer?.wallet.address)
-  const { isAppReadyToDisplayVideoStream, usersCameraDevices, grantAccess } =
+  const { isAppReadyToDisplayVideoStream, usersCameraDevices } =
     useCameraDevice()
 
   return (
     <div className="flex flex-col sm:flex-row gap-5">
-      {isAppReadyToDisplayVideoStream ? (
-        <ScannerContainer
-          setQrCodeDecodedData={setQrCodeDecodedData}
-          usersCameraDevices={usersCameraDevices}
-        />
-      ) : (
-        <div className="flex flex-col gap-2 items-center justify-center w-full max-w-xl h-60 rounded-lg p-1 bg-gray-200 dark:bg-gray-800">
-          <Button
-            className="w-52"
-            onClick={() => grantAccess(usersCameraDevices)}
-          >
-            {t.payment.grantCameraAccess}
-          </Button>
+      {!isAppReadyToDisplayVideoStream && <RequestCameraAccesss />}
 
-          <p className="text-center">
-            {t.payment.grantCameraAccessDescription}
-          </p>
-        </div>
+      {isAppReadyToDisplayVideoStream && !qrCodeDecodedData && (
+        <ScannerContainer setIsScannerOpen={setIsScannerOpen} />
       )}
 
-      {qrCodeDecodedData ? (
+      {isScannerOpen && (
+        <Scanner
+          setQrCodeDecodedData={setQrCodeDecodedData}
+          usersCameraDevices={usersCameraDevices}
+          setIsScannerOpen={setIsScannerOpen}
+        />
+      )}
+
+      {qrCodeDecodedData && (
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-1">
             <h1 className="font-medium text-lg">
@@ -102,14 +98,6 @@ export function QrCodeScanner() {
           ))}
 
           <Button disabled>{t.payment.paymentData.chooseHowToPay}</Button>
-        </div>
-      ) : (
-        <div className="rounded-lg p-2 flex flex-col items-center h-min bg-gray-200 dark:bg-gray-800">
-          <Camera size={26} />
-
-          <p className="text-center font-medium">
-            {t.payment.paymentData.instructions}
-          </p>
         </div>
       )}
     </div>
