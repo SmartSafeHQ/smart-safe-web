@@ -4,9 +4,11 @@ import { Card } from '@components/pages/Cashback/Card'
 import { Balance } from '@components/pages/Cashback/Balance'
 
 import { useI18n } from '@hooks/useI18n'
+import { useTheme } from '@contexts/ThemeContext'
 
 const Cashback = () => {
   const { t } = useI18n()
+  const { theme } = useTheme()
 
   return (
     <div className="flex flex-col px-2 pt-8">
@@ -27,7 +29,14 @@ const Cashback = () => {
         <div className="flex items-center gap-5 max-w-screen-md flex-wrap">
           <Card companyImageUrl="/cashback/c&a.png" companyName="C&A" />
           <Card companyImageUrl="/cashback/ifood.png" companyName="iFood" />
-          <Card companyImageUrl="/cashback/amazon.png" companyName="Amazon" />
+          <Card
+            companyImageUrl={`${
+              theme === 'dark'
+                ? '/cashback/dark-amazon.png'
+                : '/cashback/amazon.png'
+            }`}
+            companyName="Amazon"
+          />
         </div>
       </div>
     </div>

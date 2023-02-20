@@ -21,7 +21,8 @@ export function Card({ companyImageUrl, companyName }: Props) {
       flex
       items-center
       justify-center
-      border-gray-800"
+      border-gray-400
+      dark:border-gray-800"
     >
       <Image
         src={companyImageUrl}
