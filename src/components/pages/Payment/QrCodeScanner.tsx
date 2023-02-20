@@ -6,37 +6,33 @@ import { Button } from '@components/Button'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
+import { useCameraDevice } from '@hooks/payment'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
-import {
-  useCameraAccessStatus,
-  useListUsersCameraDevices
-} from '@hooks/payment'
 
 import { ScannerContainer } from './ScannerContainer'
 
 import type { QrCodeData } from './ScannerStrategy'
 
 export function QrCodeScanner() {
-  const [qrCodeDecodedData /* ,setQrCodeDecodedData */] = useState<QrCodeData>()
+  const [qrCodeDecodedData, setQrCodeDecodedData] = useState<QrCodeData>()
   const [currencySelectedForPayment, setCurrencySelectedForPayment] =
     useState('')
 
   const { customer } = useAuth()
   const { t, currentLocaleProps } = useI18n()
-  const { accessStatus, grantAccess } = useCameraAccessStatus()
-  const { usersCameraDevices } = useListUsersCameraDevices()
   const { data: nativeCurrencies } = useCustomerCoins(customer?.wallet.address)
+  const { isAppReadyToDisplayVideoStream, usersCameraDevices, grantAccess } =
+    useCameraDevice()
 
   return (
     <div className="flex flex-col sm:flex-row gap-5">
-      {accessStatus === 'granted' &&
-      (usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId) ? (
+      {isAppReadyToDisplayVideoStream ? (
         <ScannerContainer
-        // setQrCodeDecodedData={setQrCodeDecodedData}
-        // usersCameraDevices={usersCameraDevices}
+          setQrCodeDecodedData={setQrCodeDecodedData}
+          usersCameraDevices={usersCameraDevices}
         />
       ) : (
-        <div className="flex flex-col gap-2 items-center justify-center w-full max-w-xl h-60 rounded-lg border-gray-700 border-1 p-1">
+        <div className="flex flex-col gap-2 items-center justify-center w-full max-w-xl h-60 rounded-lg p-1 bg-gray-200 dark:bg-gray-800">
           <Button className="w-52" onClick={grantAccess}>
             {t.payment.grantCameraAccess}
           </Button>
@@ -105,7 +101,7 @@ export function QrCodeScanner() {
           <Button disabled>{t.payment.paymentData.chooseHowToPay}</Button>
         </div>
       ) : (
-        <div className="border-1 border-gray-700 rounded-lg p-2 flex flex-col items-center h-min">
+        <div className="rounded-lg p-2 flex flex-col items-center h-min bg-gray-200 dark:bg-gray-800">
           <Camera size={26} />
 
           <p className="text-center font-medium">
