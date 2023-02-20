@@ -32,7 +32,11 @@ async function loginFunction(
   })
 
   if ('AndroidInterface' in window) {
-    window.AndroidInterface.saveBiometric(input.email, input.password)
+    try {
+      window.AndroidInterface.saveBiometric(input.email, input.password)
+    } catch (e) {
+      console.error('biometric error', e)
+    }
   }
 
   const accessToken = response.signInUserSession.idToken.jwtToken
