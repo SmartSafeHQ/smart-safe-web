@@ -21,8 +21,8 @@ export function useCameraAccessStatus() {
     await window.navigator.mediaDevices.getUserMedia({
       video: {
         facingMode: 'environment',
-        width: 323,
-        height: 634,
+        // width: 323,
+        // height: 634,
         deviceId:
           usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
       }
