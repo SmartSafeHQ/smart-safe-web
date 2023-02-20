@@ -15,20 +15,24 @@ export interface TextInputRootProps
   extends LabelHTMLAttributes<HTMLLabelElement> {
   children: ReactNode
   error?: string
+  variant?: 'secondary'
 }
 
 function TextInputRoot({
   children,
   error,
+  variant,
   className,
   ...props
 }: TextInputRootProps) {
   return (
     <label
       className={clsx(
-        'flex flex-col gap-2',
+        'flex flex-col gap-2 [&>div:has(input)]:bg-gray-200 [&>div:has(input)]:dark:bg-gray-800',
         {
-          '[&>div:has(input)]:ring-2 [&>div:has(input)]:ring-red-500': !!error
+          '[&>div:has(input)]:ring-2 [&>div:has(input)]:ring-red-500': !!error,
+          '[&>div:has(input)]:!bg-gray-50 [&>div:has(input)]:dark:!bg-gray-900':
+            variant === 'secondary'
         },
         className
       )}
@@ -55,7 +59,8 @@ function TextInputContent({
   return (
     <div
       className={clsx(
-        'flex items-center gap-3 min-h-[3rem] px-3 rounded w-full outline-none ring-cyan-500 bg-gray-200 dark:bg-gray-800 focus-within:ring-2',
+        'flex items-center gap-3 min-h-[3rem] px-3 rounded w-full outline-none ring-cyan-500 focus-within:ring-2',
+        'tokenverse-input-content',
         className
       )}
       {...props}
