@@ -6,12 +6,14 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 import { parseUri } from '@walletconnect/utils'
-import { OnResultFunction } from 'react-qr-reader'
+import { Result } from 'react-zxing'
 
 import { createLegacySignClient } from '@utils/walletConnect/LegacyWalletConnectUtil'
 import { onSessionProposal } from '@utils/walletConnect/onSessionProposal'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
+
+type QrCodeScannerState = 'open' | 'closed' | 'loading'
 
 const validationSchema = z.object({
   uri: z.string().min(1, { message: 'uri required' })
@@ -22,7 +24,7 @@ type WcLoginFieldValues = z.infer<typeof validationSchema>
 export const useWcLogin = () => {
   const [signClient, setSignClient] = useState<ISignClient>()
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
-  const [isQrScanOpen, setIsQrScanOpen] = useState(false)
+  const [isQrScanOpen, setIsQrScanOpen] = useState<QrCodeScannerState>('closed')
 
   const { register, handleSubmit, formState } = useForm<WcLoginFieldValues>({
     resolver: zodResolver(validationSchema)
@@ -93,14 +95,14 @@ export const useWcLogin = () => {
     }
   }
 
-  const handleScan: OnResultFunction = result => {
+  const handleScan = (result: Result) => {
     if (!result) {
       return
     }
 
     onSubmit({ uri: result.getText() })
 
-    setIsQrScanOpen(false)
+    setIsQrScanOpen('closed')
   }
 
   return {
