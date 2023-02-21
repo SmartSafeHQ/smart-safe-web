@@ -37,32 +37,53 @@ export default function WalletconnectLogin() {
           <TokenverseTextLogo className="w-72 h-6" />
 
           <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
-            Login with wallet connect
+            Login using Wallet Connect
           </Heading>
         </header>
 
         <main className="w-full max-w-lg mt-8 flex flex-col items-center gap-6">
-          <div className="w-full max-h-[20rem] p-8 flex flex-col items-center justify-center gap-4 rounded-md bg-gray-800 border-1 border-black">
-            {isQrScanOpen ? (
-              <QrCodeReader
-                constraints={{ width: 420, height: 240 }}
-                onResult={handleScan}
-              />
+          <div className="w-full max-h-[20rem] overflow-hidden flex flex-col items-center justify-center gap-4 rounded-md bg-gray-800 border-1 border-black">
+            {isQrScanOpen === 'open' ? (
+              <div className="w-full max-h-[20rem] overflow-hidden flex flex-col items-center justify-center gap-4 rounded-md bg-gray-800 border-1 border-black">
+                <QrCodeReader
+                  onResult={handleScan}
+                  constraints={{ video: { width: 420, height: 320 } }}
+                />
+              </div>
+            ) : isQrScanOpen === 'loading' ? (
+              <div className="w-[420px] h-[320px] flex flex-col gap-4 items-center justify-center">
+                <div className="flex justify-center items-center">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
+                </div>
+
+                <p className="text-center">
+                  You need to grant access to your camera.
+                </p>
+              </div>
             ) : (
-              <>
+              <div className="p-8 w-[420px] h-[320px] flex flex-col items-center justify-center">
                 <QrCode className="w-48 h-48 text-gray-300" />
 
-                <Button onClick={() => setIsQrScanOpen(true)}>
+                <Button
+                  className="w-1/2"
+                  onClick={async () => {
+                    setIsQrScanOpen('loading')
+                    await window.navigator.mediaDevices.getUserMedia({
+                      video: { width: 420, height: 320 }
+                    })
+                    setIsQrScanOpen('open')
+                  }}
+                >
                   Scan QR code
                 </Button>
-              </>
+              </div>
             )}
           </div>
 
           <div className="w-full flex items-center gap-2">
             <hr className="w-full h-[1px] border-gray-600" />
 
-            <Text className="w-72 text-gray-500 font-medium">
+            <Text className="text-center w-72 text-gray-500 font-medium">
               or type the uri
             </Text>
 
@@ -71,7 +92,7 @@ export default function WalletconnectLogin() {
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full flex items-start gap-2"
+            className="w-full flex items-start gap-2 items-center"
           >
             <TextInput.Root
               htmlFor="uri"

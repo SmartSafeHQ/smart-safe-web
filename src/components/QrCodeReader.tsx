@@ -1,22 +1,27 @@
-import { QrReaderProps, QrReader } from 'react-qr-reader'
+/* eslint-disable no-undef */
+import { useZxing } from 'react-zxing'
 
-type QrCodeReaderProps = QrReaderProps
+import type { Result, UseZxingOptions } from 'react-zxing'
+
+type QrCodeReaderProps = UseZxingOptions & {
+  constraints: MediaStreamConstraints
+  onResult: (_result: Result) => unknown
+}
 
 export function QrCodeReader({
+  timeBetweenDecodingAttempts = 0,
   constraints,
-  scanDelay = 0,
-  ...props
+  onResult
 }: QrCodeReaderProps) {
+  const { ref } = useZxing({
+    onResult,
+    timeBetweenDecodingAttempts,
+    constraints
+  })
+
   return (
-    <QrReader
-      constraints={{
-        ...constraints,
-        facingMode: 'environment'
-      }}
-      scanDelay={scanDelay}
-      containerStyle={{ width: '100%' }}
-      videoStyle={{ width: '100%' }}
-      {...props}
-    />
+    <div className="w-full h-full relative">
+      <video className="w-full h-full object-contain" ref={ref} />
+    </div>
   )
 }
