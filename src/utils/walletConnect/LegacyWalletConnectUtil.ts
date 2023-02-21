@@ -44,7 +44,29 @@ export function createLegacySignClient({
       throw new Error(`legacySignClient > session_request failed: ${error}`)
     }
 
-    console.log('LegacySessionProposalModal', { legacyProposal: payload })
+    // up modal proposal
+
+    // payload = {
+    //   id: 1676993227021766,
+    //   jsonrpc: '2.0',
+    //   method: 'session_request',
+    //   params: {
+    //     chainId: null,
+    //     peerId: '45fe2ee5-70df-49f9-8c6a-f5e9785bfbb7',
+    //     peerMeta: {
+    //       description: 'nft, solana, marketplace, crypto',
+    //       icons: [
+    //         'https://magiceden.io/img/favicon/android-chrome-192x192.png',
+    //         'https://magiceden.io/img/appIcon.png',
+    //         'https://magiceden.io/img/favicon/android-chrome-192x192.png'
+    //       ],
+    //       name: 'Magic Eden',
+    //       url: 'https://magiceden.io'
+    //     }
+    //   }
+    // }
+
+    console.log('approve event (legacy) =>', payload)
 
     const { chainId } = payload
 
@@ -78,11 +100,18 @@ const onCallRequest = async (payload: OnCallRequestProps) => {
   switch (payload.method) {
     case EIP155_SIGNING_METHODS.ETH_SIGN:
     case EIP155_SIGNING_METHODS.PERSONAL_SIGN: {
-      // up modal
+      // up sign request modal
 
-      console.log(payload)
+      // payload = {
+      //   id: 1676993240094945,
+      //   jsonrpc: "2.0",
+      //   method: "personal_sign",
+      //   params:["wallet private key", "wallet address"]
+      // }
 
-      const test = {
+      console.log('session request event (legacy) =>', payload)
+
+      const requestEvent = {
         id: payload.id,
         topic: '',
         params: {
@@ -93,7 +122,7 @@ const onCallRequest = async (payload: OnCallRequestProps) => {
 
       const { result } = await approveEIP155Request(
         payload.walletPrivateKey,
-        test
+        requestEvent
       )
 
       legacySignClient.approveRequest({

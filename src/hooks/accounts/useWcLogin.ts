@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ISignClient, SessionTypes } from '@walletconnect/types'
+import { ISignClient } from '@walletconnect/types'
 import { SignClient } from '@walletconnect/sign-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -9,6 +9,7 @@ import { parseUri } from '@walletconnect/utils'
 import { OnResultFunction } from 'react-qr-reader'
 
 import { createLegacySignClient } from '@utils/walletConnect/LegacyWalletConnectUtil'
+import { onSessionProposal } from '@utils/walletConnect/onSessionProposal'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 
@@ -40,52 +41,14 @@ export const useWcLogin = () => {
         metadata: {
           name: 'Tokenverse',
           description: 'A wallet Tokenverse',
-          url: window.location.host,
+          url: 'localhost:3001', // 'window.location.host',
           icons: ['https://my-auth-wallet.com/icons/logo.png']
         }
       })
 
       setSignClient(client)
 
-      client.on('session_proposal', async event => {
-        // Show session proposal data to the user i.e. in a modal with options to approve / reject it
-        // Get required proposal data
-        const {
-          id,
-          params: { requiredNamespaces, relays }
-        } = event
-
-        // Approve session proposal, use id from session proposal event and respond with namespace(s) that satisfy dapps request and contain approved accounts
-        const namespaces: SessionTypes.Namespaces = {}
-
-        Object.keys(requiredNamespaces).forEach(key => {
-          const accounts: string[] = []
-
-          requiredNamespaces[key]?.chains?.forEach(chain => {
-            accounts.push(`${chain}:${customer?.wallet.address}`)
-          })
-
-          namespaces[key] = {
-            accounts,
-            methods: requiredNamespaces[key].methods,
-            events: requiredNamespaces[key].events
-          }
-        })
-
-        console.log('approve =>', {
-          id,
-          relayProtocol: relays[0].protocol,
-          namespaces
-        })
-
-        const { acknowledged } = await client.approve({
-          id,
-          relayProtocol: relays[0].protocol,
-          namespaces
-        })
-
-        await acknowledged()
-      })
+      return client
     } catch (e) {
       console.log(e)
     }
@@ -104,7 +67,14 @@ export const useWcLogin = () => {
     }
 
     if (!signClient && customer) {
-      createClient()
+      createClient().then(createdSignClient => {
+        if (!createdSignClient) return
+
+        onSessionProposal({
+          wallet: customer.wallet,
+          signClient: createdSignClient
+        })
+      })
     }
   }, [signClient, customer])
 
