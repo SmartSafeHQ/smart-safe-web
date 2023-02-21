@@ -12,5 +12,20 @@ export const wc = {
       rejectButtonTrigger: 'Reject',
       approveButtonTrigger: 'Approve'
     }
+  },
+  signMessageModal: {
+    header: {
+      title: 'Sign Message',
+      description: 'You will be using your wallet to sign the below message.'
+    },
+    content: {
+      protocol: 'Relay Protocol',
+      message: 'Message',
+      methods: 'Methods'
+    },
+    footer: {
+      rejectButtonTrigger: 'Reject',
+      approveButtonTrigger: 'Sign'
+    }
   }
 }
