@@ -32,7 +32,7 @@ export function WalletInfos({
       <div className="flex items-center gap-3">
         <Icon className="w-7 h-7 text-cyan-500" />
 
-        <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-300 sm:text-lg">
+        <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-50 sm:text-lg">
           {title}
         </Text>
       </div>

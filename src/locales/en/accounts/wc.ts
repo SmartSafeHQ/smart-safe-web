@@ -1,31 +1,24 @@
 export const wc = {
-  sessionApprovalModal: {
-    header: {
-      title: 'Session Approval',
-      description:
-        'You will be using your wallet to connect via Wallet Connect.'
-    },
-    content: {
-      walletLabel: 'Wallet being used:'
-    },
-    footer: {
-      rejectButtonTrigger: 'Reject',
-      approveButtonTrigger: 'Approve'
-    }
+  headTitle: 'Wc login',
+  headContent: 'Wc login tokenverse',
+  heading: 'Login with wallet connect',
+  scanQRCode: 'Scan QR code',
+  typeTheUri: 'or type the uri',
+  typeUriPlaceHolder: 'Type the uri',
+  connect: 'Connect',
+  sessionApproval: {
+    title: 'Session Approval',
+    description: 'You will be using your wallet to connect via Wallet Connect.',
+    wallet: 'wallet',
+    rejectButton: 'Reject',
+    approveButton: 'Approve'
   },
-  signMessageModal: {
-    header: {
-      title: 'Sign Message',
-      description: 'You will be using your wallet to sign the below message.'
-    },
-    content: {
-      protocol: 'Relay Protocol',
-      message: 'Message',
-      methods: 'Methods'
-    },
-    footer: {
-      rejectButtonTrigger: 'Reject',
-      approveButtonTrigger: 'Sign'
-    }
+  signMessage: {
+    title: 'Sign Message',
+    description: 'you will be using your wallet to sign the below message.',
+    message: 'Message',
+    blockchain: 'Blockchain',
+    rejectButton: 'Reject',
+    approveButton: 'Sign'
   }
 }

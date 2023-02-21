@@ -105,6 +105,7 @@ export const useWcLogin = () => {
 
   return {
     t,
+    customer,
     setIsSignInModalOpen,
     isQrScanOpen,
     setIsQrScanOpen,

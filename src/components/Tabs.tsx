@@ -51,7 +51,7 @@ export function TabsTrigger({
   return (
     <RadixTabs.Trigger
       className={clsx(
-        'flex flex-1 items-center justify-center px-5 py-5 text-gray-500 capitalize font-medium ring-gray-900 dark:ring-gray-100 transition-all focus:ring-2 hover:text-gray-800 hover:dark:text-gray-50 hover:bg-cyan-800 hover:bg-opacity-5 data-[state=active]:border-b-1 data-[state=active]:border-b-cyan-500 data-[state=active]:text-gray-800 dark:data-[state=active]:text-gray-50 focus:relative focus:shadow-md disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400',
+        'flex flex-1 items-center justify-center px-3 py-3 text-gray-500 capitalize font-medium ring-gray-900 dark:ring-gray-100 transition-all focus:ring-2 hover:text-gray-800 hover:dark:text-gray-50 hover:bg-cyan-800 hover:bg-opacity-5 data-[state=active]:border-b-1 data-[state=active]:border-b-cyan-500 data-[state=active]:text-gray-800 dark:data-[state=active]:text-gray-50 focus:relative focus:shadow-md disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-400',
         className
       )}
       {...props}
