@@ -1,4 +1,8 @@
 import { Wallet } from 'phosphor-react'
+import LegacySignClient from '@walletconnect/client'
+import { SignClient } from '@walletconnect/sign-client'
+import { ISignClient, SessionTypes } from '@walletconnect/types'
+import { Dispatch, SetStateAction } from 'react'
 
 import { Avatar } from '@components/Avatar'
 import { Button } from '@components/Button'
@@ -7,33 +11,103 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
 
 import { useI18n } from '@hooks/useI18n'
+import { ApproveSessionDataProps } from '@hooks/accounts/useWcLogin'
+import { getSdkError } from '@walletconnect/utils'
 
-type Props = {
-  appName: string
-  description: string
-  avatar: string
-  url: string
+interface SessionApprovalProps {
+  sessionData: ApproveSessionDataProps | null
   customerName?: string
   customerWallet?: string
+  signClient?: ISignClient | LegacySignClient
   isOpen: boolean
-  setIsOpen: () => void
+  setSessionData: Dispatch<SetStateAction<ApproveSessionDataProps | null>>
 }
 
 export function SessionApproval({
-  appName,
-  description,
-  avatar,
-  url,
+  signClient,
+  sessionData,
   customerName,
   customerWallet,
   isOpen,
-  setIsOpen
-}: Props) {
+  setSessionData
+}: SessionApprovalProps) {
   const { t } = useI18n()
+
+  async function handleApprove() {
+    if (!customerWallet) return
+
+    if (
+      sessionData?.apiVersion === 1 &&
+      signClient instanceof LegacySignClient
+    ) {
+      signClient.approveSession({
+        accounts: [customerWallet],
+        chainId: sessionData?.chainId ?? 1
+      })
+    }
+
+    if (sessionData?.apiVersion === 2 && signClient instanceof SignClient) {
+      if (!sessionData?.v2Params) return
+
+      const { requiredNamespaces, relays } = sessionData.v2Params
+
+      const namespaces: SessionTypes.Namespaces = {}
+
+      Object.keys(requiredNamespaces).forEach(key => {
+        const accounts: string[] = []
+
+        requiredNamespaces[key]?.chains?.forEach(chain => {
+          accounts.push(`${chain}:${customerWallet}`)
+        })
+
+        namespaces[key] = {
+          accounts,
+          methods: requiredNamespaces[key].methods,
+          events: requiredNamespaces[key].events
+        }
+      })
+
+      const { acknowledged } = await signClient.approve({
+        id: sessionData.id,
+        relayProtocol: relays[0].protocol,
+        namespaces
+      })
+
+      await acknowledged()
+    }
+
+    setSessionData(prev => {
+      if (!prev) return null
+
+      return { ...prev, isModalOpen: false }
+    })
+  }
+
+  async function handleReject() {
+    if (
+      sessionData?.apiVersion === 1 &&
+      signClient instanceof LegacySignClient
+    ) {
+      signClient.rejectSession(getSdkError('USER_REJECTED_METHODS'))
+    }
+
+    if (sessionData?.apiVersion === 2 && signClient instanceof SignClient) {
+      await signClient.reject({
+        id: sessionData?.id,
+        reason: getSdkError('USER_REJECTED_METHODS')
+      })
+    }
+
+    setSessionData(prev => {
+      if (!prev) return null
+
+      return { ...prev, isModalOpen: false }
+    })
+  }
 
   return (
     <DialogModal.Root open={isOpen}>
-      <DialogModal.Content className="md:max-w-[30rem] min-h-[67vh]">
+      <DialogModal.Content className="md:max-w-[30rem] min-h-[74vh]">
         <div className="w-full h-full flex flex-col gap-6 p-2">
           <header className="w-full flex items-center flex-col gap-3">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
@@ -48,10 +122,13 @@ export function SessionApproval({
           <div className="flex flex-col gap-4">
             <article className="w-full flex gap-4 items-center pb-6 border-b-2 border-gray-500">
               <Avatar.Root
-                fallbackName={appName.substring(0, 2)}
+                fallbackName={sessionData?.name?.substring(0, 2) ?? 'tk'}
                 className="min-w-[3.25rem] h-[3.25rem]"
               >
-                <Avatar.Image src={avatar} alt={appName} />
+                <Avatar.Image
+                  src={sessionData?.avatarUrl}
+                  alt={sessionData?.name}
+                />
               </Avatar.Root>
 
               <div className="flex flex-col items-start">
@@ -59,15 +136,19 @@ export function SessionApproval({
                   asChild
                   className="capitalize text-lg text-gray-900 dark:text-gray-50"
                 >
-                  <strong>{appName}</strong>
+                  <strong>{sessionData?.name ?? 'not provided'}</strong>
                 </Text>
 
                 <Text
                   asChild
                   className="text-cyan-500 font-medium transition-colors hover:text-cyan-600"
                 >
-                  <a href={url} target="_blank" rel="noreferrer">
-                    {url}
+                  <a
+                    href={sessionData?.url ?? '#'}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {sessionData?.url ?? 'not provided'}
                   </a>
                 </Text>
               </div>
@@ -78,7 +159,7 @@ export function SessionApproval({
                 asChild
                 className="text-justify text-gray-600 dark:text-gray-400"
               >
-                <p>{description}</p>
+                <p>{sessionData?.description ?? 'not provided'}</p>
               </Text>
 
               <WalletInfos
@@ -104,11 +185,13 @@ export function SessionApproval({
           </div>
 
           <footer className="flex gap-2 mt-auto">
-            <Button onClick={setIsOpen} variant="red">
+            <Button onClick={handleReject} variant="red">
               {t.wc.sessionApproval.rejectButton}
             </Button>
 
-            <Button>{t.wc.sessionApproval.approveButton}</Button>
+            <Button onClick={handleApprove}>
+              {t.wc.sessionApproval.approveButton}
+            </Button>
           </footer>
         </div>
       </DialogModal.Content>

@@ -16,7 +16,10 @@ import { useWcLogin } from '@hooks/accounts/useWcLogin'
 export default function WalletconnectLogin() {
   const {
     t,
+    signClient,
     customer,
+    sessionData,
+    setSessionData,
     setIsSignInModalOpen,
     isQrScanOpen,
     setIsQrScanOpen,
@@ -44,7 +47,7 @@ export default function WalletconnectLogin() {
       </header>
 
       <main className="w-full max-w-lg mt-8 flex flex-col items-center gap-6">
-        <div className="w-full max-h-[20rem] py-6 px-8 flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800 border-1">
+        <div className="w-full max-h-[20rem] py-6 px-8 flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800">
           {isQrScanOpen === 'open' ? (
             <div className="w-full max-h-[20rem] overflow-hidden flex flex-col items-center justify-center">
               <QrCodeReader
@@ -130,16 +133,12 @@ export default function WalletconnectLogin() {
       <LoginModal isOpen={isSignInModalOpen} setIsOpen={setIsSignInModalOpen} />
 
       <SessionApproval
+        sessionData={sessionData}
+        signClient={signClient}
+        isOpen={sessionData?.isModalOpen ?? false}
         customerName={customer?.name}
         customerWallet={customer?.wallet.address}
-        appName={'Magic Eden'}
-        description={'nft, solana, marketplace, crypto'}
-        avatar={'https://opensea.io/static/images/favicon/180x180.png'}
-        url={'https://magiceden.io'}
-        isOpen={false}
-        setIsOpen={() => {
-          console.log('set')
-        }}
+        setSessionData={setSessionData}
       />
 
       <SignMessage

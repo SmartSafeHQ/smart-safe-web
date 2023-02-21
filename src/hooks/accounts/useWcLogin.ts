@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ISignClient } from '@walletconnect/types'
+import { ISignClient, SignClientTypes } from '@walletconnect/types'
+import LegacySignClient from '@walletconnect/client'
 import { SignClient } from '@walletconnect/sign-client'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -14,6 +15,17 @@ import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 
 type QrCodeScannerState = 'open' | 'closed' | 'loading'
+export interface ApproveSessionDataProps {
+  id: number
+  isModalOpen: boolean
+  apiVersion: 1 | 2
+  chainId?: number
+  description?: string
+  avatarUrl?: string
+  name?: string
+  url?: string
+  v2Params?: SignClientTypes.EventArguments['session_proposal']['params']
+}
 
 const validationSchema = z.object({
   uri: z.string().min(1, { message: 'uri required' })
@@ -22,7 +34,9 @@ const validationSchema = z.object({
 type WcLoginFieldValues = z.infer<typeof validationSchema>
 
 export const useWcLogin = () => {
-  const [signClient, setSignClient] = useState<ISignClient>()
+  const [signClient, setSignClient] = useState<ISignClient | LegacySignClient>()
+  const [sessionData, setSessionData] =
+    useState<ApproveSessionDataProps | null>(null)
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
   const [isQrScanOpen, setIsQrScanOpen] = useState<QrCodeScannerState>('closed')
 
@@ -35,7 +49,7 @@ export const useWcLogin = () => {
 
   async function createClient() {
     try {
-      const client = await SignClient.init({
+      const signClient = await SignClient.init({
         logger: 'debug',
         projectId: '3340800244ece4bb36144fd392bbad42',
         // // optional parameters
@@ -48,9 +62,9 @@ export const useWcLogin = () => {
         }
       })
 
-      setSignClient(client)
+      setSignClient(signClient)
 
-      return client
+      return signClient
     } catch (e) {
       console.log(e)
     }
@@ -74,7 +88,8 @@ export const useWcLogin = () => {
 
         onSessionProposal({
           wallet: customer.wallet,
-          signClient: createdSignClient
+          signClient: createdSignClient,
+          setSessionData
         })
       })
     }
@@ -84,11 +99,18 @@ export const useWcLogin = () => {
     try {
       const { version } = parseUri(uri)
 
-      // Verify URI is v1 SignClient if URI version indicates it, else use v2.
+      // Verify URI version is v1 or v2 to SignClient
       if (version === 1) {
-        createLegacySignClient({ uri, wallet: customer?.wallet })
-      } else {
-        await signClient?.core.pairing.pair({ uri })
+        createLegacySignClient({
+          uri,
+          wallet: customer?.wallet,
+          setSignClient,
+          setSessionData
+        })
+      }
+
+      if (version === 2 && signClient instanceof ISignClient) {
+        await signClient.core.pairing.pair({ uri })
       }
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
@@ -107,7 +129,10 @@ export const useWcLogin = () => {
 
   return {
     t,
+    signClient,
     customer,
+    sessionData,
+    setSessionData,
     setIsSignInModalOpen,
     isQrScanOpen,
     setIsQrScanOpen,

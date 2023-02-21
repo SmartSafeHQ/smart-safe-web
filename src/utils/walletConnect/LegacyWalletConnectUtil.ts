@@ -1,11 +1,17 @@
-import { IWalletConnectSession } from '@walletconnect/legacy-types'
+import {
+  IWalletConnectSession,
+  ISessionParams
+} from '@walletconnect/legacy-types'
 import LegacySignClient from '@walletconnect/client'
 
 import { EIP155_SIGNING_METHODS } from '@utils/walletConnect'
 import { approveEIP155Request } from '@utils/walletConnect/EIP155RequestHandlerUtil'
+import { ApproveSessionDataProps } from '@hooks/accounts/useWcLogin'
 
 interface CreateLegacySignClientProps {
   uri?: string
+  setSessionData: (_data: ApproveSessionDataProps) => void
+  setSignClient: (_client: LegacySignClient) => void
   wallet?: {
     address: string
     privateKey: string
@@ -17,17 +23,19 @@ interface OnCallRequestProps {
   method: string
   params: any[]
   walletPrivateKey: string
+  legacySignClient: LegacySignClient
+  setSessionData: (_data: ApproveSessionDataProps) => void
 }
-
-export let legacySignClient: LegacySignClient
 
 export function createLegacySignClient({
   uri,
+  setSessionData,
+  setSignClient,
   wallet
 }: CreateLegacySignClientProps) {
-  // If URI is passed always create a new session,
-  // otherwise fall back to cached session if client isn't already instantiated.
   if (!wallet) return
+
+  let legacySignClient: LegacySignClient | null = null
 
   if (uri) {
     deleteCachedLegacySession()
@@ -39,46 +47,27 @@ export function createLegacySignClient({
     return
   }
 
-  legacySignClient.on('session_request', (error, payload) => {
-    if (error) {
-      throw new Error(`legacySignClient > session_request failed: ${error}`)
+  setSignClient(legacySignClient)
+
+  legacySignClient.on(
+    'session_request',
+    (error, payload: { id: number; params: ISessionParams[] }) => {
+      if (error) {
+        throw new Error(`legacySignClient > session_request failed: ${error}`)
+      }
+
+      setSessionData({
+        id: payload.id,
+        isModalOpen: true,
+        apiVersion: 1,
+        chainId: payload.params[0].chainId ?? undefined,
+        description: payload.params[0].peerMeta?.description,
+        avatarUrl: payload.params[0].peerMeta?.icons[0],
+        name: payload.params[0].peerMeta?.name,
+        url: payload.params[0].peerMeta?.url
+      })
     }
-
-    // up modal proposal
-
-    // payload = {
-    //   id: 1676993227021766,
-    //   jsonrpc: '2.0',
-    //   method: 'session_request',
-    //   params: {
-    //     chainId: null,
-    //     peerId: '45fe2ee5-70df-49f9-8c6a-f5e9785bfbb7',
-    //     peerMeta: {
-    //       description: 'nft, solana, marketplace, crypto',
-    //       icons: [
-    //         'https://magiceden.io/img/favicon/android-chrome-192x192.png',
-    //         'https://magiceden.io/img/appIcon.png',
-    //         'https://magiceden.io/img/favicon/android-chrome-192x192.png'
-    //       ],
-    //       name: 'Magic Eden',
-    //       url: 'https://magiceden.io'
-    //     }
-    //   }
-    // }
-
-    console.log('approve event (legacy) =>', payload)
-
-    const { chainId } = payload
-
-    legacySignClient.approveSession({
-      accounts: [wallet.address],
-      chainId: chainId ?? 1
-    })
-  })
-
-  legacySignClient.on('connect', () => {
-    console.log('legacySignClient > connect')
-  })
+  )
 
   legacySignClient.on('error', error => {
     throw new Error(`legacySignClient > on error: ${error}`)
@@ -88,7 +77,12 @@ export function createLegacySignClient({
     if (error) {
       throw new Error(`legacySignClient > call_request failed: ${error}`)
     }
-    onCallRequest({ ...payload, walletPrivateKey: wallet.privateKey })
+
+    onCallRequest({
+      ...payload,
+      legacySignClient,
+      walletPrivateKey: wallet.privateKey
+    })
   })
 
   legacySignClient.on('disconnect', async () => {
@@ -96,37 +90,35 @@ export function createLegacySignClient({
   })
 }
 
-const onCallRequest = async (payload: OnCallRequestProps) => {
-  switch (payload.method) {
+const onCallRequest = async ({
+  id,
+  legacySignClient,
+  method,
+  params,
+  walletPrivateKey
+}: OnCallRequestProps) => {
+  switch (method) {
     case EIP155_SIGNING_METHODS.ETH_SIGN:
     case EIP155_SIGNING_METHODS.PERSONAL_SIGN: {
       // up sign request modal
-
-      // payload = {
-      //   id: 1676993240094945,
-      //   jsonrpc: "2.0",
-      //   method: "personal_sign",
-      //   params:["wallet private key", "wallet address"]
-      // }
-
-      console.log('session request event (legacy) =>', payload)
+      console.log('session request event (legacy) =>', { id, method, params })
 
       const requestEvent = {
-        id: payload.id,
+        id,
         topic: '',
         params: {
-          request: { method: payload.method, params: payload.params },
+          request: { method, params },
           chainId: '1'
         }
       }
 
       const { result } = await approveEIP155Request(
-        payload.walletPrivateKey,
+        walletPrivateKey,
         requestEvent
       )
 
       legacySignClient.approveRequest({
-        id: payload.id,
+        id,
         result
       })
 
@@ -137,7 +129,7 @@ const onCallRequest = async (payload: OnCallRequestProps) => {
     case EIP155_SIGNING_METHODS.ETH_SIGN_TYPED_DATA_V3:
     case EIP155_SIGNING_METHODS.ETH_SIGN_TYPED_DATA_V4: {
       return console.log('LegacySessionSignTypedDataModal', {
-        legacyCallRequestEvent: payload,
+        legacyCallRequestEvent: { id, method, params },
         legacyRequestSession: legacySignClient.session
       })
     }
@@ -145,13 +137,13 @@ const onCallRequest = async (payload: OnCallRequestProps) => {
     case EIP155_SIGNING_METHODS.ETH_SEND_TRANSACTION:
     case EIP155_SIGNING_METHODS.ETH_SIGN_TRANSACTION: {
       return console.log('LegacySessionSendTransactionModal', {
-        legacyCallRequestEvent: payload,
+        legacyCallRequestEvent: { id, method, params },
         legacyRequestSession: legacySignClient.session
       })
     }
 
     default: {
-      alert(`${payload.method} is not supported for WalletConnect v1`)
+      alert(`${method} is not supported for WalletConnect v1`)
     }
   }
 }
