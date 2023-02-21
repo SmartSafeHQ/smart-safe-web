@@ -44,6 +44,7 @@ export function Scanner({
         rounded-lg
         overflow-hidden
         absolute
+        sm:relative
         top-0
         left-0
         z-10
@@ -60,7 +61,7 @@ export function Scanner({
       <video
         ref={ref}
         controls={false}
-        className="w-screen h-screen object-cover"
+        className="w-screen sm:w-full h-screen sm:h-full object-cover"
       />
 
       <div
@@ -73,6 +74,7 @@ export function Scanner({
           h-full
           flex
           flex-col
+          items-center
           justify-between
           p-2
         "
@@ -85,7 +87,7 @@ export function Scanner({
           </p>
         </div>
 
-        <Button onClick={() => setIsScannerOpen(false)}>
+        <Button className="max-w-xl" onClick={() => setIsScannerOpen(false)}>
           {t.payment.closeCameraButtonTrigger}
         </Button>
       </div>

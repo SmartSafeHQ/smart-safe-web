@@ -31,9 +31,11 @@ export function QrCodeScanner() {
         />
       )}
 
-      {isAppReadyToDisplayVideoStream && !qrCodeDecodedData && (
-        <ScannerContainer setIsScannerOpen={setIsScannerOpen} />
-      )}
+      {isAppReadyToDisplayVideoStream &&
+        !qrCodeDecodedData &&
+        !isScannerOpen && (
+          <ScannerContainer setIsScannerOpen={setIsScannerOpen} />
+        )}
 
       {isScannerOpen && (
         <Scanner
