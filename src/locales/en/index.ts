@@ -8,6 +8,7 @@ import { receive } from './receive'
 import { send } from './send'
 import { cashback } from './cashback'
 import { wc } from './accounts/wc'
+import { qrCodeReader } from './components/qrCodeReader'
 
 export const en = {
   signIn,
@@ -19,5 +20,6 @@ export const en = {
   receive,
   send,
   cashback,
-  wc
+  wc,
+  qrCodeReader
 }
