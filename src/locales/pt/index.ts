@@ -7,6 +7,7 @@ import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
 import { cashback } from './cashback'
+import { wc } from './accounts/wc'
 
 export const pt = {
   signIn,
@@ -17,5 +18,6 @@ export const pt = {
   home,
   receive,
   send,
-  cashback
+  cashback,
+  wc
 }
