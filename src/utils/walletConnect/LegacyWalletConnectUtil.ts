@@ -80,6 +80,8 @@ const onCallRequest = async (payload: OnCallRequestProps) => {
     case EIP155_SIGNING_METHODS.PERSONAL_SIGN: {
       // up modal
 
+      console.log(payload)
+
       const test = {
         id: payload.id,
         topic: '',

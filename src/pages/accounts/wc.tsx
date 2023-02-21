@@ -1,17 +1,16 @@
 import Head from 'next/head'
 import { Link, QrCode } from 'phosphor-react'
-import { OnResultFunction } from 'react-qr-reader'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
+import { LoginModal } from '@components/pages/Accounts/LoginModal'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { QrCodeReader } from '@components/QrCodeReader'
 
 import { useWcLogin } from '@hooks/accounts/useWcLogin'
-import { LoginModal } from '@/components/pages/Accounts/LoginModal'
 
 export default function WalletconnectLogin() {
   const {
@@ -21,19 +20,10 @@ export default function WalletconnectLogin() {
     isSignInModalOpen,
     formState: { errors, isSubmitting },
     handleSubmit,
+    handleScan,
     onSubmit,
     register
   } = useWcLogin()
-
-  const handleScan: OnResultFunction = result => {
-    if (!result) {
-      return
-    }
-
-    onSubmit({ uri: result.getText() })
-
-    setIsQrScanOpen(false)
-  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-3">

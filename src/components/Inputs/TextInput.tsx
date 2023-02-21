@@ -59,7 +59,7 @@ function TextInputContent({
   return (
     <div
       className={clsx(
-        'flex items-center gap-3 min-h-[3rem] px-3 rounded w-full outline-none ring-cyan-500 focus-within:ring-2',
+        'flex items-center gap-x-3 min-h-[3rem] px-3 rounded w-full outline-none ring-cyan-500 focus-within:ring-2',
         'tokenverse-input-content',
         className
       )}
@@ -110,7 +110,7 @@ const TextInputInput: ForwardRefRenderFunction<
     <input
       ref={ref}
       className={clsx(
-        'flex flex-1 w-full h-full outline-none text-gray-800 dark:text-gray-100 text-sm bg-transparent placeholder:text-gray-400',
+        'flex flex-1 w-full h-full outline-none text-gray-800 dark:text-gray-100 bg-transparent placeholder:text-gray-400',
         className
       )}
       {...props}

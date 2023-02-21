@@ -15,6 +15,7 @@ export function QrCodeReader({
       }}
       scanDelay={scanDelay}
       containerStyle={{ width: '100%' }}
+      videoStyle={{ width: '100%' }}
       {...props}
     />
   )

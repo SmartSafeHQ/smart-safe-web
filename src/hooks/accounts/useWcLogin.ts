@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 import { parseUri } from '@walletconnect/utils'
+import { OnResultFunction } from 'react-qr-reader'
 
 import { createLegacySignClient } from '@utils/walletConnect/LegacyWalletConnectUtil'
 import { useAuth } from '@contexts/AuthContext'
@@ -122,6 +123,16 @@ export const useWcLogin = () => {
     }
   }
 
+  const handleScan: OnResultFunction = result => {
+    if (!result) {
+      return
+    }
+
+    onSubmit({ uri: result.getText() })
+
+    setIsQrScanOpen(false)
+  }
+
   return {
     t,
     setIsSignInModalOpen,
@@ -131,6 +142,7 @@ export const useWcLogin = () => {
     register,
     handleSubmit,
     formState,
+    handleScan,
     onSubmit
   }
 }
