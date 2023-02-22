@@ -3,6 +3,8 @@ import { useRouter } from 'next/router'
 import { locales } from '../locales'
 import { pt } from '../locales/pt'
 
+import { AndroidInterface } from '@decorators/androidInterface'
+
 import {
   SupportedLanguages,
   i18nLocales,
@@ -15,6 +17,8 @@ export const useI18n = () => {
 
   function handleLanguageSwitch(localeId: SupportedLanguages) {
     document.cookie = `NEXT_LOCALE=${localeId}; max-age=${NEXT_LOCALE_COOKIE_MAX_AGE}; path=/`
+
+    AndroidInterface.localizable(localeId)
 
     push({ pathname, query }, asPath, { locale: localeId })
   }
