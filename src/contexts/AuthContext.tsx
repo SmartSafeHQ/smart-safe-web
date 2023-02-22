@@ -8,6 +8,8 @@ import {
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 
+import { AndroidInterface } from '@decorators/androidInterface'
+
 import { FetchEndUserWalletsResponse } from '@hooks/accounts/mutations/useLoginMutation'
 import { tokenverseApi } from '@lib/axios'
 
@@ -40,6 +42,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     try {
+      AndroidInterface.logout()
+
       await Auth.signOut({ global: true })
     } catch (error) {
       console.error(error)
