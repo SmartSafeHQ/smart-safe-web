@@ -49,23 +49,13 @@ export default function WalletconnectLogin() {
       </header>
 
       <main className="w-full max-w-lg mt-8 flex flex-col items-center gap-6">
-        <div className="w-full max-h-[20rem] py-6 px-8 flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800">
+        <div className="w-full h-[18.75rem] sm:max-h-[20rem] flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800">
           {isQrScanOpen === 'open' ? (
-            <div className="w-full max-h-[20rem] overflow-hidden flex flex-col items-center justify-center">
+            <div className="w-full overflow-hidden flex flex-col items-center justify-center">
               <QrCodeReader
                 onResult={handleScan}
                 constraints={{ video: { width: 420, height: 320 } }}
               />
-            </div>
-          ) : isQrScanOpen === 'loading' ? (
-            <div className="w-[26.25rem] h-80 flex flex-col gap-4 items-center justify-center">
-              <div className="flex justify-center items-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-500"></div>
-              </div>
-
-              <Text className="text-center font-medium text-gray-600 dark:text-gray-100">
-                {t.wc.grantAccess}
-              </Text>
             </div>
           ) : (
             <div className="p-8 w-[26.25rem] h-80 flex flex-col items-center justify-center">
@@ -73,13 +63,7 @@ export default function WalletconnectLogin() {
 
               <Button
                 className="w-1/2"
-                onClick={async () => {
-                  setIsQrScanOpen('loading')
-
-                  await window.navigator.mediaDevices.getUserMedia({
-                    video: { width: 420, height: 320 }
-                  })
-
+                onClick={() => {
                   setIsQrScanOpen('open')
                 }}
               >
