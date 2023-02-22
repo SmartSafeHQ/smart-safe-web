@@ -3,6 +3,7 @@ import { Wallet } from 'phosphor-react'
 import LegacySignClient from '@walletconnect/client'
 import { SignClient } from '@walletconnect/sign-client'
 import { ISignClient, SessionTypes } from '@walletconnect/types'
+import { toast } from 'react-toastify'
 
 import { Avatar } from '@components/Avatar'
 import { Button } from '@components/Button'
@@ -36,41 +37,47 @@ export function SessionApproval({
   async function handleApprove() {
     if (!customerWallet) return
 
-    if (signClient instanceof LegacySignClient) {
-      signClient.approveSession({
-        accounts: [customerWallet],
-        chainId: sessionData?.chainId ?? 1
-      })
-    }
+    try {
+      if (signClient instanceof LegacySignClient) {
+        signClient.approveSession({
+          accounts: [customerWallet],
+          chainId: sessionData?.chainId ?? 1
+        })
+      }
 
-    if (signClient instanceof SignClient) {
-      if (!sessionData?.v2Params) return
+      if (signClient instanceof SignClient) {
+        if (!sessionData?.v2Params) return
 
-      const { requiredNamespaces, relays } = sessionData.v2Params
+        const { requiredNamespaces, relays } = sessionData.v2Params
 
-      const namespaces: SessionTypes.Namespaces = {}
+        const namespaces: SessionTypes.Namespaces = {}
 
-      Object.keys(requiredNamespaces).forEach(key => {
-        const accounts: string[] = []
+        Object.keys(requiredNamespaces).forEach(key => {
+          const accounts: string[] = []
 
-        requiredNamespaces[key]?.chains?.forEach(chain => {
-          accounts.push(`${chain}:${customerWallet}`)
+          requiredNamespaces[key]?.chains?.forEach(chain => {
+            accounts.push(`${chain}:${customerWallet}`)
+          })
+
+          namespaces[key] = {
+            accounts,
+            methods: requiredNamespaces[key].methods,
+            events: requiredNamespaces[key].events
+          }
         })
 
-        namespaces[key] = {
-          accounts,
-          methods: requiredNamespaces[key].methods,
-          events: requiredNamespaces[key].events
-        }
-      })
+        const { acknowledged } = await signClient.approve({
+          id: sessionData.id,
+          relayProtocol: relays[0].protocol,
+          namespaces
+        })
 
-      const { acknowledged } = await signClient.approve({
-        id: sessionData.id,
-        relayProtocol: relays[0].protocol,
-        namespaces
-      })
+        await acknowledged()
+      }
+    } catch (error) {
+      console.log(error)
 
-      await acknowledged()
+      toast.error(`Error. ${(error as Error).message}`)
     }
 
     setSessionData(prev => {
@@ -81,15 +88,21 @@ export function SessionApproval({
   }
 
   async function handleReject() {
-    if (signClient instanceof LegacySignClient) {
-      signClient.rejectSession(getSdkError('USER_REJECTED_METHODS'))
-    }
+    try {
+      if (signClient instanceof LegacySignClient) {
+        signClient.rejectSession(getSdkError('USER_REJECTED_METHODS'))
+      }
 
-    if (signClient instanceof SignClient) {
-      await signClient.reject({
-        id: sessionData?.id ?? 0,
-        reason: getSdkError('USER_REJECTED_METHODS')
-      })
+      if (signClient instanceof SignClient) {
+        await signClient.reject({
+          id: sessionData?.id ?? 0,
+          reason: getSdkError('USER_REJECTED_METHODS')
+        })
+      }
+    } catch (error) {
+      console.log(error)
+
+      toast.error(`Error. ${(error as Error).message}`)
     }
 
     setSessionData(prev => {
@@ -101,8 +114,8 @@ export function SessionApproval({
 
   return (
     <DialogModal.Root open={isOpen}>
-      <DialogModal.Content className="md:max-w-[30rem] min-h-[74vh]">
-        <div className="w-full h-full flex flex-col gap-6 p-2">
+      <DialogModal.Content className="md:max-w-[30rem]">
+        <div className="w-full h-full flex flex-col gap-6 ">
           <header className="w-full flex items-center flex-col gap-3">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
               {t.wc.sessionApproval.title}
@@ -159,7 +172,8 @@ export function SessionApproval({
               <WalletInfos
                 title={t.wc.sessionApproval.wallet}
                 Icon={Wallet}
-                className="p-4 !bg-gray-200 dark:!bg-gray-700"
+                className="p-4"
+                variant="highlighted"
               >
                 <Text asChild className="text-gray-700 dark:text-gray-50 ">
                   <strong>{customerName}</strong>

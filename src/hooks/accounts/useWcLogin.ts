@@ -14,8 +14,10 @@ import { createLegacySignClient } from '@utils/walletConnect/LegacyWalletConnect
 import { onSessionProposal } from '@utils/walletConnect/onSessionProposal'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
+import { signClientOptions } from '@utils/walletConnect'
 
 type QrCodeScannerState = 'open' | 'closed' | 'loading'
+
 export interface ApproveSessionDataProps {
   id: number
   isModalOpen: boolean
@@ -26,6 +28,7 @@ export interface ApproveSessionDataProps {
   url?: string
   v2Params?: SignClientTypes.EventArguments['session_proposal']['params']
 }
+
 export interface SessionDataProps {
   id: number
   isModalOpen: boolean
@@ -58,26 +61,11 @@ export const useWcLogin = () => {
   const { t } = useI18n()
 
   async function createClient() {
-    try {
-      const signClient = await SignClient.init({
-        logger: 'debug',
-        projectId: '3340800244ece4bb36144fd392bbad42',
-        // // optional parameters
-        // relayUrl: "<YOUR RELAY URL>",
-        metadata: {
-          name: 'Tokenverse',
-          description: 'A wallet Tokenverse',
-          url: 'localhost:3001', // 'window.location.host',
-          icons: ['https://my-auth-wallet.com/icons/logo.png']
-        }
-      })
+    const signClient = await SignClient.init(signClientOptions)
 
-      setSignClient(signClient)
+    setSignClient(signClient)
 
-      return signClient
-    } catch (e) {
-      console.log(e)
-    }
+    return signClient
   }
 
   useEffect(() => {
@@ -93,16 +81,22 @@ export const useWcLogin = () => {
     }
 
     if (!signClient && customer) {
-      createClient().then(createdSignClient => {
-        if (!createdSignClient) return
+      createClient()
+        .then(createdSignClient => {
+          if (!createdSignClient) return
 
-        onSessionProposal({
-          wallet: customer.wallet,
-          signClient: createdSignClient,
-          setSessionSignData,
-          setSessionData
+          onSessionProposal({
+            wallet: customer.wallet,
+            signClient: createdSignClient,
+            setSessionSignData,
+            setSessionData
+          })
         })
-      })
+        .catch(error => {
+          console.log(error)
+
+          toast.error(`Error. ${(error as Error).message}`)
+        })
     }
   }, [signClient, customer])
 
@@ -125,6 +119,8 @@ export const useWcLogin = () => {
         await signClient.core.pairing.pair({ uri })
       }
     } catch (error) {
+      console.log(error)
+
       toast.error(`Error. ${(error as Error).message}`)
     }
   }

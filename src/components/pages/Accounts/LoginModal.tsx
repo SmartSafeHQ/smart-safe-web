@@ -55,7 +55,7 @@ export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
 
   return (
     <DialogModal.Root open={isOpen} modal={false}>
-      <DialogModal.Content className="md:max-w-[36rem] min-h-[74vh]">
+      <DialogModal.Content className="md:max-w-[36rem]">
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">

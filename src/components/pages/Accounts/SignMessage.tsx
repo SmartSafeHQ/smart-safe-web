@@ -1,17 +1,18 @@
 import { Dispatch, SetStateAction } from 'react'
 import { SignClient } from '@walletconnect/sign-client'
+import { toast } from 'react-toastify'
+import LegacySignClient from '@walletconnect/client'
+import { ISignClient } from '@walletconnect/types'
+import { formatJsonRpcError } from '@json-rpc-tools/utils'
+import { getSdkError } from '@walletconnect/utils'
 
 import { Avatar } from '@components/Avatar'
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Text } from '@components/Text'
-import LegacySignClient from '@walletconnect/client'
-import { ISignClient } from '@walletconnect/types'
-import { formatJsonRpcError } from '@json-rpc-tools/utils'
 
 import { useI18n } from '@hooks/useI18n'
 import { SessionDataProps } from '@hooks/accounts/useWcLogin'
-import { getSdkError } from '@walletconnect/utils'
 
 interface SignMessageProps {
   appName?: string
@@ -37,18 +38,24 @@ export function SignMessage({
   const { t } = useI18n()
 
   async function handleApprove() {
-    if (signClient instanceof LegacySignClient) {
-      signClient.approveRequest({
-        id: sessionSignData?.id,
-        result: sessionSignData?.signResponse.result
-      })
-    }
+    try {
+      if (signClient instanceof LegacySignClient) {
+        signClient.approveRequest({
+          id: sessionSignData?.id,
+          result: sessionSignData?.signResponse.result
+        })
+      }
 
-    if (signClient instanceof SignClient && sessionSignData) {
-      await signClient.respond({
-        topic: sessionSignData.topic,
-        response: sessionSignData?.signResponse
-      })
+      if (signClient instanceof SignClient && sessionSignData) {
+        await signClient.respond({
+          topic: sessionSignData.topic,
+          response: sessionSignData?.signResponse
+        })
+      }
+    } catch (error) {
+      console.log(error)
+
+      toast.error(`Error. ${(error as Error).message}`)
     }
 
     setSessionSignData(prev => {
@@ -61,28 +68,34 @@ export function SignMessage({
   async function handleReject() {
     if (!sessionSignData) return
 
-    if (signClient instanceof LegacySignClient) {
-      const { error } = formatJsonRpcError(
-        sessionSignData.id,
-        getSdkError('USER_REJECTED_METHODS').message
-      )
+    try {
+      if (signClient instanceof LegacySignClient) {
+        const { error } = formatJsonRpcError(
+          sessionSignData.id,
+          getSdkError('USER_REJECTED_METHODS').message
+        )
 
-      signClient.rejectRequest({
-        id: sessionSignData.id,
-        error
-      })
-    }
+        signClient.rejectRequest({
+          id: sessionSignData.id,
+          error
+        })
+      }
 
-    if (signClient instanceof SignClient) {
-      const response = formatJsonRpcError(
-        sessionSignData.id,
-        getSdkError('USER_REJECTED_METHODS').message
-      )
+      if (signClient instanceof SignClient) {
+        const response = formatJsonRpcError(
+          sessionSignData.id,
+          getSdkError('USER_REJECTED_METHODS').message
+        )
 
-      await signClient.respond({
-        topic: sessionSignData.topic,
-        response
-      })
+        await signClient.respond({
+          topic: sessionSignData.topic,
+          response
+        })
+      }
+    } catch (error) {
+      console.log(error)
+
+      toast.error(`Error. ${(error as Error).message}`)
     }
 
     setSessionSignData(prev => {
@@ -94,7 +107,7 @@ export function SignMessage({
 
   return (
     <DialogModal.Root open={isOpen}>
-      <DialogModal.Content className="md:max-w-[30rem] min-h-[86vh]">
+      <DialogModal.Content className="md:max-w-[30rem]">
         <div className="w-full h-full flex flex-col gap-6 p-2">
           <header className="w-full flex items-center flex-col gap-3">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">

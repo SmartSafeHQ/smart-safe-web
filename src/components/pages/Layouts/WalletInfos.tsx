@@ -12,12 +12,14 @@ interface WalletInfosProps extends HTMLAttributes<HTMLDivElement> {
   title: string
   Icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
   children: ReactNode
+  variant?: 'highlighted'
 }
 
 export function WalletInfos({
   title,
   Icon,
   className,
+  variant,
   children,
   ...props
 }: WalletInfosProps) {
@@ -25,6 +27,9 @@ export function WalletInfos({
     <div
       className={clsx(
         'w-full flex gap-4 items-center justify-between rounded-md bg-gray-50 dark:bg-gray-800 shadow-md',
+        {
+          '!bg-gray-200 dark:!bg-gray-700': variant === 'highlighted'
+        },
         className
       )}
       {...props}

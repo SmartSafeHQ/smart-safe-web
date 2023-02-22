@@ -2,10 +2,11 @@ import {
   IWalletConnectSession,
   ISessionParams
 } from '@walletconnect/legacy-types'
+import { toast } from 'react-toastify'
 import LegacySignClient from '@walletconnect/client'
 import { utils } from 'ethers'
 
-import { EIP155_SIGNING_METHODS } from '@utils/walletConnect'
+import { EIP155_SIGNING_METHODS, signClientOptions } from '@utils/walletConnect'
 import { approveEIP155Request } from '@utils/walletConnect/EIP155RequestHandlerUtil'
 import {
   ApproveSessionDataProps,
@@ -45,10 +46,17 @@ export function createLegacySignClient({
 
   if (uri) {
     deleteCachedLegacySession()
-    legacySignClient = new LegacySignClient({ uri })
+    legacySignClient = new LegacySignClient({
+      uri,
+      clientMeta: signClientOptions.metadata
+    })
   } else if (!legacySignClient && getCachedLegacySession()) {
     const session = getCachedLegacySession()
-    legacySignClient = new LegacySignClient({ session })
+
+    legacySignClient = new LegacySignClient({
+      session,
+      clientMeta: signClientOptions.metadata
+    })
   } else {
     return
   }
@@ -59,7 +67,10 @@ export function createLegacySignClient({
     'session_request',
     (error, payload: { id: number; params: ISessionParams[] }) => {
       if (error) {
-        throw new Error(`legacySignClient > session_request failed: ${error}`)
+        toast.error(`Error. ${(error as Error).message}`)
+
+        console.log(`legacySignClient > session_request failed: ${error}`)
+        return
       }
 
       setSessionData({
@@ -75,12 +86,17 @@ export function createLegacySignClient({
   )
 
   legacySignClient.on('error', error => {
-    throw new Error(`legacySignClient > on error: ${error}`)
+    toast.error(`Error. ${(error as Error).message}`)
+
+    console.log(`legacySignClient > on error: ${error}`)
   })
 
   legacySignClient.on('call_request', (error, payload) => {
     if (error) {
-      throw new Error(`legacySignClient > call_request failed: ${error}`)
+      toast.error(`Error. ${(error as Error).message}`)
+
+      console.log(`legacySignClient > call_request failed: ${error}`)
+      return
     }
 
     onCallRequest({
@@ -157,7 +173,7 @@ const onCallRequest = async ({
     }
 
     default: {
-      alert(`${method} is not supported for WalletConnect v1`)
+      toast.error(`${method} is not supported for WalletConnect v1`)
     }
   }
 }
