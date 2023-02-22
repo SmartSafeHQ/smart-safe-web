@@ -5,7 +5,11 @@ import { useListUsersCameraDevices } from './useListUsersCameraDevices'
 
 export function useCameraDevice() {
   const { accessStatus, grantAccess } = useCameraAccessStatus()
-  const { usersCameraDevices } = useListUsersCameraDevices({ accessStatus })
+  const {
+    usersCameraDevices,
+    currentSelectedDeviceId,
+    setCurrentSelectedDevicecId
+  } = useListUsersCameraDevices({ accessStatus })
 
   const [isAppReadyToDisplayVideoStream, setIsAppReadyToDisplayVideoStream] =
     useState(
@@ -30,6 +34,8 @@ export function useCameraDevice() {
     isAppReadyToDisplayVideoStream,
     grantAccess,
     accessStatus,
-    usersCameraDevices
+    usersCameraDevices,
+    currentSelectedDeviceId,
+    setCurrentSelectedDevicecId
   }
 }

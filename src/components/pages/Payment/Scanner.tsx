@@ -3,23 +3,23 @@ import { useZxing } from 'react-zxing'
 
 import { useI18n } from '@hooks/useI18n'
 
-import { Button } from '@components/Button'
-
 import { ScannerStrategy, QrCodeScanner } from './ScannerStrategy'
+
+import { CameraControls } from './CameraControls'
 
 import type { QrCodeData } from './ScannerStrategy'
 import type { Dispatch, SetStateAction } from 'react'
 
 type Props = {
+  currentSelectedDeviceId: string
   setIsScannerOpen: Dispatch<SetStateAction<boolean>>
-  usersCameraDevices: { frontCameraId: string; backCameraId: string }
   setQrCodeDecodedData: Dispatch<SetStateAction<QrCodeData | undefined>>
 }
 
 export function Scanner({
+  setIsScannerOpen,
   setQrCodeDecodedData,
-  usersCameraDevices,
-  setIsScannerOpen
+  currentSelectedDeviceId
 }: Props) {
   const { t } = useI18n()
   const { ref } = useZxing({
@@ -34,13 +34,13 @@ export function Scanner({
     constraints: {
       video: { facingMode: 'environment' }
     },
-    deviceId:
-      usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
+    deviceId: currentSelectedDeviceId
   })
 
   return (
     <div
       className='
+        w-full
         rounded-lg
         overflow-hidden
         absolute
@@ -56,7 +56,7 @@ export function Scanner({
         after:top-0
         after:left-0
         after:opacity-50
-        '
+      '
     >
       <video
         ref={ref}
@@ -87,9 +87,7 @@ export function Scanner({
           </p>
         </div>
 
-        <Button className="max-w-xl" onClick={() => setIsScannerOpen(false)}>
-          {t.payment.closeCameraButtonTrigger}
-        </Button>
+        <CameraControls setIsScannerOpen={setIsScannerOpen} />
       </div>
     </div>
   )

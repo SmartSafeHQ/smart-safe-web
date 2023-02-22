@@ -12,10 +12,8 @@ export function ScannerContainer({ setIsScannerOpen }: Props) {
   const { t } = useI18n()
 
   return (
-    <div className="">
-      <Button onClick={() => setIsScannerOpen(true)}>
-        {t.payment.scanQrCodeButtonTrigger}
-      </Button>
-    </div>
+    <Button className="w-[200px]" onClick={() => setIsScannerOpen(true)}>
+      {t.payment.scanQrCodeButtonTrigger}
+    </Button>
   )
 }

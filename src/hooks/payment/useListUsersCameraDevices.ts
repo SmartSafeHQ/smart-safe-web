@@ -6,7 +6,11 @@ type Props = {
   accessStatus: PermissionState
 }
 
+/**
+ * This shouldn't be directly used. Instead, use `useCameraDevice` hook.
+ */
 export function useListUsersCameraDevices({ accessStatus }: Props) {
+  const [currentSelectedDeviceId, setCurrentSelectedDevicecId] = useState('')
   const [usersCameraDevices, setUsersCameraDevices] = useState({
     frontCameraId: '',
     backCameraId: ''
@@ -25,7 +29,9 @@ export function useListUsersCameraDevices({ accessStatus }: Props) {
 
           const backCamera = devices.find(findCameraType('back'))
           const frontCamera = devices.find(findCameraType('user'))
-
+          setCurrentSelectedDevicecId(
+            backCamera?.deviceId || frontCamera?.deviceId || ''
+          )
           setUsersCameraDevices({
             backCameraId: backCamera?.deviceId || '',
             frontCameraId: frontCamera?.deviceId || ''
@@ -35,5 +41,9 @@ export function useListUsersCameraDevices({ accessStatus }: Props) {
     }
   }, [accessStatus])
 
-  return { usersCameraDevices }
+  return {
+    usersCameraDevices,
+    currentSelectedDeviceId,
+    setCurrentSelectedDevicecId
+  }
 }

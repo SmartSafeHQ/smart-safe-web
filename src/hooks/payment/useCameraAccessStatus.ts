@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 
+/**
+ * This shouldn't be directly used. Instead, use `useCameraDevice` hook.
+ */
 export function useCameraAccessStatus() {
   const [accessStatus, setAccessStatus] = useState<PermissionState>('prompt')
 
