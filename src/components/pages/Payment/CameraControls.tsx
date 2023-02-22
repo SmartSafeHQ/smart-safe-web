@@ -1,6 +1,4 @@
-import { X, UserSwitch } from 'phosphor-react'
-
-import { useCameraDevice } from '@hooks/payment'
+import { X } from 'phosphor-react'
 
 import type { ReactNode, Dispatch, SetStateAction } from 'react'
 
@@ -30,32 +28,12 @@ type CameraControlsProps = {
 }
 
 export function CameraControls({ setIsScannerOpen }: CameraControlsProps) {
-  const {
-    usersCameraDevices,
-    currentSelectedDeviceId,
-    setCurrentSelectedDevicecId
-  } = useCameraDevice()
-
   return (
     <div className="flex gap-6">
       <Control
         label="Close"
         icon={<X size={32} color="rgb(6 182 212)" />}
         onClick={() => setIsScannerOpen(false)}
-      />
-
-      <Control
-        label="Switch"
-        onClick={() => {
-          if (usersCameraDevices.backCameraId === currentSelectedDeviceId) {
-            setCurrentSelectedDevicecId(usersCameraDevices.frontCameraId)
-          } else if (
-            usersCameraDevices.frontCameraId === currentSelectedDeviceId
-          ) {
-            setCurrentSelectedDevicecId(usersCameraDevices.backCameraId)
-          }
-        }}
-        icon={<UserSwitch size={32} color="rgb(6 182 212)" />}
       />
     </div>
   )

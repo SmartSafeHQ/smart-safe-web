@@ -2,10 +2,12 @@ interface IScanner {
   scan(_codeData: string): unknown
 }
 
-export type QrCodeData = {
-  merchantName: string
-  transactionAmount: number
-}
+export type QrCodeData =
+  | {
+      merchantName: string
+      transactionAmount: number
+    }
+  | undefined
 
 export class QrCodeScanner implements IScanner {
   scan(codeData: string): QrCodeData {

@@ -10,7 +10,6 @@ import { Scanner } from './Scanner'
 import { ScannerContainer } from './ScannerContainer'
 import { QrCodeDecodedData } from './QrCodeDecodedData'
 import { PaymentOptions } from './PaymentOptions'
-import { CameraControls } from './CameraControls'
 
 import type { QrCodeData } from './ScannerStrategy'
 
@@ -37,27 +36,24 @@ export function QrCodeScanner() {
           />
         )}
 
-        {isAppReadyToDisplayVideoStream &&
-          !qrCodeDecodedData &&
-          !isScannerOpen && (
-            <ScannerContainer setIsScannerOpen={setIsScannerOpen} />
-          )}
+        {isAppReadyToDisplayVideoStream && !isScannerOpen && (
+          <ScannerContainer
+            setIsScannerOpen={setIsScannerOpen}
+            setQrCodeDecodedData={setQrCodeDecodedData}
+          />
+        )}
 
         {isScannerOpen && (
-          <>
-            <Scanner
-              setIsScannerOpen={setIsScannerOpen}
-              setQrCodeDecodedData={setQrCodeDecodedData}
-              currentSelectedDeviceId={currentSelectedDeviceId}
-            />
-
-            <CameraControls setIsScannerOpen={setIsScannerOpen} />
-          </>
+          <Scanner
+            setIsScannerOpen={setIsScannerOpen}
+            setQrCodeDecodedData={setQrCodeDecodedData}
+            currentSelectedDeviceId={currentSelectedDeviceId}
+          />
         )}
       </div>
 
       {qrCodeDecodedData && (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 w-[600px]">
           <QrCodeDecodedData qrCodeDecodedData={qrCodeDecodedData} />
 
           <PaymentOptions />
