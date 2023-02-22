@@ -19,13 +19,13 @@ export function QrCodeDecodedData({ qrCodeDecodedData }: Props) {
           {Intl.NumberFormat(currentLocaleProps.slug, {
             currency: currentLocaleProps.slug === 'pt-BR' ? 'BRL' : 'USD',
             style: 'currency'
-          }).format(qrCodeDecodedData.transactionAmount)}
+          }).format(qrCodeDecodedData?.transactionAmount || 0)}
         </p>
 
         <p className="dark:text-gray-400">
           {t.payment.paymentData.to}{' '}
           <span className="font-medium uppercase dark:text-white">
-            {qrCodeDecodedData.merchantName}
+            {qrCodeDecodedData?.merchantName}
           </span>
         </p>
       </div>
