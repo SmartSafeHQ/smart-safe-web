@@ -1,8 +1,8 @@
+import { Dispatch, SetStateAction } from 'react'
 import { Wallet } from 'phosphor-react'
 import LegacySignClient from '@walletconnect/client'
 import { SignClient } from '@walletconnect/sign-client'
 import { ISignClient, SessionTypes } from '@walletconnect/types'
-import { Dispatch, SetStateAction } from 'react'
 
 import { Avatar } from '@components/Avatar'
 import { Button } from '@components/Button'
@@ -36,17 +36,14 @@ export function SessionApproval({
   async function handleApprove() {
     if (!customerWallet) return
 
-    if (
-      sessionData?.apiVersion === 1 &&
-      signClient instanceof LegacySignClient
-    ) {
+    if (signClient instanceof LegacySignClient) {
       signClient.approveSession({
         accounts: [customerWallet],
         chainId: sessionData?.chainId ?? 1
       })
     }
 
-    if (sessionData?.apiVersion === 2 && signClient instanceof SignClient) {
+    if (signClient instanceof SignClient) {
       if (!sessionData?.v2Params) return
 
       const { requiredNamespaces, relays } = sessionData.v2Params
@@ -84,16 +81,13 @@ export function SessionApproval({
   }
 
   async function handleReject() {
-    if (
-      sessionData?.apiVersion === 1 &&
-      signClient instanceof LegacySignClient
-    ) {
+    if (signClient instanceof LegacySignClient) {
       signClient.rejectSession(getSdkError('USER_REJECTED_METHODS'))
     }
 
-    if (sessionData?.apiVersion === 2 && signClient instanceof SignClient) {
+    if (signClient instanceof SignClient) {
       await signClient.reject({
-        id: sessionData?.id,
+        id: sessionData?.id ?? 0,
         reason: getSdkError('USER_REJECTED_METHODS')
       })
     }
@@ -136,7 +130,7 @@ export function SessionApproval({
                   asChild
                   className="capitalize text-lg text-gray-900 dark:text-gray-50"
                 >
-                  <strong>{sessionData?.name ?? 'not provided'}</strong>
+                  <strong>{sessionData?.name ?? t.wc.uninformed}</strong>
                 </Text>
 
                 <Text
@@ -148,7 +142,7 @@ export function SessionApproval({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {sessionData?.url ?? 'not provided'}
+                    {sessionData?.url ?? t.wc.uninformed}
                   </a>
                 </Text>
               </div>
@@ -159,7 +153,7 @@ export function SessionApproval({
                 asChild
                 className="text-justify text-gray-600 dark:text-gray-400"
               >
-                <p>{sessionData?.description ?? 'not provided'}</p>
+                <p>{sessionData?.description ?? t.wc.uninformed}</p>
               </Text>
 
               <WalletInfos

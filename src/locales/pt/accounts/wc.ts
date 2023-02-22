@@ -7,6 +7,7 @@ export const wc = {
   typeTheUri: 'ou digite a uri',
   typeUriPlaceHolder: 'Digite a uri',
   connect: 'Connectar',
+  uninformed: 'não informado',
   sessionApproval: {
     title: 'Aprovar sessão',
     description:

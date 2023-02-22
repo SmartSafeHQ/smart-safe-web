@@ -7,6 +7,7 @@ export const wc = {
   typeTheUri: 'or type the uri',
   typeUriPlaceHolder: 'Type the uri',
   connect: 'Connect',
+  uninformed: 'uninformed',
   sessionApproval: {
     title: 'Session Approval',
     description: 'You will be using your wallet to connect via Wallet Connect.',

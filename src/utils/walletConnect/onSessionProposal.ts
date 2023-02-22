@@ -1,13 +1,18 @@
+import { utils } from 'ethers'
 import { SignClient } from '@walletconnect/sign-client/dist/types/client'
 import { SignClientTypes } from '@walletconnect/types'
 
 import { EIP155_SIGNING_METHODS } from '@utils/walletConnect'
 import { approveEIP155Request } from '@utils/walletConnect/EIP155RequestHandlerUtil'
-import { ApproveSessionDataProps } from '@hooks/accounts/useWcLogin'
+import {
+  ApproveSessionDataProps,
+  SessionDataProps
+} from '@hooks/accounts/useWcLogin'
 
 interface OnSessionProposalProps {
   signClient: SignClient
   setSessionData: (_data: ApproveSessionDataProps) => void
+  setSessionSignData: (_data: SessionDataProps) => void
   wallet?: {
     address: string
     privateKey: string
@@ -17,6 +22,7 @@ interface OnSessionProposalProps {
 export async function onSessionProposal({
   signClient,
   setSessionData,
+  setSessionSignData,
   wallet
 }: OnSessionProposalProps) {
   if (!wallet) return
@@ -27,7 +33,6 @@ export async function onSessionProposal({
       setSessionData({
         id: event.id,
         isModalOpen: true,
-        apiVersion: 2,
         chainId: 1,
         description: event.params.proposer.metadata.description,
         avatarUrl: event.params.proposer.metadata.icons[0],
@@ -41,25 +46,33 @@ export async function onSessionProposal({
   signClient.on(
     'session_request',
     async (requestEvent: SignClientTypes.EventArguments['session_request']) => {
-      console.log('session request event =>', requestEvent)
+      const { id, topic, params } = requestEvent
 
-      const { topic, params } = requestEvent
-      const { request } = params
-
-      switch (request.method) {
+      switch (params.request.method) {
         case EIP155_SIGNING_METHODS.ETH_SIGN:
         case EIP155_SIGNING_METHODS.PERSONAL_SIGN: {
-          // up sign request modal
+          let message = params.request.params.filter(
+            (p: string) => !utils.isAddress(p)
+          )[0]
+
+          if (utils.isHexString(message)) {
+            message = utils.toUtf8String(message)
+          }
 
           const response = await approveEIP155Request(
             wallet.privateKey,
             requestEvent
           )
 
-          await signClient.respond({
+          setSessionSignData({
+            id,
             topic,
-            response
+            blockchains: 'ethereum',
+            isModalOpen: true,
+            message,
+            signResponse: response
           })
+
           break
         }
         case EIP155_SIGNING_METHODS.ETH_SIGN_TYPED_DATA:

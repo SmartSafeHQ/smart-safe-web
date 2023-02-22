@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { ISignClient, SignClientTypes } from '@walletconnect/types'
+import { JsonRpcResult } from '@walletconnect/jsonrpc-types'
 import LegacySignClient from '@walletconnect/client'
 import { SignClient } from '@walletconnect/sign-client'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -18,13 +19,20 @@ type QrCodeScannerState = 'open' | 'closed' | 'loading'
 export interface ApproveSessionDataProps {
   id: number
   isModalOpen: boolean
-  apiVersion: 1 | 2
   chainId?: number
   description?: string
   avatarUrl?: string
   name?: string
   url?: string
   v2Params?: SignClientTypes.EventArguments['session_proposal']['params']
+}
+export interface SessionDataProps {
+  id: number
+  isModalOpen: boolean
+  message: string
+  topic: string
+  blockchains: string
+  signResponse: JsonRpcResult<string>
 }
 
 const validationSchema = z.object({
@@ -37,6 +45,8 @@ export const useWcLogin = () => {
   const [signClient, setSignClient] = useState<ISignClient | LegacySignClient>()
   const [sessionData, setSessionData] =
     useState<ApproveSessionDataProps | null>(null)
+  const [sessionSignData, setSessionSignData] =
+    useState<SessionDataProps | null>(null)
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
   const [isQrScanOpen, setIsQrScanOpen] = useState<QrCodeScannerState>('closed')
 
@@ -89,6 +99,7 @@ export const useWcLogin = () => {
         onSessionProposal({
           wallet: customer.wallet,
           signClient: createdSignClient,
+          setSessionSignData,
           setSessionData
         })
       })
@@ -105,6 +116,7 @@ export const useWcLogin = () => {
           uri,
           wallet: customer?.wallet,
           setSignClient,
+          setSessionSignData,
           setSessionData
         })
       }
@@ -131,6 +143,8 @@ export const useWcLogin = () => {
     t,
     signClient,
     customer,
+    sessionSignData,
+    setSessionSignData,
     sessionData,
     setSessionData,
     setIsSignInModalOpen,

@@ -3,14 +3,19 @@ import {
   ISessionParams
 } from '@walletconnect/legacy-types'
 import LegacySignClient from '@walletconnect/client'
+import { utils } from 'ethers'
 
 import { EIP155_SIGNING_METHODS } from '@utils/walletConnect'
 import { approveEIP155Request } from '@utils/walletConnect/EIP155RequestHandlerUtil'
-import { ApproveSessionDataProps } from '@hooks/accounts/useWcLogin'
+import {
+  ApproveSessionDataProps,
+  SessionDataProps
+} from '@hooks/accounts/useWcLogin'
 
 interface CreateLegacySignClientProps {
   uri?: string
   setSessionData: (_data: ApproveSessionDataProps) => void
+  setSessionSignData: (_data: SessionDataProps) => void
   setSignClient: (_client: LegacySignClient) => void
   wallet?: {
     address: string
@@ -24,13 +29,14 @@ interface OnCallRequestProps {
   params: any[]
   walletPrivateKey: string
   legacySignClient: LegacySignClient
-  setSessionData: (_data: ApproveSessionDataProps) => void
+  setSessionSignData: (_data: SessionDataProps) => void
 }
 
 export function createLegacySignClient({
   uri,
   setSessionData,
   setSignClient,
+  setSessionSignData,
   wallet
 }: CreateLegacySignClientProps) {
   if (!wallet) return
@@ -59,7 +65,6 @@ export function createLegacySignClient({
       setSessionData({
         id: payload.id,
         isModalOpen: true,
-        apiVersion: 1,
         chainId: payload.params[0].chainId ?? undefined,
         description: payload.params[0].peerMeta?.description,
         avatarUrl: payload.params[0].peerMeta?.icons[0],
@@ -81,6 +86,7 @@ export function createLegacySignClient({
     onCallRequest({
       ...payload,
       legacySignClient,
+      setSessionSignData,
       walletPrivateKey: wallet.privateKey
     })
   })
@@ -93,6 +99,7 @@ export function createLegacySignClient({
 const onCallRequest = async ({
   id,
   legacySignClient,
+  setSessionSignData,
   method,
   params,
   walletPrivateKey
@@ -100,9 +107,6 @@ const onCallRequest = async ({
   switch (method) {
     case EIP155_SIGNING_METHODS.ETH_SIGN:
     case EIP155_SIGNING_METHODS.PERSONAL_SIGN: {
-      // up sign request modal
-      console.log('session request event (legacy) =>', { id, method, params })
-
       const requestEvent = {
         id,
         topic: '',
@@ -112,14 +116,24 @@ const onCallRequest = async ({
         }
       }
 
-      const { result } = await approveEIP155Request(
+      let message = params.filter(p => !utils.isAddress(p))[0]
+
+      if (utils.isHexString(message)) {
+        message = utils.toUtf8String(message)
+      }
+
+      const response = await approveEIP155Request(
         walletPrivateKey,
         requestEvent
       )
 
-      legacySignClient.approveRequest({
+      setSessionSignData({
         id,
-        result
+        topic: requestEvent.topic,
+        blockchains: 'ethereum',
+        isModalOpen: true,
+        message,
+        signResponse: response
       })
 
       return

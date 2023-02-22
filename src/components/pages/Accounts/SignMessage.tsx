@@ -1,32 +1,96 @@
+import { Dispatch, SetStateAction } from 'react'
+import { SignClient } from '@walletconnect/sign-client'
+
 import { Avatar } from '@components/Avatar'
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Text } from '@components/Text'
+import LegacySignClient from '@walletconnect/client'
+import { ISignClient } from '@walletconnect/types'
+import { formatJsonRpcError } from '@json-rpc-tools/utils'
 
 import { useI18n } from '@hooks/useI18n'
+import { SessionDataProps } from '@hooks/accounts/useWcLogin'
+import { getSdkError } from '@walletconnect/utils'
 
-type Props = {
-  appName: string
-  message: string
-  blockchain: string
-  avatar: string
-  url: string
+interface SignMessageProps {
+  appName?: string
+  avatar?: string
+  url?: string
   customerName?: string
+  signClient?: ISignClient | LegacySignClient
+  sessionSignData: SessionDataProps | null
   isOpen: boolean
-  setIsOpen: () => void
+  setSessionSignData: Dispatch<SetStateAction<SessionDataProps | null>>
 }
 
 export function SignMessage({
   appName,
-  message,
+  sessionSignData,
   avatar,
-  blockchain,
   url,
   customerName,
   isOpen,
-  setIsOpen
-}: Props) {
+  signClient,
+  setSessionSignData
+}: SignMessageProps) {
   const { t } = useI18n()
+
+  async function handleApprove() {
+    if (signClient instanceof LegacySignClient) {
+      signClient.approveRequest({
+        id: sessionSignData?.id,
+        result: sessionSignData?.signResponse.result
+      })
+    }
+
+    if (signClient instanceof SignClient && sessionSignData) {
+      await signClient.respond({
+        topic: sessionSignData.topic,
+        response: sessionSignData?.signResponse
+      })
+    }
+
+    setSessionSignData(prev => {
+      if (!prev) return null
+
+      return { ...prev, isModalOpen: false }
+    })
+  }
+
+  async function handleReject() {
+    if (!sessionSignData) return
+
+    if (signClient instanceof LegacySignClient) {
+      const { error } = formatJsonRpcError(
+        sessionSignData.id,
+        getSdkError('USER_REJECTED_METHODS').message
+      )
+
+      signClient.rejectRequest({
+        id: sessionSignData.id,
+        error
+      })
+    }
+
+    if (signClient instanceof SignClient) {
+      const response = formatJsonRpcError(
+        sessionSignData.id,
+        getSdkError('USER_REJECTED_METHODS').message
+      )
+
+      await signClient.respond({
+        topic: sessionSignData.topic,
+        response
+      })
+    }
+
+    setSessionSignData(prev => {
+      if (!prev) return null
+
+      return { ...prev, isModalOpen: false }
+    })
+  }
 
   return (
     <DialogModal.Root open={isOpen}>
@@ -45,7 +109,7 @@ export function SignMessage({
           <div className="flex flex-col gap-4">
             <article className="w-full flex gap-4 items-center pb-6 border-b-2 border-gray-500">
               <Avatar.Root
-                fallbackName={appName.substring(0, 2)}
+                fallbackName={appName?.substring(0, 2) ?? 'TK'}
                 className="min-w-[3.25rem] h-[3.25rem]"
               >
                 <Avatar.Image src={avatar} alt={appName} />
@@ -56,15 +120,15 @@ export function SignMessage({
                   asChild
                   className="capitalize text-lg text-gray-900 dark:text-gray-50"
                 >
-                  <strong>{appName}</strong>
+                  <strong>{appName ?? t.wc.uninformed}</strong>
                 </Text>
 
                 <Text
                   asChild
                   className="text-cyan-500 font-medium transition-colors hover:text-cyan-600"
                 >
-                  <a href={url} target="_blank" rel="noreferrer">
-                    {url}
+                  <a href={url ?? '#'} target="_blank" rel="noreferrer">
+                    {url ?? t.wc.uninformed}
                   </a>
                 </Text>
               </div>
@@ -82,7 +146,7 @@ export function SignMessage({
                 asChild
                 className="text-start capitalize text-gray-600 dark:text-gray-400"
               >
-                <p>{blockchain}</p>
+                <p>{sessionSignData?.blockchains}</p>
               </Text>
             </article>
 
@@ -98,17 +162,19 @@ export function SignMessage({
                 asChild
                 className="text-start text-gray-600 dark:text-gray-400"
               >
-                <p>{message}</p>
+                <p>{sessionSignData?.message}</p>
               </Text>
             </article>
           </div>
 
           <footer className="flex gap-2 mt-auto">
-            <Button onClick={setIsOpen} variant="red">
+            <Button onClick={handleReject} variant="red">
               {t.wc.signMessage.rejectButton}
             </Button>
 
-            <Button>{t.wc.signMessage.approveButton}</Button>
+            <Button onClick={handleApprove}>
+              {t.wc.signMessage.approveButton}
+            </Button>
           </footer>
         </div>
       </DialogModal.Content>

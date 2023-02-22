@@ -18,6 +18,8 @@ export default function WalletconnectLogin() {
     t,
     signClient,
     customer,
+    sessionSignData,
+    setSessionSignData,
     sessionData,
     setSessionData,
     setIsSignInModalOpen,
@@ -143,17 +145,13 @@ export default function WalletconnectLogin() {
 
       <SignMessage
         customerName={customer?.name}
-        appName={'Magic Eden'}
-        message={
-          'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptate quas, facilis molestias amet architecto fugiat repudiandae quos placeat pariatur consequatur incidunt temporibus debitis recusandae ipsa!'
-        }
-        avatar={'https://opensea.io/static/images/favicon/180x180.png'}
-        url={'https://magiceden.io'}
-        blockchain="ethereum"
-        isOpen={false}
-        setIsOpen={() => {
-          console.log('set')
-        }}
+        appName={sessionData?.name}
+        sessionSignData={sessionSignData}
+        avatar={sessionData?.avatarUrl}
+        url={sessionData?.url}
+        isOpen={sessionSignData?.isModalOpen ?? false}
+        signClient={signClient}
+        setSessionSignData={setSessionSignData}
       />
     </div>
   )
