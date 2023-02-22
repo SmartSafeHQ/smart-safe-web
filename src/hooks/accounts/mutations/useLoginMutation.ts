@@ -4,6 +4,8 @@ import { Auth } from 'aws-amplify'
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
 
+import { AndroidInterface } from '@decorators/androidInterface'
+
 interface LoginFunctionInput {
   email: string
   password: string
@@ -31,13 +33,7 @@ async function loginFunction(
     password: input.password
   })
 
-  if ('AndroidInterface' in window) {
-    try {
-      window.AndroidInterface.saveBiometric(input.email, input.password)
-    } catch (e) {
-      console.error('biometric error', e)
-    }
-  }
+  AndroidInterface.saveBiometric(input.email, input.password)
 
   const accessToken = response.signInUserSession.idToken.jwtToken
 
