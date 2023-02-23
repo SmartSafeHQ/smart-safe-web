@@ -33,7 +33,7 @@ export function QrCodeReader({
         className="w-full h-full object-cover"
       />
 
-      <div className=" absolute top-0 left-0 z-10 w-full h-full flex flex-col items-center justify-between p-4">
+      <div className=" absolute top-0 left-0 z-10 w-full h-full flex flex-col items-center justify-between p-2">
         <div className="flex flex-col items-center">
           <Camera size={26} />
 

@@ -57,13 +57,25 @@ export default function WalletconnectLogin() {
                 constraints={{ video: { width: 400, height: 320 } }}
               />
             </div>
+          ) : isQrScanOpen === 'loading' ? (
+            <div className="w-[420px] h-[320px] flex flex-col gap-4 items-center justify-center">
+              <div className="flex justify-center items-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
+              </div>
+
+              <p className="text-center">{t.wc.grantAccess}</p>
+            </div>
           ) : (
             <div className="p-8 w-full flex flex-1 flex-col items-center justify-between gap-4">
               <QrCode className="w-52 h-52 text-gray-600 dark:text-gray-50" />
 
               <Button
                 className="w-1/2"
-                onClick={() => {
+                onClick={async () => {
+                  setIsQrScanOpen('loading')
+                  await window.navigator.mediaDevices.getUserMedia({
+                    video: { width: 420, height: 320 }
+                  })
                   setIsQrScanOpen('open')
                 }}
               >

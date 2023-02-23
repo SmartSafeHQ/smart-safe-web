@@ -16,15 +16,15 @@
 
 @layer utilities {
   .clip-square {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     clip-path: polygon(
       0% 0%,
       0% 100%,
-      10% 101%,
-      10% 20%,
-      90% 20%,
-      90% 90%,
-      0% 90%,
+      15% 100%,
+      15% 20%,
+      85% 20%,
+      85% 95%,
+      0% 95%,
       0% 100%,
       100% 100%,
       100% 0%

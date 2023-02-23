@@ -1,8 +1,9 @@
 export const wc = {
   headTitle: 'Wc login',
   headContent: 'Wc login tokenverse',
-  heading: 'Login com wallet connect',
+  heading: 'Login com Wallet Connect',
   scanQRCode: 'Escanear QR code',
+  grantAccess: 'You need to grant access to your camera.',
   typeTheUri: 'ou digite a uri',
   typeUriPlaceHolder: 'Digite a uri',
   connect: 'Connectar',
