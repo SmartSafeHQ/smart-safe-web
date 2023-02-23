@@ -13,7 +13,6 @@ export const EIP155_SIGNING_METHODS = {
 
 export const signClientOptions: SignClientTypes.Options = {
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
-  relayUrl: 'wss://relay.walletconnect.com',
   name: 'Tokenverse',
   metadata: {
     name: 'Tokenverse',
