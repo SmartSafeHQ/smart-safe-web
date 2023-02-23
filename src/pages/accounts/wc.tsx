@@ -48,7 +48,7 @@ export default function WalletconnectLogin() {
         </Heading>
       </header>
 
-      <main className="w-full max-w-lg mt-8 flex flex-col items-center gap-6">
+      <main className="w-full max-w-md mt-8 flex flex-col items-center gap-6">
         <div className="w-full h-[20rem] max-w-[25rem] flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800">
           {isQrScanOpen === 'open' ? (
             <div className="w-full overflow-hidden flex flex-1 flex-col items-center justify-center">

@@ -5,7 +5,8 @@ import {
   House,
   PaperPlaneTilt,
   ShoppingCartSimple,
-  Wallet
+  Wallet,
+  Money
 } from 'phosphor-react'
 
 export const sidebar = {
@@ -42,6 +43,12 @@ export const sidebar = {
       icon: ArrowsClockwise,
       title: 'swap',
       isDisabled: true
+    },
+    {
+      href: '/dashboard/payment',
+      icon: Money,
+      title: 'payment',
+      isDisabled: false
     },
     {
       href: '/dashboard/buy',

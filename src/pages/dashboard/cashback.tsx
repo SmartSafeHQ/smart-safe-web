@@ -25,9 +25,11 @@ const Cashback = () => {
         <h1>{t.cashback.cashbackDescription}</h1>
 
         <div className="flex items-center gap-5 max-w-screen-md flex-wrap">
-          <Card companyImageUrl="/cashback/c&a.png" companyName="C&A" />
-          <Card companyImageUrl="/cashback/ifood.png" companyName="iFood" />
-          <Card companyImageUrl="/cashback/amazon.png" companyName="Amazon" />
+          <Card
+            companyImageUrl="/cashback/cyberlegacy.png"
+            companyName="Cyber Legacy"
+          />
+          <Card companyImageUrl="/cashback/innvo.png" companyName="Innvo" />
         </div>
       </div>
     </div>

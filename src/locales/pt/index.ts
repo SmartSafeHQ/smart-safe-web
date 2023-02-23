@@ -6,6 +6,7 @@ import { pagination } from './components/pagination'
 import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
+import { payment } from './payment'
 import { cashback } from './cashback'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
@@ -21,5 +22,6 @@ export const pt = {
   send,
   cashback,
   wc,
-  qrCodeReader
+  qrCodeReader,
+  payment
 }
