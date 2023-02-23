@@ -2,6 +2,9 @@
 
 import { useState, useEffect } from 'react'
 
+/**
+ * This shouldn't be directly used. Instead, use `useCameraDevice` hook.
+ */
 export function useCameraAccessStatus() {
   const [accessStatus, setAccessStatus] = useState<PermissionState>('prompt')
 
@@ -14,8 +17,19 @@ export function useCameraAccessStatus() {
       .catch(() => setAccessStatus('denied'))
   }, [])
 
-  async function grantAccess() {
-    await window.navigator.mediaDevices.getUserMedia({ video: true })
+  async function grantAccess(usersCameraDevices: {
+    frontCameraId: string
+    backCameraId: string
+  }) {
+    await window.navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: 'environment',
+        width: 323, // width and height are needed, otherwise the video stream will not start on mobile
+        height: 634,
+        deviceId:
+          usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
+      }
+    })
 
     setAccessStatus('granted')
   }

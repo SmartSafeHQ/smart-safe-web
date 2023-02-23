@@ -1,0 +1,42 @@
+import { Button } from '@components/Button'
+
+import { useI18n } from '@hooks/useI18n'
+
+import type { Dispatch, SetStateAction } from 'react'
+
+type Props = {
+  setIsScannerOpen: Dispatch<SetStateAction<boolean>>
+  usersCameraDevices: {
+    frontCameraId: string
+    backCameraId: string
+  }
+  grantAccess: (_usersCameraDevices: {
+    frontCameraId: string
+    backCameraId: string
+  }) => Promise<void>
+}
+
+export function RequestCameraAccesss({
+  grantAccess,
+  setIsScannerOpen,
+  usersCameraDevices
+}: Props) {
+  const { t } = useI18n()
+
+  return (
+    <>
+      <Button
+        className="w-[200px]"
+        onClick={async () => {
+          await grantAccess(usersCameraDevices)
+
+          setIsScannerOpen(true)
+        }}
+      >
+        {t.payment.grantCameraAccess}
+      </Button>
+
+      <p className="text-center">{t.payment.grantCameraAccessDescription}</p>
+    </>
+  )
+}

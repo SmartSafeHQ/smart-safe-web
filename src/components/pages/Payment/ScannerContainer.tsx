@@ -1,37 +1,31 @@
-import { useZxing } from 'react-zxing'
+import { useI18n } from '@hooks/useI18n'
 
-import { ScannerStrategy, QrCodeScanner } from './ScannerStrategy'
+import { Button } from '@components/Button'
 
-import { useListUsersCameraDevices } from '@hooks/payment'
-
-import type { QrCodeData } from './ScannerStrategy'
 import type { Dispatch, SetStateAction } from 'react'
 
+import type { QrCodeData } from './ScannerStrategy'
+
 type Props = {
-  setQrCodeDecodedData: Dispatch<SetStateAction<QrCodeData | undefined>>
+  setIsScannerOpen: Dispatch<SetStateAction<boolean>>
+  setQrCodeDecodedData: Dispatch<SetStateAction<QrCodeData>>
 }
 
-export function ScannerContainer({ setQrCodeDecodedData }: Props) {
-  const { usersCameraDevices } = useListUsersCameraDevices()
-
-  console.log({ usersCameraDevices })
-
-  const { ref } = useZxing({
-    onResult(codeData) {
-      const scannerStrategy = new ScannerStrategy(new QrCodeScanner())
-
-      const scanResult = scannerStrategy.scan(codeData.getText())
-
-      setQrCodeDecodedData(scanResult as QrCodeData)
-    },
-    deviceId:
-      usersCameraDevices.backCameraId || usersCameraDevices.frontCameraId
-  })
+export function ScannerContainer({
+  setIsScannerOpen,
+  setQrCodeDecodedData
+}: Props) {
+  const { t } = useI18n()
 
   return (
-    <div className="rounded-lg overflow-hidden w-full sm:w-96">
-      {JSON.stringify(usersCameraDevices)}
-      <video ref={ref} />
-    </div>
+    <Button
+      className="w-[200px]"
+      onClick={() => {
+        setQrCodeDecodedData(undefined)
+        setIsScannerOpen(true)
+      }}
+    >
+      {t.payment.scanQrCodeButtonTrigger}
+    </Button>
   )
 }
