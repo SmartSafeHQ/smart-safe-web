@@ -13,7 +13,7 @@ export function Skeleton({ isLoading, className, children }: SkeletonProps) {
       {isLoading ? (
         <div
           className={clsx(
-            'w-full rounded-md animate-pulse bg-gray-300 dark:bg-gray-700',
+            'rounded-md animate-pulse bg-gray-300 dark:bg-gray-700',
             className
           )}
         />

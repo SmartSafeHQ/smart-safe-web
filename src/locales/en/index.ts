@@ -1,13 +1,15 @@
 import { signIn } from './accounts/signIn'
-import { header } from './header'
+import { header } from './components/header'
 import { web3Errors } from './errors/web3Errors'
-import { sidebar } from './sidebar'
-import { pagination } from './pagination'
+import { sidebar } from './components/sidebar'
+import { pagination } from './components/pagination'
 import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
 import { payment } from './payment'
 import { cashback } from './cashback'
+import { wc } from './accounts/wc'
+import { qrCodeReader } from './components/qrCodeReader'
 
 export const en = {
   signIn,
@@ -18,6 +20,8 @@ export const en = {
   home,
   receive,
   send,
-  payment,
-  cashback
+  cashback,
+  wc,
+  qrCodeReader,
+  payment
 }
