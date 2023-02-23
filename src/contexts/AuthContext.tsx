@@ -91,11 +91,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       .catch(_ => {
         setCustomer(null)
 
-        const isAuthRequired = asPath !== '/'
+        const isAuthRequired = asPath.startsWith('/accounts') === false
 
-        if (isAuthRequired) {
-          signOut()
+        if (!isAuthRequired) {
+          return
         }
+
+        signOut()
       })
   }, [])
 
