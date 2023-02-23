@@ -49,17 +49,17 @@ export default function WalletconnectLogin() {
       </header>
 
       <main className="w-full max-w-lg mt-8 flex flex-col items-center gap-6">
-        <div className="w-full h-[18.75rem] sm:max-h-[20rem] flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800">
+        <div className="w-full h-[20rem] max-w-[25rem] flex flex-col items-center justify-center gap-5 rounded-md bg-gray-200 dark:bg-gray-800">
           {isQrScanOpen === 'open' ? (
-            <div className="w-full overflow-hidden flex flex-col items-center justify-center">
+            <div className="w-full overflow-hidden flex flex-1 flex-col items-center justify-center">
               <QrCodeReader
                 onResult={handleScan}
-                constraints={{ video: { width: 420, height: 320 } }}
+                constraints={{ video: { width: 400, height: 320 } }}
               />
             </div>
           ) : (
-            <div className="p-8 w-[26.25rem] h-80 flex flex-col items-center justify-center">
-              <QrCode className="w-48 h-48 text-gray-600 dark:text-gray-300" />
+            <div className="p-8 w-full flex flex-1 flex-col items-center justify-between gap-4">
+              <QrCode className="w-52 h-52 text-gray-600 dark:text-gray-50" />
 
               <Button
                 className="w-1/2"

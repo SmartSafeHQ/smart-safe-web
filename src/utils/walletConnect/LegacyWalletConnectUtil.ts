@@ -46,6 +46,7 @@ export function createLegacySignClient({
 
   if (uri) {
     deleteCachedLegacySession()
+
     legacySignClient = new LegacySignClient({
       uri,
       clientMeta: signClientOptions.metadata

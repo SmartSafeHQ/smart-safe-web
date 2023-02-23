@@ -30,14 +30,14 @@ export function QrCodeReader({
       <video
         ref={ref}
         controls={false}
-        className="w-full h-[26.25rem] object-cover"
+        className="w-full h-full object-cover"
       />
 
-      <div className=" absolute top-0 left-0 z-10 w-full h-full flex flex-col items-center justify-between p-6">
+      <div className=" absolute top-0 left-0 z-10 w-full h-full flex flex-col items-center justify-between p-4">
         <div className="flex flex-col items-center">
           <Camera size={26} />
 
-          <p className="text-center font-medium">
+          <p className="text-center text-sm font-medium">
             {t.qrCodeReader.instructions}
           </p>
         </div>

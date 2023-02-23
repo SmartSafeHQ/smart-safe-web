@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 import { parseUri } from '@walletconnect/utils'
+import { useRouter } from 'next/router'
 import { Result } from 'react-zxing'
 
 import { createLegacySignClient } from '@utils/walletConnect/LegacyWalletConnectUtil'
@@ -53,6 +54,8 @@ export const useWcLogin = () => {
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
   const [isQrScanOpen, setIsQrScanOpen] = useState<QrCodeScannerState>('closed')
 
+  const { query } = useRouter()
+
   const { register, handleSubmit, formState } = useForm<WcLoginFieldValues>({
     resolver: zodResolver(validationSchema)
   })
@@ -91,6 +94,10 @@ export const useWcLogin = () => {
             setSessionSignData,
             setSessionData
           })
+
+          if (query.uri && typeof query.uri === 'string') {
+            onSubmit({ uri: query.uri })
+          }
         })
         .catch(error => {
           console.log(error)
@@ -98,7 +105,7 @@ export const useWcLogin = () => {
           toast.error(`Error. ${(error as Error).message}`)
         })
     }
-  }, [signClient, customer])
+  }, [customer, signClient])
 
   const onSubmit: SubmitHandler<WcLoginFieldValues> = async ({ uri }) => {
     try {
