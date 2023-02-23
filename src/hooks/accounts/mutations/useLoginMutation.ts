@@ -4,7 +4,7 @@ import { Auth } from 'aws-amplify'
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
 
-import { AndroidInterface } from '@decorators/androidInterface'
+import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
 
 interface LoginFunctionInput {
   email: string
@@ -33,7 +33,7 @@ async function loginFunction(
     password: input.password
   })
 
-  AndroidInterface.saveBiometric(input.email, input.password)
+  MobileBridgeCommunication.initialize().saveBiometric()
 
   const accessToken = response.signInUserSession.idToken.jwtToken
 

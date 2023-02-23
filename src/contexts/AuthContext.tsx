@@ -8,7 +8,7 @@ import {
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 
-import { AndroidInterface } from '@decorators/androidInterface'
+import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
 
 import { FetchEndUserWalletsResponse } from '@hooks/accounts/mutations/useLoginMutation'
 import { tokenverseApi } from '@lib/axios'
@@ -42,7 +42,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     try {
-      AndroidInterface.logout()
+      MobileBridgeCommunication.initialize().logout()
 
       await Auth.signOut({ global: true })
     } catch (error) {
@@ -77,6 +77,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           await tokenverseApi.get<FetchEndUserWalletsResponse>(
             '/widget/wallets'
           )
+
+        MobileBridgeCommunication.initialize().saveBiometric()
 
         setCustomer({
           cognitoId: sessionData.sub,
