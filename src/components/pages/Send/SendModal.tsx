@@ -43,11 +43,11 @@ export function SendModal({
 
   return (
     <DialogModal.Content
-      className="md:max-w-[32rem] min-h-[62vh]"
+      className="md:max-w-[32rem]"
       onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
       onInteractOutside={e => isSendingTx && e.preventDefault()}
     >
-      <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
+      <div className="w-full h-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         {!txData ? (
           <>
             <header className="w-full flex items-center flex-col gap-3 mb-6">
@@ -70,7 +70,8 @@ export function SendModal({
               <WalletInfos
                 title={t.send.from}
                 Icon={PaperPlaneTilt}
-                className="p-3 bg-gray-50 dark:bg-gray-700"
+                className="p-3"
+                variant="highlighted"
               >
                 <Text
                   asChild
@@ -93,7 +94,8 @@ export function SendModal({
               <WalletInfos
                 title={t.send.to}
                 Icon={Wallet}
-                className="p-3 bg-gray-50 dark:bg-gray-700"
+                className="p-3"
+                variant="highlighted"
               >
                 <Text
                   asChild

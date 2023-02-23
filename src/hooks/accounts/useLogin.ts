@@ -13,7 +13,7 @@ const validationSchema = z.object({
   password: z.string().min(1, { message: 'password required' })
 })
 
-type LoginFieldValues = z.infer<typeof validationSchema>
+export type LoginFieldValues = z.infer<typeof validationSchema>
 
 export const useLogin = () => {
   const router = useRouter()
@@ -42,5 +42,12 @@ export const useLogin = () => {
     widgetProvider?.provider.overlay.show()
   }
 
-  return { t, register, handleSubmit, formState, onSubmit, handleSignupWidget }
+  return {
+    t,
+    register,
+    handleSubmit,
+    formState,
+    onSubmit,
+    handleSignupWidget
+  }
 }

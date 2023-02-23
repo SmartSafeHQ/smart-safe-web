@@ -4,9 +4,11 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { PaginationFetch } from '@components/pages/home/PaginationFetch'
 import { CoinsTable } from '@components/pages/home/CoinsTable'
 
+import { queryClient } from '@lib/reactQuery'
 import { MAX_PAGINATION_COINS_PER_PAGE } from '@utils/global/constants/variables'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useHomeCoinsTab } from '@hooks/home/useHomeCoinsTab'
+import { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
 
 interface CoinsTabProps {
   isFetching: boolean
@@ -57,18 +59,34 @@ export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
                 </thead>
 
                 <tbody>
-                  {data.coins.map(coin => {
-                    return (
-                      <CoinsTable.Tr
-                        key={coin.symbol}
-                        customerAccount={customer?.wallet.address}
-                        network={coin.network}
-                        symbol={coin.symbol}
-                        rpcUrl={coin.rpcUrl}
-                        avatar={coin.avatar}
-                      />
-                    )
-                  })}
+                  {data.coins
+                    .sort((a, b) => {
+                      const coinBalanceA =
+                        queryClient.getQueryData<FetchCoinPortfolioResponse>([
+                          'coinPortfolio',
+                          a.rpcUrl
+                        ])?.balance ?? 0
+
+                      const coinBalanceB =
+                        queryClient.getQueryData<FetchCoinPortfolioResponse>([
+                          'coinPortfolio',
+                          b.rpcUrl
+                        ])?.balance ?? 0
+
+                      return coinBalanceB - coinBalanceA
+                    })
+                    .map(coin => {
+                      return (
+                        <CoinsTable.Tr
+                          key={coin.symbol}
+                          customerAccount={customer?.wallet.address}
+                          network={coin.network}
+                          symbol={coin.symbol}
+                          rpcUrl={coin.rpcUrl}
+                          avatar={coin.avatar}
+                        />
+                      )
+                    })}
                 </tbody>
               </table>
             </ScrollArea>

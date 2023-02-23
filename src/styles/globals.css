@@ -13,3 +13,21 @@
     --toastify-color-transparent: rgba(255, 255, 255, 0.7) !important;
   }
 }
+
+@layer utilities {
+  .clip-square {
+    background-color: rgba(0, 0, 0, 0.7);
+    clip-path: polygon(
+      0% 0%,
+      0% 100%,
+      15% 100%,
+      15% 20%,
+      85% 20%,
+      85% 95%,
+      0% 95%,
+      0% 100%,
+      100% 100%,
+      100% 0%
+    );
+  }
+}
