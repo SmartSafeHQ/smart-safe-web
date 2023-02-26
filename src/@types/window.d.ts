@@ -9,10 +9,10 @@ declare global {
     webkit: {
       messageHandlers: {
         saveBiometric: {
-          postMessage: () => void
+          postMessage: (_param) => void
         }
         logout: {
-          postMessage: () => void
+          postMessage: (_param) => void
         }
         localizable: {
           postMessage: (_code: 'pt' | 'en') => void
