@@ -6,7 +6,7 @@ interface IMobileBridgeCommunication {
 
 class IosInterface implements IMobileBridgeCommunication {
   logout() {
-    window.webkit.messageHandlers.logout.postMessage()
+    window.webkit.messageHandlers.logout.postMessage('')
   }
 
   localizable(localeId: 'pt' | 'en') {
@@ -14,7 +14,7 @@ class IosInterface implements IMobileBridgeCommunication {
   }
 
   saveBiometric() {
-    window.webkit.messageHandlers.saveBiometric.postMessage()
+    window.webkit.messageHandlers.saveBiometric.postMessage('')
   }
 }
 
