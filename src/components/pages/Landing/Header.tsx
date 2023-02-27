@@ -11,7 +11,7 @@ export function Header() {
   return (
     <header
       className={clsx(
-        'w-full h-20 absolute top-0 left-0 px-6 md:px-8 border-b-[1px] border-gray-700 bg-gray-900 shadow-xl'
+        'w-full h-20 fixed top-0 left-0 px-6 md:px-8 border-b-[1px] border-gray-700 bg-gray-900 shadow-xl'
       )}
     >
       <div className="w-full h-full flex justify-between items-center">
