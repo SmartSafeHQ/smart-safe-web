@@ -4,7 +4,7 @@ import { Envelope, Lock } from 'phosphor-react'
 import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
-import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
+import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
 
 import { useLogin } from '@hooks/accounts/useLogin'
 
@@ -26,7 +26,7 @@ export default function Login() {
       </Head>
 
       <header className="flex flex-col items-center">
-        <TokenverseTextLogo className="w-72 h-6" />
+        <InWalletTextLogo className="w-72 h-14" />
 
         <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
           {t.signIn.title}
