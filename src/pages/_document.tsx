@@ -18,7 +18,7 @@ export default function Document() {
           rel="stylesheet"
         />
 
-        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.svg" type="image/png" />
       </Head>
 
       <body className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
