@@ -24,14 +24,14 @@ export function TransactionsTab({ isTabActive = false }: TransactionsTabProps) {
   const [page, setPage] = useState(1)
 
   const { data: customerCoinsData } = useCustomerCoins(
-    customer?.wallet.address,
+    customer?.wallets.evm.address,
     isTabActive
   )
 
   const { data, isLoading, isFetching, refetch, error } =
     useAllNetworksTransactions(
       customerCoinsData?.coins,
-      customer?.wallet.address,
+      customer?.wallets.evm.address,
       isTabActive
     )
 

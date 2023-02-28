@@ -15,14 +15,21 @@ interface LoginFunctionOutput {
   cognitoId: string
   name: string
   email: string
-  wallet: {
-    address: string
-    privateKey: string
+  wallets: {
+    evm: {
+      address: string
+      privateKey: string
+    }
+    solana: {
+      address: string
+      privateKey: string
+    }
   }
 }
 
 export interface FetchEndUserWalletsResponse {
-  wallets: { address: string; private_key: string }[]
+  evm: { address: string; privateKey: string }[]
+  solana: { address: string; privateKey: string }[]
 }
 
 async function loginFunction(
@@ -40,17 +47,25 @@ async function loginFunction(
   tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
   const apiResponse = await tokenverseApi.get<FetchEndUserWalletsResponse>(
-    '/widget/wallets'
+    '/widget/wallets?privateKey=true'
   )
+
+  console.log(apiResponse)
 
   const sessionData = response.attributes
 
   return {
     cognitoId: sessionData.sub,
     name: sessionData.name,
-    wallet: {
-      address: apiResponse.data.wallets[0].address,
-      privateKey: apiResponse.data.wallets[0].private_key
+    wallets: {
+      evm: {
+        address: apiResponse.data.evm[0].address,
+        privateKey: apiResponse.data.evm[0].privateKey
+      },
+      solana: {
+        address: apiResponse.data.solana[0].address,
+        privateKey: apiResponse.data.solana[0].privateKey
+      }
     },
     email: sessionData.email
   }
