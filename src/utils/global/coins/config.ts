@@ -118,7 +118,7 @@ const MAINNET_COINS_ATTRIBUTES = [
     avatar: '/networks/solana-logo.svg',
     chainId: null,
     decimals: 9,
-    rpcUrl: 'https://api.mainnet-beta.solana.com',
+    rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_SOLANA,
     explorerUrl: 'https://explorer.solana.com/',
     scanUrl: 'https://solscan.io/'
   }
