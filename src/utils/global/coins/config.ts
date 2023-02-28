@@ -48,6 +48,16 @@ const TESTNET_COINS_ATTRIBUTES = [
     rpcUrl: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
     explorerUrl: 'https://goerli.etherscan.io/',
     scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'sol',
+    network: 'solana',
+    avatar: '/networks/solana-logo.svg',
+    chainId: null,
+    decimals: 9,
+    rpcUrl: 'https://api.testnet.solana.com',
+    explorerUrl: 'https://explorer.solana.com/?cluster=testnet',
+    scanUrl: 'https://solscan.io/?cluster=testnet'
   }
 ]
 
@@ -101,6 +111,16 @@ const MAINNET_COINS_ATTRIBUTES = [
     rpcUrl: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_ETH_RPC_API_KEY}`,
     explorerUrl: 'https://etherscan.io',
     scanUrl: `https://api.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'sol',
+    network: 'solana',
+    avatar: '/networks/solana-logo.svg',
+    chainId: null,
+    decimals: 9,
+    rpcUrl: 'https://api.mainnet-beta.solana.com',
+    explorerUrl: 'https://explorer.solana.com/',
+    scanUrl: 'https://solscan.io/'
   }
 ]
 
