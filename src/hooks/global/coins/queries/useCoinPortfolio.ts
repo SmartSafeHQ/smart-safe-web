@@ -48,9 +48,11 @@ export async function fetchCoinPortfolio({
   }
 
   if (coin.symbol === 'sol') {
-    const networkEnv = coin.rpcUrl.includes('test') ? 'testnet' : 'mainnet-beta'
+    const rpcEndpoint = coin.rpcUrl.includes('test')
+      ? clusterApiUrl('testnet')
+      : process.env.NEXT_PUBLIC_ALCHEMY_SOLANA
 
-    const client = new Connection(clusterApiUrl(networkEnv))
+    const client = new Connection(rpcEndpoint)
 
     const balance = await client.getBalance(
       new PublicKey(accounts.solana.address)
