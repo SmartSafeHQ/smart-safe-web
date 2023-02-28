@@ -50,8 +50,6 @@ async function loginFunction(
     '/widget/wallets?privateKey=true'
   )
 
-  console.log(apiResponse)
-
   const sessionData = response.attributes
 
   return {

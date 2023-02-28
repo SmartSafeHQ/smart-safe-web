@@ -50,7 +50,6 @@ export class MobileBridgeCommunication {
   }
 
   #isAndroid() {
-    console.log('aqui')
     if ('AndroidInterface' in window) {
       return new AndroidInterface()
     }
