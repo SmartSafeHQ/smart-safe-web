@@ -9,7 +9,9 @@ export function PaymentOptions() {
     useState('')
 
   const { customer } = useAuth()
-  const { data: nativeCurrencies } = useCustomerCoins(customer?.wallet.address)
+  const { data: nativeCurrencies } = useCustomerCoins(
+    customer?.wallets.evm.address
+  )
 
   return (
     <>

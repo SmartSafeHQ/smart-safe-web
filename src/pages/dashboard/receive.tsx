@@ -39,10 +39,10 @@ const Receive = () => {
 
             {customer && (
               <>
-                <QRCodeCanvas value={customer.wallet.address} size={240} />
+                <QRCodeCanvas value={customer.wallets.evm.address} size={240} />
 
                 <Text className="mt-auto text-sm break-all text-gray-800 dark:text-gray-50 sm:text-base">
-                  {customer?.wallet.address}
+                  {customer?.wallets.evm.address}
                 </Text>
               </>
             )}
@@ -54,7 +54,7 @@ const Receive = () => {
               Icon={CopySimple}
               onClick={() =>
                 handleCopyToClipboardToastMessage(
-                  customer?.wallet.address ?? '',
+                  customer?.wallets.evm.address ?? '',
                   t.receive.copiedMessage
                 )
               }

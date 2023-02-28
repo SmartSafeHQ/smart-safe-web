@@ -135,7 +135,7 @@ export default function WalletconnectLogin() {
         signClient={signClient}
         isOpen={sessionData?.isModalOpen ?? false}
         customerName={customer?.name}
-        customerWallet={customer?.wallet.address}
+        customerWallet={customer?.wallets.evm.address}
         setSessionData={setSessionData}
       />
 
