@@ -79,7 +79,7 @@ export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
                       return (
                         <CoinsTable.Tr
                           key={coin.symbol}
-                          customerAccount={customer?.wallets.evm.address}
+                          customerAccounts={customer?.wallets}
                           network={coin.network}
                           symbol={coin.symbol}
                           rpcUrl={coin.rpcUrl}

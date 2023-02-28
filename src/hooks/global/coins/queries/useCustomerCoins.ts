@@ -14,7 +14,7 @@ export interface FetchCustomerCoinsResponse {
     symbol: string
     network: string
     avatar: string
-    chainId: number
+    chainId: number | null
     decimals: number
     rpcUrl: string
     explorerUrl: string

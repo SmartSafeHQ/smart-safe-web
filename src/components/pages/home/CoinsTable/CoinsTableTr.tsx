@@ -9,16 +9,18 @@ import { formatToCurrency } from '@utils/global/coins'
 import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
 import { useCoinValueInUsd } from '@hooks/global/coins/queries/useCoinValueInUsd'
 
+import type { WalletKeypair } from '@utils/global/types'
+
 interface CoinsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   network: string
   symbol: string
   rpcUrl: string
   avatar: string
-  customerAccount?: string
+  customerAccounts?: { evm: WalletKeypair; solana: WalletKeypair }
 }
 
 export function CoinsTableTr({
-  customerAccount,
+  customerAccounts,
   network,
   symbol,
   rpcUrl,
@@ -31,7 +33,7 @@ export function CoinsTableTr({
     isLoading: portfolioIsLoading,
     isRefetching: portfolioIsRefetching,
     error: portfolioError
-  } = useCoinPortfolio({ rpcUrl, symbol }, customerAccount)
+  } = useCoinPortfolio({ rpcUrl, symbol }, customerAccounts)
 
   const {
     data: usdValueData,

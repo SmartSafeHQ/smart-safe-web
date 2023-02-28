@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 
 import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
 
-import { FetchEndUserWalletsResponse } from '@hooks/accounts/mutations/useLoginMutation'
+import { FetchEndUserWalletsResponse } from '@utils/global/types'
 import { tokenverseApi } from '@lib/axios'
 
 type Customer = {

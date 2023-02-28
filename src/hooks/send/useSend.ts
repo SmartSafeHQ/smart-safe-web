@@ -71,7 +71,7 @@ export const useSend = () => {
   )
 
   const { data: portfolioData, isLoading: portfolioIsLoading } =
-    useCoinPortfolio(selectedCoin ?? undefined, customer?.wallets.evm.address)
+    useCoinPortfolio(selectedCoin ?? undefined, customer?.wallets)
 
   const { data: coinInUsdData, isFetching: coinInUsdIsFetching } =
     useCoinValueInUsd(selectedCoin?.symbol)
