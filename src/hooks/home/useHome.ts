@@ -66,7 +66,7 @@ export const useHome = () => {
               queryKey: ['coinPortfolio', coin.rpcUrl],
               queryFn: () =>
                 fetchCoinPortfolio({
-                  account: customer.wallets.evm.address,
+                  accounts: customer.wallets,
                   coin: {
                     symbol: coin.symbol,
                     rpcUrl: coin.rpcUrl

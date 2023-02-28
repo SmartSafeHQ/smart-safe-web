@@ -6,6 +6,8 @@ import { tokenverseApi } from '@lib/axios'
 
 import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
 
+import type { FetchEndUserWalletsResponse } from '@utils/global/types'
+
 interface LoginFunctionInput {
   email: string
   password: string
@@ -25,11 +27,6 @@ interface LoginFunctionOutput {
       privateKey: string
     }
   }
-}
-
-export interface FetchEndUserWalletsResponse {
-  evm: { address: string; privateKey: string }[]
-  solana: { address: string; privateKey: string }[]
 }
 
 async function loginFunction(
