@@ -59,7 +59,7 @@ export const useSend = () => {
   const [transaction, setTransaction] = useState<TransactionProps | null>()
 
   const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins(
-    customer?.wallet.address
+    customer?.wallets.evm.address
   )
 
   const [selectedCoin, setSelectedCoin] = useState<CoinProps | null>(
@@ -71,7 +71,7 @@ export const useSend = () => {
   )
 
   const { data: portfolioData, isLoading: portfolioIsLoading } =
-    useCoinPortfolio(selectedCoin ?? undefined, customer?.wallet.address)
+    useCoinPortfolio(selectedCoin ?? undefined, customer?.wallets.evm.address)
 
   const { data: coinInUsdData, isFetching: coinInUsdIsFetching } =
     useCoinValueInUsd(selectedCoin?.symbol)
@@ -190,7 +190,7 @@ export const useSend = () => {
         chainId,
         rpcUrl,
         symbol,
-        fromWalletPrivateKey: customer.wallet.privateKey,
+        fromWalletPrivateKey: customer.wallets.evm.privateKey,
         to,
         amount
       })
