@@ -274,6 +274,41 @@ const Landing = () => {
           </div>
         </article>
       </section>
+
+      <section className="w-full relative min-h-[85rem] flex flex-col items-center justify-start  overflow-hidden px-4 pt-56 mt-3 bg-black sm:min-h-[135rem] sm:pt-96">
+        <img
+          src="/landing/bg-gradient.png"
+          alt="bg gradient"
+          className="w-full z-0 absolute bottom-0 left-0 bg-cover"
+        />
+
+        <div className="w-full max-w-4xl z-0 flex flex-col items-start justify-start">
+          <Heading
+            asChild
+            className="mb-12 text-6xl font-semibold text-gray-50 md:text-8xl lg:text-9xl"
+          >
+            <h1>
+              User-First. <br />
+              Omnichannel.
+            </h1>
+          </Heading>
+
+          <Text
+            asChild
+            className="text-4xl font-medium text-gray-50 bg-gradient-to-r from-orange-200 to-red-500 md:text-5xl lg:text-6xl"
+          >
+            <p
+              style={{
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              A magical new way to interact with Web3. Designed for usability. A
+              Super wallet. All chains. All coins. All apps. In One place.
+            </p>
+          </Text>
+        </div>
+      </section>
     </div>
   )
 }
