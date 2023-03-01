@@ -31,7 +31,7 @@ export function TransactionsTab({ isTabActive = false }: TransactionsTabProps) {
   const { data, isLoading, isFetching, refetch, error } =
     useAllNetworksTransactions(
       customerCoinsData?.coins,
-      customer?.wallets.evm.address,
+      customer?.wallets,
       isTabActive
     )
 
