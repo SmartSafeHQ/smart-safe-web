@@ -46,7 +46,7 @@ export function InfosCarrousel({ infos }: InfosCarrouselProps) {
             <div className="flex flex-col items-start gap-6">
               <Heading
                 asChild
-                className="max-w-[21.5rem] text-4xl leading-tight text-black lg:text-6xl lg:leading-[4.5rem]"
+                className="max-w-[35rem] text-4xl leading-tight text-black lg:text-6xl lg:leading-[4.5rem]"
               >
                 <h1>{item.title}</h1>
               </Heading>

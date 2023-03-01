@@ -1,41 +1,74 @@
 import Link from 'next/link'
 import clsx from 'clsx'
-import { TwitterLogo, User } from 'phosphor-react'
+import { TwitterLogo } from 'phosphor-react'
 
-import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
 import { Text } from '@components/Text'
+import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
+import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
+import { SelectInput } from '@components/Inputs/SelectInput'
 
+import { useI18n } from '@hooks/useI18n'
 import { TOKENVERSE_TWITTER_LINK } from '@utils/global/constants/links'
 
 export function Header() {
+  const { t, currentLocaleProps, handleLanguageSwitch } = useI18n()
+
   return (
     <header
       className={clsx(
-        'w-full h-20 fixed top-0 left-0 px-6 z-10 md:px-8 border-b-[1px] border-gray-700 bg-gray-900 shadow-xl'
+        'w-full h-16 fixed top-0 left-0 px-6 z-10 md:px-8 border-b-[1px] border-gray-700 bg-[#161617cc] shadow-xl backdrop:filter-[saturate(180%) blur(20px)]'
       )}
+      style={{
+        backdropFilter: 'saturate(180%) blur(20px)'
+      }}
     >
       <div className="w-full h-full flex justify-between items-center">
-        <TokenverseTextLogo className="w-40 h-5 md:w-56 md:h-6" />
+        <div className="flex items-center gap-5 sm:gap-6">
+          <InWalletTextLogo
+            className="w-36 h-8 hidden sm:block"
+            variant="light"
+          />
 
-        <div className="flex gap-2 items-center">
+          <InWalletIconLogo className="w-6 block sm:hidden" variant="light" />
+
+          <a href={TOKENVERSE_TWITTER_LINK} target="_blank" rel="noreferrer">
+            <TwitterLogo
+              className="w-6 h-6 text-gray-200 transition-colors hover:text-blue-400"
+              weight="fill"
+            />
+          </a>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <SelectInput.Root
+            defaultValue={currentLocaleProps.id}
+            onValueChange={handleLanguageSwitch}
+          >
+            <SelectInput.Trigger className="h-9 px-1 bg-gray-50 text-gray-800 !ring-gray-900 sm:h-10 sm:px-4" />
+
+            <SelectInput.Content className="bg-gray-50 text-gray-800">
+              <SelectInput.Group>
+                {t.header.internationalization.options.map(locale => (
+                  <SelectInput.Item
+                    key={locale.id}
+                    value={locale.id}
+                    disabled={locale.id === currentLocaleProps.id}
+                  >
+                    <span className="text-sm font-medium text-gray-900 capitalize">
+                      {locale.name}
+                    </span>
+                  </SelectInput.Item>
+                ))}
+              </SelectInput.Group>
+            </SelectInput.Content>
+          </SelectInput.Root>
+
           <Text
             asChild
-            className="flex gap-2 items-center justify-center py-3 px-4 font-semibold text-gray-50 uppercase hover:text-gray-300 transition-colors"
+            className="py-2 px-3 bg-gray-50 rounded-md font-semibold text-gray-900 capitalize transition-colors hover:bg-gray-200 focus:ring-2 ring-gray-900 text-sm sm:text-base sm:py-2 sm:px-4"
           >
-            <Link href="/accounts/login">
-              <User className="text-lg text-cyan-500" weight="bold" />
-              Sign in
-            </Link>
+            <Link href="/accounts/login">Sign in</Link>
           </Text>
-
-          <a
-            href={TOKENVERSE_TWITTER_LINK}
-            target="_blank"
-            className="p-2 rounded-full bg-transparent transition-colors hover:bg-gray-800"
-            rel="noreferrer"
-          >
-            <TwitterLogo className="w-7 h-7 text-gray-50" weight="fill" />
-          </a>
         </div>
       </div>
     </header>
