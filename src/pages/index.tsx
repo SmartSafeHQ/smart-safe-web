@@ -15,6 +15,7 @@ import { R3Logo } from '@components/Logos/R3Logo'
 import { TransakLogo } from '@components/Logos/TransakLogo'
 import { WalletConnectLogo } from '@components/Logos/WalletConnectLogo'
 import { WalletConnectBlueLogo } from '@components/Logos/WalletConnectBlueLogo'
+import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
 
 const LANDING_CARROUSEL_INFOS = [
   {
@@ -260,7 +261,7 @@ const Landing = () => {
         </div>
       </section>
 
-      <section className="w-full py-10 relative flex flex-col items-center justify-center gap-10 mt-3 bg-gray-50 rounded-sm">
+      <section className="w-full py-10 relative flex flex-col items-center justify-center gap-10 mt-3 rounded-sm">
         <Heading
           asChild
           className="text-4xl leading-tight font-semibold text-center text-gray-900 md:text-5xl"
@@ -274,6 +275,52 @@ const Landing = () => {
               <partner.Image className="w-20 h-20 bg-cover md:w-28 md:h-28" />
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="w-full flex items-start justify-center px-6 py-16 mt-3 bg-gray-100">
+        <div className="w-full max-w-6xl flex flex-col items-center justify-between gap-8 md:flex-row">
+          <div className="flex flex-col items-start gap-4">
+            <Heading asChild className="max-w-sm text-5xl text-gray-900">
+              <h1>
+                Go to app or <br />
+                signup on web
+              </h1>
+            </Heading>
+
+            <Text asChild className="font-medium text-gray-600">
+              <strong>
+                Seamlessly manage all your assets <br />
+                in one place.
+              </strong>
+            </Text>
+          </div>
+
+          <div className="flex flex-col items-center justify-center gap-8">
+            <Text className="font-medium text-gray-600 text-center">
+              Get started now with your super wallet app
+            </Text>
+
+            <div className="w-full flex item-center  gap-5 md:gap-10">
+              <div className="flex flex-col items-center justify-between gap-2 pr-5 border-r-2 border-gray-500 md:pr-10 md:gap-4">
+                <DownloadPlayStore className="p-2" />
+                <DownloadAppleStore className="p-2" />
+              </div>
+
+              <div className="flex flex-col items-center  gap-4">
+                <InWalletIconLogo className="w-24" />
+
+                <Text
+                  asChild
+                  className="w-full rounded-md focus:ring-2 ring-gray-900 px-7 py-2 font-semibold bg-gray-800 transition-colors text-white hover:bg-gray-700"
+                >
+                  <Link href="/accounts/login">
+                    <Text>Sign in</Text>
+                  </Link>
+                </Text>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
