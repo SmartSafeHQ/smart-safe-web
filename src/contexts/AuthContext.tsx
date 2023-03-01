@@ -105,9 +105,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       .catch(_ => {
         setCustomer(null)
 
-        const isAuthRequired = asPath.startsWith('/accounts') === false
+        const noAuthCheckCase = [
+          '/',
+          '/accounts/wc',
+          '/accounts',
+          '/privacy',
+          '/en/privacy'
+        ].some(path => path === asPath)
 
-        if (!isAuthRequired) {
+        if (noAuthCheckCase) {
           return
         }
 
