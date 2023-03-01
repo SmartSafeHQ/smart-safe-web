@@ -1,4 +1,4 @@
-import { CaretRight } from 'phosphor-react'
+import { CaretRight, TwitterLogo } from 'phosphor-react'
 import Link from 'next/link'
 import Head from 'next/head'
 
@@ -16,6 +16,8 @@ import { TransakLogo } from '@components/Logos/TransakLogo'
 import { WalletConnectLogo } from '@components/Logos/WalletConnectLogo'
 import { WalletConnectBlueLogo } from '@components/Logos/WalletConnectBlueLogo'
 import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
+
+import { TOKENVERSE_TWITTER_LINK } from '@utils/global/constants/links'
 
 const LANDING_CARROUSEL_INFOS = [
   {
@@ -323,6 +325,25 @@ const Landing = () => {
           </div>
         </div>
       </section>
+
+      <footer className="w-full flex justify-center px-6 py-4 bg-white">
+        <div className="w-full max-w-7xl flex items-center justify-between gap-8">
+          <InWalletTextLogo className="w-36 h-8 hidden sm:block" />
+
+          <InWalletIconLogo className="w-7 h-8 block sm:hidden" />
+
+          <Text className="text-center text-gray-700 font-medium">
+            InWallet Labs © {new Date().getFullYear()}
+          </Text>
+
+          <a href={TOKENVERSE_TWITTER_LINK} target="_blank" rel="noreferrer">
+            <TwitterLogo
+              className="w-6 h-6 text-gray-900 transition-colors hover:text-blue-400"
+              weight="fill"
+            />
+          </a>
+        </div>
+      </footer>
     </div>
   )
 }
