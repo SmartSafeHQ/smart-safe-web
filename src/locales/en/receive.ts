@@ -1,6 +1,6 @@
 export const receive = {
-  headTitle: 'Tokenverse | Receive',
-  headDescription: 'Tokenverse dashboard receive',
+  headTitle: 'InWallet | Receive',
+  headDescription: 'InWallet dashboard receive',
   scanTitle: 'Scan the QRCode to receive funds',
   loading: 'Loading QRCode',
   copy: 'copy',

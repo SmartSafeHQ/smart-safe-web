@@ -1,6 +1,6 @@
 export const cashback = {
-  headTitle: 'Tokenverse | Cashback',
-  headDescription: 'Tokenverse partners',
+  headTitle: 'InWallet | Cashback',
+  headDescription: 'InWallet partners',
   cashbackDescription:
     "You can spend your VCASH tokens on our partners' website: ",
   cashbackBalance: 'Your balance: (VCASH)'
