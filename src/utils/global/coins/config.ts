@@ -52,7 +52,7 @@ const TESTNET_COINS_ATTRIBUTES = [
   {
     symbol: 'sol',
     network: 'solana',
-    avatar: '/networks/solana-logo.svg',
+    avatar: '/networks/solana-logo.png',
     chainId: null,
     decimals: 9,
     rpcUrl: 'https://api.testnet.solana.com',
@@ -115,7 +115,7 @@ const MAINNET_COINS_ATTRIBUTES = [
   {
     symbol: 'sol',
     network: 'solana',
-    avatar: '/networks/solana-logo.svg',
+    avatar: '/networks/solana-logo.png',
     chainId: null,
     decimals: 9,
     rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_SOLANA,

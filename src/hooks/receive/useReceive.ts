@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
@@ -68,6 +68,17 @@ export const useReceive = () => {
       title: t.receive.shareWallet
     })
   }
+
+  useEffect(() => {
+    if (wallets) {
+      const firstWallet = wallets[0]
+
+      setSelectedWallet({
+        formattedWallet: firstWallet.formattedWallet,
+        wallet: firstWallet.wallet
+      })
+    }
+  }, [wallets])
 
   return {
     wallets,

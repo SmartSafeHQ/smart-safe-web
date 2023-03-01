@@ -26,7 +26,7 @@ export function WalletsDropDownInput({
           >
             <div className="w-full flex items-center justify-start gap-2">
               <Avatar.Root fallbackName={network} className="w-7 h-7">
-                <Avatar.Image src={icon} alt={`${network} coin`} />
+                <Avatar.Image src={icon} alt={`${network} native token`} />
               </Avatar.Root>
 
               <Text className="text-md font-bold dark:text-gray-50 uppercase">

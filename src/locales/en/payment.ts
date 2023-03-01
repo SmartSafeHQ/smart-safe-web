@@ -1,5 +1,5 @@
 export const payment = {
-  headTitle: 'Tokenverse | Payments',
+  headTitle: 'InWallet | Payments',
   headDescription: 'Make payments using your crypto currencies.',
   pageHeadingTitle: 'Make bill payments using your crypto currencies.',
   grantCameraAccess: 'Grant access',

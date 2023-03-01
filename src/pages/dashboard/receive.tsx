@@ -57,13 +57,7 @@ const Receive = () => {
                   )}
 
                   {selectedWallet && (
-                    <>
-                      <p className="">{selectedWallet.formattedWallet}</p>
-
-                      <p className="text-center text-gray-600 dark:text-gray-200 text-sm">
-                        {t.receive.walletInfo}
-                      </p>
-                    </>
+                    <p className="">{selectedWallet.formattedWallet}</p>
                   )}
                 </div>
               </>
