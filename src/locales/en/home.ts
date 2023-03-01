@@ -1,7 +1,7 @@
 export const home = {
   accountBalance: 'account balance',
   manageMetrics: 'Manage your metrics',
-  coins: 'coins',
+  coins: 'tokens',
   transactions: 'transactions',
   nfts: 'NFTs',
   comingSoon: 'coming soon',

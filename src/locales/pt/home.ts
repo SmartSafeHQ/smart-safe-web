@@ -1,7 +1,7 @@
 export const home = {
   accountBalance: 'saldo da conta',
   manageMetrics: 'Gerencie suas métricas',
-  coins: 'moedas',
+  coins: 'tokens',
   transactions: 'transações',
   nfts: 'NFTs',
   comingSoon: 'em breve',
