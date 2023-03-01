@@ -129,7 +129,7 @@ export function SessionApproval({
           <div className="flex flex-col gap-4">
             <article className="w-full flex gap-4 items-center pb-6 border-b-2 border-gray-500">
               <Avatar.Root
-                fallbackName={sessionData?.name?.substring(0, 2) ?? 'tk'}
+                fallbackName={sessionData?.name?.substring(0, 2) ?? 'in'}
                 className="min-w-[3.25rem] h-[3.25rem]"
               >
                 <Avatar.Image
