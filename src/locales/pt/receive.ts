@@ -6,5 +6,8 @@ export const receive = {
   copy: 'copiar',
   copiedMessage: 'Endereço copiado para a área de transferência',
   share: 'compartilhar',
-  destiny: 'destino'
+  destiny: 'destino',
+  walletInfo:
+    'Em alguns casos, uma mesma carteira pode ser utilizada em diferentes redes blockchain.',
+  shareWallet: 'Endereço da sua carteira'
 }
