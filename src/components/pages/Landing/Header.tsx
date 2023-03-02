@@ -24,7 +24,10 @@ export function Header() {
     >
       <div className="w-full h-full flex justify-between items-center">
         <div className="flex items-center gap-5 sm:gap-6">
-          <InWalletTextLogo className="w-36 h-8 hidden sm:block" />
+          <InWalletTextLogo
+            className="w-36 h-8 hidden sm:block"
+            variant="light"
+          />
 
           <InWalletIconLogo className="w-6 block sm:hidden" variant="light" />
 
