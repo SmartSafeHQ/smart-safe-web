@@ -30,5 +30,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!.*\\.|api|fonts|500|400|_next/static\\/).*)']
+  matcher: ['/accounts/:path*', '/dashboard/:path*']
 }

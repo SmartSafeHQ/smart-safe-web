@@ -9,11 +9,11 @@ export function InWalletTextLogo(props: InWalletTextLogoProps) {
 
   return (
     <svg
-      width="100%"
-      height="100%"
-      fill="none"
-      viewBox="0 0 515 90"
       xmlns="http://www.w3.org/2000/svg"
+      width="512"
+      height="88"
+      fill="none"
+      viewBox="0 0 512 88"
       {...props}
     >
       <path
