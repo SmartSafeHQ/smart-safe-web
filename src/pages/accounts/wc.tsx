@@ -5,7 +5,7 @@ import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
-import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
+import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
 import { SessionApproval } from '@components/pages/Accounts/SessionApproval'
 import { SignMessage } from '@components/pages/Accounts/SignMessage'
 import { LoginModal } from '@components/pages/Accounts/LoginModal'
@@ -41,7 +41,7 @@ export default function WalletconnectLogin() {
       </Head>
 
       <header className="flex flex-col items-center">
-        <TokenverseTextLogo className="w-72 h-6" />
+        <InWalletTextLogo className="w-72 h-14" />
 
         <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
           {t.wc.heading}
@@ -135,7 +135,7 @@ export default function WalletconnectLogin() {
         signClient={signClient}
         isOpen={sessionData?.isModalOpen ?? false}
         customerName={customer?.name}
-        customerWallet={customer?.wallet.address}
+        customerWallet={customer?.wallets.evm.address}
         setSessionData={setSessionData}
       />
 

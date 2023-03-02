@@ -21,8 +21,8 @@ const Home = () => {
   return (
     <div className="flex flex-col px-2 pt-8">
       <Head>
-        <title>Tokenverse | Home</title>
-        <meta name="description" content="Tokenverse dashboard home" />
+        <title>InWallet | Home</title>
+        <meta name="description" content="InWallet dashboard home" />
       </Head>
 
       <div className="w-full flex flex-1 flex-col items-stretch">

@@ -84,10 +84,10 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{`${customer?.wallet.address?.slice(
+                  <span>{`${customer?.wallets.evm.address?.slice(
                     0,
                     6
-                  )}...${customer?.wallet.address?.slice(-6)}`}</span>
+                  )}...${customer?.wallets.evm.address?.slice(-6)}`}</span>
                 </Text>
               </WalletInfos>
 

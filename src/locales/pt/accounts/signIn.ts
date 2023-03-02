@@ -1,6 +1,6 @@
 export const signIn = {
-  headTitle: 'Entrar | Tokenverse',
-  headDescription: 'Tokenverse registro',
+  headTitle: 'Entrar | InWallet',
+  headDescription: 'InWallet registro',
   title: 'Faça login e use sua carteira!',
   email: 'E-mail',
   emailPlaceholder: 'Insira seu e-mail',

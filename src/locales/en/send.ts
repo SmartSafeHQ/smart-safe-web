@@ -1,6 +1,6 @@
 export const send = {
-  headTitle: 'Tokenverse | Send',
-  headDescription: 'Tokenverse dashboard send',
+  headTitle: 'InWallet | Send',
+  headDescription: 'InWallet dashboard send',
   send: 'Send',
   sendUsing: 'Send using',
   balance: 'balance',

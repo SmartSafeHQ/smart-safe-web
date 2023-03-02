@@ -89,7 +89,7 @@ export const useWcLogin = () => {
           if (!createdSignClient) return
 
           onSessionProposal({
-            wallet: customer.wallet,
+            wallet: customer.wallets.evm,
             signClient: createdSignClient,
             setSessionSignData,
             setSessionData
@@ -115,7 +115,7 @@ export const useWcLogin = () => {
       if (version === 1) {
         createLegacySignClient({
           uri,
-          wallet: customer?.wallet,
+          wallet: customer?.wallets.evm,
           setSignClient,
           setSessionSignData,
           setSessionData

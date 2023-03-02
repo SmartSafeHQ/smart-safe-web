@@ -4,7 +4,9 @@ import { Auth } from 'aws-amplify'
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
 
-import { AndroidInterface } from '@decorators/androidInterface'
+import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
+
+import type { FetchEndUserWalletsResponse } from '@utils/global/types'
 
 interface LoginFunctionInput {
   email: string
@@ -15,14 +17,16 @@ interface LoginFunctionOutput {
   cognitoId: string
   name: string
   email: string
-  wallet: {
-    address: string
-    privateKey: string
+  wallets: {
+    evm: {
+      address: string
+      privateKey: string
+    }
+    solana: {
+      address: string
+      privateKey: string
+    }
   }
-}
-
-export interface FetchEndUserWalletsResponse {
-  wallets: { address: string; private_key: string }[]
 }
 
 async function loginFunction(
@@ -33,14 +37,14 @@ async function loginFunction(
     password: input.password
   })
 
-  AndroidInterface.saveBiometric(input.email, input.password)
+  MobileBridgeCommunication.initialize().saveBiometric()
 
   const accessToken = response.signInUserSession.idToken.jwtToken
 
   tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
   const apiResponse = await tokenverseApi.get<FetchEndUserWalletsResponse>(
-    '/widget/wallets'
+    '/widget/wallets?privateKey=true'
   )
 
   const sessionData = response.attributes
@@ -48,9 +52,15 @@ async function loginFunction(
   return {
     cognitoId: sessionData.sub,
     name: sessionData.name,
-    wallet: {
-      address: apiResponse.data.wallets[0].address,
-      privateKey: apiResponse.data.wallets[0].private_key
+    wallets: {
+      evm: {
+        address: apiResponse.data.evm[0].address,
+        privateKey: apiResponse.data.evm[0].privateKey
+      },
+      solana: {
+        address: apiResponse.data.solana[0].address,
+        privateKey: apiResponse.data.solana[0].privateKey
+      }
     },
     email: sessionData.email
   }

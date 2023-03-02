@@ -8,16 +8,22 @@ import {
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 
-import { AndroidInterface } from '@decorators/androidInterface'
+import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
 
-import { FetchEndUserWalletsResponse } from '@hooks/accounts/mutations/useLoginMutation'
+import { FetchEndUserWalletsResponse } from '@utils/global/types'
 import { tokenverseApi } from '@lib/axios'
 
 type Customer = {
   cognitoId: string
-  wallet: {
-    address: string
-    privateKey: string
+  wallets: {
+    evm: {
+      address: string
+      privateKey: string
+    }
+    solana: {
+      address: string
+      privateKey: string
+    }
   }
   name: string
   email: string
@@ -42,7 +48,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signOut() {
     try {
-      AndroidInterface.logout()
+      MobileBridgeCommunication.initialize().logout()
 
       await Auth.signOut({ global: true })
     } catch (error) {
@@ -75,15 +81,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const apiResponse =
           await tokenverseApi.get<FetchEndUserWalletsResponse>(
-            '/widget/wallets'
+            '/widget/wallets?publicKey=true'
           )
+
+        MobileBridgeCommunication.initialize().saveBiometric()
 
         setCustomer({
           cognitoId: sessionData.sub,
           name: sessionData.name,
-          wallet: {
-            address: apiResponse.data.wallets[0].address,
-            privateKey: apiResponse.data.wallets[0].private_key
+          wallets: {
+            evm: {
+              address: apiResponse.data.evm[0].address,
+              privateKey: apiResponse.data.evm[0].privateKey
+            },
+            solana: {
+              address: apiResponse.data.solana[0].address,
+              privateKey: apiResponse.data.solana[0].privateKey
+            }
           },
           email: sessionData.email
         })
@@ -91,9 +105,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       .catch(_ => {
         setCustomer(null)
 
-        const isAuthRequired = asPath.startsWith('/accounts') === false
+        const noAuthCheckCase = [
+          '/',
+          '/accounts/wc',
+          '/accounts',
+          '/privacy',
+          '/en/privacy'
+        ].some(path => path === asPath)
 
-        if (!isAuthRequired) {
+        if (noAuthCheckCase) {
           return
         }
 
