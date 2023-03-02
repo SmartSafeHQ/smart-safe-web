@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
-import { TokenverseIcon } from '@components/Logos/TokenverseIcon'
+import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
 import { Text } from '@components/Text'
 
 import {
@@ -36,7 +36,7 @@ const SignIn = () => {
         </div>
 
         <Button className="flex items-center gap-2 mb-8 rounded-3xl">
-          <TokenverseIcon className="w-4 h-4 md:w-5 md:h-5 [&>*]:fill-gray-900" />
+          <InWalletIconLogo className="w-4 h-4 md:w-5 md:h-5 [&>*]:fill-gray-900" />
           <Text>Login with Tokenverse</Text>
         </Button>
 

@@ -1,35 +1,5 @@
 const TESTNET_COINS_ATTRIBUTES = [
   {
-    symbol: 'eth',
-    network: 'ethereum',
-    avatar: '/networks/eth-logo.svg',
-    chainId: 5,
-    decimals: 18,
-    rpcUrl: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    explorerUrl: 'https://goerli.etherscan.io/',
-    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'bnb',
-    network: 'binance smart chain',
-    avatar: '/networks/bnb-logo.svg',
-    chainId: 97,
-    decimals: 18,
-    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-    explorerUrl: 'https://testnet.bscscan.com',
-    scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'matic',
-    network: 'matic',
-    avatar: '/networks/polygon-logo.svg',
-    chainId: 80001,
-    decimals: 18,
-    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
-    explorerUrl: 'https://mumbai.polygonscan.com/',
-    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
-  },
-  {
     symbol: 'celo',
     network: 'celo',
     avatar: '/networks/celo-logo.svg',
@@ -48,6 +18,46 @@ const TESTNET_COINS_ATTRIBUTES = [
     rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
     explorerUrl: 'https://testnet.snowtrace.io/',
     scanUrl: `https://api-testnet.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'matic',
+    network: 'matic',
+    avatar: '/networks/polygon-logo.svg',
+    chainId: 80001,
+    decimals: 18,
+    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
+    explorerUrl: 'https://mumbai.polygonscan.com/',
+    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'bnb',
+    network: 'binance smart chain',
+    avatar: '/networks/bnb-logo.svg',
+    chainId: 97,
+    decimals: 18,
+    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    explorerUrl: 'https://testnet.bscscan.com',
+    scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'eth',
+    network: 'ethereum',
+    avatar: '/networks/eth-logo.svg',
+    chainId: 5,
+    decimals: 18,
+    rpcUrl: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+    explorerUrl: 'https://goerli.etherscan.io/',
+    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'sol',
+    network: 'solana',
+    avatar: '/networks/solana-logo.png',
+    chainId: null,
+    decimals: 9,
+    rpcUrl: 'https://api.testnet.solana.com',
+    explorerUrl: 'https://explorer.solana.com/?cluster=testnet',
+    scanUrl: 'https://public-api.solscan.io/'
   }
 ]
 
@@ -101,6 +111,16 @@ const MAINNET_COINS_ATTRIBUTES = [
     rpcUrl: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_ETH_RPC_API_KEY}`,
     explorerUrl: 'https://etherscan.io',
     scanUrl: `https://api.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+  },
+  {
+    symbol: 'sol',
+    network: 'solana',
+    avatar: '/networks/solana-logo.png',
+    chainId: null,
+    decimals: 9,
+    rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_SOLANA,
+    explorerUrl: 'https://explorer.solana.com/',
+    scanUrl: 'https://public-api.solscan.io/'
   }
 ]
 

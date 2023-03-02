@@ -11,6 +11,7 @@ import { payment } from './payment'
 import { cashback } from './cashback'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
+import { privacy } from './privacy'
 
 export const en = {
   signIn,
@@ -25,5 +26,6 @@ export const en = {
   cashback,
   wc,
   qrCodeReader,
-  payment
+  payment,
+  privacy
 }

@@ -7,6 +7,7 @@ import { useAuth } from '@contexts/AuthContext'
 import { ActionButton } from '@components/pages/Receive/ActionButton'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
+import { WalletsDropDownInput } from '@components/Inputs/WalletsDropDownInput'
 
 import { useReceive } from '@hooks/receive/useReceive'
 import { handleCopyToClipboardToastMessage } from '@utils/global'
@@ -14,7 +15,13 @@ import { useI18n } from '@hooks/useI18n'
 
 const Receive = () => {
   const { customer } = useAuth()
-  const { handleShareQrCode } = useReceive()
+  const {
+    handleShareQrCode,
+    coinsData,
+    handleSelectWalletAccount,
+    wallets,
+    selectedWallet
+  } = useReceive()
   const { t } = useI18n()
 
   return (
@@ -39,11 +46,18 @@ const Receive = () => {
 
             {customer && (
               <>
-                <QRCodeCanvas value={customer.wallet.address} size={240} />
+                <QRCodeCanvas value={selectedWallet.wallet} size={240} />
 
-                <Text className="mt-auto text-sm break-all text-gray-800 dark:text-gray-50 sm:text-base">
-                  {customer?.wallet.address}
-                </Text>
+                <div className="flex flex-col items-center gap-2">
+                  {coinsData && (
+                    <WalletsDropDownInput
+                      wallets={wallets}
+                      onValueChange={handleSelectWalletAccount}
+                    />
+                  )}
+
+                  {selectedWallet && <p>{selectedWallet.formattedWallet}</p>}
+                </div>
               </>
             )}
           </div>
@@ -54,7 +68,7 @@ const Receive = () => {
               Icon={CopySimple}
               onClick={() =>
                 handleCopyToClipboardToastMessage(
-                  customer?.wallet.address ?? '',
+                  selectedWallet.wallet,
                   t.receive.copiedMessage
                 )
               }

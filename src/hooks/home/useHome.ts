@@ -52,7 +52,7 @@ export const useHome = () => {
         queryKey: ['customerCoins', 1],
         queryFn: () =>
           fetchCustomerCoins({
-            account: customer.wallet.address,
+            account: customer.wallets.evm.address,
             page: 1,
             offset: 10
           })
@@ -66,7 +66,7 @@ export const useHome = () => {
               queryKey: ['coinPortfolio', coin.rpcUrl],
               queryFn: () =>
                 fetchCoinPortfolio({
-                  account: customer.wallet.address,
+                  accounts: customer.wallets,
                   coin: {
                     symbol: coin.symbol,
                     rpcUrl: coin.rpcUrl

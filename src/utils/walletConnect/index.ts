@@ -13,12 +13,12 @@ export const EIP155_SIGNING_METHODS = {
 
 export const signClientOptions: SignClientTypes.Options = {
   projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
-  name: 'Tokenverse',
+  name: 'InWallet',
   metadata: {
-    name: 'Tokenverse',
+    name: 'InWallet',
     description:
-      'Tokenverse wallet is your place from which to embark for exciting new places and your safe harbour to return to Tokenverse wants to enable and empower more people to participate in blockchain technology. From crypto investing to NFT art and gaming, we want to lower entry barriers while maintaining the principle of self-ownership when transacting with digital assets.',
+      'InWallet wallet is your place from which to embark for exciting new places and your safe harbour to return to InWallet wants to enable and empower more people to participate in blockchain technology. From crypto investing to NFT art and gaming, we want to lower entry barriers while maintaining the principle of self-ownership when transacting with digital assets.',
     url: process.env.NEXT_PUBLIC_WC_URL ?? 'localhost:3001',
-    icons: [`${process.env.NEXT_PUBLIC_WC_URL}/favicon.png`]
+    icons: [`${process.env.NEXT_PUBLIC_WC_URL}/favicon.svg`]
   }
 }

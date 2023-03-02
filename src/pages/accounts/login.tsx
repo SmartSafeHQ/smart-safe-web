@@ -1,22 +1,25 @@
 import Head from 'next/head'
+import Image from 'next/image'
 import { Envelope, Lock } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
-import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
+import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
 
 import { useLogin } from '@hooks/accounts/useLogin'
 
+import { useI18n } from '@hooks/useI18n'
+
 export default function Login() {
   const {
-    t,
     formState: { errors, isSubmitting },
     handleSubmit,
     onSubmit,
     register,
     handleSignupWidget
   } = useLogin()
+  const { handleLanguageSwitch, t } = useI18n()
 
   return (
     <div className="h-screen flex flex-col items-center justify-center px-3">
@@ -26,7 +29,7 @@ export default function Login() {
       </Head>
 
       <header className="flex flex-col items-center">
-        <TokenverseTextLogo className="w-72 h-6" />
+        <InWalletTextLogo className="w-72 h-14" />
 
         <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
           {t.signIn.title}
@@ -74,13 +77,41 @@ export default function Login() {
             </TextInput.Content>
           </TextInput.Root>
 
-          <button
-            type="button"
-            onClick={handleSignupWidget}
-            className="text-left text-md text-cyan-500 dark:text-cyan-400 font-semibold hover:text-cyan-400 hover:dark:text-cyan-300"
-          >
-            {t.signIn.forgotPassword}
-          </button>
+          <div className="flex gap-2 justify-between">
+            <button
+              type="button"
+              onClick={handleSignupWidget}
+              className="text-left text-md text-cyan-500 dark:text-cyan-400 font-semibold hover:text-cyan-400 hover:dark:text-cyan-300"
+            >
+              {t.signIn.forgotPassword}
+            </button>
+
+            <div className="flex gap-2">
+              <div
+                className="relative w-[25px] h-[25px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105"
+                onClick={() => handleLanguageSwitch('pt')}
+              >
+                <Image
+                  src="/languages/br.svg"
+                  alt=""
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+
+              <div
+                className="relative w-[25px] h-[25px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105"
+                onClick={() => handleLanguageSwitch('en')}
+              >
+                <Image
+                  src="/languages/us.svg"
+                  alt=""
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              </div>
+            </div>
+          </div>
 
           <Button type="submit" isLoading={isSubmitting} className="mt-1">
             {t.signIn.login}

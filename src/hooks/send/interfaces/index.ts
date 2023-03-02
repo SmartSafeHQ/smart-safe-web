@@ -1,7 +1,7 @@
 export interface CoinProps {
   symbol: string
   avatar: string
-  chainId: number
+  chainId: number | null
   decimals: number
   rpcUrl: string
   explorerUrl: string
@@ -23,7 +23,7 @@ export interface TransactionProps {
 }
 
 export interface HandleSendTransactionProps {
-  chainId: number
+  chainId: number | null
   rpcUrl: string
   symbol: string
   amount: number

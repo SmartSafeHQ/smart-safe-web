@@ -1,11 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { providers, utils } from 'ethers'
+import {
+  Connection,
+  clusterApiUrl,
+  PublicKey,
+  LAMPORTS_PER_SOL
+} from '@solana/web3.js'
 
 import { getCoinChangePercentUrl } from '@utils/global/coins'
 import { queryClient } from '@lib/reactQuery'
 import { FetchCoinValueInUsdResponse } from '@hooks/global/coins/queries/useCoinValueInUsd'
 import { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
+
+import type { WalletKeypair } from '@utils/global/types'
 
 interface CoinAttributesInput {
   symbol: string
@@ -19,7 +27,7 @@ interface CoinProps {
 
 interface FetchCoinPortfolioInput {
   coin?: CoinAttributesInput
-  account?: string
+  accounts?: { evm: WalletKeypair; solana: WalletKeypair }
 }
 
 export type FetchCoinPortfolioResponse = CoinProps
@@ -29,20 +37,41 @@ interface GetCoinChangePercentResponse {
 }
 
 export async function fetchCoinPortfolio({
-  account,
+  accounts,
   coin
 }: FetchCoinPortfolioInput): Promise<FetchCoinPortfolioResponse> {
-  if (!account) {
-    throw new Error('account is required')
+  if (!accounts?.evm.address || !accounts?.solana.address) {
+    return { balance: 0, changePercent: 0 }
+  }
+  if (!coin) {
+    return { balance: 0, changePercent: 0 }
   }
 
-  if (!coin) {
-    throw new Error('coin is required')
+  if (coin.symbol === 'sol') {
+    const rpcEndpoint = coin.rpcUrl.includes('test')
+      ? clusterApiUrl('testnet')
+      : process.env.NEXT_PUBLIC_ALCHEMY_SOLANA
+
+    const client = new Connection(rpcEndpoint)
+
+    const balance = await client.getBalance(
+      new PublicKey(accounts.solana.address)
+    )
+
+    const reqUrl = getCoinChangePercentUrl(coin.symbol)
+    const response = await axios.get<GetCoinChangePercentResponse>(reqUrl)
+
+    const formattedChangePercent = Number(response.data.priceChangePercent)
+
+    return {
+      balance: balance / LAMPORTS_PER_SOL,
+      changePercent: formattedChangePercent
+    }
   }
 
   const provider = new providers.JsonRpcProvider(coin.rpcUrl)
 
-  const balance = await provider.getBalance(account)
+  const balance = await provider.getBalance(accounts.evm.address)
   const formattedBalance = utils.formatEther(balance)
 
   const reqUrl = getCoinChangePercentUrl(coin.symbol)
@@ -58,14 +87,14 @@ export async function fetchCoinPortfolio({
 
 export function useCoinPortfolio(
   coin?: CoinAttributesInput,
-  account?: string,
+  accounts?: { evm: WalletKeypair; solana: WalletKeypair },
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['coinPortfolio', coin?.rpcUrl],
-    queryFn: () => fetchCoinPortfolio({ account, coin }),
+    queryKey: ['coinPortfolio', accounts, coin?.rpcUrl],
+    queryFn: () => fetchCoinPortfolio({ accounts, coin }),
     onSuccess: async data => {
-      // onSuccess used to update account ballance
+      // onSuccess used to update account balance
 
       if (!coin) {
         throw new Error('coin is required')
@@ -129,7 +158,7 @@ export function useCoinPortfolio(
         }
       )
     },
-    enabled: enabled && !!account && !!coin,
+    enabled: enabled && !!accounts && !!coin,
     staleTime: 1000 * 60 * 2 // 2 minutes
   })
 }

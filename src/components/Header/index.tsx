@@ -1,6 +1,6 @@
 import { List, Moon, Sun, Question, SignOut, User } from 'phosphor-react'
 
-import { TokenverseTextLogo } from '@components/Logos/TokenverseTextLogo'
+import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
 import { Avatar } from '@components/Avatar'
 import { DropdownMenu } from '@components/DropdownMenu'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
@@ -21,14 +21,14 @@ export function Header() {
   return (
     <header className="w-full py-2 px-4 fixed top-0 left-0 z-10 bg-white dark:bg-gray-800 dark:shadow-lg dark:shadow-gray-900 md:px-7">
       <div className="w-full h-full max-w-8xl flex justify-between items-center">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 h-min">
           <DialogDrawer.Trigger>
             <button aria-label="Sidebar menu mobile" className="flex md:hidden">
               <List className="text-xl dark:text-gray-100" weight="bold" />
             </button>
           </DialogDrawer.Trigger>
 
-          <TokenverseTextLogo className="w-40 h-5 md:w-56 md:h-6" />
+          <InWalletTextLogo className="w-0 h-0 md:w-40 md:h-10" />
         </div>
 
         <DropdownMenu.Root>
