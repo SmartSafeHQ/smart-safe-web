@@ -25,7 +25,7 @@ export default function Privacy() {
 
         <div className="flex gap-2">
           <div
-            className="relative w-[30px] h-[30px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105"
+            className="relative w-[30px] h-[30px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105 active:scale-95"
             onClick={() => handleLanguageSwitch('pt')}
           >
             <Image
@@ -37,7 +37,7 @@ export default function Privacy() {
           </div>
 
           <div
-            className="relative w-[30px] h-[30px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105"
+            className="relative w-[30px] h-[30px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105 active:scale-95"
             onClick={() => handleLanguageSwitch('en')}
           >
             <Image

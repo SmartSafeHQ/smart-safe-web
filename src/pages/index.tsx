@@ -51,7 +51,7 @@ const Login = () => {
               target="_blank"
               className="w-fit p-3 bg-gray-200 dark:bg-gray-700 rounded-full transition-all hover:brightness-90 hover:dark:brightness-75"
             >
-              <DiscordLogo className="w-7 h-7 text-cyan-500" />
+              <DiscordLogo className="w-7 h-7 text-brand-foregroundAccent1" />
             </Link>
 
             <Link
@@ -59,7 +59,7 @@ const Login = () => {
               target="_blank"
               className="w-fit p-3 bg-gray-200 dark:bg-gray-700 rounded-full transition-all hover:brightness-90 hover:dark:brightness-75"
             >
-              <TwitterLogo className="w-7 h-7 text-cyan-500" />
+              <TwitterLogo className="w-7 h-7 text-brand-foregroundAccent1" />
             </Link>
 
             <Link
@@ -67,14 +67,14 @@ const Login = () => {
               target="_blank"
               className="w-fit p-3 bg-gray-200 dark:bg-gray-700 rounded-full transition-all hover:brightness-90 hover:dark:brightness-75"
             >
-              <LinkedinLogo className="w-7 h-7 text-cyan-500" />
+              <LinkedinLogo className="w-7 h-7 text-brand-foregroundAccent1" />
             </Link>
           </div>
         </div>
 
         <Text className="text-center text-sm font-semibold text-gray-500 dark:text-gray-400">
           Don&apos;t have an account?
-          <button className="ml-1 text-cyan-500 transition-colors hover:text-cyan-600">
+          <button className="ml-1 text-brand-foregroundAccent1 transition-colors hover:text-brand-foregroundAccent2">
             Get started with InWallet
           </button>
         </Text>

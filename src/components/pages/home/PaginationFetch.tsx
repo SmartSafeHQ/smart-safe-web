@@ -32,7 +32,7 @@ export function PaginationFetch({
     <header className="w-full flex items-center justify-between gap-4">
       <div className="flex items-center gap-2">
         <button
-          className="flex items-center justify-center group p-2 rounded-md bg-gray-100 dark:bg-gray-900 text-gray-500 transition-colors hover:text-cyan-500 disabled:brightness-75 disabled:cursor-not-allowed disabled:hover:text-gray-400"
+          className="flex items-center justify-center group p-2 rounded-md bg-gray-100 dark:bg-gray-900 text-gray-500 transition-colors hover:text-brand-foregroundAccent1 disabled:brightness-75 disabled:cursor-not-allowed disabled:hover:text-gray-400"
           aria-label={t.pagination.refetchingData}
           onClick={handleRefetch}
           disabled={isFetching}

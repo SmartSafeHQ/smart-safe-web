@@ -96,7 +96,7 @@ export function SendSuccess({
 
           <Text
             asChild
-            className="flex items-center gap-1 text-sm font-semibold transition-colors text-cyan-500 hover:text-cyan-600"
+            className="flex items-center gap-1 text-sm font-semibold transition-colors text-brand-foregroundAccent1 hover:text-brand-foregroundAccent2"
           >
             <a href={transactionUrl} target="_blank" rel="noopener noreferrer">
               <Text>{t.send.viewProof}</Text>

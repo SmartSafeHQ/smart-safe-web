@@ -27,7 +27,7 @@ export function ActionButton({
       )}
       {...props}
     >
-      <Icon className="w-7 h-7 text-cyan-500" />
+      <Icon className="w-7 h-7 text-brand-foregroundAccent1" />
 
       <Text className="text-lg font-medium text-gray-800 dark:text-gray-50">
         {title}

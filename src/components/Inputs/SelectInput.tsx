@@ -50,7 +50,7 @@ function SelectInputRoot({
       <RadixSelect.Root {...props}>
         <RadixSelect.Trigger
           className={clsx(
-            'w-full gap-3 min-h-[3rem] inline-flex items-center justify-between rounded px-4 text-sm shadow-sm dark:shadow-md outline-none ring-cyan-500 !bg-gray-200 dark:!bg-gray-800 focus-within:ring-2 data-[placeholder]:text-gray-400',
+            'w-full gap-3 min-h-[3rem] inline-flex items-center justify-between rounded px-4 text-sm shadow-sm dark:shadow-md outline-none ring-brand-foregroundAccent1 !bg-gray-200 dark:!bg-gray-800 focus-within:ring-2 data-[placeholder]:text-gray-400',
             {
               'ring-2 ring-red-500': !!error,
               '!bg-gray-50 dark:!bg-gray-900': variant === 'secondary'
@@ -77,7 +77,7 @@ function SelectInputRoot({
               }
             )}
           >
-            <RadixSelect.ScrollUpButton className="flex items-center justify-center h-7 bg-gray-200 dark:bg-gray-800 text-cyan-500 cursor-default">
+            <RadixSelect.ScrollUpButton className="flex items-center justify-center h-7 bg-gray-200 dark:bg-gray-800 text-brand-foregroundAccent1 cursor-default">
               <ScrollUpButton />
             </RadixSelect.ScrollUpButton>
 
@@ -85,7 +85,7 @@ function SelectInputRoot({
               {children}
             </RadixSelect.Viewport>
 
-            <RadixSelect.ScrollDownButton className="flex items-center justify-center h-7 bg-gray-200 dark:bg-gray-800 text-cyan-500 cursor-default">
+            <RadixSelect.ScrollDownButton className="flex items-center justify-center h-7 bg-gray-200 dark:bg-gray-800 text-brand-foregroundAccent1 cursor-default">
               <ScrollDownButton />
             </RadixSelect.ScrollDownButton>
           </RadixSelect.Content>
@@ -133,13 +133,13 @@ const SelectInputItem: ForwardRefRenderFunction<
       ref={ref}
       className={clsx(
         className,
-        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-cyan-600 data-[highlighted]:!text-gray-100 group'
+        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-brand-foregroundAccent1 data-[highlighted]:!text-gray-100 group'
       )}
       {...props}
     >
       <RadixSelect.ItemText>{children}</RadixSelect.ItemText>
 
-      <RadixSelect.ItemIndicator className="w-7 inline-flex items-center justify-center absolute left-0 text-cyan-500 font-medium group-data-[highlighted]:text-gray-100">
+      <RadixSelect.ItemIndicator className="w-7 inline-flex items-center justify-center absolute left-0 text-brand-foregroundAccent1 font-medium group-data-[highlighted]:text-gray-100">
         <Check weight="bold" />
       </RadixSelect.ItemIndicator>
     </RadixSelect.Item>

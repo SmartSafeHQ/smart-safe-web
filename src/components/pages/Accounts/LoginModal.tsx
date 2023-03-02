@@ -120,7 +120,7 @@ export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
             <button
               type="button"
               onClick={handleSignupWidget}
-              className="text-left text-md text-cyan-500 dark:text-cyan-400 font-semibold hover:text-cyan-400 hover:dark:text-cyan-300"
+              className="text-left text-md text-brand-foregroundAccent1 dark:text-cyan-400 font-semibold hover:text-brand-foregroundAccent2 hover:dark:text-cyan-300"
             >
               {t.signIn.forgotPassword}
             </button>

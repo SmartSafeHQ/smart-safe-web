@@ -1,9 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ['./src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       maxWidth: {
@@ -17,7 +15,17 @@ module.exports = {
 
         gray: {
           900: '#121214',
-          800: '#202024',
+          800: '#202024'
+        },
+
+        brand: {
+          background: '#fcfcfc',
+          foreground: '#1e4a6d',
+          foregroundAccent1: '#1e90ff',
+          foregroundAccent2: '#0077be',
+          accent1: '#55354f',
+          accent2: '#8c2031',
+          accent3: '#c30c13',
         }
       },
       borderWidth: {
@@ -27,17 +35,17 @@ module.exports = {
         sans: 'Inter, sans-serif'
       },
       keyframes: {
-        'overlayShow': {
-          'from': {  opacity: '0' },
-          'to': {  opacity: '1'},
+        overlayShow: {
+          from: { opacity: '0' },
+          to: { opacity: '1' }
         }
       },
       animation: {
         'dialog-open': 'overlayShow 400ms cubic-bezier(0.16, 1, 0.3, 1);',
         'dialog-open-left': 'overlayShow 400ms cubic-bezier(0.16, 1, 0.3, 1);',
-        'dropdown-menu-open': 'overlayShow 300ms cubic-bezier(0.16, 1, 0.3, 1);',
+        'dropdown-menu-open': 'overlayShow 300ms cubic-bezier(0.16, 1, 0.3, 1);'
       }
     }
   },
-  plugins: [],
+  plugins: []
 }
