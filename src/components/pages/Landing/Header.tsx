@@ -67,7 +67,7 @@ export function Header() {
             asChild
             className="py-2 px-3 bg-gray-50 rounded-md font-semibold text-gray-900 capitalize transition-colors hover:bg-gray-200 focus:ring-2 ring-gray-900 text-sm sm:text-base sm:py-2 sm:px-4"
           >
-            <Link href="/accounts/login">Sign in</Link>
+            <Link href="/accounts/login">{t.landing.signIn}</Link>
           </Text>
         </div>
       </div>

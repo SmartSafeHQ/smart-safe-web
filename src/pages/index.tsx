@@ -9,64 +9,11 @@ import { Text } from '@components/Text'
 import { Header } from '@components/pages/Landing/Header'
 import { InfosCarrousel } from '@components/pages/Landing/InfosCarrousel'
 import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
-import { AwsLogo } from '@components/Logos/AwsLogo'
-import { MoonPayLogo } from '@components/Logos/MoonPayLogo'
-import { R3Logo } from '@components/Logos/R3Logo'
-import { TransakLogo } from '@components/Logos/TransakLogo'
-import { WalletConnectLogo } from '@components/Logos/WalletConnectLogo'
 import { WalletConnectBlueLogo } from '@components/Logos/WalletConnectBlueLogo'
 import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
 
+import { useI18n } from '@hooks/useI18n'
 import { TOKENVERSE_TWITTER_LINK } from '@utils/global/constants/links'
-
-const LANDING_CARROUSEL_INFOS = [
-  {
-    id: 'access',
-    title: 'Simplicity meets advanced security.',
-    description:
-      'Take control of your crypto, with our non-custodial, multi-chain wallet.'
-  },
-  {
-    id: 'access-2',
-    title: 'Unleash your crypto potential.',
-    description:
-      'Maximize your crypto gains, with our seamless multi-chain wallet and financial services.'
-  },
-  {
-    id: 'access-3',
-    title: 'Your all-in-one crypto solution.',
-    description:
-      'Experience the future of finance, with our revolutionary wallet technology.'
-  }
-]
-
-const LANDING_CARROUSEL_PARTNERS = [
-  {
-    id: 'aws',
-    name: 'aws',
-    Image: AwsLogo
-  },
-  {
-    id: 'r3',
-    name: 'r3',
-    Image: R3Logo
-  },
-  {
-    id: 'transak',
-    name: 'transak',
-    Image: TransakLogo
-  },
-  {
-    id: 'moonPay',
-    name: 'moonPay',
-    Image: MoonPayLogo
-  },
-  {
-    id: 'walletConnect',
-    name: 'wallet connect',
-    Image: WalletConnectLogo
-  }
-]
 
 const LANDING_NETWORKS = [
   { chainId: 5, network: 'ethereum', avatar: '/networks/eth-logo.svg' },
@@ -74,7 +21,7 @@ const LANDING_NETWORKS = [
   { chainId: 80001, network: 'polygon', avatar: '/networks/polygon-logo.svg' },
   { chainId: 44787, network: 'celo', avatar: '/networks/celo-logo.svg' },
   {
-    chainId: 43113,
+    chainId: 73113,
     network: 'solana',
     avatar: '/networks/solana-logo.svg'
   },
@@ -84,44 +31,43 @@ const LANDING_NETWORKS = [
     avatar: '/networks/avalanche-logo.svg'
   },
   {
-    chainId: 43113,
+    chainId: 43111,
     network: 'injective',
     avatar: '/networks/injective-logo.svg'
   },
   {
-    chainId: 43113,
+    chainId: 43313,
     network: 'cosmos',
     avatar: '/networks/cosmos-logo.svg'
   }
 ]
 
 const Landing = () => {
+  const { t } = useI18n()
+
   return (
     <div className="w-full flex flex-1 flex-col justify-center items-center bg-white">
       <Head>
-        <title>Tokenverse</title>
-        <meta name="description" content="Tokenverse landing page" />
+        <title>{t.landing.headTitle}</title>
+        <meta name="description" content={t.landing.headDescription} />
       </Head>
 
       <Header />
 
       <section className="w-full flex flex-col items-center justify-center pt-28 px-4 gap-6 bg-white lg:flex-row lg:gap-16">
-        <main className="w-full max-w-[46rem] flex flex-col items-start gap-6 lg:max-w-[44rem]">
+        <main className="w-full max-w-[48rem] flex flex-col items-start gap-6 lg:max-w-[44rem]">
           <Heading
             asChild
             className="text-5xl leading-tight text-black lg:text-8xl"
           >
-            <h1>Where crypto meets finance.</h1>
+            <h1>{t.landing.heroTitle}</h1>
           </Heading>
 
           <Text
             asChild
             className="w-full text-xl font-medium text-gray-900 leading-relaxed lg:text-2xl lg:max-w-2xl"
           >
-            <p>
-              Say goodbye to the hassle of managing multiple wallets and hello
-              to the ultimate crypto experience.
-            </p>
+            <p>{t.landing.heroDescription}</p>
           </Text>
 
           <div className="w-full  flex flex-col items-start gap-8">
@@ -130,7 +76,7 @@ const Landing = () => {
               className="w-full flex items-center justify-center rounded-md uppercase focus:ring-2 ring-gray-900 px-10 py-4 text-xl font-semibold bg-red-500 transition-colors text-white hover:bg-red-400"
             >
               <Link href="/accounts/login">
-                <Text>Sign in</Text>
+                <Text>{t.landing.signIn}</Text>
               </Link>
             </Text>
 
@@ -144,7 +90,7 @@ const Landing = () => {
         <div className="w-full max-w-[32rem]">
           <img
             src="/landing/app-in-wallet-preview.png"
-            alt="Dois celulares exibindo uma prévia da aplicação do NLW Copa"
+            alt={t.landing.heroImageAlt}
             className="w-full bg-contain"
           />
         </div>
@@ -154,25 +100,25 @@ const Landing = () => {
         <div className="w-full max-w-[32rem]">
           <img
             src="/landing/web-mockup.png"
-            alt="Dois celulares exibindo uma prévia da aplicação do NLW Copa"
+            alt={t.landing.webMockupImageAlt}
             className="w-full bg-contain"
           />
         </div>
 
         <div className="w-full max-w-[50rem] mt-[-6rem] flex flex-col items-start gap-1 lg:max-w-[36rem]">
-          <InfosCarrousel infos={LANDING_CARROUSEL_INFOS} />
+          <InfosCarrousel infos={t.landing.carrouselInfos} />
         </div>
       </section>
 
       <section className="w-full relative min-h-[78vh] flex flex-col items-center px-4 pt-4 overflow-hidden mb-3 bg-white md:min-h-[90vh]">
-        <div className="w-full max-w-[20rem] flex flex-col justify-center items-center gap-2 md:max-w-xl">
+        <div className="w-full max-w-[22rem] flex flex-col justify-center items-center gap-2 md:max-w-xl">
           <InWalletTextLogo className="h-10 md:h-14" />
 
           <Heading
             asChild
             className="text-xl text-center text-gray-800 font-normal lg:text-3xl"
           >
-            <h2>Your one-stop shop for cross-chain crypto management.</h2>
+            <h2>{t.landing.cardMockupTitle}</h2>
           </Heading>
 
           <Text
@@ -180,7 +126,7 @@ const Landing = () => {
             className="flex items-center gap-2 text-xl capitalize font-medium transition-colors text-sky-600 hover:text-sky-500"
           >
             <Link href="/accounts/login">
-              <Text>Get Started</Text>
+              <Text>{t.landing.getStarted}</Text>
 
               <CaretRight className="w-6 h-6" weight="bold" />
             </Link>
@@ -190,13 +136,13 @@ const Landing = () => {
         <div className="w-full absolute top-36 overflow-visible flex-grow flex justify-center items-center gap-3 md:gap-6 right-20 md:left-0 lg:top-48">
           <img
             src="/landing/card-mockup.png"
-            alt="Card Mockup"
+            alt={t.landing.cardMockupImageAlt}
             className="w-[30rem] h-[25rem] bg-fixed sm:h-0 md:w-[33.25rem] sm:h-[28rem] "
           />
 
           <img
             src="/landing/hold-iphone-mockup.png"
-            alt="Iphone Mockup"
+            alt={t.landing.cellPhoneMockupImageAlt}
             className="w-[14rem] bg-fixed md:w-[16rem]"
           />
         </div>
@@ -209,10 +155,7 @@ const Landing = () => {
               asChild
               className="text-4xl leading-tight font-semibold text-center md:text-[2.5rem]"
             >
-              <h2>
-                Discover the power of multi-chain and elevate your crypto
-                experience to new heights
-              </h2>
+              <h2>{t.landing.networksSupportTitle}</h2>
             </Heading>
 
             <div className="flex items-center flex-col gap-3 md:flex-row">
@@ -220,7 +163,7 @@ const Landing = () => {
                 asChild
                 className="text-lg text-center text-gray-200 font-normal"
               >
-                <h3>Available on all dApps that support WalletConnect</h3>
+                <h3>{t.landing.wCSupportSubTitle}</h3>
               </Heading>
 
               <WalletConnectBlueLogo className="w-6 h-6" />
@@ -231,7 +174,7 @@ const Landing = () => {
               className="flex items-center gap-2 text-xl capitalize font-medium transition-colors text-sky-600 hover:text-sky-500"
             >
               <Link href="/accounts/login">
-                <Text>Get Started</Text>
+                <Text>{t.landing.getStarted}</Text>
 
                 <CaretRight className="w-6 h-6" weight="bold" />
               </Link>
@@ -239,7 +182,7 @@ const Landing = () => {
           </div>
 
           <Text asChild className="mb-2 text-sm font-normal text-gray-200">
-            <strong>Currently on:</strong>
+            <strong>{t.landing.currentlyOn}</strong>
           </Text>
 
           <div className="w-full grid grid-cols-3 gap-x-10 gap-y-7 justify-center items-center md:gap-x-20 md:gap-y-14">
@@ -268,11 +211,11 @@ const Landing = () => {
           asChild
           className="text-4xl leading-tight font-semibold text-center text-gray-900 md:text-5xl"
         >
-          <h2>Partners</h2>
+          <h2>{t.landing.partners}</h2>
         </Heading>
 
         <div className="w-full max-w-2xl grid grid-cols-3 gap-x-10 gap-y-7 justify-center items-center md:gap-x-20 md:gap-y-14">
-          {LANDING_CARROUSEL_PARTNERS.map(partner => (
+          {t.landing.carrouselPartners.map(partner => (
             <div key={partner.id} className="flex flex-col items-center gap-3">
               <partner.Image className="w-20 h-20 bg-cover md:w-28 md:h-28" />
             </div>
@@ -285,22 +228,22 @@ const Landing = () => {
           <div className="flex flex-col items-start gap-4">
             <Heading asChild className="max-w-sm text-5xl text-gray-900">
               <h1>
-                Go to app or <br />
-                signup on web
+                {t.landing.footerCtaTitle01} <br />
+                {t.landing.footerCtaTitle02}
               </h1>
             </Heading>
 
             <Text asChild className="font-medium text-gray-600">
               <strong>
-                Seamlessly manage all your assets <br />
-                in one place.
+                {t.landing.footerCtaSubTitle01} <br />
+                {t.landing.footerCtaSubTitle02}
               </strong>
             </Text>
           </div>
 
           <div className="flex flex-col items-center justify-center gap-8">
             <Text className="font-medium text-gray-600 text-center">
-              Get started now with your super wallet app
+              {t.landing.footerSubGetStarted}
             </Text>
 
             <div className="w-full flex item-center  gap-5 md:gap-10">
@@ -317,7 +260,7 @@ const Landing = () => {
                   className="w-full rounded-md focus:ring-2 ring-gray-900 px-7 py-2 font-semibold bg-gray-800 transition-colors text-white hover:bg-gray-700"
                 >
                   <Link href="/accounts/login">
-                    <Text>Sign in</Text>
+                    <Text>{t.landing.signIn}</Text>
                   </Link>
                 </Text>
               </div>
