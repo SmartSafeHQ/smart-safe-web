@@ -28,7 +28,7 @@ export function Header() {
             </button>
           </DialogDrawer.Trigger>
 
-          <InWalletTextLogo className="w-40 md:w-56" />
+          <InWalletTextLogo className="w-0 h-0 md:w-40 md:h-10" />
         </div>
 
         <DropdownMenu.Root>

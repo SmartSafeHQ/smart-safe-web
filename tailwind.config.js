@@ -23,6 +23,9 @@ module.exports = {
       borderWidth: {
         1: '1px'
       },
+      gridTemplateColumns: {
+        'auto-fill-68': 'repeat(auto-fill, minmax(68px, 1fr))'
+      },
       fontFamily: {
         sans: 'Inter, sans-serif'
       },

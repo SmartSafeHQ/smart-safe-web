@@ -2,7 +2,7 @@ import { Slot } from '@radix-ui/react-slot'
 import clsx from 'clsx'
 import { HTMLAttributes } from 'react'
 
-import { InWalletIcon } from '@components/Logos/InWalletIcon'
+import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
 import { Text } from '@components/Text'
 
 interface ErrorStateProps extends HTMLAttributes<HTMLElement> {
@@ -43,7 +43,7 @@ export function ErrorState({
         )}
       </div>
 
-      <InWalletIcon className="w-20 h-20 opacity-60" />
+      <InWalletIconLogo className="w-20 h-20 opacity-60" />
     </Comp>
   )
 }
