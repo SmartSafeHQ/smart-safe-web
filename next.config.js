@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
   i18n: {
     locales: ['en', 'pt'],
     defaultLocale: 'pt'
@@ -8,7 +9,7 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        source: '/',
+        source: '/accounts',
         destination: '/accounts/login',
         permanent: true,
       },

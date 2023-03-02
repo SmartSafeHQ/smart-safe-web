@@ -56,9 +56,7 @@ const Receive = () => {
                     />
                   )}
 
-                  {selectedWallet && (
-                    <p className="">{selectedWallet.formattedWallet}</p>
-                  )}
+                  {selectedWallet && <p>{selectedWallet.formattedWallet}</p>}
                 </div>
               </>
             )}
