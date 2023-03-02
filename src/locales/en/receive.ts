@@ -6,7 +6,7 @@ export const receive = {
   copy: 'copy',
   copiedMessage: 'Address copied to clipboard',
   share: 'share',
-  destiny: 'destiny',
+  destination: 'destination',
   walletInfo:
     'In some cases the same wallet can be used throughtout different blockchain networks.',
   shareWallet: 'Your wallet address'

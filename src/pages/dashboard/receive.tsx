@@ -83,7 +83,7 @@ const Receive = () => {
 
           <div className="pt-5 border-t-2 border-t-gray-300 dark:border-t-gray-700">
             <WalletInfos
-              title={t.receive.destiny}
+              title={t.receive.destination}
               Icon={Wallet}
               className="p-5"
             >

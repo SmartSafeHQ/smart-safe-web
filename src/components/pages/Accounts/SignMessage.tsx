@@ -138,7 +138,7 @@ export function SignMessage({
 
                 <Text
                   asChild
-                  className="text-cyan-500 font-medium transition-colors hover:text-cyan-600"
+                  className="text-brand-foregroundAccent1 font-medium transition-colors hover:text-brand-foregroundAccent2"
                 >
                   <a href={url ?? '#'} target="_blank" rel="noreferrer">
                     {url ?? t.wc.uninformed}

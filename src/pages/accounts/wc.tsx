@@ -60,7 +60,7 @@ export default function WalletconnectLogin() {
           ) : isQrScanOpen === 'loading' ? (
             <div className="w-[420px] h-[320px] flex flex-col gap-4 items-center justify-center">
               <div className="flex justify-center items-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-cyan-400"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-foregroundAccent1"></div>
               </div>
 
               <p className="text-center">{t.wc.grantAccess}</p>

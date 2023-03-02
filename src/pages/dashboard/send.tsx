@@ -131,7 +131,7 @@ const Send = () => {
                 <TextInput.Label>{t.send.amount}</TextInput.Label>
 
                 <button
-                  className="w-6 h-6 flex items-center justify-center text-cyan-500 rounded-md shadow-sm ring-gray-100 bg-gray-200 dark:bg-gray-800 focus:ring-2"
+                  className="w-6 h-6 flex items-center justify-center text-brand-foregroundAccent1 rounded-md shadow-sm ring-gray-100 bg-gray-200 dark:bg-gray-800 focus:ring-2"
                   aria-label="Toggle coin input"
                   onClick={handleToggleAmountInputType}
                 >

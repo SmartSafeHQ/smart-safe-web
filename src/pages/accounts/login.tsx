@@ -81,14 +81,14 @@ export default function Login() {
             <button
               type="button"
               onClick={handleSignupWidget}
-              className="text-left text-md text-cyan-500 dark:text-cyan-400 font-semibold hover:text-cyan-400 hover:dark:text-cyan-300"
+              className="text-left text-md text-brand-foregroundAccent2 dark:text-cyan-400 font-semibold hover:text-brand-foregroundAccent1 hover:dark:text-cyan-300"
             >
               {t.signIn.forgotPassword}
             </button>
 
             <div className="flex gap-2">
               <div
-                className="relative w-[25px] h-[25px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105"
+                className="relative w-[25px] h-[25px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105 active:scale-95"
                 onClick={() => handleLanguageSwitch('pt')}
               >
                 <Image
@@ -100,7 +100,7 @@ export default function Login() {
               </div>
 
               <div
-                className="relative w-[25px] h-[25px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105"
+                className="relative w-[25px] h-[25px] rounded-full overflow-hidden cursor-pointer transition-all hover:scale-105 active:scale-95"
                 onClick={() => handleLanguageSwitch('en')}
               >
                 <Image

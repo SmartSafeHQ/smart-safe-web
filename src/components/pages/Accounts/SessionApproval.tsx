@@ -148,7 +148,7 @@ export function SessionApproval({
 
                 <Text
                   asChild
-                  className="text-cyan-500 font-medium transition-colors hover:text-cyan-600"
+                  className="text-brand-foregroundAccent1 font-medium transition-colors hover:text-brand-foregroundAccent2"
                 >
                   <a
                     href={sessionData?.url ?? '#'}
