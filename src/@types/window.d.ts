@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    // this is available when using the Tokenverse App (PlayStore/AppStore)
+    // this is available when using the InWallet App (PlayStore/AppStore)
     AndroidInterface: {
       saveBiometric: () => void
       logout: () => void

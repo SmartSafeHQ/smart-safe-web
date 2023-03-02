@@ -1,3 +1,5 @@
+import type { WalletKeypair } from '@utils/global/types'
+
 export interface TransactionCoinProps {
   scanUrl: string
   explorerUrl: string
@@ -24,7 +26,10 @@ export interface TransactionProps {
 
 export interface FetchAllNetworksTransactionsInput {
   coins?: TransactionCoinProps[]
-  account?: string
+  accounts?: {
+    solana: WalletKeypair
+    evm: WalletKeypair
+  }
 }
 
 export interface GetNetworkTrasactionResponse {

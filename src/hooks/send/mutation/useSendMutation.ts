@@ -11,7 +11,7 @@ interface SendFunctionInput {
   to: string
   fromWalletPrivateKey: string
   amount: number
-  chainId: number
+  chainId: number | null
   symbol: string
   rpcUrl: string
 }
@@ -37,7 +37,7 @@ async function sendFunction(
     to: input?.to,
     value: amountToSend,
     nonce,
-    chainId: input?.chainId,
+    chainId: input?.chainId as number,
     gasLimit: DEFAULT_GAS_LIMIT,
     gasPrice
   })

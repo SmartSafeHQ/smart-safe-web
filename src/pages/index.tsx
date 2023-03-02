@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
-import { TokenverseIcon } from '@components/Logos/TokenverseIcon'
+import { InWalletIcon } from '@components/Logos/InWalletIcon'
 import { Text } from '@components/Text'
 
 import {
@@ -17,8 +17,8 @@ const Login = () => {
   return (
     <div className="w-full flex flex-1 flex-col justify-center items-center px-2 pt-8">
       <Head>
-        <title>Tokenverse | Login</title>
-        <meta name="description" content="Tokenverse dashboard home" />
+        <title>InWallet | Login</title>
+        <meta name="description" content="InWallet dashboard home" />
       </Head>
 
       <div className="w-full max-w-sm flex flex-col justify-center text-center md:max-w-md">
@@ -36,8 +36,8 @@ const Login = () => {
         </div>
 
         <Button className="flex items-center gap-2 mb-8 rounded-3xl">
-          <TokenverseIcon className="w-4 h-4 md:w-5 md:h-5 [&>*]:fill-gray-900" />
-          <Text>Login with Tokenverse</Text>
+          <InWalletIcon className="w-4 h-4 md:w-5 md:h-5 [&>*]:fill-gray-900" />
+          <Text>Login with InWallet</Text>
         </Button>
 
         <div className="w-full flex flex-col gap-3 pt-5 mb-9 border-t-2 border-t-gray-400 dark:border-t-gray-600">
@@ -75,7 +75,7 @@ const Login = () => {
         <Text className="text-center text-sm font-semibold text-gray-500 dark:text-gray-400">
           Don&apos;t have an account?
           <button className="ml-1 text-cyan-500 transition-colors hover:text-cyan-600">
-            Get started with Tokenverse
+            Get started with InWallet
           </button>
         </Text>
       </div>

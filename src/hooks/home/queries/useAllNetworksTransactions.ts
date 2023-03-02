@@ -15,11 +15,13 @@ import {
   getWeiToCoinValue
 } from '@utils/global/coins'
 
+import type { WalletKeypair } from '@utils/global/types'
+
 async function fetchAllNetworksTransactions({
-  account,
+  accounts,
   coins
 }: FetchAllNetworksTransactionsInput): Promise<FetchAllNetworksTransactionsResponse> {
-  if (!account) {
+  if (!accounts?.evm.address || !accounts.solana.address) {
     throw new Error('account is required')
   }
 
@@ -30,13 +32,30 @@ async function fetchAllNetworksTransactions({
   const formattedTransactions: TransactionProps[] = []
 
   const transactionsPromise = coins.map(async coin => {
+    if (coin.symbol === 'sol') {
+      return
+      // const { data } = await axios.get<GetNetworkTrasactionResponse>(
+      //   `${coin.scanUrl}account/transactions`,
+      //   {
+      //     params: {
+      //       account: accounts.solana.address,
+      //       offset: 10
+      //     }
+      //   }
+      // )
+
+      // console.log({ data })
+
+      // return
+    }
+
     const { data } = await axios.get<GetNetworkTrasactionResponse>(
       coin.scanUrl,
       {
         params: {
           module: 'account',
           action: 'txlist',
-          address: account,
+          address: accounts.evm.address,
           page: 1,
           offset: 10,
           sort: 'desc'
@@ -68,7 +87,9 @@ async function fetchAllNetworksTransactions({
         }
 
         const txCategory =
-          tx.from.toLowerCase() === account.toLowerCase() ? 'debit' : 'credit'
+          tx.from.toLowerCase() === accounts.evm.address.toLowerCase()
+            ? 'debit'
+            : 'credit'
 
         return {
           transactedAt,
@@ -103,13 +124,13 @@ async function fetchAllNetworksTransactions({
 
 export function useAllNetworksTransactions(
   coins?: TransactionCoinProps[],
-  account?: string,
+  accounts?: { evm: WalletKeypair; solana: WalletKeypair },
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['allNetworksTransactions', account],
-    queryFn: () => fetchAllNetworksTransactions({ account, coins }),
-    enabled: enabled && !!account && !!coins,
+    queryKey: ['allNetworksTransactions', accounts],
+    queryFn: () => fetchAllNetworksTransactions({ accounts, coins }),
+    enabled: enabled && !!accounts && !!coins,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes
   })

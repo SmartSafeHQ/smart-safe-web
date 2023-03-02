@@ -14,7 +14,7 @@ export interface FetchCustomerCoinsResponse {
     symbol: string
     network: string
     avatar: string
-    chainId: number
+    chainId: number | null
     decimals: number
     rpcUrl: string
     explorerUrl: string
@@ -25,13 +25,8 @@ export interface FetchCustomerCoinsResponse {
 
 export async function fetchCustomerCoins({
   page,
-  offset,
-  account
+  offset
 }: FetchCustomerCoinsInput): Promise<FetchCustomerCoinsResponse> {
-  if (!account) {
-    throw new Error('account is required')
-  }
-
   const start = (page - 1) * offset
   const end = start + offset
 
@@ -48,7 +43,7 @@ export function useCustomerCoins(
 ) {
   return useQuery({
     queryKey: ['customerCoins', page],
-    queryFn: () => fetchCustomerCoins({ account, page, offset }),
+    queryFn: () => fetchCustomerCoins({ page, offset }),
     enabled: enabled && !!account,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes
