@@ -8,7 +8,7 @@ import {
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
 
-import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
+import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
 
 import { FetchEndUserWalletsResponse } from '@utils/global/types'
 import { tokenverseApi } from '@lib/axios'
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           .replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
       })
     } finally {
-      push('/accounts/login')
+      push('/')
     }
   }
 
