@@ -1,9 +1,3 @@
-import { AwsLogo } from '@components/Logos/AwsLogo'
-import { MoonPayLogo } from '@components/Logos/MoonPayLogo'
-import { R3Logo } from '@components/Logos/R3Logo'
-import { TransakLogo } from '@components/Logos/TransakLogo'
-import { WalletConnectLogo } from '@components/Logos/WalletConnectLogo'
-
 export const landing = {
   headTitle: 'InWallet',
   headDescription: 'InWallet landing page',
@@ -44,33 +38,7 @@ export const landing = {
   wCSupportSubTitle: 'Disponível em todos os dApps que suportam WalletConnect',
   currentlyOn: 'Atualmente em:',
   partners: 'Parceiros',
-  carrouselPartners: [
-    {
-      id: 'aws',
-      name: 'aws',
-      Image: AwsLogo
-    },
-    {
-      id: 'r3',
-      name: 'r3',
-      Image: R3Logo
-    },
-    {
-      id: 'transak',
-      name: 'transak',
-      Image: TransakLogo
-    },
-    {
-      id: 'moonPay',
-      name: 'moonPay',
-      Image: MoonPayLogo
-    },
-    {
-      id: 'walletConnect',
-      name: 'wallet connect',
-      Image: WalletConnectLogo
-    }
-  ],
+  carrouselPartners: [],
   footerCtaTitle01: 'Acesse o aplicativo ou',
   footerCtaTitle02: 'acesse na web',
   footerCtaSubTitle01: 'Gerencie todos os seus ativos',

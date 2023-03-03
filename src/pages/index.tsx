@@ -4,14 +4,8 @@ import Head from 'next/head'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
-import { Header } from '@components/pages/Landing/Header'
-import { InfosCarrousel } from '@components/pages/Landing/InfosCarrousel'
 import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
 import { InWalletIconLogo } from '@components/Logos/InWalletIconLogo'
-import { HeroSection } from '@components/pages/Landing/HeroSection'
-import { CtaLink } from '@components/pages/Landing/CtaLink'
-import { NetworksSupportSection } from '@components/pages/Landing/NetworksSupportSection'
-import { FooterCtasSection } from '@components/pages/Landing/FooterCtasSection'
 
 import { useI18n } from '@hooks/useI18n'
 import { TOKENVERSE_TWITTER_LINK } from '@utils/global/constants/links'
@@ -26,10 +20,6 @@ const Landing = () => {
         <meta name="description" content={t.landing.headDescription} />
       </Head>
 
-      <Header />
-
-      <HeroSection />
-
       <section className="w-full min-h-screen flex flex-col-reverse items-center justify-center px-4 pt-12 gap-12 lg:flex-row lg:gap-20 lg:pt-0 bg-gray-100">
         <div className="w-full h-full min-h-[20rem] max-w-[32rem] relative">
           <Image
@@ -39,10 +29,6 @@ const Landing = () => {
             height={320}
             quality={100}
           />
-        </div>
-
-        <div className="w-full max-w-[50rem] mt-[-6rem] flex flex-col items-start gap-1 lg:max-w-[36rem]">
-          <InfosCarrousel infos={t.landing.carrouselInfos} />
         </div>
       </section>
 
@@ -56,8 +42,6 @@ const Landing = () => {
           >
             <h2>{t.landing.cardMockupTitle}</h2>
           </Heading>
-
-          <CtaLink title={t.landing.getStarted} href="/accounts/login" />
         </div>
 
         <div className="w-full absolute top-40 overflow-visible flex-grow flex justify-center items-center md:gap-6 right-16 md:left-0 md:top-48">
@@ -81,8 +65,6 @@ const Landing = () => {
         </div>
       </section>
 
-      <NetworksSupportSection networks={[]} />
-
       <section className="w-full py-10 relative flex flex-col items-center justify-center gap-10 mt-3 rounded-sm">
         <Heading
           asChild
@@ -91,16 +73,8 @@ const Landing = () => {
           <h2>{t.landing.partners}</h2>
         </Heading>
 
-        <div className="w-full max-w-2xl grid grid-cols-3 gap-x-10 gap-y-7 justify-center items-center md:gap-x-20 md:gap-y-14">
-          {t.landing.carrouselPartners.map(partner => (
-            <div key={partner.id} className="flex flex-col items-center gap-3">
-              <partner.Image className="w-20 h-20 bg-cover md:w-28 md:h-28" />
-            </div>
-          ))}
-        </div>
+        <div className="w-full max-w-2xl grid grid-cols-3 gap-x-10 gap-y-7 justify-center items-center md:gap-x-20 md:gap-y-14"></div>
       </section>
-
-      <FooterCtasSection />
 
       <footer className="w-full flex justify-center px-6 py-4 bg-white">
         <div className="w-full max-w-7xl flex items-center justify-between gap-8">
