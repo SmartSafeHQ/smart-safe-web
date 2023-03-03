@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const noAuthCheckCase = ['/', '/accounts/wc', '/privacy', '/en/privacy'].some(
+  const noAuthCheckCase = ['/accounts/wc', '/privacy', '/en/privacy'].some(
     path => path === request.nextUrl.pathname
   )
 

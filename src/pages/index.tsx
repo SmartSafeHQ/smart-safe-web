@@ -15,7 +15,6 @@ import { FooterCtasSection } from '@components/pages/Landing/FooterCtasSection'
 
 import { useI18n } from '@hooks/useI18n'
 import { TOKENVERSE_TWITTER_LINK } from '@utils/global/constants/links'
-import { LANDING_NETWORKS } from '@utils/global/constants/landingPage'
 
 const Landing = () => {
   const { t } = useI18n()
@@ -82,7 +81,7 @@ const Landing = () => {
         </div>
       </section>
 
-      <NetworksSupportSection networks={LANDING_NETWORKS} />
+      <NetworksSupportSection networks={[]} />
 
       <section className="w-full py-10 relative flex flex-col items-center justify-center gap-10 mt-3 rounded-sm">
         <Heading
