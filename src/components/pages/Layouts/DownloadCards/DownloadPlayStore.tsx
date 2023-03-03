@@ -3,7 +3,7 @@ import { AnchorHTMLAttributes } from 'react'
 import clsx from 'clsx'
 
 import { Text } from '@components/Text'
-import { GooglePlay } from '@components/Icons/GooglePlay'
+import { GooglePlay } from '@components/Logos/GooglePlay'
 
 import { TOKENVERSE_PLAY_STORE_LINK } from '@utils/global/constants/links'
 

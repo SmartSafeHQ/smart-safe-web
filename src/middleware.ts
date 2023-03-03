@@ -3,11 +3,11 @@ import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
 
 export async function middleware(request: NextRequest) {
-  const noAuthCheckCase = ['/', '/accounts/wc', '/privacy', '/en/privacy'].some(
+  const noAuthCheckCase = ['/accounts/wc', '/privacy', '/en/privacy'].some(
     path => path === request.nextUrl.pathname
   )
 
-  const accountsCase = request.nextUrl.pathname.startsWith('/accounts')
+  const accountsCase = request.nextUrl.pathname === '/'
 
   const tokenKey = request.cookies
     .getAll()
@@ -24,11 +24,11 @@ export async function middleware(request: NextRequest) {
   }
 
   if (!tokenKey && !accountsCase)
-    return NextResponse.redirect(new URL('/accounts/login', request.url))
+    return NextResponse.redirect(new URL('/', request.url))
 
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/accounts/:path*', '/dashboard/:path*']
+  matcher: ['/', '/dashboard/:path*']
 }

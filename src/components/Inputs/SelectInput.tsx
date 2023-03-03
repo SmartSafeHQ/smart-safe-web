@@ -155,14 +155,14 @@ const SelectInputItem: ForwardRefRenderFunction<
     <RadixSelect.Item
       ref={ref}
       className={clsx(
-        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-cyan-500 data-[highlighted]:!text-gray-100 group',
-        className
+        className,
+        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-brand-foregroundAccent1 data-[highlighted]:!text-gray-100 group'
       )}
       {...props}
     >
       <RadixSelect.ItemText asChild>{children}</RadixSelect.ItemText>
 
-      <RadixSelect.ItemIndicator className="w-7 inline-flex items-center justify-center absolute left-0 text-cyan-500 font-medium group-data-[highlighted]:text-gray-100">
+      <RadixSelect.ItemIndicator className="w-7 inline-flex items-center justify-center absolute left-0 text-brand-foregroundAccent1 font-medium group-data-[highlighted]:text-gray-100">
         <Check weight="bold" />
       </RadixSelect.ItemIndicator>
     </RadixSelect.Item>

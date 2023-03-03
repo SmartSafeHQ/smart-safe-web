@@ -21,7 +21,7 @@ export function PaymentOptions() {
           htmlFor={symbol}
           className={`flex gap-2 uppercase border-1 border-gray-800 p-2 rounded-lg cursor-pointer ${
             currencySelectedForPayment === symbol
-              ? 'dark:border-cyan-400 border-cyan-600 border-2'
+              ? 'dark:border-brand-foregroundAccent1 border-brand-foregroundAccent2 border-2'
               : 'dark:border-gray-800 border-gray-300'
           }`}
         >

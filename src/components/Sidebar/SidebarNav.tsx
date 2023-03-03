@@ -42,7 +42,7 @@ export function SidebarNav() {
 
         <Text
           asChild
-          className="w-full flex flex-row items-center gap-3 text-base text-center text-gray-700 dark:text-gray-400 font-semibold transition-all hover:text-cyan-500 md:flex-col md:gap-1 md:text-xs lg:flex-row lg:gap-3 lg:text-base"
+          className="w-full flex flex-row items-center gap-3 text-base text-center text-gray-700 dark:text-gray-400 font-semibold transition-all hover:text-brand-foregroundAccent1 md:flex-col md:gap-1 md:text-xs lg:flex-row lg:gap-3 lg:text-base"
         >
           <Link href={TOKENVERSE_TERMS_OF_SERVICES_LINK} target="_blank">
             <Text>{t.sidebar.termsOfService}</Text>

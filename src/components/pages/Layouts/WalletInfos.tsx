@@ -35,7 +35,7 @@ export function WalletInfos({
       {...props}
     >
       <div className="flex items-center gap-3">
-        <Icon className="w-7 h-7 text-cyan-500" />
+        <Icon className="w-7 h-7 text-brand-foregroundAccent1" />
 
         <Text className="text-base font-semibold capitalize text-gray-700 dark:text-gray-50 sm:text-lg">
           {title}
