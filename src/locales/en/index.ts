@@ -3,7 +3,6 @@ import { header } from './components/header'
 import { web3Errors } from './errors/web3Errors'
 import { sidebar } from './components/sidebar'
 import { pagination } from './components/pagination'
-import { landing } from './landing'
 import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
@@ -20,7 +19,6 @@ export const en = {
   errors: web3Errors,
   pagination,
   home,
-  landing,
   receive,
   send,
   cashback,

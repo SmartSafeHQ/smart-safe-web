@@ -3,8 +3,9 @@ import { AnchorHTMLAttributes } from 'react'
 import clsx from 'clsx'
 
 import { Text } from '@components/Text'
+import { AppleStore } from '@components/Logos/AppleStore'
+
 import { TOKENVERSE_APPLE_STORE_LINK } from '@utils/global/constants/links'
-import { AppleStore } from '@components/Icons/AppleStore'
 
 interface DownloadAppleStoreProps
   extends AnchorHTMLAttributes<HTMLAnchorElement>,
