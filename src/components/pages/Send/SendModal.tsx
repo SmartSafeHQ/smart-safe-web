@@ -36,16 +36,19 @@ export function SendModal({
   const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData(
     coin.rpcUrl,
     coin.symbol,
-    coin.decimals
+    coin.decimals,
+    customer?.wallets.solana.address
   )
-
-  const formattedToWallet = `${to.slice(0, 6)}...${to.slice(-6)}`
+  const destinationWalletFormatted =
+    coin.symbol === 'sol'
+      ? `${to.slice(0, 4)}...${to.slice(-4)}`
+      : `${to.slice(0, 6)}...${to.slice(-4)}`
 
   return (
     <DialogModal.Content
       className="md:max-w-[32rem]"
       onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
-      onInteractOutside={e => isSendingTx && e.preventDefault()}
+      onInteractOutside={e => e.preventDefault()}
     >
       <div className="w-full h-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
         {!txData ? (
@@ -84,10 +87,17 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{`${customer?.wallets.evm.address?.slice(
-                    0,
-                    6
-                  )}...${customer?.wallets.evm.address?.slice(-6)}`}</span>
+                  <span>{`${
+                    coin.symbol === 'sol'
+                      ? `${customer?.wallets.solana.address.slice(
+                          0,
+                          4
+                        )}...${customer?.wallets.solana.address.slice(-4)}`
+                      : `${customer?.wallets.evm.address.slice(
+                          0,
+                          6
+                        )}...${customer?.wallets.evm.address.slice(-4)}`
+                  }`}</span>
                 </Text>
               </WalletInfos>
 
@@ -108,11 +118,11 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{formattedToWallet}</span>
+                  <span>{destinationWalletFormatted}</span>
                 </Text>
               </WalletInfos>
 
-              <div className="flex items-center text-gray-800 dark:text-gray-200">
+              <div className="flex items-center text-gray-800 dark:text-gray-200 mb-8">
                 <Skeleton isLoading={coinFeeIsLoading} className="h-7">
                   <Text className="mr-2">{t.send.fee}:</Text>
 
@@ -133,27 +143,41 @@ export function SendModal({
               </div>
             </div>
 
-            <Button
-              onClick={() =>
-                handleSendTransaction({
-                  ...coin,
-                  to,
-                  amount: coinAmount
-                })
-              }
-              isLoading={isSendingTx}
-              className="mt-6"
-            >
-              {t.send.send}
-            </Button>
+            <div className="flex gap-2 md:flex-col-reverse">
+              <Button className="bg-gray-200 text-gray-900 hover:bg-gray-300 m-0">
+                {t.send.cancel}
+              </Button>
+
+              <Button
+                onClick={() =>
+                  handleSendTransaction({
+                    ...coin,
+                    to,
+                    amount: coinAmount
+                  })
+                }
+                isLoading={isSendingTx}
+              >
+                {t.send.send}
+              </Button>
+            </div>
           </>
         ) : (
           <SendSuccess
-            transactionHash={txData.transactionHash}
+            transactionUrl={
+              coin.symbol === 'sol'
+                ? `${coin.explorerUrl.replace('?cluster=testnet', '')}tx/${
+                    txData.transactionHash
+                  }${
+                    process.env.NODE_ENV === 'development'
+                      ? '?cluster=testnet'
+                      : ''
+                  }`
+                : `${coin.explorerUrl}tx/${txData.transactionHash}`
+            }
             amountInUsd={usdAmount}
             to={to}
-            formattedToWallet={formattedToWallet}
-            explorerUrl={coin.explorerUrl}
+            formattedToWallet={destinationWalletFormatted}
             amountIncoin={coinAmount}
             coinAvatar={coin.avatar}
             coinName={coin.symbol}

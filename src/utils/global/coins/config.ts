@@ -56,7 +56,7 @@ const TESTNET_COINS_ATTRIBUTES = [
     chainId: null,
     decimals: 9,
     rpcUrl: 'https://api.testnet.solana.com',
-    explorerUrl: 'https://explorer.solana.com/?cluster=testnet',
+    explorerUrl: 'https://explorer.solana.com/',
     scanUrl: 'https://public-api.solscan.io/'
   }
 ]

@@ -3,6 +3,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
+import { PublicKey } from '@solana/web3.js'
+import { ethers } from 'ethers'
 
 import {
   getUsdAmountInCoinExchangeRate,
@@ -24,7 +26,7 @@ import {
 } from '@hooks/send/interfaces'
 
 export const validationSchema = z.object({
-  sendWallet: z.string().min(1, { message: 'adrress required' }),
+  sendWallet: z.string().min(1, { message: 'Invalid wallet address.' }),
   amount: z.string().min(4, { message: 'min 0.0001' })
 })
 
@@ -47,6 +49,8 @@ export const useSend = () => {
     setValue,
     getValues,
     watch,
+    setError,
+    resetField,
     formState: { errors }
   } = useForm<SendFieldValues>({
     resolver: zodResolver(validationSchema)
@@ -144,6 +148,7 @@ export const useSend = () => {
 
     setSelectedCoin(coin)
     setValue('amount', `${currentAmount.toFixed(2)} ${coin.symbol}`)
+    resetField('sendWallet')
 
     setAmountInputType({
       ...amountInputType,
@@ -154,8 +159,32 @@ export const useSend = () => {
     })
   }
 
+  function isWalletAddressValid(publicKey: string) {
+    try {
+      if (selectedCoin?.symbol === 'sol') {
+        const result = PublicKey.isOnCurve(publicKey)
+
+        return result
+      } else {
+        const result = ethers.utils.isAddress(publicKey)
+
+        return result
+      }
+    } catch (err) {
+      return false
+    }
+  }
+
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
-    if (currentAmount <= 0) return
+    if (currentAmount <= 0) {
+      setError('amount', { message: t.send.errors.invalidAmountToSend })
+      return
+    }
+
+    if (!isWalletAddressValid(data.sendWallet)) {
+      setError('sendWallet', { message: t.send.errors.invalidWalletAddress })
+      return
+    }
 
     try {
       if (amountInputType.symbol === 'usd') {
@@ -190,7 +219,10 @@ export const useSend = () => {
         chainId,
         rpcUrl,
         symbol,
-        fromWalletPrivateKey: customer.wallets.evm.privateKey,
+        fromWalletPrivateKey:
+          symbol === 'sol'
+            ? customer.wallets.solana.privateKey
+            : customer.wallets.evm.privateKey,
         to,
         amount
       })

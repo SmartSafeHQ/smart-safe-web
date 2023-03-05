@@ -1,4 +1,14 @@
 import { providers, Wallet, utils } from 'ethers'
+import {
+  PublicKey,
+  Keypair,
+  Transaction,
+  SystemProgram,
+  clusterApiUrl,
+  Connection,
+  sendAndConfirmTransaction,
+  LAMPORTS_PER_SOL
+} from '@solana/web3.js'
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
@@ -23,6 +33,42 @@ interface SendFunctionOutput {
 async function sendFunction(
   input: SendFunctionInput
 ): Promise<SendFunctionOutput> {
+  if (input.symbol === 'sol') {
+    const transaction = new Transaction()
+
+    // we're receiving the private as a string like so: '22, 59, 265, 100'
+    // without brackets. This is why we're creating the below string inside `JSON.pase()`
+    const privateKeyFromStringToArray: number[] = JSON.parse(
+      `[${input.fromWalletPrivateKey}]`
+    )
+    const privateKeyFromArrayToUin8Array = Uint8Array.from(
+      privateKeyFromStringToArray
+    )
+    const keyPair = Keypair.fromSecretKey(privateKeyFromArrayToUin8Array)
+
+    const transfer = SystemProgram.transfer({
+      fromPubkey: keyPair.publicKey,
+      toPubkey: new PublicKey(input.to),
+      lamports: BigInt(input.amount * LAMPORTS_PER_SOL)
+    })
+
+    transaction.add(transfer)
+
+    const rpcEndpoint = input.rpcUrl.includes('test')
+      ? clusterApiUrl('testnet')
+      : process.env.NEXT_PUBLIC_ALCHEMY_SOLANA
+
+    const client = new Connection(rpcEndpoint)
+
+    const response = await sendAndConfirmTransaction(client, transaction, [
+      keyPair
+    ])
+
+    return {
+      transactionHash: response
+    }
+  }
+
   const provider = new providers.JsonRpcProvider(input.rpcUrl)
   const wallet = new Wallet(input.fromWalletPrivateKey, provider)
 

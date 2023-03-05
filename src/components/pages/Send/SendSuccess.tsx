@@ -12,29 +12,25 @@ import { handleCopyToClipboard } from '@utils/global'
 import { useSend } from '@hooks/send/useSend'
 
 export interface SendSuccessProps {
-  transactionHash: string
   to: string
   formattedToWallet: string
   amountInUsd: number
   amountIncoin: number
-  explorerUrl: string
+  transactionUrl: string
   coinName: string
   coinAvatar: string
 }
 
 export function SendSuccess({
-  explorerUrl,
+  transactionUrl,
   to,
   formattedToWallet,
   amountInUsd,
   amountIncoin,
   coinName,
-  coinAvatar,
-  transactionHash
+  coinAvatar
 }: SendSuccessProps) {
   const { t } = useSend()
-
-  const transactionUrl = `${explorerUrl}/tx/${transactionHash}`
 
   return (
     <div className="w-full flex flex-col items-center justify-center gap-2">
