@@ -144,9 +144,11 @@ export function SendModal({
             </div>
 
             <div className="flex gap-2 md:flex-col-reverse">
-              <Button className="bg-gray-200 text-gray-900 hover:bg-gray-300 m-0">
-                {t.send.cancel}
-              </Button>
+              <DialogModal.Trigger>
+                <Button className="bg-gray-200 text-gray-900 hover:bg-gray-300 m-0">
+                  {t.send.cancel}
+                </Button>
+              </DialogModal.Trigger>
 
               <Button
                 onClick={() =>
