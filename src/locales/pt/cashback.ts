@@ -2,6 +2,7 @@ export const cashback = {
   headTitle: 'InWallet | Cashback',
   headDescription: 'Parceiros InWallet',
   cashbackDescription:
-    'Você pode gastar seus tokens VCASH nos sites de nossos parceiros: ',
-  cashbackBalance: 'Seu saldo: (VCASH)'
+    'Ganhe pontos comprando em sites parceiros, lojas físicas, com sua wallet e muito mais!',
+  cashbackBalance: 'Seu saldo: $VCASH',
+  cashbackSoon: 'Em breve'
 }

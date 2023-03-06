@@ -9,7 +9,9 @@ export function Balance() {
         {t.cashback.cashbackBalance}
       </p>
 
-      <span className="text-3xl font-bold">5.1</span>
+      <span className="text-3xl font-bold">
+        0.00 ({t.cashback.cashbackSoon})
+      </span>
     </div>
   )
 }
