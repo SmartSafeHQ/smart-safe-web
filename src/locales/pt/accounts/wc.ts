@@ -1,6 +1,6 @@
 export const wc = {
   headTitle: 'Wc login',
-  headContent: 'Wc login tokenverse',
+  headContent: 'Wc login InWallet',
   heading: 'Login com Wallet Connect',
   scanQRCode: 'Escanear QR code',
   grantAccess: 'You need to grant access to your camera.',

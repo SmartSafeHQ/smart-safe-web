@@ -15,7 +15,7 @@ export const home = {
   madeAt: 'realizado em',
   proof: 'comprovante',
   copyAddress: 'Copiar endereço',
-  loadingNetworksCoins: 'Carregando suas moedas',
+  loadingNetworksCoins: 'Carregando seus tokens',
   name: 'nome',
   change24h: 'percentual (24h)',
   price: 'preço',

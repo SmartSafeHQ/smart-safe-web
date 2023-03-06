@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 
+import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
+
 /**
  * This shouldn't be directly used. Instead, use `useCameraDevice` hook.
  */
@@ -11,10 +13,27 @@ export function useCameraAccessStatus() {
   useEffect(() => {
     const cameraPermission = 'camera' as PermissionName
 
-    window.navigator.permissions
-      .query({ name: cameraPermission })
-      .then(({ state }) => setAccessStatus(state))
-      .catch(() => setAccessStatus('denied'))
+    if ('permissions' in window.navigator) {
+      console.log('asking permission when `permissions` API is available...')
+      window.navigator.permissions
+        .query({ name: cameraPermission })
+        .then(({ state }) => setAccessStatus(state))
+        .catch(() => setAccessStatus('denied'))
+    } else {
+      console.log(
+        '`permissions` API is not available. Trying to call `cameraAccess()`'
+      )
+      MobileBridgeCommunication.initialize()
+        .cameraAccess()
+        ?.then(state => {
+          console.log('call was successful')
+          setAccessStatus(state)
+        })
+        .catch(err => {
+          console.log('call failed', err)
+          setAccessStatus('denied')
+        })
+    }
   }, [])
 
   async function grantAccess(usersCameraDevices: {
