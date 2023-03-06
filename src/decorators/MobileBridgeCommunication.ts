@@ -1,7 +1,10 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-use-before-define */
 interface IMobileBridgeCommunication {
   logout: () => void
   localizable: (_localeId: 'pt' | 'en') => void
   saveBiometric: () => void
+  cameraAccess: () => Promise<PermissionState>
 }
 
 class IosInterface implements IMobileBridgeCommunication {
@@ -16,24 +19,34 @@ class IosInterface implements IMobileBridgeCommunication {
   saveBiometric() {
     window.webkit.messageHandlers.saveBiometric.postMessage('')
   }
+
+  async cameraAccess() {
+    // TOOD: implement for IOS
+    return 'denied' as PermissionState
+  }
 }
 
 class AndroidInterface implements IMobileBridgeCommunication {
   logout() {
-    window.AndroidInterface?.logout()
+    window.AndroidInterface.logout()
   }
 
   localizable(localeId: 'pt' | 'en') {
-    window.AndroidInterface?.localizable(localeId)
+    window.AndroidInterface.localizable(localeId)
   }
 
   saveBiometric() {
-    window.AndroidInterface?.saveBiometric()
+    window.AndroidInterface.saveBiometric()
+  }
+
+  async cameraAccess() {
+    const permissionState = window.AndroidInterface.cameraAccess()
+
+    return permissionState
   }
 }
 
 export class MobileBridgeCommunication {
-  // eslint-disable-next-line no-use-before-define
   static #instance: MobileBridgeCommunication
   readonly #mobileOs: IMobileBridgeCommunication | undefined
 
@@ -71,5 +84,9 @@ export class MobileBridgeCommunication {
 
   saveBiometric() {
     this.#mobileOs?.saveBiometric()
+  }
+
+  cameraAccess() {
+    return this.#mobileOs?.cameraAccess()
   }
 }
