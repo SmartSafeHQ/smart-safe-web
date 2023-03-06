@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+
 declare global {
   interface Window {
     // this is available when using the InWallet App (PlayStore/AppStore)
@@ -5,6 +7,7 @@ declare global {
       saveBiometric: () => void
       logout: () => void
       localizable: (_code: 'pt' | 'en') => void
+      cameraAccess: () => Promise<PermissionState>
     }
     webkit: {
       messageHandlers: {
