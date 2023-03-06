@@ -2,6 +2,7 @@ export const send = {
   headTitle: 'InWallet | Send',
   headDescription: 'InWallet dashboard send',
   send: 'Send',
+  cancel: 'Cancel',
   sendUsing: 'Send using',
   balance: 'balance',
   to: 'To',
@@ -17,5 +18,9 @@ export const send = {
   date: 'date',
   proof: 'proof',
   viewProof: 'view proof',
-  backToSend: 'Back to send'
+  backToSend: 'Back to send',
+  errors: {
+    invalidAmountToSend: 'Invalid amount.',
+    invalidWalletAddress: 'Invalid wallet address.'
+  }
 }

@@ -81,7 +81,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         const apiResponse =
           await tokenverseApi.get<FetchEndUserWalletsResponse>(
-            '/widget/wallets?publicKey=true'
+            '/widget/wallets?privateKey=true'
           )
 
         MobileBridgeCommunication.initialize().saveBiometric()
