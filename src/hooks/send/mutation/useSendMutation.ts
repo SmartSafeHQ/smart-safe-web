@@ -56,7 +56,7 @@ async function sendFunction(
 
     const rpcEndpoint = input.rpcUrl.includes('test')
       ? clusterApiUrl('testnet')
-      : process.env.NEXT_PUBLIC_ALCHEMY_SOLANA
+      : input.rpcUrl
 
     const client = new Connection(rpcEndpoint)
 
