@@ -48,7 +48,7 @@ async function fetchAllNetworksTransactions({
       const connection = new Connection(
         process.env.NODE_ENV === 'development'
           ? clusterApiUrl('testnet')
-          : process.env.NEXT_PUBLIC_SOLANA_RPC_API_KEY
+          : coin.rpcUrl
       )
 
       const transactions = await connection.getSignaturesForAddress(
