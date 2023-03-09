@@ -1,7 +1,6 @@
-import type { AppProps } from 'next/app'
 import dynamic from 'next/dynamic'
 
-import { Fragment } from 'react'
+import { Fragment, Suspense } from 'react'
 import Head from 'next/head'
 import { Amplify } from 'aws-amplify'
 
@@ -13,13 +12,18 @@ import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
 import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
 
+import type { AppProps } from 'next/app'
+
 Amplify.configure(amplifyConfig)
 
-const TokenverseWidget = dynamic(async () => {
-  const component = await import('@components/TokenverseWidget')
+const TokenverseWidget = dynamic(
+  async () => {
+    const component = await import('@components/TokenverseWidget')
 
-  return component.TokenverseWidget
-})
+    return component.TokenverseWidget
+  },
+  { ssr: false }
+)
 
 export default function App({ Component, pageProps, ...appProps }: AppProps) {
   const isDashboardLayoutNeeded =
@@ -33,7 +37,9 @@ export default function App({ Component, pageProps, ...appProps }: AppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <TokenverseWidget />
+      <Suspense>
+        <TokenverseWidget />
+      </Suspense>
 
       <div className="min-w-screen min-h-screen flex flex-col">
         <LayoutComponent>
