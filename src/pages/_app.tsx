@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
 
 import { Fragment } from 'react'
 import Head from 'next/head'
@@ -8,12 +9,17 @@ import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
 import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
-import { TokenverseWidget } from '@components/TokenverseWidget'
 
 import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
 
 Amplify.configure(amplifyConfig)
+
+const TokenverseWidget = dynamic(async () => {
+  const component = await import('@components/TokenverseWidget')
+
+  return component.TokenverseWidget
+})
 
 export default function App({ Component, pageProps, ...appProps }: AppProps) {
   const isDashboardLayoutNeeded =
