@@ -1,3 +1,4 @@
+import type { ParsedTransactionWithMeta } from '@solana/web3.js'
 import type { WalletKeypair } from '@utils/global/types'
 
 export interface TransactionCoinProps {
@@ -54,3 +55,35 @@ export type FetchAllNetworksTransactionsResponse = {
   transactions: TransactionProps[]
   totalCount: number
 }
+
+export type ParsedLamportTransfer =
+  | {
+      originalData: ParsedTransactionWithMeta
+      parsedData: {
+        amount: string
+        receiver: string
+        sender: string
+        transactedAt: Date
+      }
+    }
+  | undefined
+
+export type ParsedLamportTransferWithType =
+  | (ParsedLamportTransfer & {
+      parsedData: {
+        category: 'debit' | 'credit'
+      }
+    })
+  | undefined
+
+export type ParsedLamportTransferWithHash =
+  | (ParsedLamportTransferWithType & {
+      parsedData: { transactionLink: string }
+    })
+  | undefined
+
+export type ParsedLamportTransferWithTokenInfo =
+  | (ParsedLamportTransferWithHash & {
+      parsedData: { token: { symbol: string; avatar: string } }
+    })
+  | undefined
