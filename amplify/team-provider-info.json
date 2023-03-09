@@ -19,12 +19,13 @@
         }
       },
       "auth": {
-        "toknendusersdashb4b449ec2": {
-          "userPoolId": "us-east-1_b6UoX6n0o",
-          "userPoolName": "walletless-ui-users",
-          "webClientId": "79nb73bv8o67v64q1vpgkmsf3j",
-          "nativeClientId": "79nb73bv8o67v64q1vpgkmsf3j"
-        }
+        "toknendusersdashb56bc41d4": {
+          "userPoolId": "us-east-1_Ul0ldkAI7",
+          "userPoolName": "toknendusersdashb56bc41d4_userpool_56bc41d4-dev",
+          "webClientId": "35dvkk1ciebu6dfo7m86r2f2at",
+          "nativeClientId": "79mo9gh98if5865nf245rdaa2c"
+        },
+        "toknendusersdashb4b449ec2": {}
       }
     }
   },
@@ -41,18 +42,19 @@
       "AmplifyAppId": "d2qqxsxdg149lo"
     },
     "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d2qqxsxdg149lo",
+          "type": "cicd"
+        }
+      },
       "auth": {
+        "toknendusersdashb56bc41d4": {},
         "toknendusersdashb4b449ec2": {
           "userPoolId": "us-east-1_b6UoX6n0o",
           "userPoolName": "walletless-ui-users",
           "webClientId": "79nb73bv8o67v64q1vpgkmsf3j",
           "nativeClientId": "79nb73bv8o67v64q1vpgkmsf3j"
-        }
-      },
-      "hosting": {
-        "amplifyhosting": {
-          "appId": "d2qqxsxdg149lo",
-          "type": "cicd"
         }
       }
     }
