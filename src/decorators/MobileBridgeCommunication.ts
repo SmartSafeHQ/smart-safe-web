@@ -30,8 +30,6 @@ class IosInterface implements IMobileBridgeCommunication {
     const permission =
       window.webkit.messageHandlers.isPermissionGranted.postMessage()
 
-    console.log(permission)
-
     return permission
   }
 }
@@ -57,8 +55,6 @@ class AndroidInterface implements IMobileBridgeCommunication {
 
   isPermissionGranted() {
     const permission = window.AndroidInterface.isPermissionGranted()
-
-    console.log(permission)
 
     return permission
   }
