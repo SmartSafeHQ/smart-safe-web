@@ -1,4 +1,5 @@
 import { signIn } from './accounts/signIn'
+import { signIn2FA } from './accounts/signIn2FA'
 import { header } from './components/header'
 import { web3Errors } from './errors/web3Errors'
 import { sidebar } from './components/sidebar'
@@ -14,6 +15,7 @@ import { privacy } from './privacy'
 
 export const en = {
   signIn,
+  signIn2FA,
   header,
   sidebar,
   errors: web3Errors,
