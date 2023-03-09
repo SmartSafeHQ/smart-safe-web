@@ -7,6 +7,7 @@ export interface TransactionCoinProps {
   symbol: string
   avatar: string
   decimals: number
+  rpcUrl: string
 }
 
 export interface TransactionProps {
