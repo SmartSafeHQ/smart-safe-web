@@ -1,10 +1,11 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-use-before-define */
 interface IMobileBridgeCommunication {
-  logout: () => void
-  localizable: (_localeId: 'pt' | 'en') => void
-  saveBiometric: () => void
-  cameraAccess: () => Promise<PermissionState>
+  logout(): void
+  localizable(_localeId: 'pt' | 'en'): void
+  saveBiometric(): void
+  cameraAccess(): Promise<PermissionState>
+  isPermissionGranted(): boolean
 }
 
 class IosInterface implements IMobileBridgeCommunication {
@@ -23,6 +24,15 @@ class IosInterface implements IMobileBridgeCommunication {
   async cameraAccess() {
     // TOOD: implement for IOS
     return 'denied' as PermissionState
+  }
+
+  isPermissionGranted() {
+    const permission =
+      window.webkit.messageHandlers.isPermissionGranted.postMessage()
+
+    console.log(permission)
+
+    return permission
   }
 }
 
@@ -43,6 +53,14 @@ class AndroidInterface implements IMobileBridgeCommunication {
     const permissionState = window.AndroidInterface.cameraAccess()
 
     return permissionState
+  }
+
+  isPermissionGranted() {
+    const permission = window.AndroidInterface.isPermissionGranted()
+
+    console.log(permission)
+
+    return permission
   }
 }
 
@@ -88,5 +106,9 @@ export class MobileBridgeCommunication {
 
   cameraAccess() {
     return this.#mobileOs?.cameraAccess()
+  }
+
+  isPermissionGranted() {
+    return this.#mobileOs?.isPermissionGranted()
   }
 }

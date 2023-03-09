@@ -23,16 +23,11 @@ export function useCameraAccessStatus() {
       console.log(
         '`permissions` API is not available. Trying to call `cameraAccess()`'
       )
-      MobileBridgeCommunication.initialize()
-        .cameraAccess()
-        ?.then(state => {
-          console.log('call was successful')
-          setAccessStatus(state)
-        })
-        .catch(err => {
-          console.log('call failed', err)
-          setAccessStatus('denied')
-        })
+
+      const permission =
+        MobileBridgeCommunication.initialize().isPermissionGranted()
+
+      console.log('isPermissionGranted return value', permission)
     }
   }, [])
 
