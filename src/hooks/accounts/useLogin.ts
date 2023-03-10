@@ -32,7 +32,7 @@ export const useLogin = () => {
 
       setCustomer(customer)
 
-      router.push('/accounts/signIn2FA')
+      router.push('/dashboard/home')
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }

@@ -10,8 +10,12 @@ import { useRouter } from 'next/router'
 
 import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
 
-import { FetchEndUserWalletsResponse } from '@utils/global/types'
 import { tokenverseApi } from '@lib/axios'
+import { queryClient } from '@lib/reactQuery'
+import {
+  fetchAccountWallets,
+  FetchAccountWalletsResponse
+} from '@hooks/accounts/queries/useAccountWallets'
 
 type Customer = {
   cognitoId: string
@@ -79,45 +83,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
-        const apiResponse =
-          await tokenverseApi.get<FetchEndUserWalletsResponse>(
-            '/widget/wallets?privateKey=true'
-          )
+        const accountWallets =
+          await queryClient.ensureQueryData<FetchAccountWalletsResponse>({
+            queryKey: ['accountWallets', accessToken],
+            queryFn: () => fetchAccountWallets(accessToken)
+          })
 
         MobileBridgeCommunication.initialize().saveBiometric()
 
         setCustomer({
           cognitoId: sessionData.sub,
           name: sessionData.name,
-          wallets: {
-            evm: {
-              address: apiResponse.data.evm[0].address,
-              privateKey: apiResponse.data.evm[0].privateKey
-            },
-            solana: {
-              address: apiResponse.data.solana[0].address,
-              privateKey: apiResponse.data.solana[0].privateKey
-            }
-          },
+          wallets: accountWallets,
           email: sessionData.email
         })
       })
       .catch(_ => {
         setCustomer(null)
 
-        const noAuthCheckCase = [
-          '/',
-          '/accounts/wc',
-          '/accounts',
-          '/privacy',
-          '/en/privacy'
-        ].some(path => path === asPath)
+        const isAuthCheckCase = ['/dashboard'].some(path =>
+          asPath.startsWith(path)
+        )
 
-        if (noAuthCheckCase) {
-          return
+        if (isAuthCheckCase) {
+          signOut()
         }
-
-        signOut()
       })
   }, [])
 
