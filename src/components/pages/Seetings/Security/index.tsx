@@ -2,6 +2,7 @@ import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SettingsTab } from '@components/pages/Seetings'
 import { Enable2FASection } from '@components/pages/Seetings/Security/Enable2FASection'
+import { EnableSigIn2FAModal } from '@components/pages/Seetings/Security/EnableSigIn2FAModal'
 
 export function SecurityTab() {
   return (
@@ -27,25 +28,31 @@ export function SecurityTab() {
           </span>
         </div>
 
-        <Enable2FASection.Root>
-          <Enable2FASection.Title>SignIn verifications</Enable2FASection.Title>
+        <DialogModal.Root>
+          <Enable2FASection.Root>
+            <Enable2FASection.Title>
+              SignIn verifications
+            </Enable2FASection.Title>
 
-          <div className="flex items-start gap-4">
-            <DialogModal.Trigger>
-              <Button className="w-min !px-3 !py-2 text-xs">Enable</Button>
-            </DialogModal.Trigger>
+            <div className="flex items-start gap-4">
+              <DialogModal.Trigger>
+                <Button className="w-min !px-3 !py-2 text-xs">Enable</Button>
+              </DialogModal.Trigger>
 
-            <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-              <strong className="font-semibold text-left">SignIn</strong>
+              <div className="w-full max-w-2xl flex flex-col items-start justify-start">
+                <strong className="font-semibold text-left">SignIn</strong>
 
-              <Enable2FASection.Description>
-                Two-factor authentication adds an additional layer of security
-                to your account by requiring more than just a password to sign
-                in.
-              </Enable2FASection.Description>
+                <Enable2FASection.Description>
+                  Two-factor authentication adds an additional layer of security
+                  to your account by requiring more than just a password to sign
+                  in.
+                </Enable2FASection.Description>
+              </div>
             </div>
-          </div>
-        </Enable2FASection.Root>
+          </Enable2FASection.Root>
+
+          <EnableSigIn2FAModal />
+        </DialogModal.Root>
 
         <Enable2FASection.Root>
           <Enable2FASection.Title>Send transaction</Enable2FASection.Title>
