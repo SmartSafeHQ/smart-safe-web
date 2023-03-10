@@ -2,9 +2,7 @@ import { useState } from 'react'
 import Head from 'next/head'
 
 import { Tabs } from '@components/Tabs'
-import { Button } from '@components/Button'
-import { DialogModal } from '@components/Dialogs/DialogModal'
-import { SettingsTab } from '@components/pages/Seetings'
+import { SecurityTab } from '@components/pages/Seetings/Security'
 
 export type NavTabs = 'security' | 'keys'
 
@@ -38,100 +36,7 @@ const Settings = () => {
           </Tabs.List>
 
           <Tabs.Content value="security">
-            <SettingsTab.Root>
-              <SettingsTab.Header>
-                <SettingsTab.Title>
-                  Manage your security verifications in InWallet
-                </SettingsTab.Title>
-
-                <SettingsTab.Description>
-                  Choose which operations will require security checks.
-                </SettingsTab.Description>
-              </SettingsTab.Header>
-
-              <div className="w-full py-5 flex flex-col relative justify-start items-stretch gap-5 md:gap-11">
-                <div className="w-full flex flex-col justify-start items-stretch mb-2 md:mb-0">
-                  <strong className="pb-2 text-lg font-medium">
-                    Two-factor authentication
-                  </strong>
-
-                  <span className="text-gray-500 dark:text-gray-400 text-sm">
-                    Manage your account two-factor auth
-                  </span>
-                </div>
-
-                <div className="w-full flex flex-col items-start gap-4 md:flex-row md:items-center md:gap-14">
-                  <strong className="w-full font-semibold text-start md:max-w-[7rem]">
-                    SignIn verifications
-                  </strong>
-
-                  <div className="flex items-start gap-4">
-                    <DialogModal.Trigger>
-                      <Button className="w-min !px-3 !py-2 text-xs">
-                        Enable
-                      </Button>
-                    </DialogModal.Trigger>
-
-                    <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-                      <strong className="font-semibold text-left">
-                        SignIn
-                      </strong>
-
-                      <span className="text-gray-400 text-xs md:text-sm">
-                        Two-factor authentication adds an additional layer of
-                        security to your account by requiring more than just a
-                        password to sign in.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full flex flex-col items-start gap-4 md:flex-row md:items-center md:gap-14">
-                  <strong className="w-full font-semibold text-start md:max-w-[7rem]">
-                    Send transaction
-                  </strong>
-
-                  <div className="flex items-start gap-4">
-                    <Button className="w-min !px-3 !py-2 text-xs">
-                      Enable
-                    </Button>
-
-                    <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-                      <strong className="font-semibold text-left">Send</strong>
-
-                      <span className="text-gray-400 text-xs md:text-sm">
-                        Secure your funds with two-factor authentication on
-                        transact funds for extra protection.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="w-full flex flex-col items-start gap-4 md:flex-row md:gap-14">
-                  <strong className="w-full font-semibold text-start md:max-w-[7rem]">
-                    Private keys
-                  </strong>
-
-                  <div className="flex items-start gap-4">
-                    <Button className="w-min !px-3 !py-2 text-xs">
-                      Enable
-                    </Button>
-
-                    <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-                      <strong className="font-semibold text-left">
-                        Export
-                      </strong>
-
-                      <span className="text-gray-400 text-xs md:text-sm">
-                        To export your wallet&apos;s private keys and access
-                        your account funds without InWallet dependency will
-                        require two-factor authentication.
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </SettingsTab.Root>
+            <SecurityTab />
           </Tabs.Content>
 
           <Tabs.Content value="keys">

@@ -51,7 +51,7 @@ function SettingsTabHeader({
 
 SettingsTabHeader.displayName = 'SettingsTab.Header'
 
-interface SettingsTabTitleProps extends HTMLAttributes<HTMLDivElement> {
+interface SettingsTabTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode
 }
 
@@ -69,7 +69,8 @@ function SettingsTabTitle({
 
 SettingsTabTitle.displayName = 'SettingsTab.Title'
 
-interface SettingsTabDescriptionProps extends HTMLAttributes<HTMLDivElement> {
+interface SettingsTabDescriptionProps
+  extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode
 }
 
