@@ -50,7 +50,7 @@ export async function fetchCoinPortfolio({
   if (coin.symbol === 'sol') {
     const rpcEndpoint = coin.rpcUrl.includes('test')
       ? clusterApiUrl('testnet')
-      : process.env.NEXT_PUBLIC_ALCHEMY_SOLANA
+      : coin.rpcUrl
 
     const client = new Connection(rpcEndpoint)
 

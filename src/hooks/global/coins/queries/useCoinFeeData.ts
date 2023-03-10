@@ -33,9 +33,7 @@ async function fetchCoinFeeData({
 }: FetchCoinFeeDataInput): Promise<FetchCoinFeeDataResponse> {
   if (symbol === 'sol' && solanaWallet) {
     const rpcEndpoint =
-      process.env.NODE_ENV === 'development'
-        ? clusterApiUrl('testnet')
-        : process.env.NEXT_PUBLIC_ALCHEMY_SOLANA
+      process.env.NODE_ENV === 'development' ? clusterApiUrl('testnet') : rpcUrl
 
     const client = new Connection(rpcEndpoint)
 

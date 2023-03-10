@@ -168,13 +168,9 @@ export function SendModal({
           <SendSuccess
             transactionUrl={
               coin.symbol === 'sol'
-                ? `${coin.explorerUrl.replace('?cluster=testnet', '')}tx/${
-                    txData.transactionHash
-                  }${
-                    process.env.NODE_ENV === 'development'
-                      ? '?cluster=testnet'
-                      : ''
-                  }`
+                ? process.env.NODE_ENV === 'development'
+                  ? `${coin.explorerUrl}/tx/${txData.transactionHash}?cluster=testnet`
+                  : `${coin.explorerUrl}/tx/${txData.transactionHash}`
                 : `${coin.explorerUrl}tx/${txData.transactionHash}`
             }
             amountInUsd={usdAmount}

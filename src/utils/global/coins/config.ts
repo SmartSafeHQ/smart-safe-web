@@ -56,7 +56,7 @@ const TESTNET_COINS_ATTRIBUTES = [
     chainId: null,
     decimals: 9,
     rpcUrl: 'https://api.testnet.solana.com',
-    explorerUrl: 'https://explorer.solana.com/',
+    explorerUrl: 'https://explorer.solana.com',
     scanUrl: 'https://public-api.solscan.io/'
   }
 ]
@@ -118,8 +118,8 @@ const MAINNET_COINS_ATTRIBUTES = [
     avatar: '/networks/solana-logo.svg',
     chainId: null,
     decimals: 9,
-    rpcUrl: process.env.NEXT_PUBLIC_ALCHEMY_SOLANA,
-    explorerUrl: 'https://explorer.solana.com/',
+    rpcUrl: `https://solana-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_SOLANA_RPC_API_KEY}`,
+    explorerUrl: 'https://explorer.solana.com',
     scanUrl: 'https://public-api.solscan.io/'
   }
 ]
