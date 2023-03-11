@@ -9,6 +9,7 @@ import { receive } from './receive'
 import { send } from './send'
 import { payment } from './payment'
 import { cashback } from './cashback'
+import { settings } from './settings'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
 import { privacy } from './privacy'
@@ -24,6 +25,7 @@ export const en = {
   receive,
   send,
   cashback,
+  settings,
   wc,
   qrCodeReader,
   payment,

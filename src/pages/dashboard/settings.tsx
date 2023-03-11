@@ -4,16 +4,20 @@ import Head from 'next/head'
 import { Tabs } from '@components/Tabs'
 import { SecurityTab } from '@components/pages/Seetings/Security'
 
+import { useI18n } from '@hooks/useI18n'
+
 export type NavTabs = 'security' | 'keys'
 
 const Settings = () => {
+  const { t } = useI18n()
+
   const [, setTab] = useState<NavTabs>('security')
 
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-6 bg-gray-50 dark:bg-gray-900">
       <Head>
-        <title>InWallet | Settings</title>
-        <meta name="description" content="InWallet dashboard settings" />
+        <title>{t.settings.headTitle}</title>
+        <meta name="description" content={t.settings.headDescription} />
       </Head>
 
       <div className="w-full max-w-5xl flex flex-1 flex-col items-stretch">
@@ -27,11 +31,11 @@ const Settings = () => {
               className="py-2 w-full max-w-[10rem]"
               defaultChecked
             >
-              security
+              {t.settings.security}
             </Tabs.Trigger>
 
             <Tabs.Trigger value="keys" className="py-2 w-full max-w-[10rem]">
-              keys
+              {t.settings.keys}
             </Tabs.Trigger>
           </Tabs.List>
 
@@ -41,7 +45,7 @@ const Settings = () => {
 
           <Tabs.Content value="keys">
             <section className="w-full h-full p-6 flex flex-col justify-start items-stretch gap-4">
-              keys
+              {t.settings.keys}
             </section>
           </Tabs.Content>
         </Tabs.Root>

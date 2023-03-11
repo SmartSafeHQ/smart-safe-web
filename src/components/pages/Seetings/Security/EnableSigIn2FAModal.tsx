@@ -5,17 +5,20 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { TextInput } from '@components/Inputs/TextInput'
 import { Text } from '@components/Text'
 
+import { useI18n } from '@hooks/useI18n'
+
 export function EnableSigIn2FAModal() {
+  const { t } = useI18n()
+
   return (
     <DialogModal.Content className="md:max-w-[36rem]">
       <header className="text-left w-full flex items-start flex-col gap-3 mb-6 pt-6 px-2">
         <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-          Register 2FA
+          {t.settings.SecurityTab.modalTitle}
         </DialogModal.Title>
 
         <DialogModal.Description className="text-gray-700 dark:text-gray-300">
-          Scan the image above with the two-factor authentication app on your
-          phone
+          {t.settings.SecurityTab.modalDescription}
         </DialogModal.Description>
       </header>
 
@@ -29,10 +32,7 @@ export function EnableSigIn2FAModal() {
           className="flex flex-col gap-4 items-stretch w-full"
         >
           <Text className="text-sm text-gray-600 dark:text-gray-400">
-            <p>
-              After scanner the barcode image, the app will display a six-digit
-              code. Enter it bellow to verify the setup
-            </p>
+            <p>{t.settings.SecurityTab.modalDescription}</p>
           </Text>
 
           <TextInput.Root
@@ -41,7 +41,7 @@ export function EnableSigIn2FAModal() {
             variant="secondary"
           >
             <TextInput.Label className="text-gray-800 dark:text-gray-50">
-              Enter the six-digits code from the application
+              {t.settings.SecurityTab.modalInputLabel}
             </TextInput.Label>
 
             <TextInput.Content>
@@ -50,7 +50,7 @@ export function EnableSigIn2FAModal() {
                 required
                 type="number"
                 id="code"
-                placeholder="Enter the code"
+                placeholder={t.settings.SecurityTab.modalInputPlaceholder}
               />
             </TextInput.Content>
           </TextInput.Root>
@@ -60,7 +60,7 @@ export function EnableSigIn2FAModal() {
             // isLoading={isSubmitting}
             className="mt-2"
           >
-            Enable
+            {t.settings.SecurityTab.enable}
           </Button>
         </form>
       </section>
