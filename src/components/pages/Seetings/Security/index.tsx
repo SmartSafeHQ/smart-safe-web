@@ -5,13 +5,16 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SettingsTab } from '@components/pages/Seetings'
 import { Enable2FASection } from '@components/pages/Seetings/Security/Enable2FASection'
 import { EnableSigIn2FAModal } from '@components/pages/Seetings/Security/EnableSigIn2FAModal'
+import { DisableSigIn2FAModal } from '@components/pages/Seetings/Security/DisableSigIn2FAModal'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSettingsSecurity } from '@hooks/settings/useSettingsSecurity/useSettingsSecurity'
 
 export function SecurityTab() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isEnableSignInOpen, setIsEnableSignInOpen] = useState(false)
+  const [isDisableSignInOpen, setIsDisableSignInOpen] = useState(false)
 
-  const { t } = useSettingsSecurity(setIsOpen)
+  const { t, customer } = useSettingsSecurity(setIsEnableSignInOpen)
 
   return (
     <SettingsTab.Root>
@@ -34,18 +37,40 @@ export function SecurityTab() {
           </span>
         </div>
 
-        <DialogModal.Root open={isOpen} onOpenChange={setIsOpen}>
-          <Enable2FASection.Root>
-            <Enable2FASection.Title>
-              {t.settings.SecurityTab.signInVerify}
-            </Enable2FASection.Title>
+        <Enable2FASection.Root>
+          <Enable2FASection.Title>
+            {t.settings.SecurityTab.signInVerify}
+          </Enable2FASection.Title>
 
+          <Skeleton isLoading={!customer} className="w-full h-16">
             <div className="flex items-start gap-4">
-              <DialogModal.Trigger>
-                <Button className="w-min !px-3 !py-2 text-xs">
-                  {t.settings.SecurityTab.enable}
-                </Button>
-              </DialogModal.Trigger>
+              {customer?.enabled2fa ? (
+                <DialogModal.Root
+                  open={isDisableSignInOpen}
+                  onOpenChange={setIsDisableSignInOpen}
+                >
+                  <DialogModal.Trigger>
+                    <Button className="w-min !px-4 !py-2 text-xs" variant="red">
+                      Disable
+                    </Button>
+                  </DialogModal.Trigger>
+
+                  <DisableSigIn2FAModal setIsOpen={setIsDisableSignInOpen} />
+                </DialogModal.Root>
+              ) : (
+                <DialogModal.Root
+                  open={isEnableSignInOpen}
+                  onOpenChange={setIsEnableSignInOpen}
+                >
+                  <DialogModal.Trigger>
+                    <Button className="w-min !px-3 !py-2 text-xs">
+                      {t.settings.SecurityTab.enable}
+                    </Button>
+                  </DialogModal.Trigger>
+
+                  <EnableSigIn2FAModal setIsOpen={setIsEnableSignInOpen} />
+                </DialogModal.Root>
+              )}
 
               <div className="w-full max-w-2xl flex flex-col items-start justify-start">
                 <strong className="font-semibold text-left">
@@ -57,31 +82,31 @@ export function SecurityTab() {
                 </Enable2FASection.Description>
               </div>
             </div>
-          </Enable2FASection.Root>
-
-          <EnableSigIn2FAModal setIsOpen={setIsOpen} />
-        </DialogModal.Root>
+          </Skeleton>
+        </Enable2FASection.Root>
 
         <Enable2FASection.Root>
           <Enable2FASection.Title>
             {t.settings.SecurityTab.sendTransaction}
           </Enable2FASection.Title>
 
-          <div className="flex items-start gap-4">
-            <Button className="w-min !px-3 !py-2 text-xs">
-              {t.settings.SecurityTab.enable}
-            </Button>
+          <Skeleton isLoading={!customer} className="w-full h-16">
+            <div className="flex items-start gap-4">
+              <Button className="w-min !px-3 !py-2 text-xs">
+                {t.settings.SecurityTab.enable}
+              </Button>
 
-            <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-              <strong className="font-semibold text-left">
-                {t.settings.SecurityTab.send}
-              </strong>
+              <div className="w-full max-w-2xl flex flex-col items-start justify-start">
+                <strong className="font-semibold text-left">
+                  {t.settings.SecurityTab.send}
+                </strong>
 
-              <Enable2FASection.Description>
-                {t.settings.SecurityTab.sendDescription}
-              </Enable2FASection.Description>
+                <Enable2FASection.Description>
+                  {t.settings.SecurityTab.sendDescription}
+                </Enable2FASection.Description>
+              </div>
             </div>
-          </div>
+          </Skeleton>
         </Enable2FASection.Root>
 
         <Enable2FASection.Root>
@@ -89,21 +114,23 @@ export function SecurityTab() {
             {t.settings.SecurityTab.privateKeys}
           </Enable2FASection.Title>
 
-          <div className="flex items-start gap-4">
-            <Button className="w-min !px-3 !py-2 text-xs">
-              {t.settings.SecurityTab.enable}
-            </Button>
+          <Skeleton isLoading={!customer} className="w-full h-16">
+            <div className="flex items-start gap-4">
+              <Button className="w-min !px-3 !py-2 text-xs">
+                {t.settings.SecurityTab.enable}
+              </Button>
 
-            <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-              <strong className="font-semibold text-left">
-                {t.settings.SecurityTab.export}
-              </strong>
+              <div className="w-full max-w-2xl flex flex-col items-start justify-start">
+                <strong className="font-semibold text-left">
+                  {t.settings.SecurityTab.export}
+                </strong>
 
-              <Enable2FASection.Description>
-                {t.settings.SecurityTab.keysDescrition}
-              </Enable2FASection.Description>
+                <Enable2FASection.Description>
+                  {t.settings.SecurityTab.keysDescrition}
+                </Enable2FASection.Description>
+              </div>
             </div>
-          </div>
+          </Skeleton>
         </Enable2FASection.Root>
       </div>
     </SettingsTab.Root>

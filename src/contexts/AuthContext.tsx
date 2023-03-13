@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   useContext,
   useEffect,
   useState
@@ -20,6 +22,8 @@ import {
 type Customer = {
   cognitoId: string
   enabled2fa: boolean
+  name: string
+  email: string
   wallets: {
     evm: {
       address: string
@@ -30,8 +34,6 @@ type Customer = {
       privateKey: string
     }
   }
-  name: string
-  email: string
 }
 
 type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
@@ -41,7 +43,7 @@ type AuthContextData = {
   cognitoUser: any | null
   widgetProvider: any | null
   setWidgetProvider: (_widgetProvider: any) => void
-  setCustomer: (_customer: Customer) => void
+  setCustomer: Dispatch<SetStateAction<Customer | null>>
   setCognitoUser: (_cognitoUser: any) => void
   signOut: () => void
 }

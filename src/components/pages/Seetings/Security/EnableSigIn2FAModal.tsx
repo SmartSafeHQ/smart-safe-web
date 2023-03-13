@@ -15,10 +15,10 @@ export function EnableSigIn2FAModal({ setIsOpen }: EnableSigIn2FAModalProps) {
   const {
     t,
     authCode,
-    formState: { errors, isSubmitting },
-    handleSubmit,
-    onSubmit,
-    register
+    enableFormState: { errors, isSubmitting },
+    enableHandleSubmit,
+    enableOnSubmit,
+    enableRegister
   } = useSettingsSecurity(setIsOpen)
 
   return (
@@ -39,7 +39,7 @@ export function EnableSigIn2FAModal({ setIsOpen }: EnableSigIn2FAModalProps) {
         </div>
 
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={enableHandleSubmit(enableOnSubmit)}
           className="flex flex-col gap-4 items-stretch w-full"
         >
           <Text className="text-sm text-gray-600 dark:text-gray-400">
@@ -57,7 +57,7 @@ export function EnableSigIn2FAModal({ setIsOpen }: EnableSigIn2FAModalProps) {
 
             <TextInput.Content>
               <TextInput.Input
-                {...register('code')}
+                {...enableRegister('code')}
                 required
                 type="number"
                 min={0}

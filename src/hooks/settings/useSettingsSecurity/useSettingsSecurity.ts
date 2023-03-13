@@ -17,17 +17,28 @@ export type SecurityFieldValues = z.infer<typeof validationSchema>
 export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
   const [authCode, setAuthCode] = useState('')
 
-  const { register, handleSubmit, formState, reset } =
-    useForm<SecurityFieldValues>({
-      resolver: zodResolver(validationSchema)
-    })
+  const {
+    register: enableRegister,
+    handleSubmit: enableHandleSubmit,
+    formState: enableFormState,
+    reset: enableReset
+  } = useForm<SecurityFieldValues>({
+    resolver: zodResolver(validationSchema)
+  })
 
-  const { cognitoUser, signOut } = useAuth()
+  const {
+    register: disableRegister,
+    handleSubmit: disableHandleSubmit,
+    formState: disableFormState,
+    reset: disableReset
+  } = useForm<SecurityFieldValues>({
+    resolver: zodResolver(validationSchema)
+  })
+
+  const { cognitoUser, customer, setCustomer, signOut } = useAuth()
   const { t } = useI18n()
 
-  const onSubmit: SubmitHandler<SecurityFieldValues> = async data => {
-    // await Auth.setPreferredMFA(cognitoUser, 'NOMFA')
-
+  const enableOnSubmit: SubmitHandler<SecurityFieldValues> = async data => {
     try {
       if (!cognitoUser.signInUserSession) {
         toast.error('User not signed, please login')
@@ -35,12 +46,40 @@ export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
         return
       }
 
-      await Auth.verifyTotpToken(cognitoUser, data.code)
+      await Auth.verifyTotpToken(cognitoUser, data.code.replace(/\s/g, ''))
       Auth.setPreferredMFA(cognitoUser, 'TOTP')
 
       toast.success(t.settings.SecurityTab.successMessage)
 
-      reset()
+      setCustomer(prevCustomer => {
+        return prevCustomer && { ...prevCustomer, enabled2fa: true }
+      })
+
+      enableReset()
+      setIsOpen(false)
+    } catch (error) {
+      toast.error(`Error. ${(error as Error).message}`)
+    }
+  }
+
+  const disableOnSubmit: SubmitHandler<SecurityFieldValues> = async data => {
+    try {
+      if (!cognitoUser.signInUserSession) {
+        toast.error('User not signed, please login')
+        signOut()
+        return
+      }
+
+      await Auth.verifyTotpToken(cognitoUser, data.code.replace(/\s/g, ''))
+      await Auth.setPreferredMFA(cognitoUser, 'NOMFA')
+
+      toast.success(t.settings.SecurityTab.successMessage)
+
+      setCustomer(prevCustomer => {
+        return prevCustomer && { ...prevCustomer, enabled2fa: false }
+      })
+
+      disableReset()
       setIsOpen(false)
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
@@ -69,9 +108,14 @@ export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
   return {
     t,
     authCode,
-    register,
-    handleSubmit,
-    formState,
-    onSubmit
+    customer,
+    enableOnSubmit,
+    disableOnSubmit,
+    enableRegister,
+    enableHandleSubmit,
+    enableFormState,
+    disableRegister,
+    disableHandleSubmit,
+    disableFormState
   }
 }
