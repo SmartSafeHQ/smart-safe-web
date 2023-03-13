@@ -5,10 +5,21 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { TextInput } from '@components/Inputs/TextInput'
 import { Text } from '@components/Text'
 
-import { useI18n } from '@hooks/useI18n'
+import { useSettingsSecurity } from '@hooks/settings/useSettingsSecurity/useSettingsSecurity'
 
-export function EnableSigIn2FAModal() {
-  const { t } = useI18n()
+interface EnableSigIn2FAModalProps {
+  setIsOpen: (_isOpen: boolean) => void
+}
+
+export function EnableSigIn2FAModal({ setIsOpen }: EnableSigIn2FAModalProps) {
+  const {
+    t,
+    authCode,
+    formState: { errors, isSubmitting },
+    handleSubmit,
+    onSubmit,
+    register
+  } = useSettingsSecurity(setIsOpen)
 
   return (
     <DialogModal.Content className="md:max-w-[36rem]">
@@ -24,11 +35,11 @@ export function EnableSigIn2FAModal() {
 
       <section className="w-full flex flex-col gap-4 items-stretch">
         <div className="w-full flex flex-col gap-4 items-center justify-center mb-4 rounded-md">
-          <QRCodeCanvas value="{selectedWallet.wallet}" size={240} />
+          {authCode && <QRCodeCanvas value={authCode} size={240} />}
         </div>
 
         <form
-          // onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 items-stretch w-full"
         >
           <Text className="text-sm text-gray-600 dark:text-gray-400">
@@ -37,7 +48,7 @@ export function EnableSigIn2FAModal() {
 
           <TextInput.Root
             htmlFor="code"
-            // error={errors.code?.message}
+            error={errors.code?.message}
             variant="secondary"
           >
             <TextInput.Label className="text-gray-800 dark:text-gray-50">
@@ -46,20 +57,17 @@ export function EnableSigIn2FAModal() {
 
             <TextInput.Content>
               <TextInput.Input
-                // {...register('code')}
+                {...register('code')}
                 required
                 type="number"
+                min={0}
                 id="code"
                 placeholder={t.settings.SecurityTab.modalInputPlaceholder}
               />
             </TextInput.Content>
           </TextInput.Root>
 
-          <Button
-            type="submit"
-            // isLoading={isSubmitting}
-            className="mt-2"
-          >
+          <Button type="submit" isLoading={isSubmitting} className="mt-2">
             {t.settings.SecurityTab.enable}
           </Button>
         </form>

@@ -5,7 +5,8 @@ export const settings = {
   keys: 'chaves',
   SecurityTab: {
     title: 'Gerencie suas verificações de segurança na InWallet',
-    description: 'Escolha quais operações exigirão verificações de segurança.',
+    description:
+      'Escolha quais operações irão exigir verificações de segurança.',
     subTitle01: 'Autenticação de dois fatores',
     subTitle02: 'Gerencie a autenticação de dois fatores de sua conta',
     signInVerify: 'Verificações de Login',
@@ -27,6 +28,7 @@ export const settings = {
     modalInfo:
       'Depois de digitalizar a imagem do código de barras, o aplicativo exibirá um código de seis dígitos. Insira-o abaixo para verificar a configuração',
     modalInputLabel: 'Insira o código de seis dígitos do aplicativo',
-    modalInputPlaceholder: 'Insira o código'
+    modalInputPlaceholder: 'Insira o código',
+    successMessage: 'Autenticação de dois fatores registrada com sucesso'
   }
 }

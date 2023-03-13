@@ -1,13 +1,17 @@
+import { useState } from 'react'
+
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SettingsTab } from '@components/pages/Seetings'
 import { Enable2FASection } from '@components/pages/Seetings/Security/Enable2FASection'
 import { EnableSigIn2FAModal } from '@components/pages/Seetings/Security/EnableSigIn2FAModal'
 
-import { useI18n } from '@hooks/useI18n'
+import { useSettingsSecurity } from '@hooks/settings/useSettingsSecurity/useSettingsSecurity'
 
 export function SecurityTab() {
-  const { t } = useI18n()
+  const [isOpen, setIsOpen] = useState(false)
+
+  const { t } = useSettingsSecurity(setIsOpen)
 
   return (
     <SettingsTab.Root>
@@ -30,7 +34,7 @@ export function SecurityTab() {
           </span>
         </div>
 
-        <DialogModal.Root>
+        <DialogModal.Root open={isOpen} onOpenChange={setIsOpen}>
           <Enable2FASection.Root>
             <Enable2FASection.Title>
               {t.settings.SecurityTab.signInVerify}
@@ -55,7 +59,7 @@ export function SecurityTab() {
             </div>
           </Enable2FASection.Root>
 
-          <EnableSigIn2FAModal />
+          <EnableSigIn2FAModal setIsOpen={setIsOpen} />
         </DialogModal.Root>
 
         <Enable2FASection.Root>

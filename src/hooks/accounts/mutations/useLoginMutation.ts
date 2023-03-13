@@ -17,17 +17,21 @@ interface LoginFunctionInput {
 }
 
 interface LoginFunctionOutput {
-  cognitoId: string
-  name: string
-  email: string
-  wallets: {
-    evm: {
-      address: string
-      privateKey: string
-    }
-    solana: {
-      address: string
-      privateKey: string
+  cognitoUser: any
+  customer?: {
+    cognitoId: string
+    enabled2fa: boolean
+    name: string
+    email: string
+    wallets: {
+      evm: {
+        address: string
+        privateKey: string
+      }
+      solana: {
+        address: string
+        privateKey: string
+      }
     }
   }
 }
@@ -42,6 +46,8 @@ async function loginFunction(
 
   MobileBridgeCommunication.initialize().saveBiometric()
 
+  let customer
+
   if (response.preferredMFA === 'NOMFA') {
     const accessToken = response.signInUserSession.idToken.jwtToken
 
@@ -55,15 +61,19 @@ async function loginFunction(
 
     const sessionData = response.attributes
 
-    return {
+    customer = {
       cognitoId: sessionData.sub,
+      enabled2fa: false,
       name: sessionData.name,
       email: sessionData.email,
       wallets: accountWallets
     }
   }
 
-  return response
+  return {
+    customer,
+    cognitoUser: response
+  }
 }
 
 export function useLoginMutation() {

@@ -17,7 +17,7 @@ export type LoginFieldValues = z.infer<typeof validationSchema>
 
 export const useLogin = () => {
   const router = useRouter()
-  const { widgetProvider, setCustomer } = useAuth()
+  const { widgetProvider, setCustomer, setCognitoUser } = useAuth()
   const { t } = useI18n()
 
   const { register, handleSubmit, formState } = useForm<LoginFieldValues>({
@@ -28,11 +28,19 @@ export const useLogin = () => {
 
   const onSubmit: SubmitHandler<LoginFieldValues> = async data => {
     try {
-      const customer = await mutateAsync(data)
+      const { cognitoUser, customer } = await mutateAsync(data)
 
-      setCustomer(customer)
+      setCognitoUser(cognitoUser)
 
-      router.push('/dashboard/home')
+      if (customer) {
+        setCustomer(customer)
+
+        router.push('/dashboard/home')
+      }
+
+      if (!customer) {
+        router.push('/accounts/signIn2FA')
+      }
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }

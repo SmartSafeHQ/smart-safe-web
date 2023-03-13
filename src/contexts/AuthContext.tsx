@@ -19,6 +19,7 @@ import {
 
 type Customer = {
   cognitoId: string
+  enabled2fa: boolean
   wallets: {
     evm: {
       address: string
@@ -37,9 +38,11 @@ type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
 
 type AuthContextData = {
   customer: Customer | null
+  cognitoUser: any | null
   widgetProvider: any | null
   setWidgetProvider: (_widgetProvider: any) => void
   setCustomer: (_customer: Customer) => void
+  setCognitoUser: (_cognitoUser: any) => void
   signOut: () => void
 }
 
@@ -47,6 +50,7 @@ const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const { push, asPath } = useRouter()
+  const [cognitoUser, setCognitoUser] = useState<any | null>(null)
   const [customer, setCustomer] = useState<Customer | null>(null)
   const [widgetProvider, setWidgetProvider] = useState(null)
 
@@ -77,6 +81,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then(async response => {
+        setCognitoUser(response)
+
         const sessionData = response.attributes
 
         const accessToken = response.signInUserSession.idToken.jwtToken
@@ -93,6 +99,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setCustomer({
           cognitoId: sessionData.sub,
+          enabled2fa: response.preferredMFA !== 'NOMFA',
           name: sessionData.name,
           wallets: accountWallets,
           email: sessionData.email
@@ -115,9 +122,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     <AuthContext.Provider
       value={{
         customer,
+        cognitoUser,
         widgetProvider,
         setWidgetProvider,
         setCustomer,
+        setCognitoUser,
         signOut
       }}
     >

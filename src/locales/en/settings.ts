@@ -27,6 +27,7 @@ export const settings = {
     modalInfo:
       'After scanner the barcode image, the app will display a six-digit code. Enter it bellow to verify the setup',
     modalInputLabel: 'Enter the six-digits code from the application',
-    modalInputPlaceholder: 'Enter the code'
+    modalInputPlaceholder: 'Enter the code',
+    successMessage: 'Two-factor authentication successfully registered'
   }
 }
