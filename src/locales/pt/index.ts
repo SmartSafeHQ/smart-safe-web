@@ -11,6 +11,7 @@ import { cashback } from './cashback'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
 import { privacy } from './privacy'
+import { exportPrivateKeys } from './export'
 
 export const pt = {
   signIn,
@@ -25,5 +26,6 @@ export const pt = {
   wc,
   qrCodeReader,
   payment,
-  privacy
+  privacy,
+  exportPrivateKeys
 }
