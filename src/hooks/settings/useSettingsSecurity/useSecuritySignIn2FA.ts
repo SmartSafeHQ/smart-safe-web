@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -7,14 +7,16 @@ import { z } from 'zod'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
+import { useEnableSignIn2FAMutation } from '@hooks/settings/mutation/useEnableSignIn2FAMutation'
+import { useDisableSignIn2FAMutation } from '@hooks/settings/mutation/useDisableSignIn2FAMutation'
 
 const validationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
 })
 
-export type SecurityFieldValues = z.infer<typeof validationSchema>
+type SecurityFieldValues = z.infer<typeof validationSchema>
 
-export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
+export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
   const [authCode, setAuthCode] = useState('')
 
   const {
@@ -35,21 +37,23 @@ export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
     resolver: zodResolver(validationSchema)
   })
 
+  const { mutateAsync: enableMutateAsync } = useEnableSignIn2FAMutation()
+  const { mutateAsync: disableMutateAsync } = useDisableSignIn2FAMutation()
+
   const { cognitoUser, customer, setCustomer, signOut } = useAuth()
   const { t } = useI18n()
 
   const enableOnSubmit: SubmitHandler<SecurityFieldValues> = async data => {
     try {
       if (!cognitoUser.signInUserSession) {
-        toast.error('User not signed, please login')
+        toast.error(t.settings.security.notSigned)
         signOut()
         return
       }
 
-      await Auth.verifyTotpToken(cognitoUser, data.code.replace(/\s/g, ''))
-      Auth.setPreferredMFA(cognitoUser, 'TOTP')
+      await enableMutateAsync({ cognitoUser, code: data.code })
 
-      toast.success(t.settings.SecurityTab.successMessage)
+      toast.success(t.settings.security.enableSuccessMessage)
 
       setCustomer(prevCustomer => {
         return prevCustomer && { ...prevCustomer, enabled2fa: true }
@@ -65,15 +69,14 @@ export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
   const disableOnSubmit: SubmitHandler<SecurityFieldValues> = async data => {
     try {
       if (!cognitoUser.signInUserSession) {
-        toast.error('User not signed, please login')
+        toast.error(t.settings.security.notSigned)
         signOut()
         return
       }
 
-      await Auth.verifyTotpToken(cognitoUser, data.code.replace(/\s/g, ''))
-      await Auth.setPreferredMFA(cognitoUser, 'NOMFA')
+      await disableMutateAsync({ cognitoUser, code: data.code })
 
-      toast.success(t.settings.SecurityTab.successMessage)
+      toast.success(t.settings.security.disableSuccessMessage)
 
       setCustomer(prevCustomer => {
         return prevCustomer && { ...prevCustomer, enabled2fa: false }
@@ -86,29 +89,30 @@ export const useSettingsSecurity = (setIsOpen: (_isOpen: boolean) => void) => {
     }
   }
 
-  useEffect(() => {
-    if (!cognitoUser || authCode) return
+  async function setupTOTPCode() {
+    if (!cognitoUser) return
 
-    Auth.setupTOTP(cognitoUser)
-      .then(code => {
-        const codeToScan =
-          'otpauth://totp/AWSCognito:' +
-          cognitoUser.username +
-          '?secret=' +
-          code +
-          '&issuer=Cognito'
+    try {
+      const code = await Auth.setupTOTP(cognitoUser)
 
-        setAuthCode(codeToScan)
-      })
-      .catch(e => {
-        console.log(e)
-      })
-  }, [cognitoUser])
+      const codeToScan =
+        'otpauth://totp/AWSCognito:' +
+        cognitoUser.username +
+        '?secret=' +
+        code +
+        '&issuer=Cognito'
+
+      setAuthCode(codeToScan)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return {
     t,
     authCode,
     customer,
+    setupTOTPCode,
     enableOnSubmit,
     disableOnSubmit,
     enableRegister,

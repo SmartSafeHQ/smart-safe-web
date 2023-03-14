@@ -16,8 +16,11 @@ const Settings = () => {
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-6 bg-gray-50 dark:bg-gray-900">
       <Head>
-        <title>{t.settings.headTitle}</title>
-        <meta name="description" content={t.settings.headDescription} />
+        <title>{t.settings.security.headTitle}</title>
+        <meta
+          name="description"
+          content={t.settings.security.headDescription}
+        />
       </Head>
 
       <div className="w-full max-w-5xl flex flex-1 flex-col items-stretch">
@@ -31,11 +34,11 @@ const Settings = () => {
               className="py-2 w-full max-w-[10rem]"
               defaultChecked
             >
-              {t.settings.security}
+              {t.settings.security.security}
             </Tabs.Trigger>
 
             <Tabs.Trigger value="keys" className="py-2 w-full max-w-[10rem]">
-              {t.settings.keys}
+              {t.settings.security.keys}
             </Tabs.Trigger>
           </Tabs.List>
 
@@ -45,7 +48,7 @@ const Settings = () => {
 
           <Tabs.Content value="keys">
             <section className="w-full h-full p-6 flex flex-col justify-start items-stretch gap-4">
-              {t.settings.keys}
+              {t.settings.security.keys}
             </section>
           </Tabs.Content>
         </Tabs.Root>

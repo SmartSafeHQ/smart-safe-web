@@ -1,15 +1,15 @@
 import { HTMLAttributes, ReactNode } from 'react'
 import { clsx } from 'clsx'
 
-interface Enable2FASectionRootProps extends HTMLAttributes<HTMLDivElement> {
+interface Security2FASectionRootProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
 }
 
-function Enable2FASectionRoot({
+function Security2FASectionRoot({
   children,
   className,
   ...props
-}: Enable2FASectionRootProps) {
+}: Security2FASectionRootProps) {
   return (
     <div
       className={clsx(
@@ -23,17 +23,17 @@ function Enable2FASectionRoot({
   )
 }
 
-Enable2FASectionRoot.displayName = 'Enable2FASection.Root'
+Security2FASectionRoot.displayName = 'Security2FASection.Root'
 
-interface Enable2FASectionTitleProps extends HTMLAttributes<HTMLElement> {
+interface Security2FASectionTitleProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode
 }
 
-function Enable2FASectionTitle({
+function Security2FASectionTitle({
   children,
   className,
   ...props
-}: Enable2FASectionTitleProps) {
+}: Security2FASectionTitleProps) {
   return (
     <strong
       className={clsx(
@@ -47,18 +47,18 @@ function Enable2FASectionTitle({
   )
 }
 
-Enable2FASectionTitle.displayName = 'Enable2FASection.Title'
+Security2FASectionTitle.displayName = 'Security2FASection.Title'
 
-interface Enable2FASectionDescriptionProps
+interface Security2FASectionDescriptionProps
   extends HTMLAttributes<HTMLSpanElement> {
   children: ReactNode
 }
 
-function Enable2FASectionDescription({
+function Security2FASectionDescription({
   children,
   className,
   ...props
-}: Enable2FASectionDescriptionProps) {
+}: Security2FASectionDescriptionProps) {
   return (
     <span
       className={clsx('text-gray-400 text-xs md:text-sm', className)}
@@ -69,10 +69,10 @@ function Enable2FASectionDescription({
   )
 }
 
-Enable2FASectionDescription.displayName = 'Enable2FASection.Description'
+Security2FASectionDescription.displayName = 'Security2FASection.Description'
 
-export const Enable2FASection = {
-  Root: Enable2FASectionRoot,
-  Title: Enable2FASectionTitle,
-  Description: Enable2FASectionDescription
+export const Security2FASection = {
+  Root: Security2FASectionRoot,
+  Title: Security2FASectionTitle,
+  Description: Security2FASectionDescription
 }

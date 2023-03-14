@@ -5,7 +5,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { TextInput } from '@components/Inputs/TextInput'
 import { Text } from '@components/Text'
 
-import { useSettingsSecurity } from '@hooks/settings/useSettingsSecurity/useSettingsSecurity'
+import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
 
 interface DisableSigIn2FAModalProps {
   setIsOpen: (_isOpen: boolean) => void
@@ -18,17 +18,17 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
     disableHandleSubmit,
     disableOnSubmit,
     disableRegister
-  } = useSettingsSecurity(setIsOpen)
+  } = useSecuritySignIn2FA(setIsOpen)
 
   return (
     <DialogModal.Content className="md:max-w-[36rem]">
       <header className="text-left w-full flex items-start flex-col gap-3 mb-9 pt-6">
         <DialogModal.Title className="text-2xl font-bold text-gray-800 dark:text-gray-50">
-          Disable two factory authentication
+          {t.settings.security.mDisableTitle}
         </DialogModal.Title>
 
         <DialogModal.Description className="text-gray-700 dark:text-gray-300">
-          It&apos;s strongly recommended to keep 2FA enabled.
+          {t.settings.security.mDisableDesc}
         </DialogModal.Description>
       </header>
 
@@ -43,7 +43,7 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
             variant="secondary"
           >
             <TextInput.Label className="text-gray-800 dark:text-gray-50">
-              Enter the six-digits code from the application
+              {t.settings.security.modalInputLabel}
             </TextInput.Label>
 
             <TextInput.Content>
@@ -53,7 +53,7 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
                 type="number"
                 min={0}
                 id="code"
-                placeholder={t.settings.SecurityTab.modalInputPlaceholder}
+                placeholder={t.settings.security.modalInputPlaceholder}
               />
             </TextInput.Content>
           </TextInput.Root>
@@ -62,20 +62,19 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
             <WarningCircle className="w-8 h-8 text-red-500" />
 
             <Text className="text-sm text-gray-600 dark:text-gray-300">
-              Disabling 2FA will make your account less secure and increase the
-              risk of unauthorized access.
+              {t.settings.security.mDisableInfo}
             </Text>
           </div>
 
           <div className="w-full flex items-center gap-4 mt-2">
             <DialogModal.Close>
               <Button className="bg-transparent border-2 border-gray-500 hover:bg-gray-500">
-                Cancel
+                {t.settings.security.cancel}
               </Button>
             </DialogModal.Close>
 
             <Button type="submit" isLoading={isSubmitting} variant="red">
-              Disable 2FA
+              {t.settings.security.disable2FA}
             </Button>
           </div>
         </form>

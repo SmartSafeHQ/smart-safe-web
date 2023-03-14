@@ -28,8 +28,18 @@ export const useSignIn2FA = () => {
 
   const formattedEmail = formatSessionEmail('paulosilvadosreis2057@gmail.com')
 
-  const onSubmit: SubmitHandler<SignIn2FAFieldValues> = async () => {
+  // const { mutateAsync } = useLoginMutation()
+
+  const onSubmit: SubmitHandler<SignIn2FAFieldValues> = async data => {
     try {
+      // const { cognitoUser, customer } = await mutateAsync(data)
+
+      // setCognitoUser(cognitoUser)
+
+      // setCustomer(customer)
+
+      console.log(data)
+
       router.push('/dashboard/home')
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
