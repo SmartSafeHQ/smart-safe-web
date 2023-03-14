@@ -56,7 +56,7 @@ export default function SignIn2FA() {
 
           <div className="flex gap-2 items-center">
             <div
-              className="relative w-[1.75rem] h-[1.75rem] rounded-full overflow-hidden cursor-pointer transition-all hover:brightness-90"
+              className="relative w-[1.75rem] h-[1.75rem] rounded-full overflow-hidden cursor-pointer transition-all hover:brightness-75"
               onClick={() => handleLanguageSwitch('pt')}
             >
               <Image
@@ -68,7 +68,7 @@ export default function SignIn2FA() {
             </div>
 
             <div
-              className="relative w-[1.75rem] h-[1.75rem] rounded-full overflow-hidden cursor-pointer transition-all hover:brightness-90"
+              className="relative w-[1.75rem] h-[1.75rem] rounded-full overflow-hidden cursor-pointer transition-all hover:brightness-75"
               onClick={() => handleLanguageSwitch('en')}
             >
               <Image

@@ -61,14 +61,14 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
           <div className="w-full flex items-start gap-2">
             <WarningCircle className="w-8 h-8 text-red-500" />
 
-            <Text className="text-sm text-gray-600 dark:text-gray-300">
+            <Text className="text-sm text-gray-700 dark:text-gray-300">
               {t.settings.security.mDisableInfo}
             </Text>
           </div>
 
           <div className="w-full flex items-center gap-4 mt-2">
             <DialogModal.Close>
-              <Button className="bg-transparent border-2 border-gray-500 hover:bg-gray-500">
+              <Button className="bg-transparent text-gray-100 border-2 border-gray-500 hover:brightness-90 hover:bg-transparent">
                 {t.settings.security.cancel}
               </Button>
             </DialogModal.Close>
