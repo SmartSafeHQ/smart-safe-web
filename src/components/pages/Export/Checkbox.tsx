@@ -1,11 +1,14 @@
+import Image from 'next/image'
+
 import type { ChangeEvent } from 'react'
 
 type Props = {
   label: string
   htmlFor: string
   isChecked: boolean
-  onChange: (_event: ChangeEvent<HTMLInputElement>) => void
   className?: string
+  iconUrl?: string
+  onChange: (_event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export function Checkbox({
@@ -13,6 +16,7 @@ export function Checkbox({
   label,
   onChange,
   className,
+  iconUrl,
   isChecked = false
 }: Props) {
   return (
@@ -20,15 +24,26 @@ export function Checkbox({
       htmlFor={htmlFor}
       className={`flex gap-2 items-center uppercase font-medium ${className}`}
     >
-      <input
-        id={htmlFor}
-        name="export"
-        type="checkbox"
-        onChange={onChange}
-        checked={isChecked}
-      />
+      <div
+        className={`flex transition-colors gap-2 items-center p-2 rounded-md border-1 cursor-pointer ${
+          isChecked
+            ? 'border-brand-foregroundAccent1 bg-brand-foregroundAccent2/10'
+            : 'border-slate-300 bg-slate-200'
+        } `}
+      >
+        <input
+          id={htmlFor}
+          name="export"
+          type="checkbox"
+          onChange={onChange}
+          checked={isChecked}
+          className="appearance-none"
+        />
 
-      {label}
+        {iconUrl && <Image src={iconUrl} alt="" width={30} height={30} />}
+
+        {label}
+      </div>
     </label>
   )
 }

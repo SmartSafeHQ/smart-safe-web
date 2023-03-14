@@ -34,7 +34,7 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
   }
 
   return (
-    <div>
+    <div className="w-full">
       <p className="font-bold">{network}</p>
 
       <div
@@ -95,7 +95,7 @@ export function PrivateKeysList({
   const { customer } = useAuth()
 
   return (
-    <div className="flex flex-col gap-2 max-w-[400px]">
+    <div className="flex flex-col gap-2 max-w-[400px] w-full">
       <p className="text-center text-sm font-bold p-2 rounded-lg border-1 text-gray-800 border-red-500 bg-red-400">
         {t.exportPrivateKeys.screens.privateKeysList.warning}
       </p>

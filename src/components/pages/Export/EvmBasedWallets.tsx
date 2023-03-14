@@ -42,7 +42,7 @@ export function EvmBasedWallets({
   }
 
   return (
-    <div className="grid grid-cols-[20px_minmax(200px,_1fr)] gap-x-1">
+    <div className="grid grid-cols-[20px_minmax(200px,_1fr)] gap-1 gap-y-2">
       <Checkbox
         label="EVM-based"
         htmlFor="evm-chains"
@@ -58,6 +58,7 @@ export function EvmBasedWallets({
             <Checkbox
               isChecked={checked}
               label={token.network}
+              iconUrl={token.avatar}
               htmlFor={token.symbol}
               onChange={handleUpdateSingleCheckbox}
             />

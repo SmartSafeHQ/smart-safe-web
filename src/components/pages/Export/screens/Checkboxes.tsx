@@ -31,12 +31,12 @@ export function Checkboxes({
   }
 
   return (
-    <div className="flex flex-col gap-4 max-w-[400px]">
+    <div className="flex flex-col gap-4 w-full max-w-[400px]">
       <p className="text-center text-sm font-medium p-2 dark:text-yellow-800 rounded-lg border-1 border-yellow-300 bg-yellow-100">
         {t.exportPrivateKeys.screens.checkboxes.warning}
       </p>
 
-      <div>
+      <div className="flex flex-col gap-2">
         <SolanaWallet
           tokensStatus={tokensStatus}
           handleUpdateSingleCheckbox={handleUpdateSingleCheckbox}
