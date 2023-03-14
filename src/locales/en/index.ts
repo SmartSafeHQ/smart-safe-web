@@ -1,7 +1,9 @@
 import { signIn } from './accounts/signIn'
 import { signIn2FA } from './accounts/signIn2FA'
 import { header } from './components/header'
-import { web3Errors } from './errors/web3Errors'
+import { defaultErrors } from './errors'
+import { web3E } from './errors/web3E'
+import { authE } from './errors/authE'
 import { sidebar } from './components/sidebar'
 import { pagination } from './components/pagination'
 import { home } from './home'
@@ -19,7 +21,7 @@ export const en = {
   signIn2FA,
   header,
   sidebar,
-  errors: web3Errors,
+  errors: { web3E, authE, ...defaultErrors },
   pagination,
   home,
   receive,

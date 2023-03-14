@@ -41,8 +41,11 @@ export const useLogin = () => {
       if (!customer) {
         router.push('/accounts/signIn2FA')
       }
-    } catch (error) {
-      toast.error(`Error. ${(error as Error).message}`)
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
+
+      toast.error(errorMessage ?? t.errors.default)
     }
   }
 

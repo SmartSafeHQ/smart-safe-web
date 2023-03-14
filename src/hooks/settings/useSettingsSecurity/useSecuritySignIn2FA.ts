@@ -63,8 +63,11 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
 
       enableReset()
       setIsOpen(false)
-    } catch (error) {
-      toast.error(`Error. ${(error as Error).message}`)
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
+
+      toast.error(errorMessage ?? t.errors.default)
     }
   }
 
@@ -88,8 +91,11 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
 
       disableReset()
       setIsOpen(false)
-    } catch (error) {
-      toast.error(`Error. ${(error as Error).message}`)
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
+
+      toast.error(errorMessage ?? t.errors.default)
     }
   }
 

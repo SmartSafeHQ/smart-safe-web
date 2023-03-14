@@ -1,7 +1,7 @@
 import { errors as etherErrors } from 'ethers'
 import { EthereumErrorProps } from '@utils/global/types'
 
-export const web3Errors = {
+export const web3E = {
   ether: new Map<etherErrors, EthereumErrorProps>([
     [
       etherErrors.INVALID_ARGUMENT,
@@ -144,6 +144,5 @@ export const web3Errors = {
         message: 'Erro operador não encontrado. Tente novamente mais tarde.'
       }
     ]
-  ]),
-  default: 'Ocorreu um erro desconhecido. Tente novamente mais tarde.'
+  ])
 }

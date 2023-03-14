@@ -36,11 +36,11 @@ export const useSignIn2FA = () => {
       setCustomer(customer)
 
       push('/dashboard/home')
-    } catch (error) {
-      // code	'NotAuthorizedException'
-      // code 'CodeMismatchException'
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
 
-      toast.error(`Error. ${(error as Error).message}`)
+      toast.error(errorMessage ?? t.errors.default)
     }
   }
 

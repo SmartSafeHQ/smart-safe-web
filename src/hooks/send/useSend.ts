@@ -236,7 +236,7 @@ export const useSend = () => {
       const errorCode = getEthersErrorCode(error)
 
       if (errorCode) {
-        errorMessage = t.errors.ether.get(errorCode)?.message
+        errorMessage = t.errors.web3E.ether.get(errorCode)?.message
       }
 
       toast.error(errorMessage ?? t.errors.default)
