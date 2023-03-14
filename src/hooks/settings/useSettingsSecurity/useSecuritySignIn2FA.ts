@@ -56,7 +56,9 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
       toast.success(t.settings.security.enableSuccessMessage)
 
       setCustomer(prevCustomer => {
-        return prevCustomer && { ...prevCustomer, enabled2fa: true }
+        return (
+          prevCustomer && { ...prevCustomer, auth2fa: { signInEnabled: true } }
+        )
       })
 
       enableReset()
@@ -79,7 +81,9 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
       toast.success(t.settings.security.disableSuccessMessage)
 
       setCustomer(prevCustomer => {
-        return prevCustomer && { ...prevCustomer, enabled2fa: false }
+        return (
+          prevCustomer && { ...prevCustomer, auth2fa: { signInEnabled: false } }
+        )
       })
 
       disableReset()

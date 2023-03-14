@@ -20,7 +20,9 @@ interface LoginFunctionOutput {
   cognitoUser: any
   customer?: {
     cognitoId: string
-    enabled2fa: boolean
+    auth2fa: {
+      signInEnabled: boolean
+    }
     name: string
     email: string
     wallets: {
@@ -48,7 +50,7 @@ async function loginFunction(
 
   let customer
 
-  if (response.preferredMFA === 'NOMFA') {
+  if (response.signInUserSession) {
     const accessToken = response.signInUserSession.idToken.jwtToken
 
     tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
@@ -63,7 +65,9 @@ async function loginFunction(
 
     customer = {
       cognitoId: sessionData.sub,
-      enabled2fa: false,
+      auth2fa: {
+        signInEnabled: false
+      },
       name: sessionData.name,
       email: sessionData.email,
       wallets: accountWallets

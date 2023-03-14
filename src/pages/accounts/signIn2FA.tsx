@@ -1,3 +1,4 @@
+import { DeviceMobileCamera } from 'phosphor-react'
 import Head from 'next/head'
 import Image from 'next/image'
 
@@ -15,8 +16,7 @@ export default function SignIn2FA() {
     formState: { errors, isSubmitting },
     handleSubmit,
     onSubmit,
-    register,
-    formattedEmail
+    register
   } = useSignIn2FA()
   const { handleLanguageSwitch, t } = useI18n()
 
@@ -33,22 +33,12 @@ export default function SignIn2FA() {
         <Heading className="mt-4 text-xl text-gray-600 dark:text-gray-500">
           {t.signIn2FA.title}
         </Heading>
-
-        <Text
-          asChild
-          className=" max-w-lg mt-5 text-center text-md text-gray-800 dark:text-gray-400"
-        >
-          <p>
-            {t.signIn2FA.descriptionSub01} {formattedEmail}. <br />
-            {t.signIn2FA.descriptionSub02}
-          </p>
-        </Text>
       </header>
 
       <main className="w-full max-w-lg mt-10">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 items-stretch w-full"
+          className="flex flex-col gap-4 items-stretch w-full mb-8"
         >
           <TextInput.Root htmlFor="code" error={errors.code?.message}>
             <TextInput.Label>{t.signIn2FA.code}</TextInput.Label>
@@ -64,7 +54,7 @@ export default function SignIn2FA() {
             </TextInput.Content>
           </TextInput.Root>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <div
               className="relative w-[1.75rem] h-[1.75rem] rounded-full overflow-hidden cursor-pointer transition-all hover:brightness-90"
               onClick={() => handleLanguageSwitch('pt')}
@@ -94,16 +84,18 @@ export default function SignIn2FA() {
             {t.signIn.login}
           </Button>
         </form>
-      </main>
 
-      <footer className="flex flex-col items-center gap-4 mt-8">
-        <button
-          // onClick={() => resendConfirmCode(String(email))}
-          className="text-gray-800 dark:text-gray-400 hover:text-gray-600 hover:dark:text-gray-300"
-        >
-          {t.signIn2FA.sendAgain}
-        </button>
-      </footer>
+        <div className="w-full flex items-start justify-start gap-2">
+          <DeviceMobileCamera className="w-14 h-8 text-gray-800 dark:text-gray-400" />
+
+          <Text
+            asChild
+            className="text-justify text-gray-800 dark:text-gray-400"
+          >
+            <p>{t.signIn2FA.description}</p>
+          </Text>
+        </div>
+      </main>
     </div>
   )
 }

@@ -18,7 +18,7 @@ export function SignIn2FA() {
 
   return (
     <div className="flex items-start gap-4">
-      {customer?.enabled2fa ? (
+      {customer?.auth2fa.signInEnabled ? (
         <DialogModal.Root
           open={isDisableSignInOpen}
           onOpenChange={setIsDisableSignInOpen}

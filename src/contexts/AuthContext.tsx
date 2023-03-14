@@ -21,7 +21,9 @@ import {
 
 type Customer = {
   cognitoId: string
-  enabled2fa: boolean
+  auth2fa: {
+    signInEnabled: boolean
+  }
   name: string
   email: string
   wallets: {
@@ -101,7 +103,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setCustomer({
           cognitoId: sessionData.sub,
-          enabled2fa: response.preferredMFA !== 'NOMFA',
+          auth2fa: {
+            signInEnabled: response.preferredMFA !== 'NOMFA'
+          },
           name: sessionData.name,
           wallets: accountWallets,
           email: sessionData.email

@@ -1,11 +1,10 @@
 export const signIn2FA = {
-  headTitle: 'Autenticação de 2 fatores | InWallet',
-  headDescription: 'Login com autenticação de 2 fatores InWallet',
-  title: 'Digite o código para começar!',
-  descriptionSub01: 'Enviamos um código para:',
-  descriptionSub02: 'Insira-o abaixo para acessar sua conta',
-  code: 'Código',
-  codePlaceholder: 'Insira o código do seu email',
-  signIn: 'Entrar',
-  sendAgain: 'Enviar código novamente'
+  headTitle: 'Login 2FA | InWallet',
+  headDescription: 'Login InWallet 2FA',
+  title: 'Autenticação de dois fatores',
+  description:
+    'Abra o aplicativo de autenticação de dois fatores em seu dispositivo para visualizar seu código de autenticação e verificar sua identidade.',
+  code: 'Código de autenticação',
+  codePlaceholder: 'Insira seu código',
+  signIn: 'Entrar'
 }

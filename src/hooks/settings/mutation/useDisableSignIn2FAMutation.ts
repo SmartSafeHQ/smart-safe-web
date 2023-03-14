@@ -1,6 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import { Auth } from 'aws-amplify'
 
+import { queryClient } from '@lib/reactQuery'
+
 interface DisableSignIn2FAFunctionInput {
   cognitoUser: any
   code: string
@@ -17,6 +19,9 @@ export function useDisableSignIn2FAMutation() {
   return useMutation({
     mutationKey: ['disableSignIn2FA'],
     mutationFn: (input: DisableSignIn2FAFunctionInput) =>
-      disableSignIn2FAFunction(input)
+      disableSignIn2FAFunction(input),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(['disableSignIn2FA'])
+    }
   })
 }

@@ -10,7 +10,7 @@ export const security = {
   subTitle02: 'Gerencie a autenticação de dois fatores de sua conta',
   signInVerify: 'Verificações de Login',
   enable: 'Habilitar',
-  signIn: 'Entrar',
+  signIn: 'Acessar',
   signInDescription:
     'A autenticação de dois fatores adiciona uma camada adicional de segurança à sua conta, exigindo mais do que apenas uma senha para fazer login.',
   sendTransaction: 'Enviar transação',
