@@ -67,7 +67,7 @@ export const sidebar = {
       href: '/dashboard/settings',
       icon: Gear,
       title: 'configurações',
-      isDisabled: false
+      isDisabled: true
     }
   ]
 }
