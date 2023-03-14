@@ -48,10 +48,7 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
           relative
         "
       >
-        <p
-          className="break-words p-2 dark:bg-gray-500/20 bg-slate-200
-          "
-        >
+        <p className="break-words p-2 dark:bg-gray-500/20 bg-slate-200">
           {privateKey}
         </p>
 

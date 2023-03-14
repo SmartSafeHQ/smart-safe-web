@@ -28,7 +28,7 @@ export function Checkbox({
         className={`flex transition-colors gap-2 items-center p-2 rounded-md border-1 cursor-pointer ${
           isChecked
             ? 'border-brand-foregroundAccent1 bg-brand-foregroundAccent2/10'
-            : 'border-slate-300 bg-slate-200'
+            : 'border-slate-300 bg-slate-200 dark:bg-slate-200/10 dark:border-slate-600/10'
         } `}
       >
         <input
