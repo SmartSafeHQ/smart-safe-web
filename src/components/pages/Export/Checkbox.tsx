@@ -29,7 +29,7 @@ export function Checkbox({
           isChecked
             ? 'border-brand-foregroundAccent1 bg-brand-foregroundAccent2/10'
             : 'border-slate-300 bg-slate-200 dark:bg-slate-200/10 dark:border-slate-600/10'
-        } `}
+        }`}
       >
         <input
           id={htmlFor}

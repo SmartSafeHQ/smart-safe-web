@@ -32,7 +32,7 @@ export function Checkboxes({
 
   return (
     <div className="flex flex-col gap-4 w-full max-w-[400px]">
-      <p className="text-center text-sm font-medium p-2 dark:text-yellow-800 rounded-lg border-1 border-yellow-300 bg-yellow-100">
+      <p className="text-center text-sm font-medium p-2 dark:text-yellow-300 rounded-lg border-1 border-yellow-300 bg-yellow-200/50">
         {t.exportPrivateKeys.screens.checkboxes.warning}
       </p>
 

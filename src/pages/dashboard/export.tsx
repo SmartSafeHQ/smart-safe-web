@@ -16,7 +16,7 @@ export default function Export() {
   } = useExport()
 
   return (
-    <div className="flex flex-col gap-4 pt-8 justify-center items-center">
+    <div className="flex flex-col gap-4 pt-8 h-full items-center">
       <div className="flex flex-col gap-2">
         <Heading className="text-center text-xl">
           {t.exportPrivateKeys.heading}

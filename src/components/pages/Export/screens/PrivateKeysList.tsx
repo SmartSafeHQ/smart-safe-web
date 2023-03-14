@@ -92,8 +92,8 @@ export function PrivateKeysList({
   const { customer } = useAuth()
 
   return (
-    <div className="flex flex-col gap-2 max-w-[400px] w-full">
-      <p className="text-center text-sm font-bold p-2 rounded-lg border-1 text-gray-800 border-red-500 bg-red-400">
+    <div className="flex flex-col gap-2 max-w-[400px] w-full h-full">
+      <p className="text-center text-sm font-bold p-2 rounded-lg border-1 border-red-500/30 text-red-500 bg-red-400/[.15]">
         {t.exportPrivateKeys.screens.privateKeysList.warning}
       </p>
 
@@ -115,7 +115,10 @@ export function PrivateKeysList({
         />
       )}
 
-      <Button onClick={() => setCurrentScreen('checkbox-screen')}>
+      <Button
+        className="mt-auto"
+        onClick={() => setCurrentScreen('checkbox-screen')}
+      >
         {t.exportPrivateKeys.screens.privateKeysList.back}
       </Button>
     </div>
