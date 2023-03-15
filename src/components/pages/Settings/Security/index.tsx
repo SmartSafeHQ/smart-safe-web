@@ -1,7 +1,7 @@
 import { Button } from '@components/Button'
-import { SettingsTab } from '@components/pages/Seetings'
-import { Security2FASection } from '@components/pages/Seetings/Security/Security2FASection'
-import { SignIn2FA } from '@components/pages/Seetings/Security/SignIn2FA'
+import { SettingsTab } from '@components/pages/Settings'
+import { Security2FASection } from '@components/pages/Settings/Security/SignIn2FA/Security2FASection'
+import { SignIn2FA } from '@components/pages/Settings/Security/SignIn2FA'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useAuth } from '@contexts/AuthContext'

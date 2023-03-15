@@ -35,5 +35,22 @@ export const security = {
   mDisableDesc: 'It&apos;s strongly recommended to keep 2FA enabled.',
   mDisableInfo:
     'Disabling 2FA will make your account less secure and increase the risk of unauthorized access.',
-  disableSuccessMessage: 'Two-factor authentication successfully disabled'
+  disableSuccessMessage: 'Two-factor authentication successfully disabled',
+  exportKeysHeading: 'Export private keys',
+  exportKeysScreens: {
+    checkboxes: {
+      warning:
+        "By exporting any of your private keys, you agree that you're now responsible for managing the security of funds held in these wallets.",
+      checkAll: 'Check all',
+      uncheckAll: 'Uncheck all',
+      export: 'Export'
+    },
+    privateKeysList: {
+      warning:
+        'Do not share your private key! If someone has your private key they will have full control of your wallet.',
+      copy: 'Copy',
+      copied: 'Copied!',
+      back: 'Back'
+    }
+  }
 }

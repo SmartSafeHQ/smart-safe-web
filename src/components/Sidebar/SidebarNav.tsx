@@ -9,7 +9,7 @@ import {
   TOKENVERSE_CONTACT_LINK,
   TOKENVERSE_TERMS_OF_SERVICES_LINK
 } from '@utils/global/constants/links'
-import { useI18n } from '@/hooks/useI18n'
+import { useI18n } from '@hooks/useI18n'
 
 export function SidebarNav() {
   const { t } = useI18n()

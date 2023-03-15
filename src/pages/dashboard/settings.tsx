@@ -2,11 +2,12 @@ import { useState } from 'react'
 import Head from 'next/head'
 
 import { Tabs } from '@components/Tabs'
-import { SecurityTab } from '@components/pages/Seetings/Security'
+import { SecurityTab } from '@components/pages/Settings/Security'
+import { ExportKeys } from '@components/pages/Settings/Security/ExportKeys'
 
 import { useI18n } from '@hooks/useI18n'
 
-export type NavTabs = 'security' | 'keys'
+export type NavTabs = 'security'
 
 const Settings = () => {
   const { t } = useI18n()
@@ -37,7 +38,10 @@ const Settings = () => {
               {t.settings.security.security}
             </Tabs.Trigger>
 
-            <Tabs.Trigger value="keys" className="py-2 w-full max-w-[10rem]">
+            <Tabs.Trigger
+              value="export-keys"
+              className="py-2 w-full max-w-[10rem]"
+            >
               {t.settings.security.keys}
             </Tabs.Trigger>
           </Tabs.List>
@@ -46,9 +50,9 @@ const Settings = () => {
             <SecurityTab />
           </Tabs.Content>
 
-          <Tabs.Content value="keys">
+          <Tabs.Content value="export-keys">
             <section className="w-full h-full p-6 flex flex-col justify-start items-stretch gap-4">
-              {t.settings.security.keys}
+              <ExportKeys />
             </section>
           </Tabs.Content>
         </Tabs.Root>

@@ -2,9 +2,9 @@ import { useState } from 'react'
 
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
-import { Security2FASection } from '@components/pages/Seetings/Security/Security2FASection'
-import { DisableSigIn2FAModal } from '@components/pages/Seetings/Security/SignIn2FA/DisableSigIn2FAModal'
-import { EnableSigIn2FAModal } from '@components/pages/Seetings/Security/SignIn2FA/EnableSigIn2FAModal'
+import { Security2FASection } from '@components/pages/Settings/Security/SignIn2FA/Security2FASection'
+import { DisableSigIn2FAModal } from '@components/pages/Settings/Security/SignIn2FA/DisableSigIn2FAModal'
+import { EnableSigIn2FAModal } from '@components/pages/Settings/Security/SignIn2FA/EnableSigIn2FAModal'
 
 import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
 
