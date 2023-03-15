@@ -6,5 +6,6 @@ export const signIn2FA = {
     'Open the two-factor authentication app on your device to view your authentication code and verify your identity.',
   code: 'Authentication code',
   codePlaceholder: 'Enter your code',
-  signIn: 'SignIn'
+  signIn: 'SignIn',
+  verify: 'Verify'
 }

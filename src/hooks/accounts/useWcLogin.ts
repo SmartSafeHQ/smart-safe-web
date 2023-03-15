@@ -52,6 +52,7 @@ export const useWcLogin = () => {
   const [sessionSignData, setSessionSignData] =
     useState<SessionDataProps | null>(null)
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
+  const [isSignIn2FAModalOpen, setIsSignIn2FAModalOpen] = useState(false)
   const [isQrScanOpen, setIsQrScanOpen] = useState<QrCodeScannerState>('closed')
 
   const { query } = useRouter()
@@ -152,6 +153,8 @@ export const useWcLogin = () => {
     setSessionData,
     setIsSignInModalOpen,
     isQrScanOpen,
+    isSignIn2FAModalOpen,
+    setIsSignIn2FAModalOpen,
     setIsQrScanOpen,
     isSignInModalOpen,
     register,

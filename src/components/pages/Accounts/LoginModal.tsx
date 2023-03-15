@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router'
 import { Envelope, Lock } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -18,6 +17,7 @@ import { useAuth } from '@contexts/AuthContext'
 interface LoginModalProps {
   isOpen: boolean
   setIsOpen: (_open: boolean) => void
+  setIs2FAModalOpen: (_open: boolean) => void
 }
 
 const loginValidationSchema = z.object({
@@ -27,8 +27,11 @@ const loginValidationSchema = z.object({
 
 export type LoginFieldValues = z.infer<typeof loginValidationSchema>
 
-export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
-  const router = useRouter()
+export function LoginModal({
+  isOpen,
+  setIsOpen,
+  setIs2FAModalOpen
+}: LoginModalProps) {
   const { mutateAsync } = useLoginMutation()
 
   const { handleSignupWidget } = useLogin()
@@ -53,14 +56,18 @@ export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
 
       if (customer) {
         setCustomer(customer)
-        setIsOpen(false)
       }
 
+      setIsOpen(false)
+
       if (!customer) {
-        router.push('/accounts/signIn2FA')
+        setIs2FAModalOpen(true)
       }
-    } catch (error) {
-      toast.error(`Error. ${(error as Error).message}`)
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
+
+      toast.error(errorMessage ?? t.errors.default)
     }
   }
 

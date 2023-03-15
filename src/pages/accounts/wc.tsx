@@ -9,6 +9,7 @@ import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
 import { SessionApproval } from '@components/pages/Accounts/SessionApproval'
 import { SignMessage } from '@components/pages/Accounts/SignMessage'
 import { LoginModal } from '@components/pages/Accounts/LoginModal'
+import { SignIn2FAModal } from '@components/pages/Settings/Security/SignIn2FA/SignIn2FAModal'
 import { QrCodeReader } from '@components/QrCodeReader'
 
 import { useWcLogin } from '@hooks/accounts/useWcLogin'
@@ -23,6 +24,8 @@ export default function WalletconnectLogin() {
     sessionData,
     setSessionData,
     setIsSignInModalOpen,
+    isSignIn2FAModalOpen,
+    setIsSignIn2FAModalOpen,
     isQrScanOpen,
     setIsQrScanOpen,
     isSignInModalOpen,
@@ -128,7 +131,15 @@ export default function WalletconnectLogin() {
         </form>
       </main>
 
-      <LoginModal isOpen={isSignInModalOpen} setIsOpen={setIsSignInModalOpen} />
+      <LoginModal
+        isOpen={isSignInModalOpen}
+        setIsOpen={setIsSignInModalOpen}
+        setIs2FAModalOpen={setIsSignIn2FAModalOpen}
+      />
+      <SignIn2FAModal
+        isOpen={isSignIn2FAModalOpen}
+        setIsOpen={setIsSignIn2FAModalOpen}
+      />
 
       <SessionApproval
         sessionData={sessionData}

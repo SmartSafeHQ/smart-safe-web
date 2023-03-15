@@ -48,6 +48,8 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
           </Button>
         </Verify2FAModal.Footer>
       </Verify2FAModal.Content>
+
+      <DialogModal.IconClose />
     </Verify2FAModal.Root>
   )
 }

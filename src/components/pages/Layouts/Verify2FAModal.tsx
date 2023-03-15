@@ -14,8 +14,8 @@ import { Text } from '@components/Text'
 
 export interface Verify2FAModalRootProps extends HTMLAttributes<HTMLElement> {
   title: string
-  description: string
   children: ReactNode
+  description?: string
   titleClassName?: string
   descriptionClassName?: string
 }
@@ -47,19 +47,19 @@ function Verify2FAModalRoot({
           {title}
         </DialogModal.Title>
 
-        <DialogModal.Description
-          className={clsx(
-            'text-gray-700 dark:text-gray-300',
-            descriptionClassName
-          )}
-        >
-          {description}
-        </DialogModal.Description>
+        {description && (
+          <DialogModal.Description
+            className={clsx(
+              'text-gray-700 dark:text-gray-300',
+              descriptionClassName
+            )}
+          >
+            {description}
+          </DialogModal.Description>
+        )}
       </header>
 
       {children}
-
-      <DialogModal.IconClose />
     </DialogModal.Content>
   )
 }
