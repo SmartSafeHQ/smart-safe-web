@@ -21,7 +21,7 @@ const TESTNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'matic',
-    network: 'matic',
+    network: 'polygon',
     avatar: '/networks/polygon-logo.svg',
     chainId: 80001,
     decimals: 18,
@@ -64,7 +64,7 @@ const TESTNET_COINS_ATTRIBUTES = [
 const MAINNET_COINS_ATTRIBUTES = [
   {
     symbol: 'matic',
-    network: 'matic',
+    network: 'polygon',
     avatar: '/networks/polygon-logo.svg',
     chainId: 137,
     decimals: 18,
