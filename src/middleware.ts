@@ -27,7 +27,27 @@ export async function middleware(request: NextRequest) {
   if (authToken) {
     const isTokenValid = isJwtTokenValid(authToken, 5)
 
-    if (!isTokenValid) return NextResponse.redirect(new URL('/', request.url))
+    if (!isTokenValid) {
+      const response = NextResponse.redirect(new URL('/', request.url))
+
+      request.cookies.getAll().forEach(key => {
+        if (!key.name.startsWith('CognitoIdentityServiceProvider')) {
+          return
+        }
+
+        const cookie = request.cookies.get(key.name)
+
+        if (cookie) {
+          response.cookies.set(cookie.name, '', {
+            expires: new Date()
+          })
+
+          response.cookies.delete(cookie.name)
+        }
+      })
+
+      return response
+    }
 
     if (accountsCase)
       return NextResponse.redirect(new URL('/dashboard/home', request.url))
