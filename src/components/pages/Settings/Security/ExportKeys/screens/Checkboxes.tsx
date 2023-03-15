@@ -34,7 +34,7 @@ export function Checkboxes({
         {t.settings.security.exportKeys.screens.checkboxes.warning}
       </p>
 
-      <div className="flex flex-col gap-2 rounded-lg border-1 p-2 bg-slate-200/60">
+      <div className="flex flex-col gap-2 rounded-lg border-1 p-2 bg-slate-200/60 dark:bg-gray-500/20 dark:border-zinc-700/70">
         <Checkbox
           label="Solana"
           htmlFor="solana"
