@@ -39,16 +39,18 @@ export function Checkbox({
           onChange={onChange}
           checked={isChecked}
           className={`appearance-none relative w-[20px] h-[20px] border-1 rounded-full ${
-            isChecked ? 'border-brand-foregroundAccent1' : 'border-slate-800'
+            isChecked
+              ? 'border-brand-foregroundAccent1'
+              : 'bg-slate-100/20 border-slate-800'
           }`}
         />
 
-        <Check
-          size={16}
-          className={`absolute top-[12px] left-[10px] ${
-            isChecked ? 'text-brand-foregroundAccent1' : 'text-slate-800'
-          }`}
-        />
+        {isChecked && (
+          <Check
+            size={16}
+            className="absolute top-[12px] left-[10px] text-brand-foregroundAccent1 "
+          />
+        )}
 
         {iconUrl && <Image src={iconUrl} alt="" width={30} height={30} />}
 
