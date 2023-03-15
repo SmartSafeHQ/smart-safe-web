@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
 import { WagmiConfig } from 'wagmi'
 import { QueryClientProvider } from '@tanstack/react-query'
+import { ThemeProvider } from 'next-themes'
 import { ToastContainer } from 'react-toastify'
 
 import { AuthProvider } from './AuthContext'
-import { ThemeProvider } from './ThemeContext'
 
 import { queryClient } from '@lib/reactQuery'
 import { wagmiClient } from '@lib/wagmi'
@@ -18,7 +18,13 @@ export function AppProvider({ children }: AppProviderProps) {
     <QueryClientProvider client={queryClient}>
       <WagmiConfig client={wagmiClient}>
         <AuthProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            disableTransitionOnChange
+            enableColorScheme
+          >
+            {children}
+          </ThemeProvider>
         </AuthProvider>
 
         <ToastContainer position="top-right" theme="colored" />
