@@ -9,7 +9,7 @@ import { useAuth } from '@contexts/AuthContext'
 import { handleCopyToClipboard } from '@utils/global'
 
 import type { Dispatch, SetStateAction } from 'react'
-import type { TokensStatus, Screens } from '@/hooks/export/interfaces'
+import type { SelectedChains, Screens } from '@/hooks/export/interfaces'
 
 type PrivateKeyProps = {
   network: string
@@ -17,7 +17,7 @@ type PrivateKeyProps = {
 }
 
 type PrivateKeysListProps = {
-  tokensStatus: TokensStatus[] | undefined
+  selectedChains: SelectedChains[]
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
 }
 
@@ -75,8 +75,8 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
 
           <p className="font-bold text-center">
             {copiedToClipboard
-              ? t.exportPrivateKeys.screens.privateKeysList.copied
-              : t.exportPrivateKeys.screens.privateKeysList.copy}
+              ? t.settings.security.exportKeys.screens.privateKeysList.copied
+              : t.settings.security.exportKeys.screens.privateKeysList.copy}
           </p>
         </div>
       </div>
@@ -85,7 +85,7 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
 }
 
 export function PrivateKeysList({
-  tokensStatus,
+  selectedChains,
   setCurrentScreen
 }: PrivateKeysListProps) {
   const { t } = useI18n()
@@ -94,20 +94,20 @@ export function PrivateKeysList({
   return (
     <div className="flex flex-col gap-2 max-w-[400px] w-full">
       <p className="text-center text-sm font-bold p-2 rounded-lg border-1 border-red-500/30 text-red-500 bg-red-400/[.15]">
-        {t.exportPrivateKeys.screens.privateKeysList.warning}
+        {t.settings.security.exportKeys.screens.privateKeysList.warning}
       </p>
 
-      {tokensStatus
-        ?.filter(({ token }) => token.symbol !== 'sol')
-        ?.some(token => token.checked) && (
+      {selectedChains.find(
+        chain => chain.networkType === 'evm' && chain.checked
+      ) && (
         <PrivateKey
           network="EVM"
           privateKey={customer?.wallets.evm.privateKey || ''}
         />
       )}
 
-      {tokensStatus?.find(
-        ({ token, checked }) => token.symbol === 'sol' && checked
+      {selectedChains.find(
+        chain => chain.networkType === 'solana' && chain.checked
       ) && (
         <PrivateKey
           network="Solana"
@@ -116,7 +116,7 @@ export function PrivateKeysList({
       )}
 
       <Button onClick={() => setCurrentScreen('checkbox-screen')}>
-        {t.exportPrivateKeys.screens.privateKeysList.back}
+        {t.settings.security.exportKeys.screens.privateKeysList.back}
       </Button>
     </div>
   )

@@ -11,7 +11,8 @@ import { cashback } from './cashback'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
 import { privacy } from './privacy'
-import { exportPrivateKeys } from './export'
+import { security } from './settings'
+import { exportKeys } from './settings/export-keys'
 
 export const en = {
   signIn,
@@ -27,5 +28,10 @@ export const en = {
   qrCodeReader,
   payment,
   privacy,
-  exportPrivateKeys
+  settings: {
+    security: {
+      index: security,
+      exportKeys
+    }
+  }
 }
