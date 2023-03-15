@@ -1,4 +1,4 @@
-export const exportPrivateKeys = {
+export const exportKeys = {
   heading: 'Exportar chaves privadas',
   screens: {
     checkboxes: {

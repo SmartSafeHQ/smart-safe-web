@@ -1,15 +1,6 @@
-export type TokensStatus = {
+export type SelectedChains = {
   checked: boolean
-  token: {
-    symbol: string
-    network: string
-    avatar: string
-    chainId: number | null
-    decimals: number
-    rpcUrl: string
-    explorerUrl: string
-    scanUrl: string
-  }
+  networkType: 'solana' | 'evm'
 }
 
 export type Screens = 'checkbox-screen' | 'private-keys-list-screen'

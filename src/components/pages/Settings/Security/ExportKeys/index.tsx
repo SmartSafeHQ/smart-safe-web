@@ -1,17 +1,17 @@
 import { Heading } from '@components/Heading'
-import { PrivateKeysList } from '@components/pages/Export/screens/PrivateKeysList'
-import { Checkboxes } from '@components/pages/Export/screens/Checkboxes'
+import { PrivateKeysList } from './screens/PrivateKeysList'
+import { Checkboxes } from './screens/Checkboxes'
 
 import { useI18n } from '@hooks/useI18n'
 import { useExport } from '@hooks/export/useExport'
 
-export default function Export() {
+export function ExportKeys() {
   const { t } = useI18n()
   const {
-    tokensStatus,
     currentScreen,
-    setTokensStatus,
+    selectedChains,
     setCurrentScreen,
+    setSelectedChains,
     handleUpdateSingleCheckbox
   } = useExport()
 
@@ -19,20 +19,20 @@ export default function Export() {
     <div className="flex flex-col gap-4 pt-8 h-full items-center">
       <div className="flex flex-col gap-2">
         <Heading className="text-center text-xl">
-          {t.exportPrivateKeys.heading}
+          {t.settings.security.exportKeys.heading}
         </Heading>
       </div>
 
       {currentScreen === 'checkbox-screen' ? (
         <Checkboxes
-          tokensStatus={tokensStatus}
-          setTokensStatus={setTokensStatus}
+          selectedChains={selectedChains}
           setCurrentScreen={setCurrentScreen}
+          setSelectedChains={setSelectedChains}
           handleUpdateSingleCheckbox={handleUpdateSingleCheckbox}
         />
       ) : (
         <PrivateKeysList
-          tokensStatus={tokensStatus}
+          selectedChains={selectedChains}
           setCurrentScreen={setCurrentScreen}
         />
       )}
