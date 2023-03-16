@@ -1,7 +1,6 @@
 import { SubmitHandler } from 'react-hook-form'
 import { useState } from 'react'
 
-import { Button } from '@components/Button'
 import { SettingsTab } from '@components/pages/Settings'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
@@ -41,7 +40,9 @@ export function SecurityTab() {
     enableSignIn2FAOnSubmit,
     disableSignIn2FAOnSubmit,
     enableSend2FAOnSubmit,
-    disableSend2FAOnSubmit
+    disableSend2FAOnSubmit,
+    enableExportKeys2FAOnSubmit,
+    disableExportKeys2FAOnSubmit
   } = useSecuritySignIn2FA()
 
   async function handleSetupTOTP(
@@ -166,11 +167,14 @@ export function SecurityTab() {
           </Security2FASection.Title>
 
           <Skeleton isLoading={!customer} className="w-full h-16">
-            <div className="flex items-start gap-4">
-              <Button className="w-min !px-3 !py-2 text-xs">
-                {t.settings.security.enable}
-              </Button>
-
+            <Toggle2FA
+              option="export-keys"
+              isEnabled={customer?.auth2fa.exportKeysEnabled ?? false}
+              handleSetupTOTP={handleSetupTOTP}
+              handleDisableTOTP={handleDisableTOTP}
+              enableFunction={enableExportKeys2FAOnSubmit}
+              disableFunction={disableExportKeys2FAOnSubmit}
+            >
               <div className="w-full max-w-2xl flex flex-col items-start justify-start">
                 <strong className="font-semibold text-left">
                   {t.settings.security.export}
@@ -180,7 +184,7 @@ export function SecurityTab() {
                   {t.settings.security.keysDescrition}
                 </Security2FASection.Description>
               </div>
-            </div>
+            </Toggle2FA>
           </Skeleton>
         </Security2FASection.Root>
 

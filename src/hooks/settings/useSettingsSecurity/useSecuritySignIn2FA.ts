@@ -6,10 +6,12 @@ import { Auth } from 'aws-amplify'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
-import { useEnableSignIn2FAMutation } from '@hooks/settings/mutation/useEnableSignIn2FAMutation'
-import { useDisableSignIn2FAMutation } from '@hooks/settings/mutation/useDisableSignIn2FAMutation'
-import { useEnableSend2FAMutation } from '@hooks/settings/mutation/useEnableSend2FAMutation'
-import { useDisableSend2FAMutation } from '@hooks/settings/mutation/useDisableSend2FAMutation'
+import { useEnableSignIn2FAMutation } from '../mutation/useEnableSignIn2FAMutation'
+import { useDisableSignIn2FAMutation } from '../mutation/useDisableSignIn2FAMutation'
+import { useEnableSend2FAMutation } from '../mutation/useEnableSend2FAMutation'
+import { useDisableSend2FAMutation } from '../mutation/useDisableSend2FAMutation'
+import { useEnableExportKeys2FAMutation } from '../mutation/useEnableExportKeys2FAMutation'
+import { useDisableExportKeys2FAMutation } from '../mutation/useDisableExportKeys2FAMutation'
 
 export const security2FAvalidationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
@@ -28,6 +30,10 @@ export const useSecuritySignIn2FA = () => {
     useDisableSignIn2FAMutation()
   const { mutateAsync: enableSend2FAMutateAsync } = useEnableSend2FAMutation()
   const { mutateAsync: disableSend2FAMutateAsync } = useDisableSend2FAMutation()
+  const { mutateAsync: enableExportKeys2FAMutateAsync } =
+    useEnableExportKeys2FAMutation()
+  const { mutateAsync: disableExportKeys2FAMutateAsync } =
+    useDisableExportKeys2FAMutation()
 
   const { customer, cognitoUser, setCustomer, signOut } = useAuth()
   const { t } = useI18n()
@@ -169,6 +175,68 @@ export const useSecuritySignIn2FA = () => {
     }
   }
 
+  const enableExportKeys2FAOnSubmit: SubmitHandler<
+    Security2FAFieldValues
+  > = async data => {
+    try {
+      if (!cognitoUser.signInUserSession) {
+        toast.error(t.settings.security.notSigned)
+        signOut()
+        return
+      }
+
+      await enableExportKeys2FAMutateAsync({ cognitoUser, code: data.code })
+
+      toast.success(t.settings.security.enableSuccessMessage)
+
+      setCustomer(
+        prevCustomer =>
+          prevCustomer && {
+            ...prevCustomer,
+            auth2fa: { ...prevCustomer.auth2fa, exportKeysEnabled: true }
+          }
+      )
+
+      setIsEnable2FAOpen(false)
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
+
+      toast.error(errorMessage ?? t.errors.default)
+    }
+  }
+
+  const disableExportKeys2FAOnSubmit: SubmitHandler<
+    Security2FAFieldValues
+  > = async data => {
+    try {
+      if (!cognitoUser.signInUserSession) {
+        toast.error(t.settings.security.notSigned)
+        signOut()
+        return
+      }
+
+      await disableExportKeys2FAMutateAsync({ cognitoUser, code: data.code })
+
+      toast.success(t.settings.security.disableSuccessMessage)
+
+      setCustomer(
+        prevCustomer =>
+          prevCustomer && {
+            ...prevCustomer,
+            auth2fa: { ...prevCustomer.auth2fa, exportKeysEnabled: false }
+          }
+      )
+
+      setIsDisable2FAOpen(false)
+    } catch (e) {
+      const error = e instanceof Error ? e : Error()
+      const errorMessage = t.errors.authE.get(error.name)?.message
+
+      toast.error(errorMessage ?? t.errors.default)
+    }
+  }
+
   return {
     t,
     customer,
@@ -183,6 +251,8 @@ export const useSecuritySignIn2FA = () => {
     enableSignIn2FAOnSubmit,
     disableSignIn2FAOnSubmit,
     enableSend2FAOnSubmit,
-    disableSend2FAOnSubmit
+    disableSend2FAOnSubmit,
+    enableExportKeys2FAOnSubmit,
+    disableExportKeys2FAOnSubmit
   }
 }

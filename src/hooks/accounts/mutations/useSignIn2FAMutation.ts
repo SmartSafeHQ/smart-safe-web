@@ -21,6 +21,8 @@ interface SignIn2FAFunctionOutput {
     cognitoId: string
     auth2fa: {
       signInEnabled: boolean
+      sendEnabled: boolean
+      exportKeysEnabled: boolean
     }
     name: string
     email: string
@@ -59,7 +61,9 @@ async function signIn2FAFunction({
   const customer = {
     cognitoId: sessionData.sub,
     auth2fa: {
-      signInEnabled: true
+      signInEnabled: true,
+      sendEnabled: false,
+      exportKeysEnabled: false
     },
     name: sessionData.name,
     email: sessionData.email,

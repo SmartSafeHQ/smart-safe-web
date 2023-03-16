@@ -22,6 +22,8 @@ interface LoginFunctionOutput {
     cognitoId: string
     auth2fa: {
       signInEnabled: boolean
+      sendEnabled: boolean
+      exportKeysEnabled: boolean
     }
     name: string
     email: string
@@ -66,7 +68,9 @@ async function loginFunction(
     customer = {
       cognitoId: sessionData.sub,
       auth2fa: {
-        signInEnabled: false
+        signInEnabled: false,
+        sendEnabled: false,
+        exportKeysEnabled: false
       },
       name: sessionData.name,
       email: sessionData.email,
