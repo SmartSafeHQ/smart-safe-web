@@ -1,5 +1,6 @@
+import { ReactNode } from 'react'
+
 import { Button } from '@components/Button'
-import { Security2FASection } from './Security2FASection'
 import {
   Options,
   Verify2FAFunctionProps
@@ -12,6 +13,7 @@ interface Toggle2FAProps {
   option: Options
   enableFunction: Verify2FAFunctionProps
   disableFunction: Verify2FAFunctionProps
+  children?: ReactNode
   handleSetupTOTP(
     _option: Options,
     _enableFunction: Verify2FAFunctionProps,
@@ -27,6 +29,7 @@ interface Toggle2FAProps {
 export function Toggle2FA({
   isEnabled,
   option,
+  children,
   enableFunction,
   disableFunction,
   handleSetupTOTP,
@@ -57,15 +60,7 @@ export function Toggle2FA({
         </Button>
       )}
 
-      <div className="w-full max-w-2xl flex flex-col items-start justify-start">
-        <strong className="font-semibold text-left">
-          {t.settings.security.signIn}
-        </strong>
-
-        <Security2FASection.Description>
-          {t.settings.security.signInDescription}
-        </Security2FASection.Description>
-      </div>
+      {children}
     </div>
   )
 }

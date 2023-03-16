@@ -38,12 +38,11 @@ export function SecurityTab() {
     setIsEnable2FAOpen,
     isDisable2FAOpen,
     setIsDisable2FAOpen,
-    enableOnSubmit,
-    disableOnSubmit
+    enableSignIn2FAOnSubmit,
+    disableSignIn2FAOnSubmit,
+    enableSend2FAOnSubmit,
+    disableSend2FAOnSubmit
   } = useSecuritySignIn2FA()
-
-  console.log('isEnable2FAOpen =>', isEnable2FAOpen)
-  console.log('isDisable2FAOpen =>', isDisable2FAOpen)
 
   async function handleSetupTOTP(
     option: Options,
@@ -118,9 +117,19 @@ export function SecurityTab() {
               isEnabled={customer?.auth2fa.signInEnabled ?? false}
               handleSetupTOTP={handleSetupTOTP}
               handleDisableTOTP={handleDisableTOTP}
-              enableFunction={enableOnSubmit}
-              disableFunction={disableOnSubmit}
-            />
+              enableFunction={enableSignIn2FAOnSubmit}
+              disableFunction={disableSignIn2FAOnSubmit}
+            >
+              <div className="w-full max-w-2xl flex flex-col items-start justify-start">
+                <strong className="font-semibold text-left">
+                  {t.settings.security.signIn}
+                </strong>
+
+                <Security2FASection.Description>
+                  {t.settings.security.signInDescription}
+                </Security2FASection.Description>
+              </div>
+            </Toggle2FA>
           </Skeleton>
         </Security2FASection.Root>
 
@@ -130,11 +139,14 @@ export function SecurityTab() {
           </Security2FASection.Title>
 
           <Skeleton isLoading={!customer} className="w-full h-16">
-            <div className="flex items-start gap-4">
-              <Button className="w-min !px-3 !py-2 text-xs">
-                {t.settings.security.enable}
-              </Button>
-
+            <Toggle2FA
+              option="send"
+              isEnabled={customer?.auth2fa.sendEnabled ?? false}
+              handleSetupTOTP={handleSetupTOTP}
+              handleDisableTOTP={handleDisableTOTP}
+              enableFunction={enableSend2FAOnSubmit}
+              disableFunction={disableSend2FAOnSubmit}
+            >
               <div className="w-full max-w-2xl flex flex-col items-start justify-start">
                 <strong className="font-semibold text-left">
                   {t.settings.security.send}
@@ -144,7 +156,7 @@ export function SecurityTab() {
                   {t.settings.security.sendDescription}
                 </Security2FASection.Description>
               </div>
-            </div>
+            </Toggle2FA>
           </Skeleton>
         </Security2FASection.Root>
 
