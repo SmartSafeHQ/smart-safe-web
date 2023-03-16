@@ -8,11 +8,14 @@ import {
 } from 'react'
 import clsx from 'clsx'
 
-import { DialogModal } from '@components/Dialogs/DialogModal'
+import {
+  DialogModal,
+  DialogModalContentProps
+} from '@components/Dialogs/DialogModal'
 import { TextInput } from '@components/Inputs/TextInput'
 import { Text } from '@components/Text'
 
-export interface Verify2FAModalRootProps extends HTMLAttributes<HTMLElement> {
+export interface Verify2FAModalRootProps extends DialogModalContentProps {
   title: string
   children: ReactNode
   description?: string
@@ -30,13 +33,12 @@ function Verify2FAModalRoot({
   ...props
 }: Verify2FAModalRootProps) {
   return (
-    <DialogModal.Content className="md:max-w-[36rem]">
+    <DialogModal.Content className="md:max-w-[36rem]" {...props}>
       <header
         className={clsx(
           'text-left w-full flex items-start flex-col gap-3 mb-9 pt-6',
           className
         )}
-        {...props}
       >
         <DialogModal.Title
           className={clsx(

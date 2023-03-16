@@ -6,6 +6,7 @@ import { SecurityTab } from '@components/pages/Settings/Security'
 import { ExportKeys } from '@components/pages/Settings/Security/ExportKeys'
 
 import { useI18n } from '@hooks/useI18n'
+import { Security2FAProvider } from '@contexts/Security2FAContext'
 
 export type NavTabs = 'security'
 
@@ -47,7 +48,9 @@ const Settings = () => {
           </Tabs.List>
 
           <Tabs.Content value="security">
-            <SecurityTab />
+            <Security2FAProvider>
+              <SecurityTab />
+            </Security2FAProvider>
           </Tabs.Content>
 
           <Tabs.Content value="export-keys">

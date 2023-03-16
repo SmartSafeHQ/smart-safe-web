@@ -1,11 +1,10 @@
 import { z } from 'zod'
-import { useState } from 'react'
 import { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { Auth } from 'aws-amplify'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
+import { useSecurity2FA } from '@contexts/Security2FAContext'
 import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 import { useEnableSignIn2FAMutation } from '../mutation/useEnableSignIn2FAMutation'
 import { useDisableSignIn2FAMutation } from '../mutation/useDisableSignIn2FAMutation'
@@ -20,10 +19,21 @@ export const security2FAvalidationSchema = z.object({
 
 export type Security2FAFieldValues = z.infer<typeof security2FAvalidationSchema>
 
+export type Options = 'signIn' | 'send' | 'export-keys'
+
+export type Verify2FAFunctionProps = SubmitHandler<{
+  code: string
+}>
+
 export const useSecuritySignIn2FA = () => {
-  const [authCode, setAuthCode] = useState('')
-  const [isEnable2FAOpen, setIsEnable2FAOpen] = useState(false)
-  const [isDisable2FAOpen, setIsDisable2FAOpen] = useState(false)
+  const {
+    setIsEnable2FAOpen,
+    setIsDisable2FAOpen,
+    isEnable2FAOpen,
+    enable2FAOption,
+    authCode,
+    isDisable2FAOpen
+  } = useSecurity2FA()
 
   const { mutateAsync: enableSignIn2FAMutateAsync } =
     useEnableSignIn2FAMutation()
@@ -38,19 +48,6 @@ export const useSecuritySignIn2FA = () => {
 
   const { customer, cognitoUser, setCustomer, signOut } = useAuth()
   const { t, currentLocaleProps } = useI18n()
-
-  async function setupTOTPCode() {
-    const code = await Auth.setupTOTP(cognitoUser)
-
-    const codeToScan =
-      'otpauth://totp/AWSCognito:' +
-      cognitoUser.username +
-      '?secret=' +
-      code +
-      '&issuer=Cognito'
-
-    return codeToScan
-  }
 
   function validateUserSession() {
     if (!cognitoUser.signInUserSession) {
@@ -181,13 +178,12 @@ export const useSecuritySignIn2FA = () => {
     t,
     customer,
     cognitoUser,
-    authCode,
-    setAuthCode,
     isEnable2FAOpen,
+    enable2FAOption,
+    authCode,
     isDisable2FAOpen,
     setIsEnable2FAOpen,
     setIsDisable2FAOpen,
-    setupTOTPCode,
     enableSignIn2FAOnSubmit,
     disableSignIn2FAOnSubmit,
     enableSend2FAOnSubmit,

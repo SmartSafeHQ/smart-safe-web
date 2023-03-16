@@ -24,6 +24,7 @@ export function DisableSigIn2FAModal({ onSubmit }: DisableSigIn2FAModalProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm<Security2FAFieldValues>({
     resolver: zodResolver(security2FAvalidationSchema)
@@ -33,6 +34,7 @@ export function DisableSigIn2FAModal({ onSubmit }: DisableSigIn2FAModalProps) {
     <Verify2FAModal.Root
       title={t.settings.security.mDisableTitle}
       description={t.settings.security.mDisableDesc}
+      onCloseAutoFocus={() => reset()}
     >
       <Verify2FAModal.Content
         inputLabel={t.settings.security.modalInputLabel}

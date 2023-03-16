@@ -1,6 +1,3 @@
-import { SubmitHandler } from 'react-hook-form'
-import { useState } from 'react'
-
 import { SettingsTab } from '@components/pages/Settings'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
@@ -11,31 +8,15 @@ import { Toggle2FA } from './Security2FA/Toggle2FA'
 
 import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
 
-export type Options = 'signIn' | 'send' | 'export-keys'
-
-export type Verify2FAFunctionProps = SubmitHandler<{
-  code: string
-}>
-
-export interface Enable2FAOptionProps {
-  option: Options
-  enableFunction: Verify2FAFunctionProps
-  disableFunction: Verify2FAFunctionProps
-}
-
 export function SecurityTab() {
-  const [enable2FAOption, setEnable2FAOption] = useState<Enable2FAOptionProps>()
-
   const {
     t,
     customer,
-    cognitoUser,
-    setupTOTPCode,
-    authCode,
-    setAuthCode,
     isEnable2FAOpen,
-    setIsEnable2FAOpen,
+    enable2FAOption,
+    authCode,
     isDisable2FAOpen,
+    setIsEnable2FAOpen,
     setIsDisable2FAOpen,
     enableSignIn2FAOnSubmit,
     disableSignIn2FAOnSubmit,
@@ -44,47 +25,6 @@ export function SecurityTab() {
     enableExportKeys2FAOnSubmit,
     disableExportKeys2FAOnSubmit
   } = useSecuritySignIn2FA()
-
-  async function handleSetupTOTP(
-    option: Options,
-    enableFunction: Verify2FAFunctionProps,
-    disableFunction: Verify2FAFunctionProps
-  ) {
-    if (!cognitoUser) return
-
-    setEnable2FAOption({
-      option,
-      enableFunction,
-      disableFunction
-    })
-
-    setIsEnable2FAOpen(true)
-
-    try {
-      if (!authCode) {
-        const codeToScan = await setupTOTPCode()
-        setAuthCode(codeToScan)
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  async function handleDisableTOTP(
-    option: Options,
-    enableFunction: Verify2FAFunctionProps,
-    disableFunction: Verify2FAFunctionProps
-  ) {
-    if (!cognitoUser) return
-
-    setAuthCode('')
-    setIsDisable2FAOpen(true)
-    setEnable2FAOption({
-      option,
-      enableFunction,
-      disableFunction
-    })
-  }
 
   return (
     <SettingsTab.Root>
@@ -116,8 +56,6 @@ export function SecurityTab() {
             <Toggle2FA
               option="signIn"
               isEnabled={customer?.auth2fa.signInEnabled ?? false}
-              handleSetupTOTP={handleSetupTOTP}
-              handleDisableTOTP={handleDisableTOTP}
               enableFunction={enableSignIn2FAOnSubmit}
               disableFunction={disableSignIn2FAOnSubmit}
             >
@@ -143,8 +81,6 @@ export function SecurityTab() {
             <Toggle2FA
               option="send"
               isEnabled={customer?.auth2fa.sendEnabled ?? false}
-              handleSetupTOTP={handleSetupTOTP}
-              handleDisableTOTP={handleDisableTOTP}
               enableFunction={enableSend2FAOnSubmit}
               disableFunction={disableSend2FAOnSubmit}
             >
@@ -170,8 +106,6 @@ export function SecurityTab() {
             <Toggle2FA
               option="export-keys"
               isEnabled={customer?.auth2fa.exportKeysEnabled ?? false}
-              handleSetupTOTP={handleSetupTOTP}
-              handleDisableTOTP={handleDisableTOTP}
               enableFunction={enableExportKeys2FAOnSubmit}
               disableFunction={disableExportKeys2FAOnSubmit}
             >

@@ -1,12 +1,13 @@
 import { ReactNode } from 'react'
 
 import { Button } from '@components/Button'
+
 import {
   Options,
   Verify2FAFunctionProps
-} from '@components/pages/Settings/Security'
-
+} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
 import { useI18n } from '@hooks/useI18n'
+import { useSecurity2FA } from '@contexts/Security2FAContext'
 
 interface Toggle2FAProps {
   isEnabled: boolean
@@ -14,16 +15,6 @@ interface Toggle2FAProps {
   enableFunction: Verify2FAFunctionProps
   disableFunction: Verify2FAFunctionProps
   children?: ReactNode
-  handleSetupTOTP(
-    _option: Options,
-    _enableFunction: Verify2FAFunctionProps,
-    _disableFunction: Verify2FAFunctionProps
-  ): Promise<void>
-  handleDisableTOTP(
-    _option: Options,
-    _enableFunction: Verify2FAFunctionProps,
-    _disableFunction: Verify2FAFunctionProps
-  ): Promise<void>
 }
 
 export function Toggle2FA({
@@ -31,10 +22,9 @@ export function Toggle2FA({
   option,
   children,
   enableFunction,
-  disableFunction,
-  handleSetupTOTP,
-  handleDisableTOTP
+  disableFunction
 }: Toggle2FAProps) {
+  const { handleDisableTOTP, handleSetupTOTP } = useSecurity2FA()
   const { t } = useI18n()
 
   return (

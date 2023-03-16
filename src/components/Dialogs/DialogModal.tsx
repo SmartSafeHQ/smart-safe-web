@@ -98,7 +98,8 @@ function DialogModalClose({ children }: DialogModalCloseProps) {
 
 DialogModalClose.displayName = 'DialogModal.Close'
 
-interface DialogModalContentProps extends RadixDialog.DialogContentProps {
+export interface DialogModalContentProps
+  extends RadixDialog.DialogContentProps {
   children: ReactNode
 }
 

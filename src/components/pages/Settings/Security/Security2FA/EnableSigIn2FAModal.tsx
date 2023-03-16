@@ -30,13 +30,17 @@ export function Enable2FAModal({
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm<Security2FAFieldValues>({
     resolver: zodResolver(security2FAvalidationSchema)
   })
 
   return (
-    <DialogModal.Content className="md:max-w-[36rem]">
+    <DialogModal.Content
+      className="md:max-w-[36rem]"
+      onCloseAutoFocus={() => reset()}
+    >
       <header className="text-left w-full flex items-start flex-col gap-3 mb-6 pt-6 px-2">
         <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
           {t.settings.security.mEnableTitle}
