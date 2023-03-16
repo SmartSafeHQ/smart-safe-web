@@ -1,9 +1,10 @@
-import { Buffer } from 'buffer'
 import { toast } from 'react-toastify'
 
 import { SupportedLanguages } from '@utils/global/constants/i18n'
 import { pt } from '@/locales/pt'
 import { locales } from '@/locales'
+
+export const LAST_AUTH_COOKIE_NAME = '@InWallet.last-login'
 
 export function formatSessionEmail(email: string) {
   const formattedEmail = email.replace(
@@ -14,22 +15,28 @@ export function formatSessionEmail(email: string) {
   return formattedEmail
 }
 
-export function isJwtTokenValid(token: string, maxOfHoursToExpire: number) {
-  const tokenParts = token.split('.')
+export function createAuthCookieString(
+  name: string,
+  value: string,
+  hours: number
+) {
+  const date = new Date()
+  date.setTime(date.getTime() + hours * 60 * 60 * 1000) // Convert hours to milliseconds
 
-  if (tokenParts.length !== 3) {
-    return false
-  }
+  const expires = `expires=${date.toUTCString()}`
 
-  const payload = JSON.parse(
-    Buffer.from(tokenParts[1], 'base64').toString('utf-8')
-  )
+  document.cookie = `${name}=${value}; ${expires}; path=/`
+}
 
-  const authTime = new Date(payload.auth_time * 1000).getTime()
+export function isTokenValid(
+  lastAuthDateISO: string,
+  maxOfHoursToExpire: number
+) {
+  const authTime = new Date(lastAuthDateISO).getTime()
   const diffenceInMilliseconds = Math.abs(new Date().getTime() - authTime)
   const hoursActive = Math.ceil(diffenceInMilliseconds / (1000 * 60 * 60))
 
-  return hoursActive < maxOfHoursToExpire
+  return hoursActive <= maxOfHoursToExpire
 }
 
 export function getAuthErrorMessageWithToast(

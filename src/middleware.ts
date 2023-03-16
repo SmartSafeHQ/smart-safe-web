@@ -2,7 +2,7 @@ import type { NextRequest } from 'next/server'
 
 import { NextResponse } from 'next/server'
 
-import { isJwtTokenValid } from '@utils/sessionsUtils'
+import { isTokenValid, LAST_AUTH_COOKIE_NAME } from '@utils/sessionsUtils'
 
 export async function middleware(request: NextRequest) {
   const noAuthCheckCase = ['/accounts/wc', '/privacy', '/en/privacy'].some(
@@ -25,9 +25,12 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/', request.url))
 
   if (authToken) {
-    const isTokenValid = isJwtTokenValid(authToken, 5)
+    const isAuthValid = isTokenValid(
+      request.cookies.get(LAST_AUTH_COOKIE_NAME)?.value ?? '',
+      5
+    )
 
-    if (!isTokenValid) {
+    if (!isAuthValid) {
       const response = NextResponse.redirect(new URL('/', request.url))
 
       request.cookies.getAll().forEach(key => {

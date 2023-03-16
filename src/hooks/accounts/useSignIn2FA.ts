@@ -6,7 +6,11 @@ import { z } from 'zod'
 import { useI18n } from '@hooks/useI18n'
 import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMutation'
 import { useAuth } from '@contexts/AuthContext'
-import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
+import {
+  createAuthCookieString,
+  getAuthErrorMessageWithToast,
+  LAST_AUTH_COOKIE_NAME
+} from '@utils/sessionsUtils'
 
 const validationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
@@ -34,6 +38,8 @@ export const useSignIn2FA = () => {
 
       setCognitoUser(authCognitoUser)
       setCustomer(customer)
+
+      createAuthCookieString(LAST_AUTH_COOKIE_NAME, new Date().toISOString(), 5)
 
       push('/dashboard/home')
     } catch (e) {

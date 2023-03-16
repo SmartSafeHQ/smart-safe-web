@@ -6,7 +6,11 @@ import { z } from 'zod'
 import { useLoginMutation } from './mutations/useLoginMutation'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
-import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
+import {
+  createAuthCookieString,
+  getAuthErrorMessageWithToast,
+  LAST_AUTH_COOKIE_NAME
+} from '@utils/sessionsUtils'
 
 const validationSchema = z.object({
   email: z.string().email('invalid email'),
@@ -34,6 +38,12 @@ export const useLogin = () => {
 
       if (customer) {
         setCustomer(customer)
+
+        createAuthCookieString(
+          LAST_AUTH_COOKIE_NAME,
+          new Date().toISOString(),
+          5
+        )
 
         router.push('/dashboard/home')
       }
