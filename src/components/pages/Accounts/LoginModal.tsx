@@ -1,7 +1,6 @@
 import { Envelope, Lock } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useI18n } from '@hooks/useI18n'
@@ -13,6 +12,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { useLoginMutation } from '@hooks/accounts/mutations/useLoginMutation'
 import { useLogin } from '@hooks/accounts/useLogin'
 import { useAuth } from '@contexts/AuthContext'
+import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 
 interface LoginModalProps {
   isOpen: boolean
@@ -46,7 +46,7 @@ export function LoginModal({
     resolver: zodResolver(loginValidationSchema)
   })
 
-  const { t } = useI18n()
+  const { t, currentLocaleProps } = useI18n()
 
   const onSubmitLogin: SubmitHandler<LoginFieldValues> = async data => {
     try {
@@ -64,10 +64,7 @@ export function LoginModal({
         setIs2FAModalOpen(true)
       }
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

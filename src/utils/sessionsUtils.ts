@@ -1,4 +1,9 @@
 import { Buffer } from 'buffer'
+import { toast } from 'react-toastify'
+
+import { SupportedLanguages } from '@utils/global/constants/i18n'
+import { pt } from '@/locales/pt'
+import { locales } from '@/locales'
 
 export function formatSessionEmail(email: string) {
   const formattedEmail = email.replace(
@@ -25,4 +30,18 @@ export function isJwtTokenValid(token: string, maxOfHoursToExpire: number) {
   const hoursActive = Math.ceil(diffenceInMilliseconds / (1000 * 60 * 60))
 
   return hoursActive < maxOfHoursToExpire
+}
+
+export function getAuthErrorMessageWithToast(
+  e: unknown,
+  locale: SupportedLanguages
+) {
+  const error = e instanceof Error ? e : Error()
+
+  const t = locales.get(locale)?.errors ?? pt.errors
+  const errorMessage = t.authE.get(error.name)?.message
+
+  toast.error(errorMessage ?? t.default)
+
+  return errorMessage
 }

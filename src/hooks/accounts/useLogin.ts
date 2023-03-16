@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useLoginMutation } from './mutations/useLoginMutation'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
+import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 
 const validationSchema = z.object({
   email: z.string().email('invalid email'),
@@ -18,7 +18,7 @@ export type LoginFieldValues = z.infer<typeof validationSchema>
 export const useLogin = () => {
   const router = useRouter()
   const { widgetProvider, setCustomer, setCognitoUser } = useAuth()
-  const { t } = useI18n()
+  const { t, currentLocaleProps } = useI18n()
 
   const { register, handleSubmit, formState } = useForm<LoginFieldValues>({
     resolver: zodResolver(validationSchema)
@@ -42,10 +42,7 @@ export const useLogin = () => {
         router.push('/accounts/signIn2FA')
       }
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

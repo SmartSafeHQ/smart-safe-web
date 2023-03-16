@@ -6,6 +6,7 @@ import { Auth } from 'aws-amplify'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
+import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 import { useEnableSignIn2FAMutation } from '../mutation/useEnableSignIn2FAMutation'
 import { useDisableSignIn2FAMutation } from '../mutation/useDisableSignIn2FAMutation'
 import { useEnableSend2FAMutation } from '../mutation/useEnableSend2FAMutation'
@@ -36,7 +37,7 @@ export const useSecuritySignIn2FA = () => {
     useDisableExportKeys2FAMutation()
 
   const { customer, cognitoUser, setCustomer, signOut } = useAuth()
-  const { t } = useI18n()
+  const { t, currentLocaleProps } = useI18n()
 
   async function setupTOTPCode() {
     const code = await Auth.setupTOTP(cognitoUser)
@@ -51,34 +52,38 @@ export const useSecuritySignIn2FA = () => {
     return codeToScan
   }
 
+  function validateUserSession() {
+    if (!cognitoUser.signInUserSession) {
+      toast.error(t.settings.security.notSigned)
+      signOut()
+    }
+  }
+
+  function updateCustomer2FAState(input: { [key: string]: boolean }) {
+    setCustomer(
+      prevCustomer =>
+        prevCustomer && {
+          ...prevCustomer,
+          auth2fa: { ...prevCustomer.auth2fa, ...input }
+        }
+    )
+  }
+
   const enableSignIn2FAOnSubmit: SubmitHandler<
     Security2FAFieldValues
   > = async data => {
     try {
-      if (!cognitoUser.signInUserSession) {
-        toast.error(t.settings.security.notSigned)
-        signOut()
-        return
-      }
+      validateUserSession()
 
       await enableSignIn2FAMutateAsync({ cognitoUser, code: data.code })
 
       toast.success(t.settings.security.enableSuccessMessage)
 
-      setCustomer(
-        prevCustomer =>
-          prevCustomer && {
-            ...prevCustomer,
-            auth2fa: { ...prevCustomer.auth2fa, signInEnabled: true }
-          }
-      )
+      updateCustomer2FAState({ signInEnabled: true })
 
       setIsEnable2FAOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 
@@ -86,30 +91,17 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      if (!cognitoUser.signInUserSession) {
-        toast.error(t.settings.security.notSigned)
-        signOut()
-        return
-      }
+      validateUserSession()
 
       await disableSignIn2FAMutateAsync({ cognitoUser, code: data.code })
 
       toast.success(t.settings.security.disableSuccessMessage)
 
-      setCustomer(
-        prevCustomer =>
-          prevCustomer && {
-            ...prevCustomer,
-            auth2fa: { ...prevCustomer.auth2fa, signInEnabled: false }
-          }
-      )
+      updateCustomer2FAState({ signInEnabled: false })
 
       setIsDisable2FAOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 
@@ -117,30 +109,17 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      if (!cognitoUser.signInUserSession) {
-        toast.error(t.settings.security.notSigned)
-        signOut()
-        return
-      }
+      validateUserSession()
 
       await enableSend2FAMutateAsync({ cognitoUser, code: data.code })
 
       toast.success(t.settings.security.enableSuccessMessage)
 
-      setCustomer(
-        prevCustomer =>
-          prevCustomer && {
-            ...prevCustomer,
-            auth2fa: { ...prevCustomer.auth2fa, sendEnabled: true }
-          }
-      )
+      updateCustomer2FAState({ sendEnabled: true })
 
       setIsEnable2FAOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 
@@ -148,30 +127,17 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      if (!cognitoUser.signInUserSession) {
-        toast.error(t.settings.security.notSigned)
-        signOut()
-        return
-      }
+      validateUserSession()
 
       await disableSend2FAMutateAsync({ cognitoUser, code: data.code })
 
       toast.success(t.settings.security.disableSuccessMessage)
 
-      setCustomer(
-        prevCustomer =>
-          prevCustomer && {
-            ...prevCustomer,
-            auth2fa: { ...prevCustomer.auth2fa, sendEnabled: false }
-          }
-      )
+      updateCustomer2FAState({ sendEnabled: false })
 
       setIsDisable2FAOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 
@@ -179,30 +145,17 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      if (!cognitoUser.signInUserSession) {
-        toast.error(t.settings.security.notSigned)
-        signOut()
-        return
-      }
+      validateUserSession()
 
       await enableExportKeys2FAMutateAsync({ cognitoUser, code: data.code })
 
       toast.success(t.settings.security.enableSuccessMessage)
 
-      setCustomer(
-        prevCustomer =>
-          prevCustomer && {
-            ...prevCustomer,
-            auth2fa: { ...prevCustomer.auth2fa, exportKeysEnabled: true }
-          }
-      )
+      updateCustomer2FAState({ exportKeysEnabled: true })
 
       setIsEnable2FAOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 
@@ -210,30 +163,17 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      if (!cognitoUser.signInUserSession) {
-        toast.error(t.settings.security.notSigned)
-        signOut()
-        return
-      }
+      validateUserSession()
 
       await disableExportKeys2FAMutateAsync({ cognitoUser, code: data.code })
 
       toast.success(t.settings.security.disableSuccessMessage)
 
-      setCustomer(
-        prevCustomer =>
-          prevCustomer && {
-            ...prevCustomer,
-            auth2fa: { ...prevCustomer.auth2fa, exportKeysEnabled: false }
-          }
-      )
+      updateCustomer2FAState({ exportKeysEnabled: false })
 
       setIsDisable2FAOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

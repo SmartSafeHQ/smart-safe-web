@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { Button } from '@components/Button'
@@ -10,6 +9,7 @@ import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMutation'
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
+import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 
 interface SignIn2FAModalModalProps {
   isOpen: boolean
@@ -38,7 +38,7 @@ export function SignIn2FAModal({
     resolver: zodResolver(validationSchema)
   })
 
-  const { t } = useI18n()
+  const { t, currentLocaleProps } = useI18n()
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
@@ -51,10 +51,7 @@ export function SignIn2FAModal({
       setCustomer(customer)
       setIsOpen(false)
     } catch (e) {
-      const error = e instanceof Error ? e : Error()
-      const errorMessage = t.errors.authE.get(error.name)?.message
-
-      toast.error(errorMessage ?? t.errors.default)
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

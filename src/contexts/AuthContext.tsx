@@ -19,7 +19,7 @@ import {
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
 
-type Customer = {
+export type CustomerProps = {
   cognitoId: string
   auth2fa: {
     signInEnabled: boolean
@@ -43,11 +43,11 @@ type Customer = {
 type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
 
 type AuthContextData = {
-  customer: Customer | null
+  customer: CustomerProps | null
   cognitoUser: any | null
   widgetProvider: any | null
   setWidgetProvider: (_widgetProvider: any) => void
-  setCustomer: Dispatch<SetStateAction<Customer | null>>
+  setCustomer: Dispatch<SetStateAction<CustomerProps | null>>
   setCognitoUser: (_cognitoUser: any) => void
   signOut: () => void
 }
@@ -57,7 +57,7 @@ const AuthContext = createContext({} as AuthContextData)
 export function AuthProvider({ children }: AuthProviderProps) {
   const { push, asPath } = useRouter()
   const [cognitoUser, setCognitoUser] = useState<any | null>(null)
-  const [customer, setCustomer] = useState<Customer | null>(null)
+  const [customer, setCustomer] = useState<CustomerProps | null>(null)
   const [widgetProvider, setWidgetProvider] = useState(null)
 
   async function signOut() {
