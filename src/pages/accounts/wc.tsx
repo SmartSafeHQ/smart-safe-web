@@ -9,7 +9,7 @@ import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
 import { SessionApproval } from '@components/pages/Accounts/SessionApproval'
 import { SignMessage } from '@components/pages/Accounts/SignMessage'
 import { LoginModal } from '@components/pages/Accounts/LoginModal'
-import { SignIn2FAModal } from '@components/pages/Settings/Security/SignIn2FA/SignIn2FAModal'
+import { SignIn2FAModal } from '@/components/pages/Settings/Security/Security2FA/SignIn2FAModal'
 import { QrCodeReader } from '@components/QrCodeReader'
 
 import { useWcLogin } from '@hooks/accounts/useWcLogin'

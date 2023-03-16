@@ -10,6 +10,7 @@ export const security = {
   subTitle02: 'Manage your account two-factor auth',
   signInVerify: ' SignIn verifications',
   enable: 'Enable',
+  disable: 'Disable',
   signIn: 'SignIn',
   signInDescription:
     'Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.',

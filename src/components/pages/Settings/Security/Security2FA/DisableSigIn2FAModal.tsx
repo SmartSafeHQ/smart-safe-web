@@ -1,22 +1,33 @@
 import { WarningCircle } from 'phosphor-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
-import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+
+import { useI18n } from '@hooks/useI18n'
+import {
+  Security2FAFieldValues,
+  security2FAvalidationSchema
+} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
 
 interface DisableSigIn2FAModalProps {
-  setIsOpen: (_isOpen: boolean) => void
+  onSubmit: SubmitHandler<{
+    code: string
+  }>
 }
 
-export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
+export function DisableSigIn2FAModal({ onSubmit }: DisableSigIn2FAModalProps) {
+  const { t } = useI18n()
+
   const {
-    t,
-    disableFormState: { errors, isSubmitting },
-    disableHandleSubmit,
-    disableOnSubmit,
-    disableRegister
-  } = useSecuritySignIn2FA(setIsOpen)
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<Security2FAFieldValues>({
+    resolver: zodResolver(security2FAvalidationSchema)
+  })
 
   return (
     <Verify2FAModal.Root
@@ -26,8 +37,8 @@ export function DisableSigIn2FAModal({ setIsOpen }: DisableSigIn2FAModalProps) {
       <Verify2FAModal.Content
         inputLabel={t.settings.security.modalInputLabel}
         inputPlaceholder={t.settings.security.modalInputPlaceholder}
-        onSubmit={disableHandleSubmit(disableOnSubmit)}
-        register={disableRegister}
+        onSubmit={handleSubmit(onSubmit)}
+        register={register}
         error={errors.code?.message}
       >
         <Verify2FAModal.Info

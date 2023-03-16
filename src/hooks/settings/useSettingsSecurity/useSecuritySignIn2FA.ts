@@ -1,49 +1,45 @@
+import { z } from 'zod'
 import { useState } from 'react'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { Auth } from 'aws-amplify'
-import { z } from 'zod'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
 import { useEnableSignIn2FAMutation } from '@hooks/settings/mutation/useEnableSignIn2FAMutation'
 import { useDisableSignIn2FAMutation } from '@hooks/settings/mutation/useDisableSignIn2FAMutation'
 
-const validationSchema = z.object({
+export const security2FAvalidationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
 })
 
-type SecurityFieldValues = z.infer<typeof validationSchema>
+export type Security2FAFieldValues = z.infer<typeof security2FAvalidationSchema>
 
-export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
+export const useSecuritySignIn2FA = () => {
   const [authCode, setAuthCode] = useState('')
-
-  const {
-    register: enableRegister,
-    handleSubmit: enableHandleSubmit,
-    formState: enableFormState,
-    reset: enableReset
-  } = useForm<SecurityFieldValues>({
-    resolver: zodResolver(validationSchema)
-  })
-
-  const {
-    register: disableRegister,
-    handleSubmit: disableHandleSubmit,
-    formState: disableFormState,
-    reset: disableReset
-  } = useForm<SecurityFieldValues>({
-    resolver: zodResolver(validationSchema)
-  })
+  const [isEnable2FAOpen, setIsEnable2FAOpen] = useState(false)
+  const [isDisable2FAOpen, setIsDisable2FAOpen] = useState(false)
 
   const { mutateAsync: enableMutateAsync } = useEnableSignIn2FAMutation()
   const { mutateAsync: disableMutateAsync } = useDisableSignIn2FAMutation()
 
-  const { cognitoUser, customer, setCustomer, signOut } = useAuth()
+  const { customer, cognitoUser, setCustomer, signOut } = useAuth()
   const { t } = useI18n()
 
-  const enableOnSubmit: SubmitHandler<SecurityFieldValues> = async data => {
+  async function setupTOTPCode() {
+    const code = await Auth.setupTOTP(cognitoUser)
+
+    const codeToScan =
+      'otpauth://totp/AWSCognito:' +
+      cognitoUser.username +
+      '?secret=' +
+      code +
+      '&issuer=Cognito'
+
+    return codeToScan
+  }
+
+  const enableOnSubmit: SubmitHandler<Security2FAFieldValues> = async data => {
     try {
       if (!cognitoUser.signInUserSession) {
         toast.error(t.settings.security.notSigned)
@@ -61,8 +57,7 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
         )
       })
 
-      enableReset()
-      setIsOpen(false)
+      setIsEnable2FAOpen(false)
     } catch (e) {
       const error = e instanceof Error ? e : Error()
       const errorMessage = t.errors.authE.get(error.name)?.message
@@ -71,7 +66,7 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
     }
   }
 
-  const disableOnSubmit: SubmitHandler<SecurityFieldValues> = async data => {
+  const disableOnSubmit: SubmitHandler<Security2FAFieldValues> = async data => {
     try {
       if (!cognitoUser.signInUserSession) {
         toast.error(t.settings.security.notSigned)
@@ -89,8 +84,7 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
         )
       })
 
-      disableReset()
-      setIsOpen(false)
+      setIsDisable2FAOpen(false)
     } catch (e) {
       const error = e instanceof Error ? e : Error()
       const errorMessage = t.errors.authE.get(error.name)?.message
@@ -99,37 +93,18 @@ export const useSecuritySignIn2FA = (setIsOpen: (_isOpen: boolean) => void) => {
     }
   }
 
-  async function setupTOTPCode() {
-    if (!cognitoUser) return
-
-    try {
-      const code = await Auth.setupTOTP(cognitoUser)
-
-      const codeToScan =
-        'otpauth://totp/AWSCognito:' +
-        cognitoUser.username +
-        '?secret=' +
-        code +
-        '&issuer=Cognito'
-
-      setAuthCode(codeToScan)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return {
     t,
-    authCode,
     customer,
+    cognitoUser,
+    authCode,
+    setAuthCode,
+    isEnable2FAOpen,
+    isDisable2FAOpen,
+    setIsEnable2FAOpen,
+    setIsDisable2FAOpen,
     setupTOTPCode,
     enableOnSubmit,
-    disableOnSubmit,
-    enableRegister,
-    enableHandleSubmit,
-    enableFormState,
-    disableRegister,
-    disableHandleSubmit,
-    disableFormState
+    disableOnSubmit
   }
 }

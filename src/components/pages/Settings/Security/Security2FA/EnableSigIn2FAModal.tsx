@@ -1,4 +1,6 @@
 import { QRCodeCanvas } from 'qrcode.react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
@@ -6,24 +8,32 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { Text } from '@components/Text'
 
-import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+import {
+  Security2FAFieldValues,
+  security2FAvalidationSchema
+} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+import { useI18n } from '@hooks/useI18n'
 
 interface EnableSigIn2FAModalProps {
-  authCode: string
-  setIsOpen: (_isOpen: boolean) => void
+  authCode?: string
+  onSubmit: SubmitHandler<{
+    code: string
+  }>
 }
 
-export function EnableSigIn2FAModal({
+export function Enable2FAModal({
   authCode,
-  setIsOpen
+  onSubmit
 }: EnableSigIn2FAModalProps) {
+  const { t } = useI18n()
+
   const {
-    t,
-    enableFormState: { errors, isSubmitting },
-    enableHandleSubmit,
-    enableOnSubmit,
-    enableRegister
-  } = useSecuritySignIn2FA(setIsOpen)
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<Security2FAFieldValues>({
+    resolver: zodResolver(security2FAvalidationSchema)
+  })
 
   return (
     <DialogModal.Content className="md:max-w-[36rem]">
@@ -40,12 +50,12 @@ export function EnableSigIn2FAModal({
       <section className="w-full flex flex-col gap-4 items-stretch">
         <div className="w-full flex flex-col gap-4 items-center justify-center mb-4 rounded-md">
           <Skeleton isLoading={!authCode} className="w-60 h-60">
-            <QRCodeCanvas value={authCode} size={240} />
+            <QRCodeCanvas value={authCode ?? ''} size={240} />
           </Skeleton>
         </div>
 
         <form
-          onSubmit={enableHandleSubmit(enableOnSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4 items-stretch w-full"
         >
           <Text className="text-sm text-gray-600 dark:text-gray-400">
@@ -63,7 +73,7 @@ export function EnableSigIn2FAModal({
 
             <TextInput.Content>
               <TextInput.Input
-                {...enableRegister('code')}
+                {...register('code')}
                 required
                 type="number"
                 min={0}

@@ -1,15 +1,90 @@
+import { SubmitHandler } from 'react-hook-form'
+import { useState } from 'react'
+
 import { Button } from '@components/Button'
 import { SettingsTab } from '@components/pages/Settings'
-import { Security2FASection } from '@components/pages/Settings/Security/SignIn2FA/Security2FASection'
-import { SignIn2FA } from '@components/pages/Settings/Security/SignIn2FA'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { DialogModal } from '@components/Dialogs/DialogModal'
+import { Security2FASection } from './Security2FA/Security2FASection'
+import { Enable2FAModal } from './Security2FA/EnableSigIn2FAModal'
+import { DisableSigIn2FAModal } from './Security2FA/DisableSigIn2FAModal'
+import { Toggle2FA } from './Security2FA/Toggle2FA'
 
-import { useAuth } from '@contexts/AuthContext'
-import { useI18n } from '@hooks/useI18n'
+import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+
+export type Options = 'signIn' | 'send' | 'export-keys'
+
+export type Verify2FAFunctionProps = SubmitHandler<{
+  code: string
+}>
+
+export interface Enable2FAOptionProps {
+  option: Options
+  enableFunction: Verify2FAFunctionProps
+  disableFunction: Verify2FAFunctionProps
+}
 
 export function SecurityTab() {
-  const { customer } = useAuth()
-  const { t } = useI18n()
+  const [enable2FAOption, setEnable2FAOption] = useState<Enable2FAOptionProps>()
+
+  const {
+    t,
+    customer,
+    cognitoUser,
+    setupTOTPCode,
+    authCode,
+    setAuthCode,
+    isEnable2FAOpen,
+    setIsEnable2FAOpen,
+    isDisable2FAOpen,
+    setIsDisable2FAOpen,
+    enableOnSubmit,
+    disableOnSubmit
+  } = useSecuritySignIn2FA()
+
+  console.log('isEnable2FAOpen =>', isEnable2FAOpen)
+  console.log('isDisable2FAOpen =>', isDisable2FAOpen)
+
+  async function handleSetupTOTP(
+    option: Options,
+    enableFunction: Verify2FAFunctionProps,
+    disableFunction: Verify2FAFunctionProps
+  ) {
+    if (!cognitoUser) return
+
+    setEnable2FAOption({
+      option,
+      enableFunction,
+      disableFunction
+    })
+
+    setIsEnable2FAOpen(true)
+
+    try {
+      if (!authCode) {
+        const codeToScan = await setupTOTPCode()
+        setAuthCode(codeToScan)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  async function handleDisableTOTP(
+    option: Options,
+    enableFunction: Verify2FAFunctionProps,
+    disableFunction: Verify2FAFunctionProps
+  ) {
+    if (!cognitoUser) return
+
+    setAuthCode('')
+    setIsDisable2FAOpen(true)
+    setEnable2FAOption({
+      option,
+      enableFunction,
+      disableFunction
+    })
+  }
 
   return (
     <SettingsTab.Root>
@@ -38,7 +113,14 @@ export function SecurityTab() {
           </Security2FASection.Title>
 
           <Skeleton isLoading={!customer} className="w-full h-16">
-            <SignIn2FA />
+            <Toggle2FA
+              option="signIn"
+              isEnabled={customer?.auth2fa.signInEnabled ?? false}
+              handleSetupTOTP={handleSetupTOTP}
+              handleDisableTOTP={handleDisableTOTP}
+              enableFunction={enableOnSubmit}
+              disableFunction={disableOnSubmit}
+            />
           </Skeleton>
         </Security2FASection.Root>
 
@@ -89,6 +171,27 @@ export function SecurityTab() {
             </div>
           </Skeleton>
         </Security2FASection.Root>
+
+        <DialogModal.Root
+          open={isEnable2FAOpen}
+          onOpenChange={setIsEnable2FAOpen}
+        >
+          {enable2FAOption && (
+            <Enable2FAModal
+              authCode={authCode}
+              onSubmit={enable2FAOption.enableFunction}
+            />
+          )}
+        </DialogModal.Root>
+
+        <DialogModal.Root
+          open={isDisable2FAOpen}
+          onOpenChange={setIsDisable2FAOpen}
+        >
+          {enable2FAOption && (
+            <DisableSigIn2FAModal onSubmit={enable2FAOption?.disableFunction} />
+          )}
+        </DialogModal.Root>
       </div>
     </SettingsTab.Root>
   )
