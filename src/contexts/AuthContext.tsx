@@ -20,6 +20,7 @@ import {
 } from '@hooks/accounts/queries/useAccountWallets'
 
 export type CustomerProps = {
+  id: number
   cognitoId: string
   auth2fa: {
     signInEnabled: boolean
@@ -104,6 +105,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         MobileBridgeCommunication.initialize().saveBiometric()
 
         setCustomer({
+          id: accountWallets.id,
           cognitoId: sessionData.sub,
           auth2fa: {
             signInEnabled: response.preferredMFA !== 'NOMFA',

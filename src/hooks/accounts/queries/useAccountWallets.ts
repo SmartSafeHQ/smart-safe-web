@@ -8,6 +8,7 @@ interface FetchAccountWalletsInput {
 }
 
 export interface FetchAccountWalletsResponse {
+  id: number
   evm: {
     address: string
     privateKey: string
@@ -30,6 +31,7 @@ export async function fetchAccountWallets({
   )
 
   return {
+    id: apiResponse.data.id,
     evm: {
       address: apiResponse.data.evm[0].address,
       privateKey: apiResponse.data.evm[0].privateKey

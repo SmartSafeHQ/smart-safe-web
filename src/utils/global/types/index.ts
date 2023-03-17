@@ -10,6 +10,7 @@ export interface WalletKeypair {
 }
 
 export interface FetchEndUserWalletsResponse {
+  id: number
   evm: WalletKeypair[]
   solana: WalletKeypair[]
 }

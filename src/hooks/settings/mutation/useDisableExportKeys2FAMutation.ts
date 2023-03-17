@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query'
 import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
+import { tokenverseApi } from '@lib/axios'
 
 interface DisableExportKeys2FAFunctionInput {
+  id: number
   cognitoUser: any
   code: string
 }
@@ -13,7 +15,9 @@ async function disableExportKeys2FAFunction(
 ): Promise<void> {
   await Auth.verifyTotpToken(input.cognitoUser, input.code.replace(/\s/g, ''))
 
-  console.log('disableExportKeys save on db')
+  await tokenverseApi.patch(`/widget/settings/disable2fa/${input.id}`, {
+    fieldToEnable: 'export-keys'
+  })
 }
 
 export function useDisableExportKeys2FAMutation() {

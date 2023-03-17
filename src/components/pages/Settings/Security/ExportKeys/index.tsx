@@ -3,7 +3,7 @@ import { PrivateKeysList } from './screens/PrivateKeysList'
 import { Checkboxes } from './screens/Checkboxes'
 
 import { useI18n } from '@hooks/useI18n'
-import { useExport } from '@hooks/export/useExport'
+import { useExport } from '@hooks/settings/export/useExport'
 
 export function ExportKeys() {
   const { t } = useI18n()

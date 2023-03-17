@@ -19,6 +19,7 @@ interface LoginFunctionInput {
 interface LoginFunctionOutput {
   cognitoUser: any
   customer?: {
+    id: number
     cognitoId: string
     auth2fa: {
       signInEnabled: boolean
@@ -66,6 +67,7 @@ async function loginFunction(
     const sessionData = response.attributes
 
     customer = {
+      id: accountWallets.id,
       cognitoId: sessionData.sub,
       auth2fa: {
         signInEnabled: false,

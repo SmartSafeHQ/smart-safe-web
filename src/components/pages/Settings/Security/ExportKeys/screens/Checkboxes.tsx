@@ -1,6 +1,9 @@
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react'
 
-import type { SelectedChains, Screens } from '@hooks/export/interfaces'
+import type {
+  SelectedChains,
+  Screens
+} from '@/hooks/settings/export/interfaces'
 
 import { Checkbox } from '../Checkbox'
 import { Button } from '@components/Button'

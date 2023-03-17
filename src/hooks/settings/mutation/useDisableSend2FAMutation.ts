@@ -2,8 +2,10 @@ import { useMutation } from '@tanstack/react-query'
 import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
+import { tokenverseApi } from '@lib/axios'
 
 interface DisableSend2FAFunctionInput {
+  id: number
   cognitoUser: any
   code: string
 }
@@ -13,7 +15,9 @@ async function disableSend2FAFunction(
 ): Promise<void> {
   await Auth.verifyTotpToken(input.cognitoUser, input.code.replace(/\s/g, ''))
 
-  console.log('disableSend2FA on db')
+  await tokenverseApi.patch(`/widget/settings/disable2fa/${input.id}`, {
+    fieldToEnable: 'send'
+  })
 }
 
 export function useDisableSend2FAMutation() {

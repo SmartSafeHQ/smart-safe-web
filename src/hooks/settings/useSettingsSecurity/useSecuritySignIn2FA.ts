@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { SubmitHandler } from 'react-hook-form'
+import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
 import { useI18n } from '@hooks/useI18n'
@@ -12,6 +13,11 @@ import { useEnableSend2FAMutation } from '../mutation/useEnableSend2FAMutation'
 import { useDisableSend2FAMutation } from '../mutation/useDisableSend2FAMutation'
 import { useEnableExportKeys2FAMutation } from '../mutation/useEnableExportKeys2FAMutation'
 import { useDisableExportKeys2FAMutation } from '../mutation/useDisableExportKeys2FAMutation'
+import { queryClient } from '@lib/reactQuery'
+import {
+  fetchAccount2faSettings,
+  FetchAccount2faSettingsResponse
+} from '@/hooks/accounts/queries/useAccount2faSettings'
 
 export const security2FAvalidationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
@@ -46,15 +52,26 @@ export const useSecuritySignIn2FA = () => {
   const { mutateAsync: disableExportKeys2FAMutateAsync } =
     useDisableExportKeys2FAMutation()
 
-  const { customer, cognitoUser, setCustomer, signOut } = useAuth()
+  const { customer, cognitoUser, setCustomer } = useAuth()
   const { t, currentLocaleProps } = useI18n()
 
-  function validateUserSession() {
-    if (!cognitoUser.signInUserSession) {
-      toast.error(t.settings.security.notSigned)
-      signOut()
-    }
-  }
+  useEffect(() => {
+    if (!customer) return
+
+    queryClient
+      .ensureQueryData<FetchAccount2faSettingsResponse>({
+        queryKey: ['account2faSettings', customer.id],
+        queryFn: () => fetchAccount2faSettings({ id: customer.id })
+      })
+      .then(response => {
+        const fields = {
+          sendEnabled: response.send2faEnabled === true ?? false,
+          exportKeysEnabled: response.exportKeys2faEnabled === true ?? false
+        }
+
+        updateCustomer2FAState(fields)
+      })
+  }, [customer])
 
   function updateCustomer2FAState(input: { [key: string]: boolean }) {
     setCustomer(
@@ -70,7 +87,7 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      validateUserSession()
+      if (!cognitoUser.signInUserSession || !customer) return
 
       await enableSignIn2FAMutateAsync({ cognitoUser, code: data.code })
 
@@ -88,7 +105,7 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      validateUserSession()
+      if (!cognitoUser.signInUserSession || !customer) return
 
       await disableSignIn2FAMutateAsync({ cognitoUser, code: data.code })
 
@@ -106,9 +123,13 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      validateUserSession()
+      if (!cognitoUser.signInUserSession || !customer) return
 
-      await enableSend2FAMutateAsync({ cognitoUser, code: data.code })
+      await enableSend2FAMutateAsync({
+        cognitoUser,
+        code: data.code,
+        id: customer.id
+      })
 
       toast.success(t.settings.security.enableSuccessMessage)
 
@@ -124,9 +145,13 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      validateUserSession()
+      if (!cognitoUser.signInUserSession || !customer) return
 
-      await disableSend2FAMutateAsync({ cognitoUser, code: data.code })
+      await disableSend2FAMutateAsync({
+        cognitoUser,
+        code: data.code,
+        id: customer.id
+      })
 
       toast.success(t.settings.security.disableSuccessMessage)
 
@@ -142,9 +167,13 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      validateUserSession()
+      if (!cognitoUser.signInUserSession || !customer) return
 
-      await enableExportKeys2FAMutateAsync({ cognitoUser, code: data.code })
+      await enableExportKeys2FAMutateAsync({
+        cognitoUser,
+        code: data.code,
+        id: customer.id
+      })
 
       toast.success(t.settings.security.enableSuccessMessage)
 
@@ -160,9 +189,13 @@ export const useSecuritySignIn2FA = () => {
     Security2FAFieldValues
   > = async data => {
     try {
-      validateUserSession()
+      if (!cognitoUser.signInUserSession || !customer) return
 
-      await disableExportKeys2FAMutateAsync({ cognitoUser, code: data.code })
+      await disableExportKeys2FAMutateAsync({
+        cognitoUser,
+        code: data.code,
+        id: customer.id
+      })
 
       toast.success(t.settings.security.disableSuccessMessage)
 

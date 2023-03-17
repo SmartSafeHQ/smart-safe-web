@@ -24,6 +24,11 @@ import {
   HandleSendTransactionProps,
   TransactionProps
 } from '@hooks/send/interfaces'
+import { queryClient } from '@lib/reactQuery'
+import {
+  fetchAccount2faSettings,
+  FetchAccount2faSettingsResponse
+} from '@hooks/accounts/queries/useAccount2faSettings'
 
 export const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'Invalid wallet address.' }),
@@ -41,7 +46,7 @@ export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
 }
 
 export const useSend = () => {
-  const { customer } = useAuth()
+  const { customer, setCustomer } = useAuth()
   const { t } = useI18n()
   const {
     register,
@@ -86,6 +91,30 @@ export const useSend = () => {
     data: txData,
     reset
   } = useSendMutation()
+
+  useEffect(() => {
+    if (!customer) return
+
+    queryClient
+      .ensureQueryData<FetchAccount2faSettingsResponse>({
+        queryKey: ['account2faSettings', customer.id],
+        queryFn: () => fetchAccount2faSettings({ id: customer.id })
+      })
+      .then(response => {
+        const fields = {
+          sendEnabled: response.send2faEnabled === true ?? false,
+          exportKeysEnabled: response.exportKeys2faEnabled === true ?? false
+        }
+
+        setCustomer(
+          prevCustomer =>
+            prevCustomer && {
+              ...prevCustomer,
+              auth2fa: { ...prevCustomer.auth2fa, ...fields }
+            }
+        )
+      })
+  }, [customer])
 
   useEffect(() => {
     if (!coinsData || selectedCoin) {
