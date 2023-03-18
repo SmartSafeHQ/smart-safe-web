@@ -55,7 +55,7 @@ export const sidebar = {
       href: '/dashboard/payment',
       icon: Money,
       title: 'payment',
-      isDisabled: false
+      isDisabled: true
     },
     {
       href: '/dashboard/buy',

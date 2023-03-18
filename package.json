@@ -23,7 +23,7 @@
     "@radix-ui/react-select": "^1.2.0",
     "@radix-ui/react-slot": "^1.0.1",
     "@radix-ui/react-tabs": "^1.0.2",
-    "@ricardo-passos-test/tokenverse-sdk": "^0.0.53",
+    "@ricardo-passos-test/tokenverse-sdk": "^0.0.72",
     "@solana/web3.js": "^1.73.3",
     "@tanstack/react-query": "^4.22.4",
     "@types/node": "18.11.18",

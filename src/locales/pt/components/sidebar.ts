@@ -43,7 +43,7 @@ export const sidebar = {
       href: '/dashboard/payment',
       icon: Money,
       title: 'pagamento',
-      isDisabled: false
+      isDisabled: true
     },
     {
       href: '/dashboard/cashback',
