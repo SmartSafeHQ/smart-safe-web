@@ -48,6 +48,38 @@
         }
       ]
     },
+    "AMPLIFY_auth_toknendusersdashb56bc41d4_nativeClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "toknendusersdashb56bc41d4"
+        }
+      ]
+    },
+    "AMPLIFY_auth_toknendusersdashb56bc41d4_userPoolId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "toknendusersdashb56bc41d4"
+        }
+      ]
+    },
+    "AMPLIFY_auth_toknendusersdashb56bc41d4_userPoolName": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "toknendusersdashb56bc41d4"
+        }
+      ]
+    },
+    "AMPLIFY_auth_toknendusersdashb56bc41d4_webClientId": {
+      "usedBy": [
+        {
+          "category": "auth",
+          "resourceName": "toknendusersdashb56bc41d4"
+        }
+      ]
+    },
     "AMPLIFY_hosting_amplifyhosting_appId": {
       "usedBy": [
         {
