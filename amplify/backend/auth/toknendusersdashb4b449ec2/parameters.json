@@ -5,13 +5,13 @@
   "region": "us-east-1",
   "usernameAttributes": ["email"],
   "requiredAttributes": ["email"],
-  "passwordPolicyMinLength": 10,
+  "passwordPolicyMinLength": 8,
   "passwordPolicyCharacters": [
     "Requires Lowercase",
     "Requires Uppercase",
     "Requires Numbers"
   ],
-  "mfaConfiguration": "OFF",
+  "mfaConfiguration": "ON",
   "autoVerifiedAttributes": ["email"],
-  "mfaTypes": []
+  "mfaTypes": ["TOTP"]
 }
