@@ -84,7 +84,7 @@ export function SecurityTab() {
           <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
               option="send"
-              isEnabled={customer2FA?.sendEnabled ?? false}
+              isEnabled={customer2FA?.send2faEnabled ?? false}
               enableFunction={enableSend2FAOnSubmit}
               disableFunction={disableSend2FAOnSubmit}
             >
@@ -111,7 +111,7 @@ export function SecurityTab() {
           <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
               option="export-keys"
-              isEnabled={customer2FA?.exportKeysEnabled ?? false}
+              isEnabled={customer2FA?.exportKeys2faEnabled ?? false}
               enableFunction={enableExportKeys2FAOnSubmit}
               disableFunction={disableExportKeys2FAOnSubmit}
             >

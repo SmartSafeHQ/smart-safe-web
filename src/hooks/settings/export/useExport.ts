@@ -4,12 +4,16 @@ import type { SelectedChains, Screens } from './interfaces'
 
 import { useState } from 'react'
 
+import { useAuth } from '@contexts/AuthContext'
+
 export function useExport() {
   const [selectedChains, setSelectedChains] = useState<SelectedChains[]>([
     { checked: false, networkType: 'solana' },
     { checked: false, networkType: 'evm' }
   ])
   const [currentScreen, setCurrentScreen] = useState<Screens>('checkbox-screen')
+
+  const { is2FAVerifyOpen, setIs2FAVerifyOpen } = useAuth()
 
   function handleUpdateAllCheckboxes(checked: boolean) {
     const updaterFunction = (currentSelectedChains: SelectedChains[]) => {
@@ -38,6 +42,8 @@ export function useExport() {
     setCurrentScreen,
     selectedChains,
     setSelectedChains,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
     handleUpdateAllCheckboxes,
     handleUpdateSingleCheckbox
   }

@@ -108,8 +108,8 @@ export const useSend = () => {
       })
       .then(response => {
         const fields = {
-          sendEnabled: response.send2faEnabled === true ?? false,
-          exportKeysEnabled: response.exportKeys2faEnabled === true ?? false
+          send2faEnabled: response.send2faEnabled === true ?? false,
+          exportKeys2faEnabled: response.exportKeys2faEnabled === true ?? false
         }
 
         setCustomer2FA(
@@ -236,7 +236,7 @@ export const useSend = () => {
         })
       }
 
-      if (customer2FA?.sendEnabled) {
+      if (customer2FA?.send2faEnabled) {
         setIs2FAVerifyOpen(true)
       }
     } catch (error) {

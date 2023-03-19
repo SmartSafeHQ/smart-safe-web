@@ -40,8 +40,8 @@ export const useSignIn2FA = () => {
       setCustomer(customer)
       setCustomer2FA({
         signInEnabled: true,
-        sendEnabled: false,
-        exportKeysEnabled: false
+        send2faEnabled: false,
+        exportKeys2faEnabled: false
       })
 
       createAuthCookieString(LAST_AUTH_COOKIE_NAME, new Date().toISOString(), 5)

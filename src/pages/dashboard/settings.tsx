@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { Tabs } from '@components/Tabs'
@@ -6,14 +6,25 @@ import { SecurityTab } from '@components/pages/Settings/Security'
 import { ExportKeys } from '@components/pages/Settings/Security/ExportKeys'
 
 import { useI18n } from '@hooks/useI18n'
+import { useAccount2faSettings } from '@hooks/accounts/queries/useAccount2faSettings'
 import { Security2FAProvider } from '@contexts/Security2FAContext'
+import { useAuth } from '@contexts/AuthContext'
 
-export type NavTabs = 'security'
+export type NavTabs = 'security' | 'export-keys'
 
 const Settings = () => {
   const { t } = useI18n()
+  const { customer, setIs2FAVerifyOpen } = useAuth()
 
-  const [, setTab] = useState<NavTabs>('security')
+  const { data: account2FAData } = useAccount2faSettings(customer?.id)
+
+  const [tab, setTab] = useState<NavTabs>('security')
+
+  useEffect(() => {
+    if (tab === 'export-keys' && account2FAData?.exportKeys2faEnabled) {
+      setIs2FAVerifyOpen(true)
+    }
+  }, [tab])
 
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-6 bg-gray-50 dark:bg-gray-900">

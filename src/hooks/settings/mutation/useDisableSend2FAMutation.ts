@@ -16,7 +16,7 @@ async function disableSend2FAFunction(
   await Auth.verifyTotpToken(input.cognitoUser, input.code.replace(/\s/g, ''))
 
   await tokenverseApi.patch(`/widget/settings/disable2fa/${input.id}`, {
-    fieldToEnable: 'send'
+    fieldToDisable: 'send'
   })
 }
 

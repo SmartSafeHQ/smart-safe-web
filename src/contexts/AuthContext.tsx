@@ -21,8 +21,8 @@ import {
 
 export type Customer2FAProps = {
   signInEnabled: boolean
-  sendEnabled: boolean
-  exportKeysEnabled: boolean
+  send2faEnabled: boolean
+  exportKeys2faEnabled: boolean
 }
 
 export type CustomerProps = {
@@ -113,8 +113,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         setCustomer2FA({
           signInEnabled: response.preferredMFA !== 'NOMFA',
-          sendEnabled: false,
-          exportKeysEnabled: false
+          send2faEnabled: false,
+          exportKeys2faEnabled: false
         })
 
         setCustomer({

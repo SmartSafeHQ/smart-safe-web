@@ -1,3 +1,4 @@
+import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 import { Heading } from '@components/Heading'
 import { PrivateKeysList } from './screens/PrivateKeysList'
 import { Checkboxes } from './screens/Checkboxes'
@@ -12,6 +13,8 @@ export function ExportKeys() {
     selectedChains,
     setCurrentScreen,
     setSelectedChains,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
     handleUpdateSingleCheckbox
   } = useExport()
 
@@ -36,6 +39,8 @@ export function ExportKeys() {
           setCurrentScreen={setCurrentScreen}
         />
       )}
+
+      <Verify2FAModal isOpen={is2FAVerifyOpen} setIsOpen={setIs2FAVerifyOpen} />
     </div>
   )
 }

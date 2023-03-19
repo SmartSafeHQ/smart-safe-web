@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
 import { useI18n } from '@hooks/useI18n'
-import { useAuth } from '@contexts/AuthContext'
+import { Customer2FAProps, useAuth } from '@contexts/AuthContext'
 import { useSecurity2FA } from '@contexts/Security2FAContext'
 import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 import { useEnableSignIn2FAMutation } from '../mutation/useEnableSignIn2FAMutation'
@@ -67,16 +67,27 @@ export const useSecuritySignIn2FA = () => {
         queryFn: () => fetchAccount2faSettings({ id: customer.id })
       })
       .then(response => {
-        const fields = {
-          sendEnabled: response.send2faEnabled === true ?? false,
-          exportKeysEnabled: response.exportKeys2faEnabled === true ?? false
+        const fields: Customer2FAProps = {
+          signInEnabled: customer2FA?.signInEnabled === true,
+          send2faEnabled: response.send2faEnabled === true,
+          exportKeys2faEnabled: response.exportKeys2faEnabled === true
         }
 
         updateCustomer2FAState(fields)
       })
   }, [customer])
 
-  function updateCustomer2FAState(input: { [key: string]: boolean }) {
+  function updateCustomer2FAState(input: {
+    // eslint-disable-next-line no-unused-vars
+    [_key in keyof Customer2FAProps]?: boolean
+  }) {
+    queryClient.setQueryData<FetchAccount2faSettingsResponse>(
+      ['account2faSettings', customer?.id],
+      oldData => {
+        return oldData && { ...oldData, ...input }
+      }
+    )
+
     setCustomer2FA(
       prev =>
         prev && {
@@ -136,7 +147,7 @@ export const useSecuritySignIn2FA = () => {
 
       toast.success(t.settings.security.enableSuccessMessage)
 
-      updateCustomer2FAState({ sendEnabled: true })
+      updateCustomer2FAState({ send2faEnabled: true })
 
       setIsEnable2FAOpen(false)
     } catch (e) {
@@ -158,7 +169,7 @@ export const useSecuritySignIn2FA = () => {
 
       toast.success(t.settings.security.disableSuccessMessage)
 
-      updateCustomer2FAState({ sendEnabled: false })
+      updateCustomer2FAState({ send2faEnabled: false })
 
       setIsDisable2FAOpen(false)
     } catch (e) {
@@ -180,7 +191,7 @@ export const useSecuritySignIn2FA = () => {
 
       toast.success(t.settings.security.enableSuccessMessage)
 
-      updateCustomer2FAState({ exportKeysEnabled: true })
+      updateCustomer2FAState({ exportKeys2faEnabled: true })
 
       setIsEnable2FAOpen(false)
     } catch (e) {
@@ -202,7 +213,7 @@ export const useSecuritySignIn2FA = () => {
 
       toast.success(t.settings.security.disableSuccessMessage)
 
-      updateCustomer2FAState({ exportKeysEnabled: false })
+      updateCustomer2FAState({ exportKeys2faEnabled: false })
 
       setIsDisable2FAOpen(false)
     } catch (e) {
