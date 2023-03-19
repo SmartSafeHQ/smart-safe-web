@@ -17,7 +17,6 @@ import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 interface LoginModalProps {
   isOpen: boolean
   setIsOpen: (_open: boolean) => void
-  setIs2FAModalOpen: (_open: boolean) => void
 }
 
 const loginValidationSchema = z.object({
@@ -27,11 +26,7 @@ const loginValidationSchema = z.object({
 
 export type LoginFieldValues = z.infer<typeof loginValidationSchema>
 
-export function LoginModal({
-  isOpen,
-  setIsOpen,
-  setIs2FAModalOpen
-}: LoginModalProps) {
+export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
   const { mutateAsync } = useLoginMutation()
 
   const { handleSignupWidget } = useLogin()
@@ -59,10 +54,6 @@ export function LoginModal({
       }
 
       setIsOpen(false)
-
-      if (!customer) {
-        setIs2FAModalOpen(true)
-      }
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }

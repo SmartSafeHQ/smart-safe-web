@@ -20,7 +20,7 @@ export type SignIn2FAFieldValues = z.infer<typeof validationSchema>
 
 export const useSignIn2FA = () => {
   const { push } = useRouter()
-  const { cognitoUser, setCognitoUser, setCustomer } = useAuth()
+  const { cognitoUser, setCognitoUser, setCustomer, setCustomer2FA } = useAuth()
   const { t, currentLocaleProps } = useI18n()
 
   const { register, handleSubmit, formState } = useForm<SignIn2FAFieldValues>({
@@ -38,6 +38,11 @@ export const useSignIn2FA = () => {
 
       setCognitoUser(authCognitoUser)
       setCustomer(customer)
+      setCustomer2FA({
+        signInEnabled: true,
+        sendEnabled: false,
+        exportKeysEnabled: false
+      })
 
       createAuthCookieString(LAST_AUTH_COOKIE_NAME, new Date().toISOString(), 5)
 

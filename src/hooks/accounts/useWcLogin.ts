@@ -52,7 +52,6 @@ export const useWcLogin = () => {
   const [sessionSignData, setSessionSignData] =
     useState<SessionDataProps | null>(null)
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false)
-  const [isSignIn2FAModalOpen, setIsSignIn2FAModalOpen] = useState(false)
   const [isQrScanOpen, setIsQrScanOpen] = useState<QrCodeScannerState>('closed')
 
   const { query } = useRouter()
@@ -61,7 +60,7 @@ export const useWcLogin = () => {
     resolver: zodResolver(validationSchema)
   })
 
-  const { customer } = useAuth()
+  const { customer, cognitoUser } = useAuth()
   const { t } = useI18n()
 
   async function createClient() {
@@ -79,7 +78,7 @@ export const useWcLogin = () => {
         cookie.trim().startsWith('CognitoIdentityServiceProvider')
       )
 
-    if (authCookies.length === 0) {
+    if (authCookies.length === 0 && !customer) {
       setIsSignInModalOpen(true)
       return
     }
@@ -147,14 +146,13 @@ export const useWcLogin = () => {
     t,
     signClient,
     customer,
+    cognitoUser,
     sessionSignData,
     setSessionSignData,
     sessionData,
     setSessionData,
     setIsSignInModalOpen,
     isQrScanOpen,
-    isSignIn2FAModalOpen,
-    setIsSignIn2FAModalOpen,
     setIsQrScanOpen,
     isSignInModalOpen,
     register,

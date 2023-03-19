@@ -52,7 +52,7 @@ export const useSecuritySignIn2FA = () => {
   const { mutateAsync: disableExportKeys2FAMutateAsync } =
     useDisableExportKeys2FAMutation()
 
-  const { customer, cognitoUser, setCustomer } = useAuth()
+  const { customer, cognitoUser, customer2FA, setCustomer2FA } = useAuth()
   const { t, currentLocaleProps } = useI18n()
 
   useEffect(() => {
@@ -74,11 +74,11 @@ export const useSecuritySignIn2FA = () => {
   }, [customer])
 
   function updateCustomer2FAState(input: { [key: string]: boolean }) {
-    setCustomer(
-      prevCustomer =>
-        prevCustomer && {
-          ...prevCustomer,
-          auth2fa: { ...prevCustomer.auth2fa, ...input }
+    setCustomer2FA(
+      prev =>
+        prev && {
+          ...prev,
+          ...input
         }
     )
   }
@@ -209,7 +209,7 @@ export const useSecuritySignIn2FA = () => {
 
   return {
     t,
-    customer,
+    customer2FA,
     isEnable2FAOpen,
     enable2FAOption,
     authCode,

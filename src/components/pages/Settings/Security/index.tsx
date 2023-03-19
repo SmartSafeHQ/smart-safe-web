@@ -11,7 +11,7 @@ import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSec
 export function SecurityTab() {
   const {
     t,
-    customer,
+    customer2FA,
     isEnable2FAOpen,
     enable2FAOption,
     authCode,
@@ -52,10 +52,10 @@ export function SecurityTab() {
             {t.settings.security.signInVerify}
           </Security2FASection.Title>
 
-          <Skeleton isLoading={!customer} className="w-full h-16">
+          <Skeleton isLoading={!customer2FA} className="w-full h-16">
             <Toggle2FA
               option="signIn"
-              isEnabled={customer?.auth2fa.signInEnabled ?? false}
+              isEnabled={customer2FA?.signInEnabled ?? false}
               enableFunction={enableSignIn2FAOnSubmit}
               disableFunction={disableSignIn2FAOnSubmit}
             >
@@ -77,10 +77,10 @@ export function SecurityTab() {
             {t.settings.security.sendTransaction}
           </Security2FASection.Title>
 
-          <Skeleton isLoading={!customer} className="w-full h-16">
+          <Skeleton isLoading={!customer2FA} className="w-full h-16">
             <Toggle2FA
               option="send"
-              isEnabled={customer?.auth2fa.sendEnabled ?? false}
+              isEnabled={customer2FA?.sendEnabled ?? false}
               enableFunction={enableSend2FAOnSubmit}
               disableFunction={disableSend2FAOnSubmit}
             >
@@ -102,10 +102,10 @@ export function SecurityTab() {
             {t.settings.security.privateKeys}
           </Security2FASection.Title>
 
-          <Skeleton isLoading={!customer} className="w-full h-16">
+          <Skeleton isLoading={!customer2FA} className="w-full h-16">
             <Toggle2FA
               option="export-keys"
-              isEnabled={customer?.auth2fa.exportKeysEnabled ?? false}
+              isEnabled={customer2FA?.exportKeysEnabled ?? false}
               enableFunction={enableExportKeys2FAOnSubmit}
               disableFunction={disableExportKeys2FAOnSubmit}
             >

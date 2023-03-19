@@ -17,7 +17,7 @@ import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 
 interface Verify2FAModalProps {
   isOpen: boolean
-  setIsOpen: (_isOpen: boolean) => void
+  setIsOpen?: (_isOpen: boolean) => void
 }
 
 const validationSchema = z.object({
@@ -53,7 +53,7 @@ export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
 
       setCognitoUser(authCognitoUser)
       setCustomer(customer)
-      setIsOpen(false)
+      setIsOpen && setIsOpen(false)
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }

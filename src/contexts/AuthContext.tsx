@@ -19,14 +19,15 @@ import {
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
 
+export type Customer2FAProps = {
+  signInEnabled: boolean
+  sendEnabled: boolean
+  exportKeysEnabled: boolean
+}
+
 export type CustomerProps = {
   id: number
   cognitoId: string
-  auth2fa: {
-    signInEnabled: boolean
-    sendEnabled: boolean
-    exportKeysEnabled: boolean
-  }
   name: string
   email: string
   wallets: {
@@ -46,10 +47,12 @@ type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
 type AuthContextData = {
   customer: CustomerProps | null
   cognitoUser: any | null
+  customer2FA: Customer2FAProps | null
   widgetProvider: any | null
   setWidgetProvider: (_widgetProvider: any) => void
   setCustomer: Dispatch<SetStateAction<CustomerProps | null>>
   setCognitoUser: (_cognitoUser: any) => void
+  setCustomer2FA: Dispatch<SetStateAction<Customer2FAProps | null>>
   signOut: () => void
 }
 
@@ -59,6 +62,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const { push, asPath } = useRouter()
   const [cognitoUser, setCognitoUser] = useState<any | null>(null)
   const [customer, setCustomer] = useState<CustomerProps | null>(null)
+  const [customer2FA, setCustomer2FA] = useState<Customer2FAProps | null>(null)
   const [widgetProvider, setWidgetProvider] = useState(null)
 
   async function signOut() {
@@ -104,14 +108,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         MobileBridgeCommunication.initialize().saveBiometric()
 
+        setCustomer2FA({
+          signInEnabled: response.preferredMFA !== 'NOMFA',
+          sendEnabled: false,
+          exportKeysEnabled: false
+        })
+
         setCustomer({
           id: accountWallets.id,
           cognitoId: sessionData.sub,
-          auth2fa: {
-            signInEnabled: response.preferredMFA !== 'NOMFA',
-            sendEnabled: false,
-            exportKeysEnabled: false
-          },
           name: sessionData.name,
           wallets: accountWallets,
           email: sessionData.email
@@ -135,10 +140,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       value={{
         customer,
         cognitoUser,
+        customer2FA,
         widgetProvider,
         setWidgetProvider,
         setCustomer,
         setCognitoUser,
+        setCustomer2FA,
         signOut
       }}
     >
