@@ -1,180 +1,139 @@
-import { DeviceMobileCamera, IconProps } from 'phosphor-react'
-import { UseFormRegister } from 'react-hook-form'
-import {
-  ForwardRefExoticComponent,
-  HTMLAttributes,
-  ReactNode,
-  RefAttributes
-} from 'react'
-import clsx from 'clsx'
+import { DeviceMobileCamera, Question, LockSimple } from 'phosphor-react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import Link from 'next/link'
+import { z } from 'zod'
 
-import {
-  DialogModal,
-  DialogModalContentProps
-} from '@components/Dialogs/DialogModal'
+import { Button } from '@components/Button'
+import { DialogModal } from '@components/Dialogs/DialogModal'
 import { TextInput } from '@components/Inputs/TextInput'
+import { HoverCard } from '@components/HoverCard'
 import { Text } from '@components/Text'
 
-export interface Verify2FAModalRootProps extends DialogModalContentProps {
-  title: string
-  children: ReactNode
-  description?: string
-  titleClassName?: string
-  descriptionClassName?: string
+import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMutation'
+import { useI18n } from '@hooks/useI18n'
+import { useAuth } from '@contexts/AuthContext'
+import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
+
+interface Verify2FAModalProps {
+  isOpen: boolean
+  setIsOpen: (_isOpen: boolean) => void
 }
 
-function Verify2FAModalRoot({
-  title,
-  description,
-  children,
-  titleClassName,
-  descriptionClassName,
-  className,
-  ...props
-}: Verify2FAModalRootProps) {
-  return (
-    <DialogModal.Content className="md:max-w-[36rem]" {...props}>
-      <header
-        className={clsx(
-          'text-left w-full flex items-start flex-col gap-3 mb-9 pt-6',
-          className
-        )}
-      >
-        <DialogModal.Title
-          className={clsx(
-            'text-2xl font-bold text-gray-800 dark:text-gray-50',
-            titleClassName
-          )}
-        >
-          {title}
-        </DialogModal.Title>
+const validationSchema = z.object({
+  code: z.string().min(1, { message: 'code required' })
+})
 
-        {description && (
-          <DialogModal.Description
-            className={clsx(
-              'text-gray-700 dark:text-gray-300',
-              descriptionClassName
-            )}
+export type FieldValues = z.infer<typeof validationSchema>
+
+const LINK_2FA_INFO =
+  'https://www.microsoft.com/en-us/security/business/security-101/what-is-two-factor-authentication-2fa'
+
+export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
+  const { mutateAsync } = useSignIn2FAMutation()
+
+  const { cognitoUser, setCustomer, setCognitoUser } = useAuth()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<FieldValues>({
+    resolver: zodResolver(validationSchema)
+  })
+
+  const { t, currentLocaleProps } = useI18n()
+
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
+    try {
+      const { cognitoUser: authCognitoUser, customer } = await mutateAsync({
+        cognitoUser,
+        code: data.code
+      })
+
+      setCognitoUser(authCognitoUser)
+      setCustomer(customer)
+      setIsOpen(false)
+    } catch (e) {
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
+    }
+  }
+
+  return (
+    <DialogModal.Root open={isOpen} onOpenChange={setIsOpen}>
+      <DialogModal.Content
+        className="md:max-w-[30rem]"
+        onCloseAutoFocus={e => e.preventDefault()}
+        onPointerDownOutside={e => e.preventDefault()}
+        onEscapeKeyDown={e => e.preventDefault()}
+      >
+        <header className="flex items-center gap-2 text-gray-800 dark:text-gray-100">
+          <LockSimple className="w-5 h-5" weight="bold" />
+
+          <DialogModal.Title className="font-semibold">
+            {t.settings.security.confirmAccess}
+          </DialogModal.Title>
+        </header>
+
+        <div className="text-center w-full flex items-center flex-col gap-3 mb-6 pt-10">
+          <DeviceMobileCamera className="w-10 h-10 text-gray-600 dark:text-gray-400" />
+
+          <div className="flex items-center gap-4">
+            <DialogModal.Title className="text-2xl font-semibold text-gray-800 dark:text-gray-100">
+              {t.settings.security.authCode}
+            </DialogModal.Title>
+
+            <HoverCard.Root>
+              <HoverCard.Trigger asChild>
+                <Link href={LINK_2FA_INFO} target="_blank">
+                  <Question className="w-6 h-6 text-gray-600 dark:text-gray-400" />
+                </Link>
+              </HoverCard.Trigger>
+
+              <HoverCard.Content className="text-sm">
+                {t.settings.security.knowMore}
+                <HoverCard.Arrow />
+              </HoverCard.Content>
+            </HoverCard.Root>
+          </div>
+        </div>
+
+        <section className="w-full flex flex-col gap-6 items-stretch">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-3 items-stretch w-full"
           >
-            {description}
-          </DialogModal.Description>
-        )}
-      </header>
+            <TextInput.Root
+              htmlFor="code"
+              error={errors.code?.message}
+              variant="secondary"
+            >
+              <TextInput.Label className="text-gray-800 dark:text-gray-50">
+                {t.settings.security.modalInputLabel}
+              </TextInput.Label>
 
-      {children}
-    </DialogModal.Content>
+              <TextInput.Content>
+                <TextInput.Input
+                  {...register('code')}
+                  required
+                  type="number"
+                  min={0}
+                  id="code"
+                  placeholder={t.settings.security.modalInputPlaceholder}
+                />
+              </TextInput.Content>
+            </TextInput.Root>
+
+            <Button type="submit" isLoading={isSubmitting}>
+              {t.settings.security.verify}
+            </Button>
+          </form>
+
+          <Text className="text-sm text-gray-900 dark:text-gray-200">
+            {t.settings.security.confirmDesc}
+          </Text>
+        </section>
+      </DialogModal.Content>
+    </DialogModal.Root>
   )
-}
-
-Verify2FAModalRoot.displayName = 'Verify2FAModal.Root'
-
-export interface Verify2FAModalContentProps
-  extends HTMLAttributes<HTMLElement> {
-  inputLabel: string
-  inputPlaceholder: string
-  onSubmit: () => Promise<void>
-  register: UseFormRegister<{ code: string }>
-  children: ReactNode
-  error?: string
-}
-
-function Verify2FAModalContent({
-  inputLabel,
-  inputPlaceholder,
-  onSubmit,
-  register,
-  children,
-  error,
-  className,
-  ...props
-}: Verify2FAModalContentProps) {
-  return (
-    <section
-      className={clsx('w-full flex flex-col gap-4 items-stretch', className)}
-      {...props}
-    >
-      <form
-        onSubmit={onSubmit}
-        className="flex flex-col gap-4 items-stretch w-full"
-      >
-        <TextInput.Root htmlFor="code" error={error} variant="secondary">
-          <TextInput.Label className="text-gray-800 dark:text-gray-50">
-            {inputLabel}
-          </TextInput.Label>
-
-          <TextInput.Content>
-            <TextInput.Input
-              {...register('code')}
-              required
-              type="number"
-              min={0}
-              id="code"
-              placeholder={inputPlaceholder}
-            />
-          </TextInput.Content>
-        </TextInput.Root>
-
-        {children}
-      </form>
-    </section>
-  )
-}
-
-Verify2FAModalContent.displayName = 'Verify2FAModal.Content'
-
-export interface Verify2FAModalInfoProps extends HTMLAttributes<HTMLElement> {
-  info: string
-  iconClassName?: string
-  infoClassName?: string
-  Icon?: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
-}
-
-function Verify2FAModalInfo({
-  Icon = DeviceMobileCamera,
-  info,
-  iconClassName,
-  infoClassName,
-  className,
-  ...props
-}: Verify2FAModalInfoProps) {
-  return (
-    <div
-      className={clsx('w-full flex items-start gap-2', className)}
-      {...props}
-    >
-      <Icon className={clsx(iconClassName)} />
-
-      <Text className={clsx('text-sm', infoClassName)}>{info}</Text>
-    </div>
-  )
-}
-
-Verify2FAModalInfo.displayName = 'Verify2FAModal.Info'
-
-export interface Verify2FAModalFooterProps extends HTMLAttributes<HTMLElement> {
-  children: ReactNode
-}
-
-function Verify2FAModalFooter({
-  children,
-  className,
-  ...props
-}: Verify2FAModalFooterProps) {
-  return (
-    <div
-      className={clsx('w-full flex items-center gap-4 mt-2', className)}
-      {...props}
-    >
-      {children}
-    </div>
-  )
-}
-
-Verify2FAModalFooter.displayName = 'Verify2FAModal.Footer'
-
-export const Verify2FAModal = {
-  Root: Verify2FAModalRoot,
-  Content: Verify2FAModalContent,
-  Info: Verify2FAModalInfo,
-  Footer: Verify2FAModalFooter
 }

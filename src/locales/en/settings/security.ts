@@ -22,6 +22,12 @@ export const security = {
   export: 'Export',
   keysDescrition:
     'To export your wallet&apos;s private keys and access your account funds without InWallet dependency will require two-factor authentication.',
+  confirmAccess: 'Confirm access',
+  authCode: 'Authentication code',
+  verify: 'Verify',
+  knowMore: 'know more about 2FA',
+  confirmDesc:
+    'Open your two-factor authenticator (TOTP) app or browser extension to view your authentication code.',
   mEnableTitle: 'Register 2FA',
   mEnableDesc:
     'Scan the image above with the two-factor authentication app on your phone',

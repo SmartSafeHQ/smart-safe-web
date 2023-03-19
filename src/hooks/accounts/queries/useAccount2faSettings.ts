@@ -21,10 +21,11 @@ export async function fetchAccount2faSettings({
   return apiResponse.data
 }
 
-export function useAccount2faSettings(id: number) {
+export function useAccount2faSettings(id = 0) {
   return useQuery({
     queryKey: ['account2faSettings', id],
     queryFn: () => fetchAccount2faSettings({ id }),
+    enabled: !!id,
     staleTime: 1000 * 60 * 10 // 10 minutes
   })
 }

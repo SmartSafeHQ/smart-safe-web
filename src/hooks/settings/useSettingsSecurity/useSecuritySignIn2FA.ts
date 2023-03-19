@@ -17,7 +17,7 @@ import { queryClient } from '@lib/reactQuery'
 import {
   fetchAccount2faSettings,
   FetchAccount2faSettingsResponse
-} from '@/hooks/accounts/queries/useAccount2faSettings'
+} from '@hooks/accounts/queries/useAccount2faSettings'
 
 export const security2FAvalidationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
@@ -210,7 +210,6 @@ export const useSecuritySignIn2FA = () => {
   return {
     t,
     customer,
-    cognitoUser,
     isEnable2FAOpen,
     enable2FAOption,
     authCode,

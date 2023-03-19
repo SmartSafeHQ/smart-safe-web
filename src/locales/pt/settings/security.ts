@@ -22,6 +22,12 @@ export const security = {
   export: 'Exportar',
   keysDescrition:
     'Para exportar as chaves privadas da sua carteira e acessar os fundos da sua conta sem depender da InWallet, será necessário autenticação de dois fatores.',
+  confirmAccess: 'Confirmar acesso',
+  authCode: 'Código de autenticação',
+  verify: 'Verificar',
+  knowMore: 'Saiba mais sobre o 2FA',
+  confirmDesc:
+    'Abra seu aplicativo autenticador de dois fatores (TOTP) ou extensão do navegador para visualizar o código de autenticação.',
   mEnableTitle: 'Registrar 2FA',
   mEnableDesc:
     'Digitalize a imagem acima com o aplicativo de autenticação de dois fatores em seu telefone',
