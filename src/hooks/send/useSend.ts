@@ -24,6 +24,11 @@ import {
   HandleSendTransactionProps,
   TransactionProps
 } from '@hooks/send/interfaces'
+import { queryClient } from '@lib/reactQuery'
+import {
+  fetchAccount2faSettings,
+  FetchAccount2faSettingsResponse
+} from '@hooks/accounts/queries/useAccount2faSettings'
 
 export const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'Invalid wallet address.' }),
@@ -41,7 +46,13 @@ export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
 }
 
 export const useSend = () => {
-  const { customer } = useAuth()
+  const {
+    customer,
+    setCustomer2FA,
+    customer2FA,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen
+  } = useAuth()
   const { t } = useI18n()
   const {
     register,
@@ -86,6 +97,30 @@ export const useSend = () => {
     data: txData,
     reset
   } = useSendMutation()
+
+  useEffect(() => {
+    if (!customer) return
+
+    queryClient
+      .ensureQueryData<FetchAccount2faSettingsResponse>({
+        queryKey: ['account2faSettings', customer.id],
+        queryFn: () => fetchAccount2faSettings({ id: customer.id })
+      })
+      .then(response => {
+        const fields = {
+          send2faEnabled: response.send2faEnabled === true ?? false,
+          exportKeys2faEnabled: response.exportKeys2faEnabled === true ?? false
+        }
+
+        setCustomer2FA(
+          prev =>
+            prev && {
+              ...prev,
+              ...fields
+            }
+        )
+      })
+  }, [customer])
 
   useEffect(() => {
     if (!coinsData || selectedCoin) {
@@ -200,6 +235,10 @@ export const useSend = () => {
           to: data.sendWallet
         })
       }
+
+      if (customer2FA?.send2faEnabled) {
+        setIs2FAVerifyOpen(true)
+      }
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
@@ -236,7 +275,7 @@ export const useSend = () => {
       const errorCode = getEthersErrorCode(error)
 
       if (errorCode) {
-        errorMessage = t.errors.ether.get(errorCode)?.message
+        errorMessage = t.errors.web3E.ether.get(errorCode)?.message
       }
 
       toast.error(errorMessage ?? t.errors.default)
@@ -254,6 +293,8 @@ export const useSend = () => {
     amounInReverseCoin,
     amountInputType,
     handleSubmit,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
     isSendingTx,
     txData,
     reset,

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router'
 import { locales } from '../locales'
 import { pt } from '../locales/pt'
 
-import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
+import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
 
 import {
   SupportedLanguages,

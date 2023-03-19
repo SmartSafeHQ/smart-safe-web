@@ -5,11 +5,12 @@ import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
-import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
+import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
 import { SessionApproval } from '@components/pages/Accounts/SessionApproval'
 import { SignMessage } from '@components/pages/Accounts/SignMessage'
 import { LoginModal } from '@components/pages/Accounts/LoginModal'
 import { QrCodeReader } from '@components/QrCodeReader'
+import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 
 import { useWcLogin } from '@hooks/accounts/useWcLogin'
 
@@ -18,6 +19,7 @@ export default function WalletconnectLogin() {
     t,
     signClient,
     customer,
+    cognitoUser,
     sessionSignData,
     setSessionSignData,
     sessionData,
@@ -129,6 +131,8 @@ export default function WalletconnectLogin() {
       </main>
 
       <LoginModal isOpen={isSignInModalOpen} setIsOpen={setIsSignInModalOpen} />
+
+      <Verify2FAModal isOpen={cognitoUser && !cognitoUser.signInUserSession} />
 
       <SessionApproval
         sessionData={sessionData}

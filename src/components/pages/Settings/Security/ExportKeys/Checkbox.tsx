@@ -1,7 +1,8 @@
+import type { ChangeEvent } from 'react'
+
+import clsx from 'clsx'
 import Image from 'next/image'
 import { Check } from 'phosphor-react'
-
-import type { ChangeEvent } from 'react'
 
 type Props = {
   label: string
@@ -38,11 +39,12 @@ export function Checkbox({
           type="checkbox"
           onChange={onChange}
           checked={isChecked}
-          className={`appearance-none relative w-[20px] h-[20px] border-1 rounded-full ${
-            isChecked
-              ? 'border-brand-foregroundAccent1'
-              : 'bg-slate-100/20 border-slate-800'
-          }`}
+          className={clsx(
+            'appearance-none relative w-[20px] h-[20px] border-1 rounded-full bg-slate-100/20 border-slate-800',
+            {
+              '!border-brand-foregroundAccent1': isChecked
+            }
+          )}
         />
 
         {isChecked && (

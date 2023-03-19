@@ -39,7 +39,7 @@ const ButtonComponent: ForwardRefRenderFunction<
         'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm w-full transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed',
         {
           'cursor-not-allowed brightness-75': isLoading,
-          'bg-brand-foregroundAccent1 text-brand-background hover:bg-brand-foregroundAccent2 disabled:hover:bg-cyan-800':
+          'bg-brand-foregroundAccent1 text-brand-background hover:bg-brand-foregroundAccent2 disabled:hover:bg-brand-foregroundAccent1':
             variant === 'primary',
           'bg-red-500 text-gray-50 hover:bg-red-400 disabled:hover:bg-red-500':
             variant === 'red'
@@ -62,3 +62,5 @@ const ButtonComponent: ForwardRefRenderFunction<
 }
 
 export const Button = forwardRef(ButtonComponent)
+
+// 'bg-brand-foregroundAccent1 text-brand-background hover:bg-brand-foregroundAccent2 disabled:hover:bg-cyan-800':

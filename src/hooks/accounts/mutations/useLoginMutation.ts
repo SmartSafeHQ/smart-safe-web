@@ -4,9 +4,12 @@ import { Auth } from 'aws-amplify'
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
 
-import { MobileBridgeCommunication } from '@/decorators/MobileBridgeCommunication'
+import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
 
-import type { FetchEndUserWalletsResponse } from '@utils/global/types'
+import {
+  fetchAccountWallets,
+  FetchAccountWalletsResponse
+} from '@hooks/accounts/queries/useAccountWallets'
 
 interface LoginFunctionInput {
   email: string
@@ -14,17 +17,21 @@ interface LoginFunctionInput {
 }
 
 interface LoginFunctionOutput {
-  cognitoId: string
-  name: string
-  email: string
-  wallets: {
-    evm: {
-      address: string
-      privateKey: string
-    }
-    solana: {
-      address: string
-      privateKey: string
+  cognitoUser: any
+  customer?: {
+    id: number
+    cognitoId: string
+    name: string
+    email: string
+    wallets: {
+      evm: {
+        address: string
+        privateKey: string
+      }
+      solana: {
+        address: string
+        privateKey: string
+      }
     }
   }
 }
@@ -39,30 +46,33 @@ async function loginFunction(
 
   MobileBridgeCommunication.initialize().saveBiometric()
 
-  const accessToken = response.signInUserSession.idToken.jwtToken
+  let customer
 
-  tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
+  if (response.signInUserSession) {
+    const accessToken = response.signInUserSession.idToken.jwtToken
 
-  const apiResponse = await tokenverseApi.get<FetchEndUserWalletsResponse>(
-    '/widget/wallets?privateKey=true'
-  )
+    tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
-  const sessionData = response.attributes
+    const accountWallets =
+      await queryClient.ensureQueryData<FetchAccountWalletsResponse>({
+        queryKey: ['accountWallets', accessToken],
+        queryFn: () => fetchAccountWallets(accessToken)
+      })
+
+    const sessionData = response.attributes
+
+    customer = {
+      id: accountWallets.id,
+      cognitoId: sessionData.sub,
+      name: sessionData.name,
+      email: sessionData.email,
+      wallets: accountWallets
+    }
+  }
 
   return {
-    cognitoId: sessionData.sub,
-    name: sessionData.name,
-    wallets: {
-      evm: {
-        address: apiResponse.data.evm[0].address,
-        privateKey: apiResponse.data.evm[0].privateKey
-      },
-      solana: {
-        address: apiResponse.data.solana[0].address,
-        privateKey: apiResponse.data.solana[0].privateKey
-      }
-    },
-    email: sessionData.email
+    customer,
+    cognitoUser: response
   }
 }
 

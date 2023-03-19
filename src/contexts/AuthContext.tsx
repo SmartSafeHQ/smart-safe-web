@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   PropsWithChildren,
+  SetStateAction,
   useContext,
   useEffect,
   useState
@@ -10,11 +12,24 @@ import { useRouter } from 'next/router'
 
 import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
 
-import { FetchEndUserWalletsResponse } from '@utils/global/types'
 import { tokenverseApi } from '@lib/axios'
+import { queryClient } from '@lib/reactQuery'
+import {
+  fetchAccountWallets,
+  FetchAccountWalletsResponse
+} from '@hooks/accounts/queries/useAccountWallets'
 
-type Customer = {
+export type Customer2FAProps = {
+  signInEnabled: boolean
+  send2faEnabled: boolean
+  exportKeys2faEnabled: boolean
+}
+
+export type CustomerProps = {
+  id: number
   cognitoId: string
+  name: string
+  email: string
   wallets: {
     evm: {
       address: string
@@ -25,17 +40,21 @@ type Customer = {
       privateKey: string
     }
   }
-  name: string
-  email: string
 }
 
 type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
 
 type AuthContextData = {
-  customer: Customer | null
+  customer: CustomerProps | null
+  cognitoUser: any | null
+  customer2FA: Customer2FAProps | null
   widgetProvider: any | null
+  is2FAVerifyOpen: boolean
   setWidgetProvider: (_widgetProvider: any) => void
-  setCustomer: (_customer: Customer) => void
+  setCustomer: Dispatch<SetStateAction<CustomerProps | null>>
+  setCognitoUser: (_cognitoUser: any) => void
+  setCustomer2FA: Dispatch<SetStateAction<Customer2FAProps | null>>
+  setIs2FAVerifyOpen: Dispatch<SetStateAction<boolean>>
   signOut: () => void
 }
 
@@ -43,7 +62,10 @@ const AuthContext = createContext({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const { push, asPath } = useRouter()
-  const [customer, setCustomer] = useState<Customer | null>(null)
+  const [cognitoUser, setCognitoUser] = useState<any | null>(null)
+  const [customer, setCustomer] = useState<CustomerProps | null>(null)
+  const [customer2FA, setCustomer2FA] = useState<Customer2FAProps | null>(null)
+  const [is2FAVerifyOpen, setIs2FAVerifyOpen] = useState(false)
   const [widgetProvider, setWidgetProvider] = useState(null)
 
   async function signOut() {
@@ -73,51 +95,46 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then(async response => {
+        setCognitoUser(response)
+
         const sessionData = response.attributes
 
         const accessToken = response.signInUserSession.idToken.jwtToken
 
         tokenverseApi.defaults.headers.common.Authorization = `Bearer ${accessToken}`
 
-        const apiResponse =
-          await tokenverseApi.get<FetchEndUserWalletsResponse>(
-            '/widget/wallets?privateKey=true'
-          )
+        const accountWallets =
+          await queryClient.ensureQueryData<FetchAccountWalletsResponse>({
+            queryKey: ['accountWallets', accessToken],
+            queryFn: () => fetchAccountWallets(accessToken)
+          })
 
         MobileBridgeCommunication.initialize().saveBiometric()
 
+        setCustomer2FA({
+          signInEnabled: response.preferredMFA !== 'NOMFA',
+          send2faEnabled: false,
+          exportKeys2faEnabled: false
+        })
+
         setCustomer({
+          id: accountWallets.id,
           cognitoId: sessionData.sub,
           name: sessionData.name,
-          wallets: {
-            evm: {
-              address: apiResponse.data.evm[0].address,
-              privateKey: apiResponse.data.evm[0].privateKey
-            },
-            solana: {
-              address: apiResponse.data.solana[0].address,
-              privateKey: apiResponse.data.solana[0].privateKey
-            }
-          },
+          wallets: accountWallets,
           email: sessionData.email
         })
       })
       .catch(_ => {
         setCustomer(null)
 
-        const noAuthCheckCase = [
-          '/',
-          '/accounts/wc',
-          '/accounts',
-          '/privacy',
-          '/en/privacy'
-        ].some(path => path === asPath)
+        const isAuthCheckCase = ['/dashboard'].some(path =>
+          asPath.startsWith(path)
+        )
 
-        if (noAuthCheckCase) {
-          return
+        if (isAuthCheckCase) {
+          signOut()
         }
-
-        signOut()
       })
   }, [])
 
@@ -125,9 +142,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     <AuthContext.Provider
       value={{
         customer,
+        cognitoUser,
+        customer2FA,
         widgetProvider,
+        is2FAVerifyOpen,
         setWidgetProvider,
         setCustomer,
+        setCognitoUser,
+        setCustomer2FA,
+        setIs2FAVerifyOpen,
         signOut
       }}
     >

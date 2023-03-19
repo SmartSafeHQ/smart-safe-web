@@ -1,10 +1,14 @@
-import { Checkbox } from '../Checkbox'
-import { Button } from '@/components/Button'
-
-import { useI18n } from '@/hooks/useI18n'
-
-import type { SelectedChains, Screens } from '@/hooks/export/interfaces'
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react'
+
+import type {
+  SelectedChains,
+  Screens
+} from '@/hooks/settings/export/interfaces'
+
+import { Checkbox } from '../Checkbox'
+import { Button } from '@components/Button'
+
+import { useI18n } from '@hooks/useI18n'
 
 type Props = {
   selectedChains: SelectedChains[]
@@ -31,7 +35,7 @@ export function Checkboxes({
   return (
     <div className="flex flex-col gap-4 w-full max-w-[400px]">
       <p className="text-center text-sm font-medium p-2 dark:text-yellow-300 rounded-lg border-1 border-yellow-300 bg-yellow-200/50">
-        {t.settings.security.exportKeys.screens.checkboxes.warning}
+        {t.settings.security.exportKeysScreens.checkboxes.warning}
       </p>
 
       <div className="flex flex-col gap-2 rounded-lg border-1 p-2 bg-slate-200/60 dark:bg-gray-500/20 dark:border-zinc-700/70">
@@ -60,7 +64,7 @@ export function Checkboxes({
         onClick={handleExport}
         disabled={!selectedChains.some(({ checked }) => checked)}
       >
-        {t.settings.security.exportKeys.screens.checkboxes.export}
+        {t.settings.security.exportKeysScreens.checkboxes.export}
       </Button>
     </div>
   )

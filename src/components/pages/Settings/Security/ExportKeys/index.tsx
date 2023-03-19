@@ -1,9 +1,10 @@
+import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 import { Heading } from '@components/Heading'
 import { PrivateKeysList } from './screens/PrivateKeysList'
 import { Checkboxes } from './screens/Checkboxes'
 
 import { useI18n } from '@hooks/useI18n'
-import { useExport } from '@hooks/export/useExport'
+import { useExport } from '@hooks/settings/export/useExport'
 
 export function ExportKeys() {
   const { t } = useI18n()
@@ -12,6 +13,8 @@ export function ExportKeys() {
     selectedChains,
     setCurrentScreen,
     setSelectedChains,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
     handleUpdateSingleCheckbox
   } = useExport()
 
@@ -19,7 +22,7 @@ export function ExportKeys() {
     <div className="flex flex-col gap-4 pt-8 h-full items-center">
       <div className="flex flex-col gap-2">
         <Heading className="text-center text-xl">
-          {t.settings.security.exportKeys.heading}
+          {t.settings.security.exportKeysHeading}
         </Heading>
       </div>
 
@@ -36,6 +39,8 @@ export function ExportKeys() {
           setCurrentScreen={setCurrentScreen}
         />
       )}
+
+      <Verify2FAModal isOpen={is2FAVerifyOpen} setIsOpen={setIs2FAVerifyOpen} />
     </div>
   )
 }
