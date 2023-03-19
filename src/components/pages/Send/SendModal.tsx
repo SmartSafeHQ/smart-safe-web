@@ -48,9 +48,9 @@ export function SendModal({
     <DialogModal.Content
       className="md:max-w-[32rem]"
       onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
-      onInteractOutside={e => e.preventDefault()}
+      onInteractOutside={e => isSendingTx && e.preventDefault()}
     >
-      <div className="w-full h-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
+      <div className="w-full h-full flex flex-col justify-center py-8 px-1 sm:py-3 sm:px-8">
         {!txData ? (
           <>
             <header className="w-full flex items-center flex-col gap-3 mb-6">
@@ -144,12 +144,6 @@ export function SendModal({
             </div>
 
             <div className="flex gap-2 md:flex-col-reverse">
-              <DialogModal.Trigger>
-                <Button className="bg-gray-200 text-gray-900 hover:bg-gray-300 m-0">
-                  {t.send.cancel}
-                </Button>
-              </DialogModal.Trigger>
-
               <Button
                 onClick={() =>
                   handleSendTransaction({
@@ -166,13 +160,7 @@ export function SendModal({
           </>
         ) : (
           <SendSuccess
-            transactionUrl={
-              coin.symbol === 'sol'
-                ? process.env.NODE_ENV === 'development'
-                  ? `${coin.explorerUrl}/tx/${txData.transactionHash}?cluster=testnet`
-                  : `${coin.explorerUrl}/tx/${txData.transactionHash}`
-                : `${coin.explorerUrl}tx/${txData.transactionHash}`
-            }
+            transactionUrl={`${coin.explorerUrl}/tx/${txData.transactionHash}`}
             amountInUsd={usdAmount}
             to={to}
             formattedToWallet={destinationWalletFormatted}

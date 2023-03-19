@@ -11,6 +11,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendModal } from '@components/pages/Send/SendModal'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { CoinsDropDownInput } from '@components/Inputs/CoinsDropDownInput'
+import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 
 import { useSend } from '@hooks/send/useSend'
 
@@ -26,6 +27,8 @@ const Send = () => {
     amounInReverseCoin,
     amountInputType,
     txData,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
     isSendingTx,
     transaction,
     register,
@@ -56,7 +59,7 @@ const Send = () => {
               <h1>{t.send.sendUsing}:</h1>
             </Heading>
 
-            <Skeleton isLoading={coinsIsLoading} className="h-12">
+            <Skeleton isLoading={coinsIsLoading} className="w-full h-12">
               {coinsData && (
                 <CoinsDropDownInput
                   coins={coinsData.coins}
@@ -66,10 +69,7 @@ const Send = () => {
             </Skeleton>
           </div>
 
-          <Skeleton
-            isLoading={coinsIsLoading}
-            className="max-w-[13rem] h-24 mx-auto"
-          >
+          <Skeleton isLoading={coinsIsLoading} className="w-52 h-24 mx-auto">
             {selectedCoin && (
               <div className="w-full flex items-center justify-center gap-3">
                 <Avatar.Root
@@ -170,15 +170,22 @@ const Send = () => {
           </form>
 
           {selectedCoin && transaction && !errors.sendWallet && (
-            <SendModal
-              coin={selectedCoin}
-              coinAmount={transaction.coinAmount}
-              to={transaction.to}
-              usdAmount={transaction.usdAmount}
-              isSendingTx={isSendingTx}
-              txData={txData}
-              handleSendTransaction={handleSendTransaction}
-            />
+            <>
+              <SendModal
+                coin={selectedCoin}
+                coinAmount={transaction.coinAmount}
+                to={transaction.to}
+                usdAmount={transaction.usdAmount}
+                isSendingTx={isSendingTx}
+                txData={txData}
+                handleSendTransaction={handleSendTransaction}
+              />
+
+              <Verify2FAModal
+                isOpen={is2FAVerifyOpen}
+                setIsOpen={setIs2FAVerifyOpen}
+              />
+            </>
           )}
         </div>
       </DialogModal.Root>

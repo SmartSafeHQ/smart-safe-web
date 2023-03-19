@@ -49,10 +49,12 @@ type AuthContextData = {
   cognitoUser: any | null
   customer2FA: Customer2FAProps | null
   widgetProvider: any | null
+  is2FAVerifyOpen: boolean
   setWidgetProvider: (_widgetProvider: any) => void
   setCustomer: Dispatch<SetStateAction<CustomerProps | null>>
   setCognitoUser: (_cognitoUser: any) => void
   setCustomer2FA: Dispatch<SetStateAction<Customer2FAProps | null>>
+  setIs2FAVerifyOpen: Dispatch<SetStateAction<boolean>>
   signOut: () => void
 }
 
@@ -63,6 +65,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [cognitoUser, setCognitoUser] = useState<any | null>(null)
   const [customer, setCustomer] = useState<CustomerProps | null>(null)
   const [customer2FA, setCustomer2FA] = useState<Customer2FAProps | null>(null)
+  const [is2FAVerifyOpen, setIs2FAVerifyOpen] = useState(false)
   const [widgetProvider, setWidgetProvider] = useState(null)
 
   async function signOut() {
@@ -142,10 +145,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         cognitoUser,
         customer2FA,
         widgetProvider,
+        is2FAVerifyOpen,
         setWidgetProvider,
         setCustomer,
         setCognitoUser,
         setCustomer2FA,
+        setIs2FAVerifyOpen,
         signOut
       }}
     >

@@ -12,6 +12,8 @@ export function SecurityTab() {
   const {
     t,
     customer2FA,
+    account2FAData,
+    account2FAError,
     isEnable2FAOpen,
     enable2FAOption,
     authCode,
@@ -52,7 +54,7 @@ export function SecurityTab() {
             {t.settings.security.signInVerify}
           </Security2FASection.Title>
 
-          <Skeleton isLoading={!customer2FA} className="w-full h-16">
+          <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
               option="signIn"
               isEnabled={customer2FA?.signInEnabled ?? false}
@@ -77,7 +79,9 @@ export function SecurityTab() {
             {t.settings.security.sendTransaction}
           </Security2FASection.Title>
 
-          <Skeleton isLoading={!customer2FA} className="w-full h-16">
+          {!!account2FAError && <span>error</span>}
+
+          <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
               option="send"
               isEnabled={customer2FA?.sendEnabled ?? false}
@@ -102,7 +106,9 @@ export function SecurityTab() {
             {t.settings.security.privateKeys}
           </Security2FASection.Title>
 
-          <Skeleton isLoading={!customer2FA} className="w-full h-16">
+          {!!account2FAError && <span>error</span>}
+
+          <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
               option="export-keys"
               isEnabled={customer2FA?.exportKeysEnabled ?? false}

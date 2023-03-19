@@ -2,7 +2,7 @@ import { HTMLAttributes, ReactNode } from 'react'
 import { clsx } from 'clsx'
 
 interface Security2FASectionRootProps extends HTMLAttributes<HTMLDivElement> {
-  children: ReactNode
+  children: ReactNode[]
 }
 
 function Security2FASectionRoot({

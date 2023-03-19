@@ -46,7 +46,13 @@ export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
 }
 
 export const useSend = () => {
-  const { customer, setCustomer } = useAuth()
+  const {
+    customer,
+    setCustomer2FA,
+    customer2FA,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen
+  } = useAuth()
   const { t } = useI18n()
   const {
     register,
@@ -106,11 +112,11 @@ export const useSend = () => {
           exportKeysEnabled: response.exportKeys2faEnabled === true ?? false
         }
 
-        setCustomer(
-          prevCustomer =>
-            prevCustomer && {
-              ...prevCustomer,
-              auth2fa: { ...prevCustomer.auth2fa, ...fields }
+        setCustomer2FA(
+          prev =>
+            prev && {
+              ...prev,
+              ...fields
             }
         )
       })
@@ -229,6 +235,10 @@ export const useSend = () => {
           to: data.sendWallet
         })
       }
+
+      if (customer2FA?.sendEnabled) {
+        setIs2FAVerifyOpen(true)
+      }
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
@@ -283,6 +293,8 @@ export const useSend = () => {
     amounInReverseCoin,
     amountInputType,
     handleSubmit,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
     isSendingTx,
     txData,
     reset,

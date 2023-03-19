@@ -1,6 +1,7 @@
 import { DeviceMobileCamera, Question, LockSimple } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Auth } from 'aws-amplify'
 import Link from 'next/link'
 import { z } from 'zod'
 
@@ -10,8 +11,8 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { HoverCard } from '@components/HoverCard'
 import { Text } from '@components/Text'
 
-import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMutation'
 import { useI18n } from '@hooks/useI18n'
+import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMutation'
 import { useAuth } from '@contexts/AuthContext'
 import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 
@@ -37,6 +38,7 @@ export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting }
   } = useForm<FieldValues>({
     resolver: zodResolver(validationSchema)
@@ -46,14 +48,20 @@ export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
-      const { cognitoUser: authCognitoUser, customer } = await mutateAsync({
-        cognitoUser,
-        code: data.code
-      })
+      if (!cognitoUser.signInUserSession) {
+        const { cognitoUser: authCognitoUser, customer } = await mutateAsync({
+          cognitoUser,
+          code: data.code
+        })
 
-      setCognitoUser(authCognitoUser)
-      setCustomer(customer)
+        setCognitoUser(authCognitoUser)
+        setCustomer(customer)
+      } else {
+        await Auth.verifyTotpToken(cognitoUser, data.code)
+      }
+
       setIsOpen && setIsOpen(false)
+      reset()
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }

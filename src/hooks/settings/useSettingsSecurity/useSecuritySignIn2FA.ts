@@ -15,6 +15,7 @@ import { useEnableExportKeys2FAMutation } from '../mutation/useEnableExportKeys2
 import { useDisableExportKeys2FAMutation } from '../mutation/useDisableExportKeys2FAMutation'
 import { queryClient } from '@lib/reactQuery'
 import {
+  useAccount2faSettings,
   fetchAccount2faSettings,
   FetchAccount2faSettingsResponse
 } from '@hooks/accounts/queries/useAccount2faSettings'
@@ -41,6 +42,11 @@ export const useSecuritySignIn2FA = () => {
     isDisable2FAOpen
   } = useSecurity2FA()
 
+  const { customer, cognitoUser, customer2FA, setCustomer2FA } = useAuth()
+  const { t, currentLocaleProps } = useI18n()
+
+  const { data: account2FAData, error: account2FAError } =
+    useAccount2faSettings(customer?.id)
   const { mutateAsync: enableSignIn2FAMutateAsync } =
     useEnableSignIn2FAMutation()
   const { mutateAsync: disableSignIn2FAMutateAsync } =
@@ -51,9 +57,6 @@ export const useSecuritySignIn2FA = () => {
     useEnableExportKeys2FAMutation()
   const { mutateAsync: disableExportKeys2FAMutateAsync } =
     useDisableExportKeys2FAMutation()
-
-  const { customer, cognitoUser, customer2FA, setCustomer2FA } = useAuth()
-  const { t, currentLocaleProps } = useI18n()
 
   useEffect(() => {
     if (!customer) return
@@ -213,6 +216,8 @@ export const useSecuritySignIn2FA = () => {
     isEnable2FAOpen,
     enable2FAOption,
     authCode,
+    account2FAData,
+    account2FAError,
     isDisable2FAOpen,
     setIsEnable2FAOpen,
     setIsDisable2FAOpen,
