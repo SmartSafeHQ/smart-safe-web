@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { tokenverseApi } from '@lib/axios'
 import { FetchEndUserWalletsResponse } from '@utils/global/types'
+import { formatWalletAddress } from '@utils/global'
 
 interface FetchAccountWalletsInput {
   accessToken: string
@@ -11,10 +12,12 @@ export interface FetchAccountWalletsResponse {
   id: number
   evm: {
     address: string
+    formattedAddress: string
     privateKey: string
   }
   solana: {
     address: string
+    formattedAddress: string
     privateKey: string
   }
 }
@@ -30,15 +33,23 @@ export async function fetchAccountWallets({
     '/widget/wallets?privateKey=true'
   )
 
+  const evmInfos = apiResponse.data.evm[0]
+  const solanaInfos = apiResponse.data.solana[0]
+
+  const evmFormattedAddress = formatWalletAddress(evmInfos.address)
+  const solanaFormattedAddress = formatWalletAddress(solanaInfos.address, 4)
+
   return {
     id: apiResponse.data.id,
     evm: {
-      address: apiResponse.data.evm[0].address,
-      privateKey: apiResponse.data.evm[0].privateKey
+      address: evmInfos.address,
+      formattedAddress: evmFormattedAddress,
+      privateKey: evmInfos.privateKey
     },
     solana: {
-      address: apiResponse.data.solana[0].address,
-      privateKey: apiResponse.data.solana[0].privateKey
+      address: solanaInfos.address,
+      formattedAddress: solanaFormattedAddress,
+      privateKey: solanaInfos.privateKey
     }
   }
 }

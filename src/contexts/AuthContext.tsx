@@ -18,28 +18,12 @@ import {
   fetchAccountWallets,
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
+import { CustomerProps } from '@utils/global/types'
 
 export type Customer2FAProps = {
   signInEnabled: boolean
   send2faEnabled: boolean
   exportKeys2faEnabled: boolean
-}
-
-export type CustomerProps = {
-  id: number
-  cognitoId: string
-  name: string
-  email: string
-  wallets: {
-    evm: {
-      address: string
-      privateKey: string
-    }
-    solana: {
-      address: string
-      privateKey: string
-    }
-  }
 }
 
 type AuthProviderProps = PropsWithChildren<Record<string, unknown>>

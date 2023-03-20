@@ -25,6 +25,16 @@ export function formatCurrencyToNumber(currency: string) {
   return Number(currency.replace(/[^0-9.]+/g, ''))
 }
 
+export function formatWalletAddress(
+  address: string,
+  firstCharsCount = 6,
+  lastCharsCount = 4
+) {
+  return `${address.slice(0, firstCharsCount)}...${address.slice(
+    -lastCharsCount
+  )}`
+}
+
 export function getEthersErrorCode(error: unknown) {
   const code = (error as EthereumError)?.code
 

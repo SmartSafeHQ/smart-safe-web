@@ -17,10 +17,10 @@ export const send = {
   copyAddress: 'Copy address',
   date: 'date',
   proof: 'proof',
-  viewProof: 'view proof',
+  viewProof: 'View proof',
   backToSend: 'Back to send',
   errors: {
-    invalidAmountToSend: 'Invalid amount.',
-    invalidWalletAddress: 'Invalid wallet address.'
+    invalidAmount: 'Invalid amount.',
+    invalidAddress: 'Invalid wallet address.'
   }
 }

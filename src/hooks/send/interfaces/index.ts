@@ -7,6 +7,11 @@ export interface CoinProps {
   explorerUrl: string
 }
 
+export interface FormData {
+  sendWallet: string
+  amount: string
+}
+
 export interface AmountInputType {
   symbol: 'usd' | string
   defaultValue: string
@@ -17,9 +22,11 @@ export interface AmountInputType {
 }
 
 export interface TransactionProps {
-  usdAmount: number
+  usdAmount: string
   coinAmount: number
   to: string
+  formattedTo: string
+  formattedCoinAmount: string
 }
 
 export interface HandleSendTransactionProps {

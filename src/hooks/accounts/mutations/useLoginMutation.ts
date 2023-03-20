@@ -5,6 +5,7 @@ import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
 
 import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
+import { CustomerProps } from '@utils/global/types'
 
 import {
   fetchAccountWallets,
@@ -18,22 +19,7 @@ interface LoginFunctionInput {
 
 interface LoginFunctionOutput {
   cognitoUser: any
-  customer?: {
-    id: number
-    cognitoId: string
-    name: string
-    email: string
-    wallets: {
-      evm: {
-        address: string
-        privateKey: string
-      }
-      solana: {
-        address: string
-        privateKey: string
-      }
-    }
-  }
+  customer?: CustomerProps
 }
 
 async function loginFunction(

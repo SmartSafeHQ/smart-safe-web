@@ -26,7 +26,7 @@ interface SendFunctionInput {
   rpcUrl: string
 }
 
-interface SendFunctionOutput {
+export interface SendFunctionOutput {
   transactionHash: string
 }
 

@@ -31,7 +31,7 @@ export function Toggle2FA({
     <div className="flex items-start gap-4">
       {isEnabled ? (
         <Button
-          className="w-min max-w-[5rem] !py-2 text-xs"
+          className="w-full max-w-[5rem] !py-2 text-xs"
           variant="red"
           onClick={() =>
             handleDisableTOTP(option, enableFunction, disableFunction)
@@ -41,7 +41,7 @@ export function Toggle2FA({
         </Button>
       ) : (
         <Button
-          className="w-min !px-3 !py-2 text-xs"
+          className="w-full max-w-[5rem] !py-2 text-xs"
           onClick={() =>
             handleSetupTOTP(option, enableFunction, disableFunction)
           }
