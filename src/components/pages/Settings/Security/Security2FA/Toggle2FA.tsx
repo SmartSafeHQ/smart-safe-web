@@ -5,7 +5,7 @@ import { Button } from '@components/Button'
 import {
   Options,
   Verify2FAFunctionProps
-} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+} from '@hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 import { useI18n } from '@hooks/useI18n'
 import { useSecurity2FA } from '@contexts/Security2FAContext'
 
@@ -31,7 +31,7 @@ export function Toggle2FA({
     <div className="flex items-start gap-4">
       {isEnabled ? (
         <Button
-          className="w-min max-w-[5rem] !py-2 text-xs"
+          className="w-full max-w-[5rem] !py-2 text-xs"
           variant="red"
           onClick={() =>
             handleDisableTOTP(option, enableFunction, disableFunction)
@@ -41,7 +41,7 @@ export function Toggle2FA({
         </Button>
       ) : (
         <Button
-          className="w-min !px-3 !py-2 text-xs"
+          className="w-full max-w-[5rem] !py-2 text-xs"
           onClick={() =>
             handleSetupTOTP(option, enableFunction, disableFunction)
           }

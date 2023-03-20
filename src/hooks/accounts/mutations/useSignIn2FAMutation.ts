@@ -3,6 +3,7 @@ import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
+import { CustomerProps } from '@utils/global/types'
 
 import {
   fetchAccountWallets,
@@ -17,22 +18,7 @@ interface SignIn2FAFunctionInput {
 
 interface SignIn2FAFunctionOutput {
   cognitoUser: any
-  customer: {
-    id: number
-    cognitoId: string
-    name: string
-    email: string
-    wallets: {
-      evm: {
-        address: string
-        privateKey: string
-      }
-      solana: {
-        address: string
-        privateKey: string
-      }
-    }
-  }
+  customer: CustomerProps
 }
 
 async function signIn2FAFunction({

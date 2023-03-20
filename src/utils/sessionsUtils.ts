@@ -1,3 +1,4 @@
+import dayjs from 'dayjs'
 import { toast } from 'react-toastify'
 
 import { SupportedLanguages } from '@utils/global/constants/i18n'
@@ -32,11 +33,10 @@ export function isTokenValid(
   lastAuthDateISO: string,
   maxOfHoursToExpire: number
 ) {
-  const authTime = new Date(lastAuthDateISO).getTime()
-  const diffenceInMilliseconds = Math.abs(new Date().getTime() - authTime)
-  const hoursActive = Math.ceil(diffenceInMilliseconds / (1000 * 60 * 60))
+  const lastVerifyAt = dayjs(lastAuthDateISO)
+  const hoursSinceLastAuth = dayjs().diff(lastVerifyAt, 'hours')
 
-  return hoursActive <= maxOfHoursToExpire
+  return hoursSinceLastAuth <= maxOfHoursToExpire
 }
 
 export function getAuthErrorMessageWithToast(

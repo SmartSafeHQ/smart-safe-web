@@ -44,7 +44,7 @@ export const security = {
     'Desativar o 2FA tornará sua conta menos segura e aumentará o risco de acesso não autorizado.',
   disableSuccessMessage: 'Autenticação de dois fatores desativada com sucesso',
   exportKeysHeading: 'Exportar chaves privadas',
-  exportKeysScreens: {
+  exportKeys: {
     checkboxes: {
       warning:
         'Ao exportar suas chaves privadas você concorda em ser o responsável pela segurança dos fundos contidos nas carteiras exportadas.',
@@ -52,7 +52,7 @@ export const security = {
       uncheckAll: 'Desmarcar todos',
       export: 'Exportar'
     },
-    privateKeysList: {
+    privateKeys: {
       warning:
         'Não compartilhe sua chave privada! Qualquer pessoa em posse dela será capaz de mover os fundos contidos nela.',
       copy: 'Copiar',

@@ -32,7 +32,7 @@ export type Verify2FAFunctionProps = SubmitHandler<{
   code: string
 }>
 
-export const useSecuritySignIn2FA = () => {
+export const useSettingsSecurity2FA = () => {
   const {
     setIsEnable2FAOpen,
     setIsDisable2FAOpen,
@@ -67,7 +67,7 @@ export const useSecuritySignIn2FA = () => {
         queryFn: () => fetchAccount2faSettings({ id: customer.id })
       })
       .then(response => {
-        const fields: Customer2FAProps = {
+        const fields = {
           signInEnabled: customer2FA?.signInEnabled === true,
           send2faEnabled: response.send2faEnabled === true,
           exportKeys2faEnabled: response.exportKeys2faEnabled === true
@@ -92,7 +92,8 @@ export const useSecuritySignIn2FA = () => {
       prev =>
         prev && {
           ...prev,
-          ...input
+          ...input,
+          lastVerifyAt: prev.lastVerifyAt
         }
     )
   }

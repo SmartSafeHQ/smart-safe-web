@@ -9,28 +9,18 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { HoverCard } from '@components/HoverCard'
 
 import { handleCopyToClipboard } from '@utils/global'
-import { useSend } from '@hooks/send/useSend'
+import { useCustomSendHook } from '@hooks/send/useSend'
+import { useSend } from '@/contexts/SendContext'
 
 export interface SendSuccessProps {
-  to: string
-  formattedToWallet: string
-  amountInUsd: number
-  amountIncoin: number
   transactionUrl: string
-  coinName: string
-  coinAvatar: string
 }
 
-export function SendSuccess({
-  transactionUrl,
-  to,
-  formattedToWallet,
-  amountInUsd,
-  amountIncoin,
-  coinName,
-  coinAvatar
-}: SendSuccessProps) {
-  const { t } = useSend()
+export function SendSuccess({ transactionUrl }: SendSuccessProps) {
+  const { t } = useCustomSendHook()
+  const { transaction, selectedCoin: coin, resetSendMutation } = useSend()
+
+  if (!transaction) return <></>
 
   return (
     <div className="w-full flex flex-col items-center justify-center gap-2">
@@ -38,17 +28,17 @@ export function SendSuccess({
 
       <div className="w-full max-w-md flex flex-col items-center justify-center gap-4 md:max-w-xs text-gray-800 dark:text-gray-100">
         <div className="w-full flex flex-col items-center gap-2">
-          <Heading className="text-2xl font-medium gray-50 capitalize">
-            $ {amountInUsd.toFixed(2)} {t.send.sent}
+          <Heading className="text-2xl gray-50 capitalize">
+            $ {transaction.usdAmount} {t.send.sent}
           </Heading>
 
           <HoverCard.Root>
             <HoverCard.Trigger asChild>
               <button
-                onClick={() => handleCopyToClipboard(to)}
+                onClick={() => handleCopyToClipboard(transaction.to)}
                 className="text-sm"
               >
-                {t.send.to} {formattedToWallet}
+                {t.send.to} {transaction.formattedTo}
               </button>
             </HoverCard.Trigger>
 
@@ -65,13 +55,13 @@ export function SendSuccess({
               <h3>{t.send.amount}</h3>
             </Heading>
 
-            <Avatar.Root fallbackName={coinName} className="w-5 h-5 mr-1">
-              <Avatar.Image src={coinAvatar} alt={`${coinAvatar} icon`} />
+            <Avatar.Root fallbackName={coin.symbol} className="w-5 h-5 mr-1">
+              <Avatar.Image src={coin.avatar} alt={`${coin.avatar} icon`} />
             </Avatar.Root>
           </div>
 
           <Text className="text-sm">
-            {amountIncoin.toFixed(4)} {coinName}
+            {transaction.formattedCoinAmount} {coin.symbol}
           </Text>
         </div>
 
@@ -106,7 +96,9 @@ export function SendSuccess({
         </div>
 
         <DialogModal.Trigger>
-          <Button className="mt-6">{t.send.backToSend}</Button>
+          <Button className="mt-6" onClick={resetSendMutation}>
+            {t.send.backToSend}
+          </Button>
         </DialogModal.Trigger>
       </div>
     </div>

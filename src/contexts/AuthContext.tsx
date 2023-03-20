@@ -9,6 +9,7 @@ import {
 } from 'react'
 import { Auth } from 'aws-amplify'
 import { useRouter } from 'next/router'
+import dayjs from 'dayjs'
 
 import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
 
@@ -18,28 +19,13 @@ import {
   fetchAccountWallets,
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
+import { CustomerProps } from '@utils/global/types'
 
 export type Customer2FAProps = {
   signInEnabled: boolean
   send2faEnabled: boolean
   exportKeys2faEnabled: boolean
-}
-
-export type CustomerProps = {
-  id: number
-  cognitoId: string
-  name: string
-  email: string
-  wallets: {
-    evm: {
-      address: string
-      privateKey: string
-    }
-    solana: {
-      address: string
-      privateKey: string
-    }
-  }
+  lastVerifyAt: number
 }
 
 type AuthProviderProps = PropsWithChildren<Record<string, unknown>>
@@ -50,11 +36,12 @@ type AuthContextData = {
   customer2FA: Customer2FAProps | null
   widgetProvider: any | null
   is2FAVerifyOpen: boolean
-  setWidgetProvider: (_widgetProvider: any) => void
   setCustomer: Dispatch<SetStateAction<CustomerProps | null>>
-  setCognitoUser: (_cognitoUser: any) => void
   setCustomer2FA: Dispatch<SetStateAction<Customer2FAProps | null>>
   setIs2FAVerifyOpen: Dispatch<SetStateAction<boolean>>
+  setWidgetProvider: (_widgetProvider: any) => void
+  setCognitoUser: (_cognitoUser: any) => void
+  verify2FA: () => void
   signOut: () => void
 }
 
@@ -92,6 +79,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  function verify2FA() {
+    if (!customer2FA) {
+      setIs2FAVerifyOpen(true)
+      setCustomer2FA({
+        signInEnabled: true,
+        send2faEnabled: false,
+        exportKeys2faEnabled: false,
+        lastVerifyAt: Date.now()
+      })
+      return
+    }
+
+    const lastVerifyAt = dayjs(customer2FA.lastVerifyAt)
+    const secondsSinceLast2FAVerify = dayjs().diff(lastVerifyAt, 'seconds')
+
+    if (secondsSinceLast2FAVerify < 30) return
+
+    setIs2FAVerifyOpen(true)
+  }
+
   useEffect(() => {
     Auth.currentAuthenticatedUser()
       .then(async response => {
@@ -114,7 +121,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setCustomer2FA({
           signInEnabled: response.preferredMFA !== 'NOMFA',
           send2faEnabled: false,
-          exportKeys2faEnabled: false
+          exportKeys2faEnabled: false,
+          lastVerifyAt: Date.now() - 1 * 60 * 1000
         })
 
         setCustomer({
@@ -151,6 +159,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setCognitoUser,
         setCustomer2FA,
         setIs2FAVerifyOpen,
+        verify2FA,
         signOut
       }}
     >

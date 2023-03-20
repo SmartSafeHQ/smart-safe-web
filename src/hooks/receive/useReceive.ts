@@ -23,26 +23,14 @@ export const useReceive = () => {
       customer?.wallets.evm.address
     ) {
       return coinsData.coins.map(({ avatar, network }) => {
-        if (network === 'solana') {
-          const wallet = customer.wallets.solana.address
-          return {
-            icon: avatar,
-            network,
-            formattedWallet: `${wallet?.substring(0, 6)}...${wallet?.substring(
-              40
-            )}`,
-            wallet
-          }
-        } else {
-          const wallet = customer?.wallets.evm.address
-          return {
-            icon: avatar,
-            network,
-            formattedWallet: `${wallet?.substring(0, 6)}...${wallet?.substring(
-              38
-            )}`,
-            wallet
-          }
+        const wallet =
+          network === 'solana' ? customer.wallets.solana : customer.wallets.evm
+
+        return {
+          icon: avatar,
+          network,
+          formattedWallet: wallet.formattedAddress,
+          wallet: wallet.address
         }
       })
     }
@@ -56,6 +44,7 @@ export const useReceive = () => {
 
   function handleSelectWalletAccount(index: string) {
     const userWallet = wallets[Number(index)]
+
     setSelectedWallet({
       wallet: userWallet.wallet,
       formattedWallet: userWallet.formattedWallet

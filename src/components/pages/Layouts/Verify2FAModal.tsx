@@ -16,11 +16,6 @@ import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMuta
 import { useAuth } from '@contexts/AuthContext'
 import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
 
-interface Verify2FAModalProps {
-  isOpen: boolean
-  setIsOpen?: (_isOpen: boolean) => void
-}
-
 const validationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
 })
@@ -30,10 +25,17 @@ export type FieldValues = z.infer<typeof validationSchema>
 const LINK_2FA_INFO =
   'https://www.microsoft.com/en-us/security/business/security-101/what-is-two-factor-authentication-2fa'
 
-export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
+export function Verify2FAModal() {
   const { mutateAsync } = useSignIn2FAMutation()
 
-  const { cognitoUser, setCustomer, setCognitoUser } = useAuth()
+  const {
+    cognitoUser,
+    setCustomer,
+    setCognitoUser,
+    is2FAVerifyOpen,
+    setIs2FAVerifyOpen,
+    setCustomer2FA
+  } = useAuth()
 
   const {
     register,
@@ -60,7 +62,8 @@ export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
         await Auth.verifyTotpToken(cognitoUser, data.code)
       }
 
-      setIsOpen && setIsOpen(false)
+      setIs2FAVerifyOpen(false)
+      setCustomer2FA(prev => prev && { ...prev, lastVerifyAt: Date.now() })
       reset()
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
@@ -68,7 +71,7 @@ export function Verify2FAModal({ isOpen, setIsOpen }: Verify2FAModalProps) {
   }
 
   return (
-    <DialogModal.Root open={isOpen} onOpenChange={setIsOpen}>
+    <DialogModal.Root open={is2FAVerifyOpen}>
       <DialogModal.Content
         className="md:max-w-[30rem]"
         onCloseAutoFocus={e => e.preventDefault()}

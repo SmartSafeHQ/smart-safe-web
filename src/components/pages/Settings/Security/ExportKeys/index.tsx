@@ -4,7 +4,7 @@ import { PrivateKeysList } from './screens/PrivateKeysList'
 import { Checkboxes } from './screens/Checkboxes'
 
 import { useI18n } from '@hooks/useI18n'
-import { useExport } from '@hooks/settings/export/useExport'
+import { useSettingsSecurityExport } from '@hooks/settings/useSettingsSecurity/export/useSettingsSecurityExport'
 
 export function ExportKeys() {
   const { t } = useI18n()
@@ -13,34 +13,32 @@ export function ExportKeys() {
     selectedChains,
     setCurrentScreen,
     setSelectedChains,
-    is2FAVerifyOpen,
-    setIs2FAVerifyOpen,
     handleUpdateSingleCheckbox
-  } = useExport()
+  } = useSettingsSecurityExport()
 
   return (
-    <div className="flex flex-col gap-4 pt-8 h-full items-center">
-      <div className="flex flex-col gap-2">
-        <Heading className="text-center text-xl">
+    <section className="w-full h-full p-6 flex flex-col justify-start items-stretch gap-4">
+      <div className="flex flex-col gap-7 pt-8 h-full items-center">
+        <Heading className="text-center text-3xl">
           {t.settings.security.exportKeysHeading}
         </Heading>
+
+        {currentScreen === 'checkbox-screen' ? (
+          <Checkboxes
+            selectedChains={selectedChains}
+            setCurrentScreen={setCurrentScreen}
+            setSelectedChains={setSelectedChains}
+            handleUpdateSingleCheckbox={handleUpdateSingleCheckbox}
+          />
+        ) : (
+          <PrivateKeysList
+            selectedChains={selectedChains}
+            setCurrentScreen={setCurrentScreen}
+          />
+        )}
+
+        <Verify2FAModal />
       </div>
-
-      {currentScreen === 'checkbox-screen' ? (
-        <Checkboxes
-          selectedChains={selectedChains}
-          setCurrentScreen={setCurrentScreen}
-          setSelectedChains={setSelectedChains}
-          handleUpdateSingleCheckbox={handleUpdateSingleCheckbox}
-        />
-      ) : (
-        <PrivateKeysList
-          selectedChains={selectedChains}
-          setCurrentScreen={setCurrentScreen}
-        />
-      )}
-
-      <Verify2FAModal isOpen={is2FAVerifyOpen} setIsOpen={setIs2FAVerifyOpen} />
-    </div>
+    </section>
   )
 }
