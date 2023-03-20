@@ -122,7 +122,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           signInEnabled: response.preferredMFA !== 'NOMFA',
           send2faEnabled: false,
           exportKeys2faEnabled: false,
-          lastVerifyAt: Date.now()
+          lastVerifyAt: Date.now() - 1 * 60 * 1000
         })
 
         setCustomer({

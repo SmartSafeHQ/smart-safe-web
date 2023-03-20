@@ -48,7 +48,7 @@ export function Security2FAProvider({ children }: Security2FAProviderProps) {
   const [isDisable2FAOpen, setIsDisable2FAOpen] = useState(false)
   const [enable2FAOption, setEnable2FAOption] = useState<Enable2FAOptionProps>()
 
-  const { cognitoUser } = useAuth()
+  const { cognitoUser, customer } = useAuth()
 
   async function handleSetupTOTP(
     option: Options,
@@ -69,12 +69,7 @@ export function Security2FAProvider({ children }: Security2FAProviderProps) {
       if (!authCode) {
         const code = await Auth.setupTOTP(cognitoUser)
 
-        const codeToScan =
-          'otpauth://totp/AWSCognito:' +
-          cognitoUser.username +
-          '?secret=' +
-          code +
-          '&issuer=Cognito'
+        const codeToScan = `otpauth://totp/InWallet:${customer?.email}?secret=${code}&issuer=InWallet`
 
         setAuthCode(codeToScan)
       }

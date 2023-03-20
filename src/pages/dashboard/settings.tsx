@@ -65,9 +65,7 @@ const Settings = () => {
           </Tabs.Content>
 
           <Tabs.Content value="export-keys">
-            <section className="w-full h-full p-6 flex flex-col justify-start items-stretch gap-4">
-              <ExportKeys />
-            </section>
+            <ExportKeys />
           </Tabs.Content>
         </Tabs.Root>
       </div>

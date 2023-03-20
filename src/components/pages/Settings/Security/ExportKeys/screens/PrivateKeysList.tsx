@@ -56,8 +56,8 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
 
           <p className="font-bold text-center">
             {copiedToClipboard
-              ? t.settings.security.exportKeysScreens.privateKeysList.copied
-              : t.settings.security.exportKeysScreens.privateKeysList.copy}
+              ? t.settings.security.exportKeys.privateKeys.copied
+              : t.settings.security.exportKeys.privateKeys.copy}
           </p>
         </div>
       </div>
@@ -75,7 +75,7 @@ export function PrivateKeysList({
   return (
     <div className="flex flex-col gap-2 max-w-[400px] w-full">
       <p className="text-center text-sm font-bold p-2 rounded-lg border-1 border-red-500/30 text-red-500 bg-red-400/[.15]">
-        {t.settings.security.exportKeysScreens.privateKeysList.warning}
+        {t.settings.security.exportKeys.privateKeys.warning}
       </p>
 
       {selectedChains.find(
@@ -97,7 +97,7 @@ export function PrivateKeysList({
       )}
 
       <Button onClick={() => setCurrentScreen('checkbox-screen')}>
-        {t.settings.security.exportKeysScreens.privateKeysList.back}
+        {t.settings.security.exportKeys.privateKeys.back}
       </Button>
     </div>
   )
