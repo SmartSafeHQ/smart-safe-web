@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from 'react'
 import type {
   SelectedChains,
   Screens
-} from '@/hooks/settings/export/interfaces'
+} from '@hooks/settings/useSettingsSecurity/export/interfaces'
 
 import { useState } from 'react'
 import { Copy } from 'phosphor-react'

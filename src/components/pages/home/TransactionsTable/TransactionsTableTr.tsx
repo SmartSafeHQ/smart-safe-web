@@ -7,7 +7,8 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { Avatar } from '@components/Avatar'
 
-import { formatWalletAddress, handleCopyToClipboard } from '@utils/global'
+import { handleCopyToClipboard } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 import { useI18n } from '@hooks/useI18n'
 
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {

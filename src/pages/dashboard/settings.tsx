@@ -14,7 +14,7 @@ export type NavTabs = 'security' | 'export-keys'
 
 const Settings = () => {
   const { t } = useI18n()
-  const { customer, setIs2FAVerifyOpen } = useAuth()
+  const { customer, verify2FA } = useAuth()
 
   const { data: account2FAData } = useAccount2faSettings(customer?.id)
 
@@ -22,7 +22,7 @@ const Settings = () => {
 
   useEffect(() => {
     if (tab === 'export-keys' && account2FAData?.exportKeys2faEnabled) {
-      setIs2FAVerifyOpen(true)
+      verify2FA()
     }
   }, [tab])
 

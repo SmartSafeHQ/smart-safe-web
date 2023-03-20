@@ -12,6 +12,7 @@ export const send = {
   fee: 'Fee',
   from: 'From',
   address: 'Address',
+  txSuccess: 'Transaction done successfully',
   seeOn: 'See on',
   sent: 'sent',
   copyAddress: 'Copy address',

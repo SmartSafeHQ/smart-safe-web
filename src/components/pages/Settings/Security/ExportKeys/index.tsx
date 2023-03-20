@@ -4,7 +4,7 @@ import { PrivateKeysList } from './screens/PrivateKeysList'
 import { Checkboxes } from './screens/Checkboxes'
 
 import { useI18n } from '@hooks/useI18n'
-import { useExport } from '@hooks/settings/export/useExport'
+import { useSettingsSecurityExport } from '@hooks/settings/useSettingsSecurity/export/useSettingsSecurityExport'
 
 export function ExportKeys() {
   const { t } = useI18n()
@@ -13,10 +13,8 @@ export function ExportKeys() {
     selectedChains,
     setCurrentScreen,
     setSelectedChains,
-    is2FAVerifyOpen,
-    setIs2FAVerifyOpen,
     handleUpdateSingleCheckbox
-  } = useExport()
+  } = useSettingsSecurityExport()
 
   return (
     <div className="flex flex-col gap-4 pt-8 h-full items-center">
@@ -40,7 +38,7 @@ export function ExportKeys() {
         />
       )}
 
-      <Verify2FAModal isOpen={is2FAVerifyOpen} setIsOpen={setIs2FAVerifyOpen} />
+      <Verify2FAModal />
     </div>
   )
 }

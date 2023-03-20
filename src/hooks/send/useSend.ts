@@ -11,7 +11,8 @@ import {
   getCoinAmountInUsd,
   formatToCurrency
 } from '@utils/global/coins'
-import { formatCurrencyToNumber, formatWalletAddress } from '@utils/global'
+import { formatCurrencyToNumber } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
@@ -26,7 +27,7 @@ import { useSend } from '@contexts/SendContext'
 
 export const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'Invalid wallet address.' }),
-  amount: z.string().min(4, { message: 'min 0.0001' })
+  amount: z.string().min(4, { message: 'min 0.001' })
 })
 
 type SendFieldValues = z.infer<typeof validationSchema>
@@ -42,8 +43,7 @@ export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
 export const useCustomSendHook = () => {
   const { setTransaction, selectedCoin, setSelectedCoin } = useSend()
   const { t } = useI18n()
-  const { customer, setCustomer2FA, customer2FA, setIs2FAVerifyOpen } =
-    useAuth()
+  const { customer, setCustomer2FA, customer2FA, verify2FA } = useAuth()
 
   const {
     register,
@@ -220,7 +220,7 @@ export const useCustomSendHook = () => {
       })
 
       if (customer2FA?.send2faEnabled) {
-        setIs2FAVerifyOpen(true)
+        verify2FA()
       }
 
       setIsSendOpen(true)

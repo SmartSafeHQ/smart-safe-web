@@ -4,11 +4,9 @@ import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 import { SendScreen } from '@components/pages/Send'
 
 import { useI18n } from '@hooks/useI18n'
-import { useAuth } from '@contexts/AuthContext'
 import { SendProvider } from '@contexts/SendContext'
 
 const Send = () => {
-  const { is2FAVerifyOpen, setIs2FAVerifyOpen } = useAuth()
   const { t } = useI18n()
 
   return (
@@ -22,7 +20,7 @@ const Send = () => {
         <SendScreen />
       </SendProvider>
 
-      <Verify2FAModal isOpen={is2FAVerifyOpen} setIsOpen={setIs2FAVerifyOpen} />
+      <Verify2FAModal />
     </div>
   )
 }

@@ -5,7 +5,7 @@ import { useAuth } from '@contexts/AuthContext'
 import {
   Options,
   Verify2FAFunctionProps
-} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+} from '@/hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 
 export type CustomerProps = {
   cognitoId: string

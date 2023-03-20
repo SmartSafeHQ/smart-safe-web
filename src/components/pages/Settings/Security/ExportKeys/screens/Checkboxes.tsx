@@ -3,14 +3,14 @@ import type { Dispatch, SetStateAction, ChangeEvent } from 'react'
 import type {
   SelectedChains,
   Screens
-} from '@/hooks/settings/export/interfaces'
+} from '@hooks/settings/useSettingsSecurity/export/interfaces'
 
 import { Checkbox } from '../Checkbox'
 import { Button } from '@components/Button'
 
 import { useI18n } from '@hooks/useI18n'
 
-type Props = {
+type CheckboxesProps = {
   selectedChains: SelectedChains[]
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
   setSelectedChains: Dispatch<SetStateAction<SelectedChains[]>>
@@ -21,7 +21,7 @@ export function Checkboxes({
   selectedChains,
   setCurrentScreen,
   handleUpdateSingleCheckbox
-}: Props) {
+}: CheckboxesProps) {
   const { t } = useI18n()
 
   function handleExport() {

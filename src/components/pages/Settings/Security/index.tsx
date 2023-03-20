@@ -6,7 +6,7 @@ import { Enable2FAModal } from './Security2FA/EnableSigIn2FAModal'
 import { DisableSigIn2FAModal } from './Security2FA/DisableSigIn2FAModal'
 import { Toggle2FA } from './Security2FA/Toggle2FA'
 
-import { useSecuritySignIn2FA } from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+import { useSettingsSecurity2FA } from '@hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 
 export function SecurityTab() {
   const {
@@ -26,7 +26,7 @@ export function SecurityTab() {
     disableSend2FAOnSubmit,
     enableExportKeys2FAOnSubmit,
     disableExportKeys2FAOnSubmit
-  } = useSecuritySignIn2FA()
+  } = useSettingsSecurity2FA()
 
   return (
     <SettingsTab.Root>

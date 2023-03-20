@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { tokenverseApi } from '@lib/axios'
 import { FetchEndUserWalletsResponse } from '@utils/global/types'
-import { formatWalletAddress } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 
 interface FetchAccountWalletsInput {
   accessToken: string

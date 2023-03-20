@@ -5,7 +5,7 @@ import { Button } from '@components/Button'
 import {
   Options,
   Verify2FAFunctionProps
-} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+} from '@hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 import { useI18n } from '@hooks/useI18n'
 import { useSecurity2FA } from '@contexts/Security2FAContext'
 

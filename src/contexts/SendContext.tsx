@@ -11,9 +11,9 @@ import {
   useSendMutation
 } from '@hooks/send/mutation/useSendMutation'
 import { useAuth } from '@contexts/AuthContext'
-import { getEthersErrorCode } from '@utils/global'
 import { useI18n } from '@hooks/useI18n'
-import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
+import { COINS_ATTRIBUTES } from '@utils/global/coins/config'
+import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
 
 type SendProviderProps = PropsWithChildren<Record<string, unknown>>
 
@@ -39,7 +39,7 @@ export function SendProvider({ children }: SendProviderProps) {
   )
 
   const { customer } = useAuth()
-  const { t } = useI18n()
+  const { t, currentLocaleProps } = useI18n()
 
   const {
     mutateAsync,
@@ -64,19 +64,9 @@ export function SendProvider({ children }: SendProviderProps) {
         fromWalletPrivateKey
       })
 
-      toast.success(`Transaction done successfully`)
-    } catch (error) {
-      console.error(error)
-
-      let errorMessage
-
-      const errorCode = getEthersErrorCode(error)
-
-      if (errorCode) {
-        errorMessage = t.errors.web3E.ether.get(errorCode)?.message
-      }
-
-      toast.error(errorMessage ?? t.errors.default)
+      toast.success(t.send.txSuccess)
+    } catch (e) {
+      getWe3ErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

@@ -12,6 +12,7 @@ export const send = {
   fee: 'Taxa',
   from: 'De',
   address: 'Endereço',
+  txSuccess: 'Transação feita com sucesso',
   seeOn: 'Ver em',
   sent: 'Enviado',
   copyAddress: 'Copiar endereço',
