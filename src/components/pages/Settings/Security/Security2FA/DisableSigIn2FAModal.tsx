@@ -11,7 +11,7 @@ import { useI18n } from '@hooks/useI18n'
 import {
   Security2FAFieldValues,
   security2FAvalidationSchema
-} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+} from '@hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 
 interface DisableSigIn2FAModalProps {
   onSubmit: SubmitHandler<{

@@ -8,50 +8,29 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendSuccess } from '@components/pages/Send/SendSuccess'
 import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
 
-import { CoinProps, HandleSendTransactionProps } from '@hooks/send/interfaces'
 import { useCoinFeeData } from '@hooks/global/coins/queries/useCoinFeeData'
-import { useSend } from '@hooks/send/useSend'
+import { useCustomSendHook } from '@hooks/send/useSend'
+import { useSend } from '@contexts/SendContext'
 
-import { formatWalletAddress } from '@utils/global/coins'
-
-interface SendModalProps {
-  usdAmount: number
-  coinAmount: number
-  to: string
-  coin: CoinProps
-  isSendingTx: boolean
-  txData?: { transactionHash: string }
-  handleSendTransaction: (_tx: HandleSendTransactionProps) => void
-}
-
-export function SendModal({
-  coinAmount,
-  usdAmount,
-  to,
-  coin,
-  txData,
-  isSendingTx,
-  handleSendTransaction
-}: SendModalProps) {
-  const { t, customer } = useSend()
+export function SendModal() {
+  const { t, customer } = useCustomSendHook()
+  const {
+    selectedCoin: coin,
+    transaction,
+    txData,
+    isSendingTx,
+    handleSendTransaction
+  } = useSend()
 
   const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData({
     rpcUrl: coin.rpcUrl,
+    coinDecimals: coin.decimals,
     symbol: coin.symbol,
     network: coin.networkType,
-    coinDecimals: coin.decimals,
     walletAddress: customer?.wallets[coin.networkType].address
   })
 
-  const destinationWalletFormatted = formatWalletAddress({
-    network: coin.networkType,
-    walletAddress: to
-  })
-
-  const fromWalletFormatted = formatWalletAddress({
-    network: coin.networkType,
-    walletAddress: customer?.wallets[coin.networkType].address || ''
-  })
+  if (!transaction) return <></>
 
   return (
     <DialogModal.Content
@@ -64,12 +43,12 @@ export function SendModal({
           <>
             <header className="w-full flex items-center flex-col gap-3 mb-6">
               <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-                {t.send.send} ${usdAmount.toFixed(2)}
+                {t.send.send} ${transaction.usdAmount}
               </DialogModal.Title>
 
               <div className="w-full flex items-center justify-center gap-2">
                 <DialogModal.Description className="text-center text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                  {coinAmount.toFixed(4)} {coin.symbol}
+                  {transaction.formattedCoinAmount} {coin.symbol}
                 </DialogModal.Description>
 
                 <Avatar.Root fallbackName={coin.symbol} className="w-6 h-6">
@@ -96,7 +75,11 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{fromWalletFormatted}</span>
+                  <span>
+                    {coin.symbol === 'sol'
+                      ? `${customer?.wallets.solana.formattedAddress}`
+                      : `${customer?.wallets.evm.formattedAddress}`}
+                  </span>
                 </Text>
               </WalletInfos>
 
@@ -117,12 +100,12 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{destinationWalletFormatted}</span>
+                  <span>{transaction.formattedTo}</span>
                 </Text>
               </WalletInfos>
 
               <div className="flex items-center text-gray-800 dark:text-gray-200 mb-8">
-                <Skeleton isLoading={coinFeeIsLoading} className="h-7">
+                <Skeleton isLoading={coinFeeIsLoading} className="w-full h-7">
                   <Text className="mr-2">{t.send.fee}:</Text>
 
                   <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
@@ -134,7 +117,7 @@ export function SendModal({
 
                   {coinFeeData && (
                     <Text className="font-semibold">
-                      {coinFeeData.valueInCoin.slice(0, 6)} ($
+                      {coinFeeData.valueInCoin.slice(0, 5)} ($
                       {coinFeeData.feeInUSD.slice(0, 4)})
                     </Text>
                   )}
@@ -147,8 +130,8 @@ export function SendModal({
                 onClick={() =>
                   handleSendTransaction({
                     ...coin,
-                    to,
-                    amount: coinAmount
+                    to: transaction.to,
+                    amount: transaction.coinAmount
                   })
                 }
                 isLoading={isSendingTx}
@@ -159,12 +142,6 @@ export function SendModal({
           </>
         ) : (
           <SendSuccess
-            to={to}
-            coinName={coin.symbol}
-            amountInUsd={usdAmount}
-            coinAvatar={coin.avatar}
-            amountIncoin={coinAmount}
-            formattedToWallet={destinationWalletFormatted}
             transactionUrl={`${coin.explorerUrl}/tx/${txData.transactionHash}`}
           />
         )}

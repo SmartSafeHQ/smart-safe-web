@@ -3,13 +3,12 @@ import { Auth } from 'aws-amplify'
 
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
+import { CustomerProps } from '@utils/global/types'
 
 import {
   fetchAccountWallets,
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
-
-import type { WalletKeypair } from '@/utils/global/types'
 
 interface SignIn2FAFunctionInput {
   cognitoUser: any
@@ -19,17 +18,7 @@ interface SignIn2FAFunctionInput {
 
 interface SignIn2FAFunctionOutput {
   cognitoUser: any
-  customer: {
-    id: number
-    cognitoId: string
-    name: string
-    email: string
-    wallets: {
-      evm: WalletKeypair
-      solana: WalletKeypair
-      bitcoin: WalletKeypair
-    }
-  }
+  customer: CustomerProps
 }
 
 async function signIn2FAFunction({

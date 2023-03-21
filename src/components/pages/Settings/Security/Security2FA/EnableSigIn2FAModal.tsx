@@ -11,7 +11,7 @@ import { Text } from '@components/Text'
 import {
   Security2FAFieldValues,
   security2FAvalidationSchema
-} from '@hooks/settings/useSettingsSecurity/useSecuritySignIn2FA'
+} from '@hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 import { useI18n } from '@hooks/useI18n'
 
 interface EnableSigIn2FAModalProps {

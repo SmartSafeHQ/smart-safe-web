@@ -5,13 +5,12 @@ import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
 
 import { MobileBridgeCommunication } from '@decorators/MobileBridgeCommunication'
+import { CustomerProps } from '@utils/global/types'
 
 import {
   fetchAccountWallets,
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
-
-import type { WalletKeypair } from '@/utils/global/types'
 
 interface LoginFunctionInput {
   email: string
@@ -20,17 +19,7 @@ interface LoginFunctionInput {
 
 interface LoginFunctionOutput {
   cognitoUser: any
-  customer?: {
-    id: number
-    cognitoId: string
-    name: string
-    email: string
-    wallets: {
-      evm: WalletKeypair
-      solana: WalletKeypair
-      bitcoin: WalletKeypair
-    }
-  }
+  customer?: CustomerProps
 }
 
 async function loginFunction(

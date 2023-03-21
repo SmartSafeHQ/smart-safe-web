@@ -19,7 +19,6 @@ export default function WalletconnectLogin() {
     t,
     signClient,
     customer,
-    cognitoUser,
     sessionSignData,
     setSessionSignData,
     sessionData,
@@ -132,7 +131,7 @@ export default function WalletconnectLogin() {
 
       <LoginModal isOpen={isSignInModalOpen} setIsOpen={setIsSignInModalOpen} />
 
-      <Verify2FAModal isOpen={cognitoUser && !cognitoUser.signInUserSession} />
+      <Verify2FAModal />
 
       <SessionApproval
         sessionData={sessionData}

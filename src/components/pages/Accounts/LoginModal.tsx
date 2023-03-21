@@ -31,7 +31,7 @@ export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
 
   const { handleSignupWidget } = useLogin()
 
-  const { setCustomer, setCognitoUser } = useAuth()
+  const { setCustomer, setCognitoUser, verify2FA } = useAuth()
 
   const {
     register: loginRegister,
@@ -53,8 +53,13 @@ export function LoginModal({ isOpen, setIsOpen }: LoginModalProps) {
         setCustomer(customer)
       }
 
+      if (cognitoUser && !cognitoUser.signInUserSession) {
+        verify2FA()
+      }
+
       setIsOpen(false)
     } catch (e) {
+      console.log(e)
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }

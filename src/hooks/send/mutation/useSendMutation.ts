@@ -29,7 +29,7 @@ interface SendFunctionInput {
   networkType: SupportedNetworks
 }
 
-interface SendFunctionOutput {
+export interface SendFunctionOutput {
   transactionHash: string
 }
 

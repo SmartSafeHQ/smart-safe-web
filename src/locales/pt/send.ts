@@ -12,15 +12,16 @@ export const send = {
   fee: 'Taxa',
   from: 'De',
   address: 'Endereço',
+  txSuccess: 'Transação feita com sucesso',
   seeOn: 'Ver em',
   sent: 'Enviado',
   copyAddress: 'Copiar endereço',
   date: 'data',
   proof: 'comprovante',
-  viewProof: 'ver comprovante',
+  viewProof: 'Ver comprovante',
   backToSend: 'Voltar ao envio',
   errors: {
-    invalidAmountToSend: 'Quantidade inválida.',
-    invalidWalletAddress: 'Endereço inválido.'
+    invalidAmount: 'Quantidade inválida.',
+    invalidAddress: 'Endereço inválido.'
   }
 }

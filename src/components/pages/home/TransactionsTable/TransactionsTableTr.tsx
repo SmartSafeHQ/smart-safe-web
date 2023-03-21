@@ -8,7 +8,10 @@ import { HoverCard } from '@components/HoverCard'
 import { Avatar } from '@components/Avatar'
 
 import { handleCopyToClipboard } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 import { useI18n } from '@hooks/useI18n'
+
+import type { SupportedNetworks } from '@/utils/global/types'
 
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   transactionLink: string
@@ -19,6 +22,7 @@ interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   coin: {
     symbol: string
     avatar: string
+    networkType: SupportedNetworks
   }
   value: {
     valueInDollar: number
@@ -38,6 +42,15 @@ export function TransactionsTableTr({
   ...props
 }: TransactionsTableTrProps) {
   const { t } = useI18n()
+
+  const formatedSenderAddress = formatWalletAddress({
+    walletAddress: sender,
+    network: coin.networkType
+  })
+  const formatedReceiverAddress = formatWalletAddress({
+    walletAddress: receiver,
+    network: coin.networkType
+  })
 
   return (
     <tr
@@ -69,9 +82,9 @@ export function TransactionsTableTr({
       <td className="min-w-[8rem] py-6">
         <HoverCard.Root openDelay={100}>
           <HoverCard.Trigger>
-            <button
-              onClick={() => handleCopyToClipboard(sender)}
-            >{`${sender.slice(0, 4)}...${sender.slice(-4)}`}</button>
+            <button onClick={() => handleCopyToClipboard(sender)}>
+              {formatedSenderAddress}
+            </button>
           </HoverCard.Trigger>
 
           <HoverCard.Content variant="highlighted" className="text-sm">
@@ -84,9 +97,9 @@ export function TransactionsTableTr({
       <td className="min-w-[8rem] py-3">
         <HoverCard.Root>
           <HoverCard.Trigger>
-            <button
-              onClick={() => handleCopyToClipboard(receiver)}
-            >{`${receiver.slice(0, 4)}...${receiver.slice(-4)}`}</button>
+            <button onClick={() => handleCopyToClipboard(receiver)}>
+              {formatedReceiverAddress}
+            </button>
           </HoverCard.Trigger>
 
           <HoverCard.Content variant="highlighted" className="text-sm">

@@ -134,7 +134,8 @@ async function fetchAllNetworksTransactions({
               ...transferData.parsedData,
               token: {
                 symbol: coin.symbol,
-                avatar: coin.avatar
+                avatar: coin.avatar,
+                networkType: coin.networkType
               }
             }
           }
@@ -245,7 +246,8 @@ async function fetchAllNetworksTransactions({
           receiver: tx.to,
           token: {
             symbol: coin.symbol,
-            avatar: coin.avatar
+            avatar: coin.avatar,
+            networkType: 'evm'
           },
           value: {
             valueInDollar: Number(transactionUsdValue.toFixed(2)),

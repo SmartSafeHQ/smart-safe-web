@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { tokenverseApi } from '@lib/axios'
 import { FetchEndUserWalletsResponse } from '@utils/global/types'
+import { formatWalletAddress } from '@utils/web3Utils'
+import type { WalletKeypair } from '@utils/global/types'
 
 interface FetchAccountWalletsInput {
   accessToken: string
@@ -9,17 +11,14 @@ interface FetchAccountWalletsInput {
 
 export interface FetchAccountWalletsResponse {
   id: number
-  evm: {
-    address: string
-    privateKey: string
+  evm: WalletKeypair & {
+    formattedAddress: string
   }
-  solana: {
-    address: string
-    privateKey: string
+  solana: WalletKeypair & {
+    formattedAddress: string
   }
-  bitcoin: {
-    address: string
-    privateKey: string
+  bitcoin: WalletKeypair & {
+    formattedAddress: string
   }
 }
 
@@ -34,19 +33,39 @@ export async function fetchAccountWallets({
     '/widget/wallets?privateKey=true'
   )
 
+  const evmAddresses = apiResponse.data.evm[0]
+  const solanaAddresses = apiResponse.data.solana[0]
+  const bitcoinAddresses = apiResponse.data.bitcoin[0]
+
+  const evmFormattedAddress = formatWalletAddress({
+    walletAddress: evmAddresses.address,
+    network: 'evm'
+  })
+  const solanaFormattedAddress = formatWalletAddress({
+    walletAddress: solanaAddresses.address,
+    network: 'solana'
+  })
+  const bitcoinFormattedAddress = formatWalletAddress({
+    walletAddress: bitcoinAddresses.address,
+    network: 'bitcoin'
+  })
+
   return {
     id: apiResponse.data.id,
     evm: {
-      address: apiResponse.data.evm[0].address,
-      privateKey: apiResponse.data.evm[0].privateKey
+      address: evmAddresses.address,
+      formattedAddress: evmFormattedAddress,
+      privateKey: evmAddresses.privateKey
     },
     solana: {
-      address: apiResponse.data.solana[0].address,
-      privateKey: apiResponse.data.solana[0].privateKey
+      address: solanaAddresses.address,
+      formattedAddress: solanaFormattedAddress,
+      privateKey: solanaAddresses.privateKey
     },
     bitcoin: {
-      address: apiResponse.data.bitcoin[0].address,
-      privateKey: apiResponse.data.bitcoin[0].privateKey
+      address: bitcoinAddresses.address,
+      formattedAddress: bitcoinFormattedAddress,
+      privateKey: bitcoinAddresses.privateKey
     }
   }
 }

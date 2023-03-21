@@ -3,7 +3,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
-import { formatWalletAddress } from '@utils/global/coins'
+import { formatWalletAddress } from '@utils/web3Utils'
 
 export const useReceive = () => {
   const [selectedWallet, setSelectedWallet] = useState({
@@ -72,6 +72,7 @@ export const useReceive = () => {
 
   function handleSelectWalletAccount(index: string) {
     const userWallet = wallets[Number(index)]
+
     setSelectedWallet({
       wallet: userWallet.wallet,
       formattedWallet: userWallet.formattedWallet

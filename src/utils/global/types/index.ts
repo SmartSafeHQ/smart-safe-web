@@ -11,6 +11,18 @@ export interface WalletKeypair {
   privateKey: string
 }
 
+export type CustomerProps = {
+  id: number
+  cognitoId: string
+  name: string
+  email: string
+  wallets: {
+    evm: WalletKeypair & { formattedAddress: string }
+    solana: WalletKeypair & { formattedAddress: string }
+    bitcoin: WalletKeypair & { formattedAddress: string }
+  }
+}
+
 export interface FetchEndUserWalletsResponse {
   id: number
   evm: WalletKeypair[]
