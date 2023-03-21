@@ -2,7 +2,8 @@ import { SettingsTab } from '@components/pages/Settings'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Security2FASection } from './Security2FA/Security2FASection'
-import { Enable2FAModal } from './Security2FA/EnableSigIn2FAModal'
+import { EnableQRCode2FAModal } from './Security2FA/EnableQRCode2FAModal'
+import { Enable2FAModal } from './Security2FA/Enable2FAModal'
 import { DisableSigIn2FAModal } from './Security2FA/DisableSigIn2FAModal'
 import { Toggle2FA } from './Security2FA/Toggle2FA'
 
@@ -13,12 +14,13 @@ export function SecurityTab() {
     t,
     customer2FA,
     account2FAData,
-    account2FAError,
-    isEnable2FAOpen,
+    isEnableQRCode2FAOpen,
     enable2FAOption,
     authCode,
-    isDisable2FAOpen,
+    isEnable2FAOpen,
     setIsEnable2FAOpen,
+    isDisable2FAOpen,
+    setIsEnableQRCode2FAOpen,
     setIsDisable2FAOpen,
     enableSignIn2FAOnSubmit,
     disableSignIn2FAOnSubmit,
@@ -79,8 +81,6 @@ export function SecurityTab() {
             {t.settings.security.sendTransaction}
           </Security2FASection.Title>
 
-          {!!account2FAError && <span>error</span>}
-
           <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
               option="send"
@@ -105,8 +105,6 @@ export function SecurityTab() {
           <Security2FASection.Title>
             {t.settings.security.privateKeys}
           </Security2FASection.Title>
-
-          {!!account2FAError && <span>error</span>}
 
           <Skeleton isLoading={!account2FAData} className="w-full h-16">
             <Toggle2FA
@@ -133,7 +131,16 @@ export function SecurityTab() {
           onOpenChange={setIsEnable2FAOpen}
         >
           {enable2FAOption && (
-            <Enable2FAModal
+            <Enable2FAModal onSubmit={enable2FAOption.enableFunction} />
+          )}
+        </DialogModal.Root>
+
+        <DialogModal.Root
+          open={isEnableQRCode2FAOpen}
+          onOpenChange={setIsEnableQRCode2FAOpen}
+        >
+          {enable2FAOption && (
+            <EnableQRCode2FAModal
               authCode={authCode}
               onSubmit={enable2FAOption.enableFunction}
             />
@@ -145,7 +152,7 @@ export function SecurityTab() {
           onOpenChange={setIsDisable2FAOpen}
         >
           {enable2FAOption && (
-            <DisableSigIn2FAModal onSubmit={enable2FAOption?.disableFunction} />
+            <DisableSigIn2FAModal onSubmit={enable2FAOption.disableFunction} />
           )}
         </DialogModal.Root>
       </div>
