@@ -13,10 +13,13 @@ import { queryClient } from '@lib/reactQuery'
 import { FetchCoinValueInUsdResponse } from '@hooks/global/coins/queries/useCoinValueInUsd'
 import { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
 
-import type { WalletKeypair } from '@utils/global/types'
+import { SATOSHI_PER_BITCOIN } from '@/utils/global/constants/variables'
+
+import type { SupportedNetworks, WalletKeypair } from '@utils/global/types'
 
 interface CoinAttributesInput {
   symbol: string
+  networkType: SupportedNetworks
   rpcUrl: string
 }
 
@@ -27,7 +30,23 @@ interface CoinProps {
 
 interface FetchCoinPortfolioInput {
   coin?: CoinAttributesInput
-  accounts?: { evm: WalletKeypair; solana: WalletKeypair }
+  accounts?: {
+    evm: WalletKeypair
+    solana: WalletKeypair
+    bitcoin: WalletKeypair
+  }
+}
+
+interface BitcoinWalletResponse {
+  address: string
+  balance: number
+  final_balance: number
+  final_n_tx: number
+  n_tx: number
+  total_received: number
+  total_sent: number
+  unconfirmed_balance: number
+  unconfirmed_n_tx: number
 }
 
 export type FetchCoinPortfolioResponse = CoinProps
@@ -47,7 +66,7 @@ export async function fetchCoinPortfolio({
     return { balance: 0, changePercent: 0 }
   }
 
-  if (coin.symbol === 'sol') {
+  if (coin.networkType === 'solana') {
     const rpcEndpoint = coin.rpcUrl.includes('test')
       ? clusterApiUrl('testnet')
       : coin.rpcUrl
@@ -69,6 +88,24 @@ export async function fetchCoinPortfolio({
     }
   }
 
+  if (coin.networkType === 'bitcoin') {
+    const { data } = await axios.get<BitcoinWalletResponse>(
+      `${coin.rpcUrl}/addrs/${accounts.bitcoin.address}/balance`
+    )
+
+    const balance = data.balance
+
+    const reqUrl = getCoinChangePercentUrl(coin.symbol)
+    const response = await axios.get<GetCoinChangePercentResponse>(reqUrl)
+
+    const formattedChangePercent = Number(response.data.priceChangePercent)
+
+    return {
+      balance: balance / SATOSHI_PER_BITCOIN,
+      changePercent: formattedChangePercent
+    }
+  }
+
   const provider = new providers.JsonRpcProvider(coin.rpcUrl)
 
   const balance = await provider.getBalance(accounts.evm.address)
@@ -85,11 +122,21 @@ export async function fetchCoinPortfolio({
   }
 }
 
-export function useCoinPortfolio(
-  coin?: CoinAttributesInput,
-  accounts?: { evm: WalletKeypair; solana: WalletKeypair },
+interface UseCoinPortfolioInput {
+  coin: CoinAttributesInput
+  accounts?: {
+    evm: WalletKeypair
+    solana: WalletKeypair
+    bitcoin: WalletKeypair
+  }
+  enabled?: boolean
+}
+
+export function useCoinPortfolio({
+  coin,
+  accounts,
   enabled = true
-) {
+}: UseCoinPortfolioInput) {
   return useQuery({
     queryKey: ['coinPortfolio', accounts, coin?.rpcUrl],
     queryFn: () => fetchCoinPortfolio({ accounts, coin }),

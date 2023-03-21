@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
 import { providers } from 'ethers'
 import {
@@ -8,15 +9,38 @@ import {
   LAMPORTS_PER_SOL
 } from '@solana/web3.js'
 
-import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
+import {
+  DEFAULT_GAS_LIMIT,
+  SATOSHI_PER_BITCOIN
+} from '@utils/global/constants/variables'
 import { queryClient } from '@lib/reactQuery'
 import { FetchCoinValueInUsdResponse } from '@hooks/global/coins/queries/useCoinValueInUsd'
+
+import type { SupportedNetworks } from '@/utils/global/types'
+
+interface BitcoinFeeDataResponse {
+  hash: string
+  height: number
+  high_fee_per_kb: number
+  last_fork_hash: string
+  last_fork_height: number
+  latest_url: string
+  low_fee_per_kb: number
+  medium_fee_per_kb: number
+  name: string
+  peer_count: number
+  previous_hash: string
+  previous_url: string
+  time: string
+  unconfirmed_count: number
+}
 
 interface FetchCoinFeeDataInput {
   rpcUrl: string
   symbol: string
+  network: SupportedNetworks
   coinDecimals: number
-  solanaWallet?: string
+  walletAddress?: string
 }
 
 export interface FetchCoinFeeDataResponse {
@@ -28,10 +52,11 @@ export interface FetchCoinFeeDataResponse {
 async function fetchCoinFeeData({
   rpcUrl,
   symbol,
+  network,
   coinDecimals,
-  solanaWallet
+  walletAddress
 }: FetchCoinFeeDataInput): Promise<FetchCoinFeeDataResponse> {
-  if (symbol === 'sol' && solanaWallet) {
+  if (network === 'solana' && walletAddress) {
     const rpcEndpoint =
       process.env.NODE_ENV === 'development' ? clusterApiUrl('testnet') : rpcUrl
 
@@ -41,7 +66,7 @@ async function fetchCoinFeeData({
 
     const feeData = (await new Transaction({
       recentBlockhash: blockHash.blockhash,
-      feePayer: new PublicKey(solanaWallet)
+      feePayer: new PublicKey(walletAddress)
     }).getEstimatedFee(client)) as number
 
     const coinValueInUsd =
@@ -56,37 +81,67 @@ async function fetchCoinFeeData({
     }
   }
 
-  const provider = new providers.JsonRpcProvider(rpcUrl)
+  if (network === 'bitcoin' && walletAddress) {
+    const { data } = await axios.get<BitcoinFeeDataResponse>(rpcUrl)
 
-  const gasEstimate = await provider.getGasPrice()
+    const feeData = data.medium_fee_per_kb
 
-  const gasCostInWei = gasEstimate.mul(DEFAULT_GAS_LIMIT)
-  const gasCostInCoin = gasCostInWei.toNumber() / 10 ** coinDecimals
+    const coinValueInUsd =
+      await queryClient.ensureQueryData<FetchCoinValueInUsdResponse>({
+        queryKey: ['coinValueInUsd', symbol]
+      })
 
-  const coinValueInUsd =
-    await queryClient.ensureQueryData<FetchCoinValueInUsdResponse>({
-      queryKey: ['coinValueInUsd', symbol]
-    })
-
-  const feeInUSD = gasCostInCoin * coinValueInUsd.valueInUsd
-
-  return {
-    valueInWei: gasCostInWei.toString(),
-    valueInCoin: gasCostInCoin.toString(),
-    feeInUSD: feeInUSD.toString()
+    return {
+      valueInWei: String(feeData / SATOSHI_PER_BITCOIN),
+      valueInCoin: String(feeData / SATOSHI_PER_BITCOIN),
+      feeInUSD: String(
+        (feeData / SATOSHI_PER_BITCOIN) * coinValueInUsd.valueInUsd
+      )
+    }
   }
+
+  if (network === 'evm') {
+    const provider = new providers.JsonRpcProvider(rpcUrl)
+
+    const gasEstimate = await provider.getGasPrice()
+
+    const gasCostInWei = gasEstimate.mul(DEFAULT_GAS_LIMIT)
+    const gasCostInCoin = gasCostInWei.toNumber() / 10 ** coinDecimals
+
+    const coinValueInUsd =
+      await queryClient.ensureQueryData<FetchCoinValueInUsdResponse>({
+        queryKey: ['coinValueInUsd', symbol]
+      })
+
+    const feeInUSD = gasCostInCoin * coinValueInUsd.valueInUsd
+
+    return {
+      valueInWei: gasCostInWei.toString(),
+      valueInCoin: gasCostInCoin.toString(),
+      feeInUSD: feeInUSD.toString()
+    }
+  }
+
+  return { valueInWei: '', valueInCoin: '', feeInUSD: '' }
 }
 
-export function useCoinFeeData(
-  rpcUrl: string,
-  symbol: string,
-  coinDecimals: number,
-  solanaWallet?: string
-) {
+export function useCoinFeeData({
+  rpcUrl,
+  symbol,
+  network,
+  coinDecimals,
+  walletAddress
+}: FetchCoinFeeDataInput) {
   return useQuery({
     queryKey: ['coinFeeData', rpcUrl],
     queryFn: () =>
-      fetchCoinFeeData({ rpcUrl, coinDecimals, symbol, solanaWallet }),
+      fetchCoinFeeData({
+        rpcUrl,
+        coinDecimals,
+        network,
+        symbol,
+        walletAddress
+      }),
     staleTime: 1000 * 60 * 1 // 1 minute
   })
 }

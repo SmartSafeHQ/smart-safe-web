@@ -9,7 +9,8 @@ import { useAuth } from '@contexts/AuthContext'
 export function useSettingsSecurityExport() {
   const [selectedChains, setSelectedChains] = useState<SelectedChains[]>([
     { checked: false, networkType: 'solana' },
-    { checked: false, networkType: 'evm' }
+    { checked: false, networkType: 'evm' },
+    { checked: false, networkType: 'bitcoin' }
   ])
   const [currentScreen, setCurrentScreen] = useState<Screens>('checkbox-screen')
 

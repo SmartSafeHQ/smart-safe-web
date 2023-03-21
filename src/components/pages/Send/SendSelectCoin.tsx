@@ -24,7 +24,7 @@ export function SendSelectCoin({
   const { selectedCoin } = useSend()
 
   const { data: portfolioData, isLoading: portfolioIsLoading } =
-    useCoinPortfolio(selectedCoin, customer?.wallets)
+    useCoinPortfolio({ coin: selectedCoin, accounts: customer?.wallets })
 
   return (
     <>
@@ -67,7 +67,7 @@ export function SendSelectCoin({
                     <Text className="capitalize">{t.send.balance}:</Text>
 
                     <Text className="font-semibold">
-                      {portfolioData.balance.toFixed(2)}
+                      {portfolioData.balance.toFixed(6)}
                     </Text>
                   </div>
                 )}

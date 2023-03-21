@@ -96,6 +96,15 @@ export function PrivateKeysList({
         />
       )}
 
+      {selectedChains.find(
+        chain => chain.networkType === 'bitcoin' && chain.checked
+      ) && (
+        <PrivateKey
+          network="Bitcoin"
+          privateKey={customer?.wallets.bitcoin.privateKey || ''}
+        />
+      )}
+
       <Button onClick={() => setCurrentScreen('checkbox-screen')}>
         {t.settings.security.exportKeys.privateKeys.back}
       </Button>
