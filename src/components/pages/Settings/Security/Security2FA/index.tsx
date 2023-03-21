@@ -1,11 +1,11 @@
 import { SettingsTab } from '@components/pages/Settings'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
-import { Security2FASection } from './Security2FA/Security2FASection'
-import { EnableQRCode2FAModal } from './Security2FA/EnableQRCode2FAModal'
-import { Enable2FAModal } from './Security2FA/Enable2FAModal'
-import { DisableSigIn2FAModal } from './Security2FA/DisableSigIn2FAModal'
-import { Toggle2FA } from './Security2FA/Toggle2FA'
+import { Security2FASection } from './Security2FASection'
+import { EnableQRCode2FAModal } from './EnableQRCode2FAModal'
+import { Enable2FAModal } from './Enable2FAModal'
+import { DisableSigIn2FAModal } from './DisableSigIn2FAModal'
+import { Toggle2FA } from './Toggle2FA'
 
 import { useSettingsSecurity2FA } from '@hooks/settings/useSettingsSecurity/useSettingsSecurity2FA'
 
@@ -40,7 +40,7 @@ export function SecurityTab() {
         </SettingsTab.Description>
       </SettingsTab.Header>
 
-      <div className="w-full py-5 flex flex-col relative justify-start items-stretch gap-5 md:gap-11">
+      <div className="w-full py-3 flex flex-col relative justify-start items-stretch gap-5 md:gap-11">
         <div className="w-full flex flex-col justify-start items-stretch mb-2 md:mb-0">
           <strong className="pb-2 text-lg font-medium">
             {t.settings.security.subTitle01}

@@ -1,44 +1,56 @@
 import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
-import { Heading } from '@components/Heading'
-import { PrivateKeysList } from './screens/PrivateKeysList'
-import { Checkboxes } from './screens/Checkboxes'
+import { PrivateKeysList } from './PrivateKeysList'
+import { SelectNetworksToExport } from './SelectNetworksToExport'
+import { SettingsTab } from '@components/pages/Settings'
 
 import { useI18n } from '@hooks/useI18n'
-import { useSettingsSecurityExport } from '@hooks/settings/useSettingsSecurity/export/useSettingsSecurityExport'
+import {
+  useSettingsSecurityExport,
+  CHAINS_TO_EXPORT_LIST
+} from '@hooks/settings/useSettingsSecurity/export/useSettingsSecurityExport'
 
 export function ExportKeys() {
   const { t } = useI18n()
   const {
     currentScreen,
-    selectedChains,
-    setCurrentScreen,
-    setSelectedChains,
-    handleUpdateSingleCheckbox
+    isExportDisabled,
+    chainsPrivateKeys,
+    handleAddChain,
+    handleRemoveChain,
+    handleBackToChainSelect,
+    handleExport
   } = useSettingsSecurityExport()
 
   return (
-    <section className="w-full h-full p-6 flex flex-col justify-start items-stretch gap-4">
-      <div className="flex flex-col gap-7 pt-8 h-full items-center">
-        <Heading className="text-center text-3xl">
+    <SettingsTab.Root>
+      <SettingsTab.Header>
+        <SettingsTab.Title>
           {t.settings.security.exportKeysHeading}
-        </Heading>
+        </SettingsTab.Title>
 
-        {currentScreen === 'checkbox-screen' ? (
-          <Checkboxes
-            selectedChains={selectedChains}
-            setCurrentScreen={setCurrentScreen}
-            setSelectedChains={setSelectedChains}
-            handleUpdateSingleCheckbox={handleUpdateSingleCheckbox}
+        <SettingsTab.Description className="flex items-center gap-2 !text-red-500">
+          {t.settings.security.exportKeys.warning}
+        </SettingsTab.Description>
+      </SettingsTab.Header>
+
+      <div className="w-full flex flex-col pt-3 relative justify-start items-stretch gap-4">
+        {currentScreen === 'select-chain' ? (
+          <SelectNetworksToExport
+            chainsToExport={CHAINS_TO_EXPORT_LIST}
+            handleAddChain={handleAddChain}
+            handleRemoveChain={handleRemoveChain}
+            handleExport={handleExport}
+            isExportDisabled={isExportDisabled}
           />
         ) : (
           <PrivateKeysList
-            selectedChains={selectedChains}
-            setCurrentScreen={setCurrentScreen}
+            chainsWithPrivateKeys={chainsPrivateKeys}
+            handleBackToChainSelect={handleBackToChainSelect}
           />
         )}
-
-        <Verify2FAModal />
       </div>
-    </section>
+
+      <Verify2FAModal />
+    </SettingsTab.Root>
   )
 }
