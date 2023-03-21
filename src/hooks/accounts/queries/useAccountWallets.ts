@@ -17,6 +17,10 @@ export interface FetchAccountWalletsResponse {
     address: string
     privateKey: string
   }
+  bitcoin: {
+    address: string
+    privateKey: string
+  }
 }
 
 export async function fetchAccountWallets({
@@ -39,6 +43,10 @@ export async function fetchAccountWallets({
     solana: {
       address: apiResponse.data.solana[0].address,
       privateKey: apiResponse.data.solana[0].privateKey
+    },
+    bitcoin: {
+      address: apiResponse.data.bitcoin[0].address,
+      privateKey: apiResponse.data.bitcoin[0].privateKey
     }
   }
 }

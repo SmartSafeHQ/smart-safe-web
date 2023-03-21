@@ -63,16 +63,15 @@ async function fetchAllNetworksTransactions({
         parsedTransaction: ParsedTransactionWithMeta | null
       ): ParsedLamportTransfer => {
         if (parsedTransaction) {
-          const parsedInstructionData = parsedTransaction.transaction.message
+          const instuctionData = parsedTransaction.transaction.message
             .instructions[0] as ParsedInstruction
-          const isLamportTransaction =
-            parsedInstructionData.parsed.type === 'transfer'
+          const isLamportTransaction = instuctionData.parsed.type === 'transfer'
 
           if (isLamportTransaction) {
             const timestamp = getTransactionTimestampDate(
               String(parsedTransaction.blockTime)
             )
-            const transactionData = parsedInstructionData.parsed.info
+            const transactionData = instuctionData.parsed.info
 
             const transferData = {
               transactedAt: timestamp,
@@ -193,6 +192,8 @@ async function fetchAllNetworksTransactions({
 
       return
     }
+
+    if (coin.symbol === 'btc') return
 
     const { data } = await axios.get<GetNetworkTrasactionResponse>(
       coin.scanUrl,

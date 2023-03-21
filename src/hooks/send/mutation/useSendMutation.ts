@@ -13,9 +13,11 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
-import { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
-import { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
-import { FetchCoinFeeDataResponse } from '@hooks/global/coins/queries/useCoinFeeData'
+
+import type { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
+import type { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
+import type { FetchCoinFeeDataResponse } from '@hooks/global/coins/queries/useCoinFeeData'
+import type { SupportedNetworks } from '@/utils/global/types'
 
 interface SendFunctionInput {
   to: string
@@ -24,6 +26,7 @@ interface SendFunctionInput {
   chainId: number | null
   symbol: string
   rpcUrl: string
+  networkType: SupportedNetworks
 }
 
 interface SendFunctionOutput {
@@ -33,7 +36,7 @@ interface SendFunctionOutput {
 async function sendFunction(
   input: SendFunctionInput
 ): Promise<SendFunctionOutput> {
-  if (input.symbol === 'sol') {
+  if (input.networkType === 'solana') {
     const transaction = new Transaction()
 
     // we're receiving the private as a string like so: '22, 59, 265, 100'
@@ -69,31 +72,39 @@ async function sendFunction(
     }
   }
 
-  const provider = new providers.JsonRpcProvider(input.rpcUrl)
-  const wallet = new Wallet(input.fromWalletPrivateKey, provider)
-
-  const amountToSend = utils.parseEther(input?.amount.toFixed(6))
-
-  const nonce = await wallet.getTransactionCount()
-
-  const gasPrice = await provider.getGasPrice()
-
-  const signedTransaction = await wallet.signTransaction({
-    from: wallet.address,
-    to: input?.to,
-    value: amountToSend,
-    nonce,
-    chainId: input?.chainId as number,
-    gasLimit: DEFAULT_GAS_LIMIT,
-    gasPrice
-  })
-
-  const transaction = await provider.sendTransaction(signedTransaction)
-  const response = await transaction.wait()
-
-  return {
-    transactionHash: response.transactionHash
+  if (input.networkType === 'bitcoin') {
+    return { transactionHash: '' }
   }
+
+  if (input.networkType === 'evm') {
+    const provider = new providers.JsonRpcProvider(input.rpcUrl)
+    const wallet = new Wallet(input.fromWalletPrivateKey, provider)
+
+    const amountToSend = utils.parseEther(input?.amount.toFixed(6))
+
+    const nonce = await wallet.getTransactionCount()
+
+    const gasPrice = await provider.getGasPrice()
+
+    const signedTransaction = await wallet.signTransaction({
+      from: wallet.address,
+      to: input?.to,
+      value: amountToSend,
+      nonce,
+      chainId: input?.chainId as number,
+      gasLimit: DEFAULT_GAS_LIMIT,
+      gasPrice
+    })
+
+    const transaction = await provider.sendTransaction(signedTransaction)
+    const response = await transaction.wait()
+
+    return {
+      transactionHash: response.transactionHash
+    }
+  }
+
+  throw new Error('[SEND TRANSACTION] Unsupported network: ', input.networkType)
 }
 
 export function useSendMutation() {

@@ -30,6 +30,8 @@ import {
   FetchAccount2faSettingsResponse
 } from '@hooks/accounts/queries/useAccount2faSettings'
 
+import type { SupportedNetworks } from '@/utils/global/types'
+
 export const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'Invalid wallet address.' }),
   amount: z.string().min(4, { message: 'min 0.0001' })
@@ -73,9 +75,7 @@ export const useSend = () => {
 
   const [transaction, setTransaction] = useState<TransactionProps | null>()
 
-  const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins(
-    customer?.wallets.evm.address
-  )
+  const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins()
 
   const [selectedCoin, setSelectedCoin] = useState<CoinProps | null>(
     (coinsData && coinsData.coins[0]) ?? null
@@ -196,12 +196,22 @@ export const useSend = () => {
 
   function isWalletAddressValid(publicKey: string) {
     try {
-      if (selectedCoin?.symbol === 'sol') {
+      if (selectedCoin?.networkType === 'solana') {
         const result = PublicKey.isOnCurve(publicKey)
 
         return result
-      } else {
+      }
+
+      if (selectedCoin?.networkType === 'evm') {
         const result = ethers.utils.isAddress(publicKey)
+
+        return result
+      }
+
+      if (selectedCoin?.networkType === 'bitcoin') {
+        const result = /([13]|bc1p|bc1q|[mn])[A-HJ-NP-Za-km-z1-9]{27,34}/.test(
+          publicKey
+        )
 
         return result
       }
@@ -249,7 +259,8 @@ export const useSend = () => {
     rpcUrl,
     symbol,
     amount,
-    to
+    to,
+    networkType
   }: HandleSendTransactionProps) {
     if (!customer) return
 
@@ -258,10 +269,10 @@ export const useSend = () => {
         chainId,
         rpcUrl,
         symbol,
+        networkType,
         fromWalletPrivateKey:
-          symbol === 'sol'
-            ? customer.wallets.solana.privateKey
-            : customer.wallets.evm.privateKey,
+          customer.wallets[selectedCoin?.networkType as SupportedNetworks]
+            .privateKey,
         to,
         amount
       })

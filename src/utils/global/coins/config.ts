@@ -1,7 +1,20 @@
-const TESTNET_COINS_ATTRIBUTES = [
+interface NetworkSettings {
+  symbol: string
+  networkName: string
+  networkType: 'solana' | 'evm' | 'bitcoin'
+  avatar: string
+  chainId: number | null
+  decimals: number
+  rpcUrl: string
+  explorerUrl: string
+  scanUrl: string
+}
+
+const TESTNET_COINS_ATTRIBUTES: NetworkSettings[] = [
   {
     symbol: 'celo',
-    network: 'celo',
+    networkName: 'celo',
+    networkType: 'evm',
     avatar: '/networks/celo-logo.svg',
     chainId: 44787,
     decimals: 18,
@@ -11,7 +24,8 @@ const TESTNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'avax',
-    network: 'Avalanche',
+    networkName: 'Avalanche',
+    networkType: 'evm',
     avatar: '/networks/avalanche-logo.svg',
     chainId: 43113,
     decimals: 18,
@@ -21,7 +35,8 @@ const TESTNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'matic',
-    network: 'polygon',
+    networkName: 'polygon',
+    networkType: 'evm',
     avatar: '/networks/polygon-logo.svg',
     chainId: 80001,
     decimals: 18,
@@ -31,7 +46,8 @@ const TESTNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'bnb',
-    network: 'binance smart chain',
+    networkName: 'binance smart chain',
+    networkType: 'evm',
     avatar: '/networks/bnb-logo.svg',
     chainId: 97,
     decimals: 18,
@@ -41,7 +57,8 @@ const TESTNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'eth',
-    network: 'ethereum',
+    networkName: 'ethereum',
+    networkType: 'evm',
     avatar: '/networks/eth-logo.svg',
     chainId: 5,
     decimals: 18,
@@ -51,30 +68,44 @@ const TESTNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'sol',
-    network: 'solana',
+    networkName: 'solana',
+    networkType: 'solana',
     avatar: '/networks/solana-logo.svg',
     chainId: null,
     decimals: 9,
     rpcUrl: 'https://api.testnet.solana.com',
     explorerUrl: 'https://explorer.solana.com/',
     scanUrl: 'https://public-api.solscan.io/'
+  },
+  {
+    symbol: 'btc',
+    networkName: 'bitcoin',
+    networkType: 'bitcoin',
+    avatar: '/networks/bitcoin-logo.svg',
+    chainId: null,
+    decimals: 8,
+    rpcUrl: 'https://api.blockcypher.com/v1/btc/test3',
+    explorerUrl: 'https://live.blockcypher.com/btc-testnet',
+    scanUrl: 'https://api.blockcypher.com/v1/bcy/test'
   }
 ]
 
-const MAINNET_COINS_ATTRIBUTES = [
+const MAINNET_COINS_ATTRIBUTES: NetworkSettings[] = [
   {
     symbol: 'matic',
-    network: 'polygon',
+    networkName: 'polygon',
+    networkType: 'evm',
     avatar: '/networks/polygon-logo.svg',
     chainId: 137,
     decimals: 18,
     rpcUrl: 'https://polygon-rpc.com/',
     explorerUrl: 'https://polygonscan.com/',
-    scanUrl: `https://api.polygonscan.com//api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
+    scanUrl: `https://api.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
     symbol: 'bnb',
-    network: 'binance smart chain',
+    networkName: 'binance smart chain',
+    networkType: 'evm',
     avatar: '/networks/bnb-logo.svg',
     chainId: 56,
     decimals: 18,
@@ -84,7 +115,8 @@ const MAINNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'celo',
-    network: 'celo',
+    networkName: 'celo',
+    networkType: 'evm',
     avatar: '/networks/celo-logo.svg',
     chainId: 42220,
     decimals: 18,
@@ -94,7 +126,8 @@ const MAINNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'avax',
-    network: 'Avalanche',
+    networkName: 'Avalanche',
+    networkType: 'evm',
     avatar: '/networks/avalanche-logo.svg',
     chainId: 43114,
     decimals: 18,
@@ -104,7 +137,8 @@ const MAINNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'eth',
-    network: 'ethereum',
+    networkName: 'ethereum',
+    networkType: 'evm',
     avatar: '/networks/eth-logo.svg',
     chainId: 1,
     decimals: 18,
@@ -114,13 +148,25 @@ const MAINNET_COINS_ATTRIBUTES = [
   },
   {
     symbol: 'sol',
-    network: 'solana',
+    networkName: 'solana',
+    networkType: 'solana',
     avatar: '/networks/solana-logo.svg',
     chainId: null,
     decimals: 9,
     rpcUrl: `https://solana-mainnet.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_SOLANA_RPC_API_KEY}`,
     explorerUrl: 'https://explorer.solana.com/',
     scanUrl: 'https://public-api.solscan.io/'
+  },
+  {
+    symbol: 'btc',
+    networkName: 'bitcoin',
+    networkType: 'bitcoin',
+    avatar: '/networks/bitcoin-logo.svg',
+    chainId: null,
+    decimals: 8,
+    rpcUrl: 'https://api.blockcypher.com/v1/btc/main',
+    explorerUrl: 'https://live.blockcypher.com',
+    scanUrl: 'https://api.blockcypher.com/v1/bcy/main'
   }
 ]
 
@@ -130,6 +176,5 @@ const NETWORKS_COINS_ATTRIBUTES = new Map([
 ])
 
 export const COINS_ATTRIBUTES =
-  NETWORKS_COINS_ATTRIBUTES.get(
-    process?.env?.NEXT_PUBLIC_ENV ?? 'production'
-  ) ?? MAINNET_COINS_ATTRIBUTES
+  NETWORKS_COINS_ATTRIBUTES.get(process.env.NEXT_PUBLIC_ENV ?? 'production') ??
+  MAINNET_COINS_ATTRIBUTES

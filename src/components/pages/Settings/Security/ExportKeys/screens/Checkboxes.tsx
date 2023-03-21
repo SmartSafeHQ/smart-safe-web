@@ -58,6 +58,16 @@ export function Checkboxes({
               ?.checked || false
           }
         />
+
+        <Checkbox
+          label="Bitcoin"
+          htmlFor="bitcoin"
+          onChange={handleUpdateSingleCheckbox}
+          isChecked={
+            selectedChains.find(({ networkType }) => networkType === 'bitcoin')
+              ?.checked || false
+          }
+        />
       </div>
 
       <Button

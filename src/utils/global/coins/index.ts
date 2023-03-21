@@ -66,3 +66,28 @@ export function formatToCurrency({
     ...props
   }).format(floatAmount)
 }
+
+export function formatWalletAddress({
+  network,
+  walletAddress
+}: {
+  network: 'solana' | 'evm' | 'bitcoin'
+  walletAddress: string
+}) {
+  switch (network) {
+    case 'evm': {
+      return `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`
+    }
+    case 'solana': {
+      return `${walletAddress.slice(0, 4)}...${walletAddress.slice(-4)}`
+    }
+    case 'bitcoin': {
+      return `${walletAddress?.substring(0, 4)}...${walletAddress?.substring(
+        30
+      )}`
+    }
+    default: {
+      return ''
+    }
+  }
+}

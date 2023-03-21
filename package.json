@@ -11,6 +11,7 @@
     "commit": "git-cz"
   },
   "dependencies": {
+    "@aws-amplify/cli": "^11.0.2",
     "@hookform/resolvers": "^2.9.10",
     "@json-rpc-tools/utils": "^1.7.6",
     "@next/font": "13.1.4",
@@ -36,6 +37,7 @@
     "@walletconnect/utils": "^2.4.4",
     "aws-amplify": "^5.0.15",
     "axios": "^1.2.3",
+    "bitcoinjs-lib": "^6.1.0",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
     "ethers": "^5.7.2",

@@ -12,6 +12,8 @@ import { CoinProps, HandleSendTransactionProps } from '@hooks/send/interfaces'
 import { useCoinFeeData } from '@hooks/global/coins/queries/useCoinFeeData'
 import { useSend } from '@hooks/send/useSend'
 
+import { formatWalletAddress } from '@utils/global/coins'
+
 interface SendModalProps {
   usdAmount: number
   coinAmount: number
@@ -33,16 +35,23 @@ export function SendModal({
 }: SendModalProps) {
   const { t, customer } = useSend()
 
-  const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData(
-    coin.rpcUrl,
-    coin.symbol,
-    coin.decimals,
-    customer?.wallets.solana.address
-  )
-  const destinationWalletFormatted =
-    coin.symbol === 'sol'
-      ? `${to.slice(0, 4)}...${to.slice(-4)}`
-      : `${to.slice(0, 6)}...${to.slice(-4)}`
+  const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData({
+    rpcUrl: coin.rpcUrl,
+    symbol: coin.symbol,
+    network: coin.networkType,
+    coinDecimals: coin.decimals,
+    walletAddress: customer?.wallets[coin.networkType].address
+  })
+
+  const destinationWalletFormatted = formatWalletAddress({
+    network: coin.networkType,
+    walletAddress: to
+  })
+
+  const fromWalletFormatted = formatWalletAddress({
+    network: coin.networkType,
+    walletAddress: customer?.wallets[coin.networkType].address || ''
+  })
 
   return (
     <DialogModal.Content
@@ -87,17 +96,7 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{`${
-                    coin.symbol === 'sol'
-                      ? `${customer?.wallets.solana.address.slice(
-                          0,
-                          4
-                        )}...${customer?.wallets.solana.address.slice(-4)}`
-                      : `${customer?.wallets.evm.address.slice(
-                          0,
-                          6
-                        )}...${customer?.wallets.evm.address.slice(-4)}`
-                  }`}</span>
+                  <span>{fromWalletFormatted}</span>
                 </Text>
               </WalletInfos>
 
@@ -160,13 +159,13 @@ export function SendModal({
           </>
         ) : (
           <SendSuccess
-            transactionUrl={`${coin.explorerUrl}/tx/${txData.transactionHash}`}
-            amountInUsd={usdAmount}
             to={to}
-            formattedToWallet={destinationWalletFormatted}
-            amountIncoin={coinAmount}
-            coinAvatar={coin.avatar}
             coinName={coin.symbol}
+            amountInUsd={usdAmount}
+            coinAvatar={coin.avatar}
+            amountIncoin={coinAmount}
+            formattedToWallet={destinationWalletFormatted}
+            transactionUrl={`${coin.explorerUrl}/tx/${txData.transactionHash}`}
           />
         )}
       </div>

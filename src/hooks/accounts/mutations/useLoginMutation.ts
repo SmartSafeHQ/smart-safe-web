@@ -11,6 +11,8 @@ import {
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
 
+import type { WalletKeypair } from '@/utils/global/types'
+
 interface LoginFunctionInput {
   email: string
   password: string
@@ -24,14 +26,9 @@ interface LoginFunctionOutput {
     name: string
     email: string
     wallets: {
-      evm: {
-        address: string
-        privateKey: string
-      }
-      solana: {
-        address: string
-        privateKey: string
-      }
+      evm: WalletKeypair
+      solana: WalletKeypair
+      bitcoin: WalletKeypair
     }
   }
 }

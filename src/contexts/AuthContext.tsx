@@ -18,6 +18,7 @@ import {
   fetchAccountWallets,
   FetchAccountWalletsResponse
 } from '@hooks/accounts/queries/useAccountWallets'
+import { WalletKeypair } from '@/utils/global/types'
 
 export type Customer2FAProps = {
   signInEnabled: boolean
@@ -31,14 +32,9 @@ export type CustomerProps = {
   name: string
   email: string
   wallets: {
-    evm: {
-      address: string
-      privateKey: string
-    }
-    solana: {
-      address: string
-      privateKey: string
-    }
+    evm: WalletKeypair
+    solana: WalletKeypair
+    bitcoin: WalletKeypair
   }
 }
 

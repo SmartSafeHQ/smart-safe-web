@@ -1,3 +1,5 @@
+import type { SupportedNetworks } from '@/utils/global/types'
+
 export interface CoinProps {
   symbol: string
   avatar: string
@@ -5,6 +7,8 @@ export interface CoinProps {
   decimals: number
   rpcUrl: string
   explorerUrl: string
+  networkName: string
+  networkType: SupportedNetworks
 }
 
 export interface AmountInputType {
@@ -24,6 +28,7 @@ export interface TransactionProps {
 
 export interface HandleSendTransactionProps {
   chainId: number | null
+  networkType: SupportedNetworks
   rpcUrl: string
   symbol: string
   amount: number
