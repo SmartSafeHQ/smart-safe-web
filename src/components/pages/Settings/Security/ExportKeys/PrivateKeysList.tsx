@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { Copy } from 'phosphor-react'
 
 import { Button } from '@components/Button'
+import { Text } from '@components/Text'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
@@ -39,12 +40,16 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
 
   return (
     <div className="w-full">
-      <p className="font-bold">{network}</p>
+      <Text asChild>
+        <p className="font-bold">{network}</p>
+      </Text>
 
       <div className="font-medium rounded-lg border-1 dark:border-zinc-700/70 border-slate-300 overflow-hidden relative">
-        <p className="break-words p-2 dark:bg-gray-500/20 bg-slate-200">
-          {privateKey}
-        </p>
+        <Text asChild>
+          <p className="break-words p-2 dark:bg-gray-500/20 bg-gray-200">
+            {privateKey}
+          </p>
+        </Text>
 
         <div className="border-t-2 dark:border-zinc-700 border-slate-300 w-full absolute left-0"></div>
 
@@ -54,11 +59,13 @@ function PrivateKey({ network, privateKey }: PrivateKeyProps) {
         >
           <Copy size={22} />
 
-          <p className="font-bold text-center">
-            {copiedToClipboard
-              ? t.settings.security.exportKeys.privateKeys.copied
-              : t.settings.security.exportKeys.privateKeys.copy}
-          </p>
+          <Text asChild>
+            <p className="font-bold text-center">
+              {copiedToClipboard
+                ? t.settings.security.exportKeys.copied
+                : t.settings.security.exportKeys.copy}
+            </p>
+          </Text>
         </div>
       </div>
     </div>
@@ -75,7 +82,7 @@ export function PrivateKeysList({
   return (
     <div className="flex flex-col gap-2 max-w-[400px] w-full">
       <p className="text-center text-sm font-bold p-2 rounded-lg border-1 border-red-500/30 text-red-500 bg-red-400/[.15]">
-        {t.settings.security.exportKeys.privateKeys.warning}
+        {t.settings.security.exportKeys.warning}
       </p>
 
       {selectedChains.find(
@@ -97,7 +104,7 @@ export function PrivateKeysList({
       )}
 
       <Button onClick={() => setCurrentScreen('checkbox-screen')}>
-        {t.settings.security.exportKeys.privateKeys.back}
+        {t.settings.security.exportKeys.back}
       </Button>
     </div>
   )

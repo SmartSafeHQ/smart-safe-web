@@ -1,7 +1,7 @@
 import { Verify2FAModal } from '@components/pages/Layouts/Verify2FAModal'
 import { Heading } from '@components/Heading'
-import { PrivateKeysList } from './screens/PrivateKeysList'
-import { Checkboxes } from './screens/Checkboxes'
+import { PrivateKeysList } from './PrivateKeysList'
+import { Checkboxes } from './Checkboxes'
 
 import { useI18n } from '@hooks/useI18n'
 import { useSettingsSecurityExport } from '@hooks/settings/useSettingsSecurity/export/useSettingsSecurityExport'

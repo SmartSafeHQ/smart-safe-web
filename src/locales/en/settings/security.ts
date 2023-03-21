@@ -49,19 +49,15 @@ export const security = {
   disableSuccessMessage: 'Two-factor authentication successfully disabled',
   exportKeysHeading: 'Export private keys',
   exportKeys: {
-    checkboxes: {
-      warning:
-        "By exporting any of your private keys, you agree that you're now responsible for managing the security of funds held in these wallets.",
-      checkAll: 'Check all',
-      uncheckAll: 'Uncheck all',
-      export: 'Export'
-    },
-    privateKeys: {
-      warning:
-        'Do not share your private key! If someone has your private key they will have full control of your wallet.',
-      copy: 'Copy',
-      copied: 'Copied!',
-      back: 'Back'
-    }
+    checkWarning:
+      "By exporting any of your private keys, you agree that you're now responsible for managing the security of funds held in these wallets.",
+    checkAll: 'Check all',
+    uncheckAll: 'Uncheck all',
+    export: 'Export',
+    warning:
+      'Do not share your private key! If someone has your private key they will have full control of your wallet.',
+    copy: 'Copy',
+    copied: 'Copied!',
+    back: 'Back'
   }
 }

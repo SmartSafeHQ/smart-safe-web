@@ -7,7 +7,7 @@ import type {
 
 import { WarningCircle } from 'phosphor-react'
 
-import { Checkbox } from '../Checkbox'
+import { Checkbox } from './Checkbox'
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 
@@ -41,7 +41,7 @@ export function Checkboxes({
         <WarningCircle className="w-12 h-8 text-red-500" />
 
         <Text className="text-sm">
-          {t.settings.security.exportKeys.checkboxes.warning}
+          {t.settings.security.exportKeys.warning}
         </Text>
       </div>
 
@@ -71,7 +71,7 @@ export function Checkboxes({
         onClick={handleExport}
         disabled={!selectedChains.some(({ checked }) => checked)}
       >
-        {t.settings.security.exportKeys.checkboxes.export}
+        {t.settings.security.exportKeys.export}
       </Button>
     </div>
   )

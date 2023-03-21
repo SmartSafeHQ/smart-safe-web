@@ -49,19 +49,15 @@ export const security = {
   disableSuccessMessage: 'Autenticação de dois fatores desativada com sucesso',
   exportKeysHeading: 'Exportar chaves privadas',
   exportKeys: {
-    checkboxes: {
-      warning:
-        'Ao exportar suas chaves privadas você concorda em ser o responsável pela segurança dos fundos contidos nas carteiras exportadas.',
-      checkAll: 'Marcar todos',
-      uncheckAll: 'Desmarcar todos',
-      export: 'Exportar'
-    },
-    privateKeys: {
-      warning:
-        'Não compartilhe sua chave privada! Qualquer pessoa em posse dela será capaz de mover os fundos contidos nela.',
-      copy: 'Copiar',
-      copied: 'Copiado!',
-      back: 'Voltar'
-    }
+    checkWarning:
+      'Ao exportar suas chaves privadas você concorda em ser o responsável pela segurança dos fundos contidos nas carteiras exportadas.',
+    checkAll: 'Marcar todos',
+    uncheckAll: 'Desmarcar todos',
+    export: 'Exportar',
+    warning:
+      'Não compartilhe sua chave privada! Qualquer pessoa em posse dela será capaz de mover os fundos contidos nela.',
+    copy: 'Copiar',
+    copied: 'Copiado!',
+    back: 'Voltar'
   }
 }
