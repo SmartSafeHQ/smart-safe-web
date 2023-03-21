@@ -22,12 +22,13 @@ export function SendModal() {
     handleSendTransaction
   } = useSend()
 
-  const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData(
-    coin.rpcUrl,
-    coin.symbol,
-    coin.decimals,
-    customer?.wallets.solana.address
-  )
+  const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData({
+    rpcUrl: coin.rpcUrl,
+    coinDecimals: coin.decimals,
+    symbol: coin.symbol,
+    network: coin.networkType,
+    walletAddress: customer?.wallets[coin.networkType].address
+  })
 
   if (!transaction) return <></>
 

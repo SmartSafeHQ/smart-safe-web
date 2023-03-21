@@ -1,17 +1,13 @@
 import Image from 'next/image'
 import { useState } from 'react'
 
-import { useAuth } from '@contexts/AuthContext'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 
 export function PaymentOptions() {
   const [currencySelectedForPayment, setCurrencySelectedForPayment] =
     useState('')
 
-  const { customer } = useAuth()
-  const { data: nativeCurrencies } = useCustomerCoins(
-    customer?.wallets.evm.address
-  )
+  const { data: nativeCurrencies } = useCustomerCoins()
 
   return (
     <>

@@ -3,8 +3,9 @@ import { useQuery } from '@tanstack/react-query'
 import { COINS_ATTRIBUTES } from '@utils/global/coins/config'
 import { MAX_PAGINATION_COINS_PER_PAGE } from '@utils/global/constants/variables'
 
+import type { SupportedNetworks } from '@/utils/global/types'
+
 interface FetchCustomerCoinsInput {
-  account?: string
   page: number
   offset: number
 }
@@ -12,7 +13,8 @@ interface FetchCustomerCoinsInput {
 export interface FetchCustomerCoinsResponse {
   coins: {
     symbol: string
-    network: string
+    networkName: string
+    networkType: SupportedNetworks
     avatar: string
     chainId: number | null
     decimals: number
@@ -36,7 +38,6 @@ export async function fetchCustomerCoins({
 }
 
 export function useCustomerCoins(
-  account?: string,
   enabled = true,
   page = 1,
   offset = MAX_PAGINATION_COINS_PER_PAGE
@@ -44,7 +45,7 @@ export function useCustomerCoins(
   return useQuery({
     queryKey: ['customerCoins', page],
     queryFn: () => fetchCustomerCoins({ page, offset }),
-    enabled: enabled && !!account,
+    enabled,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes
   })

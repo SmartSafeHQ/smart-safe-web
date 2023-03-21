@@ -61,9 +61,7 @@ export const useCustomSendHook = () => {
 
   const currentAmount = formatCurrencyToNumber(watch()?.amount ?? '0')
 
-  const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins(
-    customer?.wallets.evm.address
-  )
+  const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins()
 
   const [amountInputType, setAmountInputType] = useState<AmountInputType>(
     DEFAULT_AMOUNT_INPUT_TYPE
@@ -168,14 +166,24 @@ export const useCustomSendHook = () => {
     })
   }
 
-  function isWalletAddressValid(publicKey: string, networkSymbol: string) {
+  function isWalletAddressValid(publicKey: string) {
     try {
-      if (networkSymbol === 'sol') {
+      if (selectedCoin?.networkType === 'solana') {
         const result = PublicKey.isOnCurve(publicKey)
 
         return result
-      } else {
+      }
+
+      if (selectedCoin?.networkType === 'evm') {
         const result = ethers.utils.isAddress(publicKey)
+
+        return result
+      }
+
+      if (selectedCoin?.networkType === 'bitcoin') {
+        const result = /([13]|bc1p|bc1q|[mn])[A-HJ-NP-Za-km-z1-9]{27,34}/.test(
+          publicKey
+        )
 
         return result
       }
@@ -192,13 +200,16 @@ export const useCustomSendHook = () => {
       return
     }
 
-    if (!isWalletAddressValid(data.sendWallet, selectedCoin.symbol)) {
+    if (!isWalletAddressValid(data.sendWallet)) {
       setError('sendWallet', { message: t.send.errors.invalidAddress })
       return
     }
 
     try {
-      const formattedTo = formatWalletAddress(data.sendWallet)
+      const formattedTo = formatWalletAddress({
+        walletAddress: data.sendWallet,
+        network: selectedCoin.networkType
+      })
 
       const amountData =
         amountInputType.symbol === 'usd'
