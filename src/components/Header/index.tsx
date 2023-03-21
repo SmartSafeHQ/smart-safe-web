@@ -1,6 +1,7 @@
 import { List, Moon, Sun, Question, SignOut, User } from 'phosphor-react'
+import { useTheme } from 'next-themes'
 
-import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
+import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
 import { Avatar } from '@components/Avatar'
 import { DropdownMenu } from '@components/DropdownMenu'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
@@ -8,12 +9,12 @@ import { DropdownLocales } from '@components/Header/DropdownLocales'
 import { DropdownMenuUserInfos } from './DropdownMenuUserInfos'
 
 import { useAuth } from '@contexts/AuthContext'
-import { useTheme } from '@contexts/ThemeContext'
 import { useI18n } from '@hooks/useI18n'
 
 export function Header() {
   const { customer, signOut } = useAuth()
-  const { theme, toggleTheme } = useTheme()
+  const { theme, setTheme } = useTheme()
+
   const { t } = useI18n()
 
   const customerShortName = customer?.name.substring(0, 2)
@@ -56,12 +57,21 @@ export function Header() {
               {t.header.myProfile}
             </DropdownMenu.Item>
 
-            <DropdownMenu.Item
-              LeftIcon={theme === 'dark' ? Moon : Sun}
-              onClick={toggleTheme}
-            >
-              {t.header.theme}: {t.header[theme]}
-            </DropdownMenu.Item>
+            {theme === 'light' ? (
+              <DropdownMenu.Item
+                LeftIcon={Sun}
+                onClick={() => setTheme('dark')}
+              >
+                {t.header.theme}: {t.header.light}
+              </DropdownMenu.Item>
+            ) : (
+              <DropdownMenu.Item
+                LeftIcon={Moon}
+                onClick={() => setTheme('light')}
+              >
+                {t.header.theme}: {t.header.dark}
+              </DropdownMenu.Item>
+            )}
 
             <DropdownLocales />
 

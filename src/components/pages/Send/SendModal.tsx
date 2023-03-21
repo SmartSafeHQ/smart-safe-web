@@ -8,30 +8,19 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendSuccess } from '@components/pages/Send/SendSuccess'
 import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
 
-import { CoinProps, HandleSendTransactionProps } from '@hooks/send/interfaces'
 import { useCoinFeeData } from '@hooks/global/coins/queries/useCoinFeeData'
-import { useSend } from '@hooks/send/useSend'
+import { useCustomSendHook } from '@hooks/send/useSend'
+import { useSend } from '@contexts/SendContext'
 
-interface SendModalProps {
-  usdAmount: number
-  coinAmount: number
-  to: string
-  coin: CoinProps
-  isSendingTx: boolean
-  txData?: { transactionHash: string }
-  handleSendTransaction: (_tx: HandleSendTransactionProps) => void
-}
-
-export function SendModal({
-  coinAmount,
-  usdAmount,
-  to,
-  coin,
-  txData,
-  isSendingTx,
-  handleSendTransaction
-}: SendModalProps) {
-  const { t, customer } = useSend()
+export function SendModal() {
+  const { t, customer } = useCustomSendHook()
+  const {
+    selectedCoin: coin,
+    transaction,
+    txData,
+    isSendingTx,
+    handleSendTransaction
+  } = useSend()
 
   const { data: coinFeeData, isLoading: coinFeeIsLoading } = useCoinFeeData(
     coin.rpcUrl,
@@ -39,28 +28,26 @@ export function SendModal({
     coin.decimals,
     customer?.wallets.solana.address
   )
-  const destinationWalletFormatted =
-    coin.symbol === 'sol'
-      ? `${to.slice(0, 4)}...${to.slice(-4)}`
-      : `${to.slice(0, 6)}...${to.slice(-4)}`
+
+  if (!transaction) return <></>
 
   return (
     <DialogModal.Content
       className="md:max-w-[32rem]"
       onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
-      onInteractOutside={e => e.preventDefault()}
+      onInteractOutside={e => isSendingTx && e.preventDefault()}
     >
-      <div className="w-full h-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
+      <div className="w-full h-full flex flex-col justify-center py-8 px-1 sm:py-3 sm:px-8">
         {!txData ? (
           <>
             <header className="w-full flex items-center flex-col gap-3 mb-6">
               <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-                {t.send.send} ${usdAmount.toFixed(2)}
+                {t.send.send} ${transaction.usdAmount}
               </DialogModal.Title>
 
               <div className="w-full flex items-center justify-center gap-2">
                 <DialogModal.Description className="text-center text-gray-700 dark:text-gray-300 text-xl font-semibold uppercase">
-                  {coinAmount.toFixed(4)} {coin.symbol}
+                  {transaction.formattedCoinAmount} {coin.symbol}
                 </DialogModal.Description>
 
                 <Avatar.Root fallbackName={coin.symbol} className="w-6 h-6">
@@ -87,17 +74,11 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{`${
-                    coin.symbol === 'sol'
-                      ? `${customer?.wallets.solana.address.slice(
-                          0,
-                          4
-                        )}...${customer?.wallets.solana.address.slice(-4)}`
-                      : `${customer?.wallets.evm.address.slice(
-                          0,
-                          6
-                        )}...${customer?.wallets.evm.address.slice(-4)}`
-                  }`}</span>
+                  <span>
+                    {coin.symbol === 'sol'
+                      ? `${customer?.wallets.solana.formattedAddress}`
+                      : `${customer?.wallets.evm.formattedAddress}`}
+                  </span>
                 </Text>
               </WalletInfos>
 
@@ -118,12 +99,12 @@ export function SendModal({
                   asChild
                   className="text-sm text-gray-600 dark:text-gray-300 lowercase"
                 >
-                  <span>{destinationWalletFormatted}</span>
+                  <span>{transaction.formattedTo}</span>
                 </Text>
               </WalletInfos>
 
               <div className="flex items-center text-gray-800 dark:text-gray-200 mb-8">
-                <Skeleton isLoading={coinFeeIsLoading} className="h-7">
+                <Skeleton isLoading={coinFeeIsLoading} className="w-full h-7">
                   <Text className="mr-2">{t.send.fee}:</Text>
 
                   <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
@@ -135,7 +116,7 @@ export function SendModal({
 
                   {coinFeeData && (
                     <Text className="font-semibold">
-                      {coinFeeData.valueInCoin.slice(0, 6)} ($
+                      {coinFeeData.valueInCoin.slice(0, 5)} ($
                       {coinFeeData.feeInUSD.slice(0, 4)})
                     </Text>
                   )}
@@ -144,18 +125,12 @@ export function SendModal({
             </div>
 
             <div className="flex gap-2 md:flex-col-reverse">
-              <DialogModal.Trigger>
-                <Button className="bg-gray-200 text-gray-900 hover:bg-gray-300 m-0">
-                  {t.send.cancel}
-                </Button>
-              </DialogModal.Trigger>
-
               <Button
                 onClick={() =>
                   handleSendTransaction({
                     ...coin,
-                    to,
-                    amount: coinAmount
+                    to: transaction.to,
+                    amount: transaction.coinAmount
                   })
                 }
                 isLoading={isSendingTx}
@@ -166,19 +141,7 @@ export function SendModal({
           </>
         ) : (
           <SendSuccess
-            transactionUrl={
-              coin.symbol === 'sol'
-                ? process.env.NODE_ENV === 'development'
-                  ? `${coin.explorerUrl}/tx/${txData.transactionHash}?cluster=testnet`
-                  : `${coin.explorerUrl}/tx/${txData.transactionHash}`
-                : `${coin.explorerUrl}tx/${txData.transactionHash}`
-            }
-            amountInUsd={usdAmount}
-            to={to}
-            formattedToWallet={destinationWalletFormatted}
-            amountIncoin={coinAmount}
-            coinAvatar={coin.avatar}
-            coinName={coin.symbol}
+            transactionUrl={`${coin.explorerUrl}/tx/${txData.transactionHash}`}
           />
         )}
       </div>

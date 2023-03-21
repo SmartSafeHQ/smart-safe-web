@@ -8,6 +8,7 @@ import { HoverCard } from '@components/HoverCard'
 import { Avatar } from '@components/Avatar'
 
 import { handleCopyToClipboard } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 import { useI18n } from '@hooks/useI18n'
 
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
@@ -39,6 +40,9 @@ export function TransactionsTableTr({
 }: TransactionsTableTrProps) {
   const { t } = useI18n()
 
+  const formatedSenderAddress = formatWalletAddress(sender, 4)
+  const formatedReceiverAddress = formatWalletAddress(receiver, 4)
+
   return (
     <tr
       className={clsx(
@@ -69,9 +73,9 @@ export function TransactionsTableTr({
       <td className="min-w-[8rem] py-6">
         <HoverCard.Root openDelay={100}>
           <HoverCard.Trigger>
-            <button
-              onClick={() => handleCopyToClipboard(sender)}
-            >{`${sender.slice(0, 4)}...${sender.slice(-4)}`}</button>
+            <button onClick={() => handleCopyToClipboard(sender)}>
+              {formatedSenderAddress}
+            </button>
           </HoverCard.Trigger>
 
           <HoverCard.Content variant="highlighted" className="text-sm">
@@ -84,9 +88,9 @@ export function TransactionsTableTr({
       <td className="min-w-[8rem] py-3">
         <HoverCard.Root>
           <HoverCard.Trigger>
-            <button
-              onClick={() => handleCopyToClipboard(receiver)}
-            >{`${receiver.slice(0, 4)}...${receiver.slice(-4)}`}</button>
+            <button onClick={() => handleCopyToClipboard(receiver)}>
+              {formatedReceiverAddress}
+            </button>
           </HoverCard.Trigger>
 
           <HoverCard.Content variant="highlighted" className="text-sm">

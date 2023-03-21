@@ -25,7 +25,12 @@
           "webClientId": "35dvkk1ciebu6dfo7m86r2f2at",
           "nativeClientId": "79mo9gh98if5865nf245rdaa2c"
         },
-        "toknendusersdashb4b449ec2": {}
+        "toknendusersdashb4b449ec2": {
+          "userPoolId": "us-east-1_6PoLmM2Dq",
+          "userPoolName": "@dev-in-wallet-users",
+          "webClientId": "4f1t8gfmh9re0bijl35sdlifv8",
+          "nativeClientId": "4f1t8gfmh9re0bijl35sdlifv8"
+        }
       }
     }
   },

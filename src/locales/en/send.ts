@@ -12,15 +12,16 @@ export const send = {
   fee: 'Fee',
   from: 'From',
   address: 'Address',
+  txSuccess: 'Transaction done successfully',
   seeOn: 'See on',
   sent: 'sent',
   copyAddress: 'Copy address',
   date: 'date',
   proof: 'proof',
-  viewProof: 'view proof',
+  viewProof: 'View proof',
   backToSend: 'Back to send',
   errors: {
-    invalidAmountToSend: 'Invalid amount.',
-    invalidWalletAddress: 'Invalid wallet address.'
+    invalidAmount: 'Invalid amount.',
+    invalidAddress: 'Invalid wallet address.'
   }
 }

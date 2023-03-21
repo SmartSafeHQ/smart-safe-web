@@ -1,12 +1,16 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { useLoginMutation } from './mutations/useLoginMutation'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
+import {
+  createAuthCookieString,
+  getAuthErrorMessageWithToast,
+  LAST_AUTH_COOKIE_NAME
+} from '@utils/sessionsUtils'
 
 const validationSchema = z.object({
   email: z.string().email('invalid email'),
@@ -17,8 +21,8 @@ export type LoginFieldValues = z.infer<typeof validationSchema>
 
 export const useLogin = () => {
   const router = useRouter()
-  const { widgetProvider, setCustomer } = useAuth()
-  const { t } = useI18n()
+  const { widgetProvider, setCustomer, setCognitoUser } = useAuth()
+  const { t, currentLocaleProps } = useI18n()
 
   const { register, handleSubmit, formState } = useForm<LoginFieldValues>({
     resolver: zodResolver(validationSchema)
@@ -28,13 +32,27 @@ export const useLogin = () => {
 
   const onSubmit: SubmitHandler<LoginFieldValues> = async data => {
     try {
-      const customer = await mutateAsync(data)
+      const { cognitoUser, customer } = await mutateAsync(data)
 
-      setCustomer(customer)
+      setCognitoUser(cognitoUser)
 
-      router.push('/dashboard/home')
-    } catch (error) {
-      toast.error(`Error. ${(error as Error).message}`)
+      if (customer) {
+        setCustomer(customer)
+
+        createAuthCookieString(
+          LAST_AUTH_COOKIE_NAME,
+          new Date().toISOString(),
+          5
+        )
+
+        router.push('/dashboard/home')
+      }
+
+      if (!customer) {
+        router.push('/accounts/signIn2FA')
+      }
+    } catch (e) {
+      getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

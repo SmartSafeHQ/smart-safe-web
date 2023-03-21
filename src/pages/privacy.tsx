@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 
-import { InWalletTextLogo } from '@/components/Logos/InWalletTextLogo'
+import { InWalletTextLogo } from '@components/Logos/InWalletTextLogo'
 
 import { useI18n } from '@hooks/useI18n'
 

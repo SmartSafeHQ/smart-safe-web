@@ -1,12 +1,19 @@
-import { Checkbox } from '../Checkbox'
-import { Button } from '@/components/Button'
-
-import { useI18n } from '@/hooks/useI18n'
-
-import type { SelectedChains, Screens } from '@/hooks/export/interfaces'
 import type { Dispatch, SetStateAction, ChangeEvent } from 'react'
 
-type Props = {
+import type {
+  SelectedChains,
+  Screens
+} from '@hooks/settings/useSettingsSecurity/export/interfaces'
+
+import { WarningCircle } from 'phosphor-react'
+
+import { Checkbox } from '../Checkbox'
+import { Button } from '@components/Button'
+import { Text } from '@components/Text'
+
+import { useI18n } from '@hooks/useI18n'
+
+type CheckboxesProps = {
   selectedChains: SelectedChains[]
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
   setSelectedChains: Dispatch<SetStateAction<SelectedChains[]>>
@@ -17,7 +24,7 @@ export function Checkboxes({
   selectedChains,
   setCurrentScreen,
   handleUpdateSingleCheckbox
-}: Props) {
+}: CheckboxesProps) {
   const { t } = useI18n()
 
   function handleExport() {
@@ -29,10 +36,14 @@ export function Checkboxes({
   }
 
   return (
-    <div className="flex flex-col gap-4 w-full max-w-[400px]">
-      <p className="text-center text-sm font-medium p-2 dark:text-yellow-300 rounded-lg border-1 border-yellow-300 bg-yellow-200/50">
-        {t.settings.security.exportKeys.screens.checkboxes.warning}
-      </p>
+    <div className="flex flex-col gap-4 w-full max-w-lg">
+      <div className="w-full flex items-start justify-start gap-2 text-gray-800 dark:text-gray-50">
+        <WarningCircle className="w-12 h-8 text-red-500" />
+
+        <Text className="text-sm">
+          {t.settings.security.exportKeys.checkboxes.warning}
+        </Text>
+      </div>
 
       <div className="flex flex-col gap-2 rounded-lg border-1 p-2 bg-slate-200/60 dark:bg-gray-500/20 dark:border-zinc-700/70">
         <Checkbox
@@ -60,7 +71,7 @@ export function Checkboxes({
         onClick={handleExport}
         disabled={!selectedChains.some(({ checked }) => checked)}
       >
-        {t.settings.security.exportKeys.screens.checkboxes.export}
+        {t.settings.security.exportKeys.checkboxes.export}
       </Button>
     </div>
   )

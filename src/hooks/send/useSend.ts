@@ -11,23 +11,23 @@ import {
   getCoinAmountInUsd,
   formatToCurrency
 } from '@utils/global/coins'
-import { formatCurrencyToNumber, getEthersErrorCode } from '@utils/global'
+import { formatCurrencyToNumber } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
-import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
 import { useCoinValueInUsd } from '@hooks/global/coins/queries/useCoinValueInUsd'
-import { useSendMutation } from '@hooks/send/mutation/useSendMutation'
+import { AmountInputType } from '@hooks/send/interfaces'
+import { queryClient } from '@lib/reactQuery'
 import {
-  AmountInputType,
-  CoinProps,
-  HandleSendTransactionProps,
-  TransactionProps
-} from '@hooks/send/interfaces'
+  fetchAccount2faSettings,
+  FetchAccount2faSettingsResponse
+} from '@hooks/accounts/queries/useAccount2faSettings'
+import { useSend } from '@contexts/SendContext'
 
 export const validationSchema = z.object({
   sendWallet: z.string().min(1, { message: 'Invalid wallet address.' }),
-  amount: z.string().min(4, { message: 'min 0.0001' })
+  amount: z.string().min(4, { message: 'min 0.001' })
 })
 
 type SendFieldValues = z.infer<typeof validationSchema>
@@ -35,19 +35,20 @@ type SendFieldValues = z.infer<typeof validationSchema>
 export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
   symbol: 'usd',
   defaultValue: '$0.00 USD',
-  decimals: 4,
+  decimals: 3,
   convertCoins: getUsdAmountInCoinExchangeRate,
   currency: '$'
 }
 
-export const useSend = () => {
-  const { customer } = useAuth()
+export const useCustomSendHook = () => {
+  const { setTransaction, selectedCoin, setSelectedCoin } = useSend()
   const { t } = useI18n()
+  const { customer, setCustomer2FA, customer2FA, verify2FA } = useAuth()
+
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
     watch,
     setError,
     resetField,
@@ -56,36 +57,44 @@ export const useSend = () => {
     resolver: zodResolver(validationSchema)
   })
 
-  const currentAmount = !watch().amount
-    ? 0
-    : formatCurrencyToNumber(watch().amount)
+  const [isSendOpen, setIsSendOpen] = useState(false)
 
-  const [transaction, setTransaction] = useState<TransactionProps | null>()
+  const currentAmount = formatCurrencyToNumber(watch()?.amount ?? '0')
 
   const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins(
     customer?.wallets.evm.address
-  )
-
-  const [selectedCoin, setSelectedCoin] = useState<CoinProps | null>(
-    (coinsData && coinsData.coins[0]) ?? null
   )
 
   const [amountInputType, setAmountInputType] = useState<AmountInputType>(
     DEFAULT_AMOUNT_INPUT_TYPE
   )
 
-  const { data: portfolioData, isLoading: portfolioIsLoading } =
-    useCoinPortfolio(selectedCoin ?? undefined, customer?.wallets)
-
   const { data: coinInUsdData, isFetching: coinInUsdIsFetching } =
     useCoinValueInUsd(selectedCoin?.symbol)
 
-  const {
-    mutateAsync,
-    isLoading: isSendingTx,
-    data: txData,
-    reset
-  } = useSendMutation()
+  useEffect(() => {
+    if (!customer) return
+
+    queryClient
+      .ensureQueryData<FetchAccount2faSettingsResponse>({
+        queryKey: ['account2faSettings', customer.id],
+        queryFn: () => fetchAccount2faSettings({ id: customer.id })
+      })
+      .then(response => {
+        const fields = {
+          send2faEnabled: response.send2faEnabled === true ?? false,
+          exportKeys2faEnabled: response.exportKeys2faEnabled === true ?? false
+        }
+
+        setCustomer2FA(
+          prev =>
+            prev && {
+              ...prev,
+              ...fields
+            }
+        )
+      })
+  }, [customer])
 
   useEffect(() => {
     if (!coinsData || selectedCoin) {
@@ -159,9 +168,9 @@ export const useSend = () => {
     })
   }
 
-  function isWalletAddressValid(publicKey: string) {
+  function isWalletAddressValid(publicKey: string, networkSymbol: string) {
     try {
-      if (selectedCoin?.symbol === 'sol') {
+      if (networkSymbol === 'sol') {
         const result = PublicKey.isOnCurve(publicKey)
 
         return result
@@ -176,96 +185,67 @@ export const useSend = () => {
   }
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
+    if (!selectedCoin) return
+
     if (currentAmount <= 0) {
-      setError('amount', { message: t.send.errors.invalidAmountToSend })
+      setError('amount', { message: t.send.errors.invalidAmount })
       return
     }
 
-    if (!isWalletAddressValid(data.sendWallet)) {
-      setError('sendWallet', { message: t.send.errors.invalidWalletAddress })
+    if (!isWalletAddressValid(data.sendWallet, selectedCoin.symbol)) {
+      setError('sendWallet', { message: t.send.errors.invalidAddress })
       return
     }
 
     try {
-      if (amountInputType.symbol === 'usd') {
-        setTransaction({
-          usdAmount: currentAmount,
-          coinAmount: amounInReverseCoin,
-          to: data.sendWallet
-        })
-      } else {
-        setTransaction({
-          usdAmount: amounInReverseCoin,
-          coinAmount: currentAmount,
-          to: data.sendWallet
-        })
+      const formattedTo = formatWalletAddress(data.sendWallet)
+
+      const amountData =
+        amountInputType.symbol === 'usd'
+          ? {
+              usdAmount: currentAmount.toFixed(2),
+              coinAmount: amounInReverseCoin,
+              formattedCoinAmount: amounInReverseCoin.toFixed(3)
+            }
+          : {
+              usdAmount: amounInReverseCoin.toFixed(2),
+              coinAmount: currentAmount,
+              formattedCoinAmount: currentAmount.toFixed(3)
+            }
+
+      setTransaction({
+        ...amountData,
+        to: data.sendWallet,
+        formattedTo
+      })
+
+      if (customer2FA?.send2faEnabled) {
+        verify2FA()
       }
+
+      setIsSendOpen(true)
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
   }
 
-  async function handleSendTransaction({
-    chainId,
-    rpcUrl,
-    symbol,
-    amount,
-    to
-  }: HandleSendTransactionProps) {
-    if (!customer) return
-
-    try {
-      await mutateAsync({
-        chainId,
-        rpcUrl,
-        symbol,
-        fromWalletPrivateKey:
-          symbol === 'sol'
-            ? customer.wallets.solana.privateKey
-            : customer.wallets.evm.privateKey,
-        to,
-        amount
-      })
-
-      toast.success(`Transaction done successfully`)
-    } catch (error) {
-      console.error(error)
-
-      let errorMessage
-
-      const errorCode = getEthersErrorCode(error)
-
-      if (errorCode) {
-        errorMessage = t.errors.ether.get(errorCode)?.message
-      }
-
-      toast.error(errorMessage ?? t.errors.default)
-    }
-  }
-
   return {
     t,
-    coinsData,
-    coinsIsLoading,
+    customer,
+    isSendOpen,
+    setIsSendOpen,
     coinInUsdIsFetching,
-    handleChangeCoin,
-    portfolioData,
-    portfolioIsLoading,
     amounInReverseCoin,
-    amountInputType,
-    handleSubmit,
-    isSendingTx,
-    txData,
-    reset,
-    onSubmit,
     register,
+    handleSubmit,
+    onSubmit,
     errors,
     handleChangeAmountInput,
     handleToggleAmountInputType,
-    handleSendTransaction,
+    coinsData,
+    coinsIsLoading,
+    handleChangeCoin,
     selectedCoin,
-    transaction,
-    customer,
-    getValues
+    amountInputType
   }
 }

@@ -60,7 +60,7 @@ export const useWcLogin = () => {
     resolver: zodResolver(validationSchema)
   })
 
-  const { customer } = useAuth()
+  const { customer, cognitoUser } = useAuth()
   const { t } = useI18n()
 
   async function createClient() {
@@ -78,7 +78,7 @@ export const useWcLogin = () => {
         cookie.trim().startsWith('CognitoIdentityServiceProvider')
       )
 
-    if (authCookies.length === 0) {
+    if (authCookies.length === 0 && !customer) {
       setIsSignInModalOpen(true)
       return
     }
@@ -146,6 +146,7 @@ export const useWcLogin = () => {
     t,
     signClient,
     customer,
+    cognitoUser,
     sessionSignData,
     setSessionSignData,
     sessionData,

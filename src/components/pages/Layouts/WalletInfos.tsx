@@ -5,8 +5,9 @@ import {
   RefAttributes
 } from 'react'
 import { IconProps } from 'phosphor-react'
-import { Text } from '@/components/Text'
 import clsx from 'clsx'
+
+import { Text } from '@components/Text'
 
 interface WalletInfosProps extends HTMLAttributes<HTMLDivElement> {
   title: string
