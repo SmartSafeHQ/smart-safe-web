@@ -1,5 +1,5 @@
 import type { ParsedTransactionWithMeta } from '@solana/web3.js'
-import type { WalletKeypair } from '@utils/global/types'
+import type { SupportedNetworks, WalletKeypair } from '@utils/global/types'
 
 export interface TransactionCoinProps {
   scanUrl: string
@@ -8,6 +8,7 @@ export interface TransactionCoinProps {
   avatar: string
   decimals: number
   rpcUrl: string
+  networkType: SupportedNetworks
 }
 
 export interface TransactionProps {
@@ -19,6 +20,7 @@ export interface TransactionProps {
   token: {
     symbol: string
     avatar: string
+    networkType: SupportedNetworks
   }
   value: {
     valueInDollar: number
@@ -85,6 +87,12 @@ export type ParsedLamportTransferWithHash =
 
 export type ParsedLamportTransferWithTokenInfo =
   | (ParsedLamportTransferWithHash & {
-      parsedData: { token: { symbol: string; avatar: string } }
+      parsedData: {
+        token: {
+          symbol: string
+          avatar: string
+          networkType: SupportedNetworks
+        }
+      }
     })
   | undefined

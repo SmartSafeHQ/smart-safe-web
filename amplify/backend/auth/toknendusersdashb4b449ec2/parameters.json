@@ -11,7 +11,7 @@
     "Requires Uppercase",
     "Requires Numbers"
   ],
-  "mfaConfiguration": "ON",
+  "mfaConfiguration": "OPTIONAL",
   "autoVerifiedAttributes": ["email"],
   "mfaTypes": ["TOTP"]
 }

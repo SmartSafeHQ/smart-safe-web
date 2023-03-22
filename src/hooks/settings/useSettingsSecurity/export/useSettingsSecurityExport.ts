@@ -14,6 +14,11 @@ export const CHAINS_TO_EXPORT_LIST: ChainProps[] = [
     id: 'solana',
     name: 'solana',
     iconPath: '/networks/solana-logo.svg'
+  },
+  {
+    id: 'bitcoin',
+    name: 'bitcoin',
+    iconPath: '/networks/bitcoin-logo.svg'
   }
 ]
 

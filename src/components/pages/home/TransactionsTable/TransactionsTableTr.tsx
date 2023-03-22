@@ -11,6 +11,8 @@ import { handleCopyToClipboard } from '@utils/global'
 import { formatWalletAddress } from '@utils/web3Utils'
 import { useI18n } from '@hooks/useI18n'
 
+import type { SupportedNetworks } from '@/utils/global/types'
+
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   transactionLink: string
   transactedAt: Date
@@ -20,6 +22,7 @@ interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   coin: {
     symbol: string
     avatar: string
+    networkType: SupportedNetworks
   }
   value: {
     valueInDollar: number
@@ -40,8 +43,14 @@ export function TransactionsTableTr({
 }: TransactionsTableTrProps) {
   const { t } = useI18n()
 
-  const formatedSenderAddress = formatWalletAddress(sender, 4)
-  const formatedReceiverAddress = formatWalletAddress(receiver, 4)
+  const formatedSenderAddress = formatWalletAddress({
+    walletAddress: sender,
+    network: coin.networkType
+  })
+  const formatedReceiverAddress = formatWalletAddress({
+    walletAddress: receiver,
+    network: coin.networkType
+  })
 
   return (
     <tr

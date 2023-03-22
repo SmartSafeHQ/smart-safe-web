@@ -31,7 +31,7 @@ export function SelectNetworksToExport({
         {t.settings.security.exportKeysSubTitle}
       </strong>
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col items-center gap-3 sm:flex-row">
         {chainsToExport.map((chain, index) => (
           <Toggle
             key={chain.id}

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { tokenverseApi } from '@lib/axios'
 import { FetchEndUserWalletsResponse } from '@utils/global/types'
 import { formatWalletAddress } from '@utils/web3Utils'
+import type { WalletKeypair } from '@utils/global/types'
 
 interface FetchAccountWalletsInput {
   accessToken: string
@@ -10,15 +11,14 @@ interface FetchAccountWalletsInput {
 
 export interface FetchAccountWalletsResponse {
   id: number
-  evm: {
-    address: string
+  evm: WalletKeypair & {
     formattedAddress: string
-    privateKey: string
   }
-  solana: {
-    address: string
+  solana: WalletKeypair & {
     formattedAddress: string
-    privateKey: string
+  }
+  bitcoin: WalletKeypair & {
+    formattedAddress: string
   }
 }
 
@@ -33,23 +33,39 @@ export async function fetchAccountWallets({
     '/widget/wallets?privateKey=true'
   )
 
-  const evmInfos = apiResponse.data.evm[0]
-  const solanaInfos = apiResponse.data.solana[0]
+  const evmAddresses = apiResponse.data.evm[0]
+  const solanaAddresses = apiResponse.data.solana[0]
+  const bitcoinAddresses = apiResponse.data.bitcoin[0]
 
-  const evmFormattedAddress = formatWalletAddress(evmInfos.address)
-  const solanaFormattedAddress = formatWalletAddress(solanaInfos.address, 4)
+  const evmFormattedAddress = formatWalletAddress({
+    walletAddress: evmAddresses.address,
+    network: 'evm'
+  })
+  const solanaFormattedAddress = formatWalletAddress({
+    walletAddress: solanaAddresses.address,
+    network: 'solana'
+  })
+  const bitcoinFormattedAddress = formatWalletAddress({
+    walletAddress: bitcoinAddresses.address,
+    network: 'bitcoin'
+  })
 
   return {
     id: apiResponse.data.id,
     evm: {
-      address: evmInfos.address,
+      address: evmAddresses.address,
       formattedAddress: evmFormattedAddress,
-      privateKey: evmInfos.privateKey
+      privateKey: evmAddresses.privateKey
     },
     solana: {
-      address: solanaInfos.address,
+      address: solanaAddresses.address,
       formattedAddress: solanaFormattedAddress,
-      privateKey: solanaInfos.privateKey
+      privateKey: solanaAddresses.privateKey
+    },
+    bitcoin: {
+      address: bitcoinAddresses.address,
+      formattedAddress: bitcoinFormattedAddress,
+      privateKey: bitcoinAddresses.privateKey
     }
   }
 }

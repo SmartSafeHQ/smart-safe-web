@@ -16,10 +16,9 @@ interface CoinsTabProps {
 }
 
 export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
-  const { t, customer, page, setPage, handleRefetchCoins } = useHomeCoinsTab()
+  const { t, page, setPage, handleRefetchCoins } = useHomeCoinsTab()
 
   const { data, isLoading, error } = useCustomerCoins(
-    customer?.wallets.evm.address,
     isTabActive,
     page,
     MAX_PAGINATION_COINS_PER_PAGE
@@ -79,8 +78,8 @@ export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
                       return (
                         <CoinsTable.Tr
                           key={coin.symbol}
-                          customerAccounts={customer?.wallets}
-                          network={coin.network}
+                          networkName={coin.networkName}
+                          networkType={coin.networkType}
                           symbol={coin.symbol}
                           rpcUrl={coin.rpcUrl}
                           avatar={coin.avatar}

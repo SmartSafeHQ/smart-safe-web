@@ -3,6 +3,7 @@ import { useState, useMemo, useEffect } from 'react'
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
+import { formatWalletAddress } from '@utils/web3Utils'
 
 export const useReceive = () => {
   const [selectedWallet, setSelectedWallet] = useState({
@@ -12,9 +13,7 @@ export const useReceive = () => {
 
   const { t } = useI18n()
   const { customer } = useAuth()
-  const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins(
-    customer?.wallets.evm.address
-  )
+  const { data: coinsData, isLoading: coinsIsLoading } = useCustomerCoins()
 
   const wallets = useMemo(() => {
     if (
@@ -22,15 +21,43 @@ export const useReceive = () => {
       customer?.wallets.solana.address &&
       customer?.wallets.evm.address
     ) {
-      return coinsData.coins.map(({ avatar, network }) => {
-        const wallet =
-          network === 'solana' ? customer.wallets.solana : customer.wallets.evm
+      return coinsData.coins.map(({ avatar, networkName, networkType }) => {
+        if (networkType === 'solana') {
+          const wallet = customer.wallets.solana.address
+          return {
+            icon: avatar,
+            network: networkName,
+            formattedWallet: formatWalletAddress({
+              network: networkType,
+              walletAddress: wallet
+            }),
+            wallet
+          }
+        }
 
+        if (networkType === 'bitcoin') {
+          const wallet = customer.wallets.bitcoin.address
+
+          return {
+            icon: avatar,
+            network: networkName,
+            formattedWallet: formatWalletAddress({
+              network: networkType,
+              walletAddress: wallet
+            }),
+            wallet
+          }
+        }
+
+        const wallet = customer?.wallets.evm.address
         return {
           icon: avatar,
-          network,
-          formattedWallet: wallet.formattedAddress,
-          wallet: wallet.address
+          network: networkName,
+          formattedWallet: formatWalletAddress({
+            network: networkType,
+            walletAddress: wallet
+          }),
+          wallet
         }
       })
     }
@@ -39,7 +66,8 @@ export const useReceive = () => {
   }, [
     coinsData,
     customer?.wallets.evm.address,
-    customer?.wallets.solana.address
+    customer?.wallets.solana.address,
+    customer?.wallets.bitcoin.address
   ])
 
   function handleSelectWalletAccount(index: string) {
