@@ -54,14 +54,11 @@ export function SendProvider({ children }: SendProviderProps) {
     if (!customer) return
 
     try {
-      const fromWalletPrivateKey =
-        transactionData.symbol === 'sol'
-          ? customer.wallets.solana.privateKey
-          : customer.wallets.evm.privateKey
+      const fromWallet = customer.wallets[selectedCoin.networkType]
 
       await mutateAsync({
         ...transactionData,
-        fromWalletPrivateKey
+        fromWallet
       })
 
       toast.success(t.send.txSuccess)
