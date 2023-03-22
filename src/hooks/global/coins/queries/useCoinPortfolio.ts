@@ -13,7 +13,7 @@ import { queryClient } from '@lib/reactQuery'
 import { FetchCoinValueInUsdResponse } from '@hooks/global/coins/queries/useCoinValueInUsd'
 import { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
 
-import { SATOSHI_PER_BITCOIN } from '@/utils/global/constants/variables'
+// import { SATOSHI_PER_BITCOIN } from '@/utils/global/constants/variables'
 
 import type { SupportedNetworks, WalletKeypair } from '@utils/global/types'
 
@@ -37,17 +37,17 @@ interface FetchCoinPortfolioInput {
   }
 }
 
-interface BitcoinWalletResponse {
-  address: string
-  balance: number
-  final_balance: number
-  final_n_tx: number
-  n_tx: number
-  total_received: number
-  total_sent: number
-  unconfirmed_balance: number
-  unconfirmed_n_tx: number
-}
+// interface BitcoinWalletResponse {
+//   address: string
+//   balance: number
+//   final_balance: number
+//   final_n_tx: number
+//   n_tx: number
+//   total_received: number
+//   total_sent: number
+//   unconfirmed_balance: number
+//   unconfirmed_n_tx: number
+// }
 
 export type FetchCoinPortfolioResponse = CoinProps
 
@@ -89,20 +89,25 @@ export async function fetchCoinPortfolio({
   }
 
   if (coin.networkType === 'bitcoin') {
-    const { data } = await axios.get<BitcoinWalletResponse>(
-      `${coin.rpcUrl}/addrs/${accounts.bitcoin.address}/balance`
-    )
+    // const { data } = await axios.get<BitcoinWalletResponse>(
+    //   `${coin.rpcUrl}/addrs/${accounts.bitcoin.address}/balance`
+    // )
 
-    const balance = data.balance
+    // const balance = data.balance
 
-    const reqUrl = getCoinChangePercentUrl(coin.symbol)
-    const response = await axios.get<GetCoinChangePercentResponse>(reqUrl)
+    // const reqUrl = getCoinChangePercentUrl(coin.symbol)
+    // const response = await axios.get<GetCoinChangePercentResponse>(reqUrl)
 
-    const formattedChangePercent = Number(response.data.priceChangePercent)
+    // const formattedChangePercent = Number(response.data.priceChangePercent)
+
+    // return {
+    //   balance: balance / SATOSHI_PER_BITCOIN,
+    //   changePercent: formattedChangePercent
+    // }
 
     return {
-      balance: balance / SATOSHI_PER_BITCOIN,
-      changePercent: formattedChangePercent
+      balance: 0,
+      changePercent: 0
     }
   }
 
