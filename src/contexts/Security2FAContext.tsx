@@ -21,12 +21,14 @@ export interface Enable2FAOptionProps {
 
 type Security2FAContextData = {
   authCode: string
+  isEnableQRCode2FAOpen: boolean
   isEnable2FAOpen: boolean
   isDisable2FAOpen: boolean
   enable2FAOption?: Enable2FAOptionProps
   setAuthCode: (_authCode: string) => void
-  setIsEnable2FAOpen: (_isOpen: boolean) => void
+  setIsEnableQRCode2FAOpen: (_isOpen: boolean) => void
   setIsDisable2FAOpen: (_isOpen: boolean) => void
+  setIsEnable2FAOpen: (_isOpen: boolean) => void
   setEnable2FAOption: (_option: Enable2FAOptionProps) => void
   handleSetupTOTP: (
     _option: Options,
@@ -44,18 +46,19 @@ const Security2FAContext = createContext({} as Security2FAContextData)
 
 export function Security2FAProvider({ children }: Security2FAProviderProps) {
   const [authCode, setAuthCode] = useState('')
+  const [isEnableQRCode2FAOpen, setIsEnableQRCode2FAOpen] = useState(false)
   const [isEnable2FAOpen, setIsEnable2FAOpen] = useState(false)
   const [isDisable2FAOpen, setIsDisable2FAOpen] = useState(false)
   const [enable2FAOption, setEnable2FAOption] = useState<Enable2FAOptionProps>()
 
-  const { cognitoUser, customer } = useAuth()
+  const { cognitoUser, customer, customer2FA } = useAuth()
 
   async function handleSetupTOTP(
     option: Options,
     enableFunction: Verify2FAFunctionProps,
     disableFunction: Verify2FAFunctionProps
   ) {
-    if (!cognitoUser) return
+    if (!cognitoUser || !customer2FA) return
 
     setEnable2FAOption({
       option,
@@ -63,7 +66,16 @@ export function Security2FAProvider({ children }: Security2FAProviderProps) {
       disableFunction
     })
 
-    setIsEnable2FAOpen(true)
+    const enabledQRCodeAlreadyExists = Object.values(customer2FA).some(
+      value => typeof value === 'boolean' && value
+    )
+
+    if (enabledQRCodeAlreadyExists) {
+      setIsEnable2FAOpen(true)
+      return
+    }
+
+    setIsEnableQRCode2FAOpen(true)
 
     try {
       if (!authCode) {
@@ -98,12 +110,14 @@ export function Security2FAProvider({ children }: Security2FAProviderProps) {
     <Security2FAContext.Provider
       value={{
         authCode,
-        isEnable2FAOpen,
+        isEnableQRCode2FAOpen,
         isDisable2FAOpen,
+        isEnable2FAOpen,
         enable2FAOption,
         setAuthCode,
-        setIsEnable2FAOpen,
+        setIsEnableQRCode2FAOpen,
         setIsDisable2FAOpen,
+        setIsEnable2FAOpen,
         setEnable2FAOption,
         handleSetupTOTP,
         handleDisableTOTP

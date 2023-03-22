@@ -34,9 +34,11 @@ export type Verify2FAFunctionProps = SubmitHandler<{
 
 export const useSettingsSecurity2FA = () => {
   const {
-    setIsEnable2FAOpen,
-    setIsDisable2FAOpen,
+    isEnableQRCode2FAOpen,
     isEnable2FAOpen,
+    setIsEnableQRCode2FAOpen,
+    setIsDisable2FAOpen,
+    setIsEnable2FAOpen,
     enable2FAOption,
     authCode,
     isDisable2FAOpen
@@ -45,8 +47,7 @@ export const useSettingsSecurity2FA = () => {
   const { customer, cognitoUser, customer2FA, setCustomer2FA } = useAuth()
   const { t, currentLocaleProps } = useI18n()
 
-  const { data: account2FAData, error: account2FAError } =
-    useAccount2faSettings(customer?.id)
+  const { data: account2FAData } = useAccount2faSettings(customer?.id)
   const { mutateAsync: enableSignIn2FAMutateAsync } =
     useEnableSignIn2FAMutation()
   const { mutateAsync: disableSignIn2FAMutateAsync } =
@@ -110,7 +111,7 @@ export const useSettingsSecurity2FA = () => {
 
       updateCustomer2FAState({ signInEnabled: true })
 
-      setIsEnable2FAOpen(false)
+      setIsEnableQRCode2FAOpen(false)
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
@@ -150,7 +151,7 @@ export const useSettingsSecurity2FA = () => {
 
       updateCustomer2FAState({ send2faEnabled: true })
 
-      setIsEnable2FAOpen(false)
+      setIsEnableQRCode2FAOpen(false)
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
@@ -194,7 +195,7 @@ export const useSettingsSecurity2FA = () => {
 
       updateCustomer2FAState({ exportKeys2faEnabled: true })
 
-      setIsEnable2FAOpen(false)
+      setIsEnableQRCode2FAOpen(false)
     } catch (e) {
       getAuthErrorMessageWithToast(e, currentLocaleProps.id)
     }
@@ -225,13 +226,14 @@ export const useSettingsSecurity2FA = () => {
   return {
     t,
     customer2FA,
-    isEnable2FAOpen,
+    isEnableQRCode2FAOpen,
     enable2FAOption,
+    isEnable2FAOpen,
+    setIsEnable2FAOpen,
     authCode,
     account2FAData,
-    account2FAError,
     isDisable2FAOpen,
-    setIsEnable2FAOpen,
+    setIsEnableQRCode2FAOpen,
     setIsDisable2FAOpen,
     enableSignIn2FAOnSubmit,
     disableSignIn2FAOnSubmit,

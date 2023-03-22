@@ -1,51 +1,83 @@
-import type { ChangeEvent } from 'react'
-
-import type { SelectedChains, Screens } from './interfaces'
+import type { Screens, ChainProps, ChainPrivateKeysProps } from './interfaces'
 
 import { useState } from 'react'
 
 import { useAuth } from '@contexts/AuthContext'
 
+export const CHAINS_TO_EXPORT_LIST: ChainProps[] = [
+  {
+    id: 'evm',
+    name: 'EVM-based',
+    iconPath: '/networks/eth-logo.svg'
+  },
+  {
+    id: 'solana',
+    name: 'solana',
+    iconPath: '/networks/solana-logo.svg'
+  },
+  {
+    id: 'bitcoin',
+    name: 'bitcoin',
+    iconPath: '/networks/bitcoin-logo.svg'
+  }
+]
+
 export function useSettingsSecurityExport() {
-  const [selectedChains, setSelectedChains] = useState<SelectedChains[]>([
-    { checked: false, networkType: 'solana' },
-    { checked: false, networkType: 'evm' },
-    { checked: false, networkType: 'bitcoin' }
-  ])
-  const [currentScreen, setCurrentScreen] = useState<Screens>('checkbox-screen')
+  const [selectedChains, setSelectedChains] = useState<ChainProps[]>([])
+  const [chainsPrivateKeys, setChainsPrivateKeys] = useState<
+    ChainPrivateKeysProps[]
+  >([])
+  const [currentScreen, setCurrentScreen] = useState<Screens>('select-chain')
 
-  const { is2FAVerifyOpen, setIs2FAVerifyOpen } = useAuth()
+  const { customer, is2FAVerifyOpen, setIs2FAVerifyOpen } = useAuth()
 
-  function handleUpdateAllCheckboxes(checked: boolean) {
-    const updaterFunction = (currentSelectedChains: SelectedChains[]) => {
-      return currentSelectedChains.map(({ networkType }) => {
-        return { networkType, checked }
-      })
-    }
+  const isExportDisabled = selectedChains.length === 0
 
-    setSelectedChains(updaterFunction)
+  function handleAddChain(chainIndex: number) {
+    const selectedChain = CHAINS_TO_EXPORT_LIST[chainIndex]
+
+    setSelectedChains(prevChains => [...prevChains, selectedChain])
   }
 
-  function handleUpdateSingleCheckbox(event: ChangeEvent<HTMLInputElement>) {
-    setSelectedChains(currentSelectedChains => {
-      return currentSelectedChains.map(({ checked, networkType }) => {
-        if (networkType === event.target.id) {
-          return { checked: !checked, networkType }
-        }
+  function handleRemoveChain(chainId: string) {
+    setSelectedChains(prevChains => {
+      const updattedChains = prevChains.filter(chain => chain.id !== chainId)
 
-        return { networkType, checked }
-      })
+      return updattedChains
     })
+  }
+
+  function handleBackToChainSelect() {
+    setCurrentScreen('select-chain')
+    setSelectedChains([])
+  }
+
+  function handleExport() {
+    if (!customer) return
+
+    const chainsWithPrivateKeys = selectedChains.map(chain => {
+      const chainWithPrivateKey = {
+        ...chain,
+        privateKey: customer.wallets[chain.id].privateKey
+      }
+
+      return chainWithPrivateKey
+    })
+
+    setChainsPrivateKeys(chainsWithPrivateKeys)
+    setCurrentScreen('private-keys-list')
   }
 
   return {
     currentScreen,
-    setCurrentScreen,
+    isExportDisabled,
     selectedChains,
-    setSelectedChains,
+    chainsPrivateKeys,
     is2FAVerifyOpen,
     setIs2FAVerifyOpen,
-    handleUpdateAllCheckboxes,
-    handleUpdateSingleCheckbox
+    handleAddChain,
+    handleRemoveChain,
+    handleBackToChainSelect,
+    handleExport
   }
 }

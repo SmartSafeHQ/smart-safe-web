@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Head from 'next/head'
 
 import { Tabs } from '@components/Tabs'
-import { SecurityTab } from '@components/pages/Settings/Security'
+import { SecurityTab } from '@/components/pages/Settings/Security/Security2FA'
 import { ExportKeys } from '@components/pages/Settings/Security/ExportKeys'
 
 import { useI18n } from '@hooks/useI18n'
