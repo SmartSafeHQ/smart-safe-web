@@ -14,16 +14,16 @@ import { Text } from '@components/Text'
 import { useI18n } from '@hooks/useI18n'
 import { useSignIn2FAMutation } from '@hooks/accounts/mutations/useSignIn2FAMutation'
 import { useAuth } from '@contexts/AuthContext'
-import { getAuthErrorMessageWithToast } from '@utils/sessionsUtils'
+import {
+  getAuthErrorMessageWithToast,
+  LINK_2FA_INFO
+} from '@utils/sessionsUtils'
 
 const validationSchema = z.object({
   code: z.string().min(1, { message: 'code required' })
 })
 
 export type FieldValues = z.infer<typeof validationSchema>
-
-const LINK_2FA_INFO =
-  'https://www.microsoft.com/en-us/security/business/security-101/what-is-two-factor-authentication-2fa'
 
 export function Verify2FAModal() {
   const { mutateAsync } = useSignIn2FAMutation()

@@ -6,6 +6,8 @@ import { pt } from '@/locales/pt'
 import { locales } from '@/locales'
 
 export const LAST_AUTH_COOKIE_NAME = '@InWallet.last-login'
+export const LINK_2FA_INFO =
+  'https://www.microsoft.com/en-us/security/business/security-101/what-is-two-factor-authentication-2fa'
 
 export function formatSessionEmail(email: string) {
   const formattedEmail = email.replace(
@@ -33,6 +35,8 @@ export function isTokenValid(
   lastAuthDateISO: string,
   maxOfHoursToExpire: number
 ) {
+  if (!lastAuthDateISO) return false
+
   const lastVerifyAt = dayjs(lastAuthDateISO)
   const hoursSinceLastAuth = dayjs().diff(lastVerifyAt, 'hours')
 

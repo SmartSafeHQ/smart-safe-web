@@ -21,8 +21,9 @@ export const security = {
   privateKeys: 'Private keys',
   export: 'Export',
   keysDescrition:
-    'To export your wallet&apos;s private keys and access your account funds without InWallet dependency will require two-factor authentication.',
+    "To export your wallet's private keys and access your account funds without InWallet dependency will require two-factor authentication.",
   confirmAccess: 'Confirm access',
+  enableAuthVerify: 'Enable security check',
   authCode: 'Authentication code',
   verify: 'Verify',
   knowMore: 'know more about 2FA',
@@ -30,34 +31,34 @@ export const security = {
     'Open your two-factor authenticator (TOTP) app or browser extension to view your authentication code.',
   mEnableTitle: 'Register 2FA',
   mEnableDesc:
-    'Scan the image above with the two-factor authentication app on your phone',
+    'Scan the image above with the two-factor authentication app on your phone like',
+  or: 'or',
+  authAppInfoLink: "I don't know what a two-factor authentication app is",
   mEnableInfo:
     'After scanner the barcode image, the app will display a six-digit code. Enter it bellow to verify the auth',
   disable2FA: 'Disable 2FA',
-  modalInputLabel: 'Enter the six-digits code from the application',
+  modalInputLabel: 'Six-digits code from the application',
   modalInputPlaceholder: 'Enter the code',
+  modalAppPlaceholder: 'Enter the code registered in the app',
   notSigned: 'User not signed, please login',
   enableSuccessMessage: 'Two-factor authentication successfully registered',
   mDisableTitle: 'Disable two factory authentication',
-  mDisableDesc: 'It&apos;s strongly recommended to keep 2FA enabled.',
+  mDisableDesc: "It' strongly recommended to keep 2FA enabled.",
   mDisableInfo:
     'Disabling 2FA will make your account less secure and increase the risk of unauthorized access.',
   disableSuccessMessage: 'Two-factor authentication successfully disabled',
   exportKeysHeading: 'Export private keys',
+  exportKeysSubTitle: 'Select the networks to export',
   exportKeys: {
-    checkboxes: {
-      warning:
-        "By exporting any of your private keys, you agree that you're now responsible for managing the security of funds held in these wallets.",
-      checkAll: 'Check all',
-      uncheckAll: 'Uncheck all',
-      export: 'Export'
-    },
-    privateKeys: {
-      warning:
-        'Do not share your private key! If someone has your private key they will have full control of your wallet.',
-      copy: 'Copy',
-      copied: 'Copied!',
-      back: 'Back'
-    }
+    checkWarning:
+      "By exporting any of your private keys, you agree that you're now responsible for managing the security of funds held in these wallets.",
+    checkAll: 'Check all',
+    uncheckAll: 'Uncheck all',
+    export: 'Export',
+    warning:
+      'Do not share your private key! If someone has your private key they will have full control of your wallet.',
+    copy: 'Copy',
+    copied: 'Copied!',
+    back: 'Back'
   }
 }

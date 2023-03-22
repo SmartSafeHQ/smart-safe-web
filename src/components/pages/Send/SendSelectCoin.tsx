@@ -67,7 +67,7 @@ export function SendSelectCoin({
                     <Text className="capitalize">{t.send.balance}:</Text>
 
                     <Text className="font-semibold">
-                      {portfolioData.balance.toFixed(6)}
+                      {portfolioData.balance.toFixed(3)}
                     </Text>
                   </div>
                 )}

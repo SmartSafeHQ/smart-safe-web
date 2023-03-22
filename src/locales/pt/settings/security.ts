@@ -23,6 +23,7 @@ export const security = {
   keysDescrition:
     'Para exportar as chaves privadas da sua carteira e acessar os fundos da sua conta sem depender da InWallet, será necessário autenticação de dois fatores.',
   confirmAccess: 'Confirmar acesso',
+  enableAuthVerify: 'Habilitar verificação de segurança',
   authCode: 'Código de autenticação',
   verify: 'Verificar',
   knowMore: 'Saiba mais sobre o 2FA',
@@ -30,12 +31,15 @@ export const security = {
     'Abra seu aplicativo autenticador de dois fatores (TOTP) ou extensão do navegador para visualizar o código de autenticação.',
   mEnableTitle: 'Registrar 2FA',
   mEnableDesc:
-    'Digitalize a imagem acima com o aplicativo de autenticação de dois fatores em seu telefone',
+    'Escaneie a imagem acima com o aplicativo de autenticação de dois fatores em seu telefone como',
+  or: 'ou',
+  authAppInfoLink: 'Não sei oque é um app de autenticação de dois fatores',
   mEnableInfo:
     'Depois de digitalizar a imagem do código de barras, o aplicativo exibirá um código de seis dígitos. Insira-o abaixo para habilitar',
   disable2FA: 'Desabilitar 2FA',
-  modalInputLabel: 'Insira o código de seis dígitos do aplicativo',
+  modalInputLabel: 'Código de seis dígitos do aplicativo',
   modalInputPlaceholder: 'Insira o código',
+  modalAppPlaceholder: 'Insira o código já registrado no app',
   notSigned: 'Usuário não autenticado, faça o login',
   enableSuccessMessage: 'Autenticação de dois fatores registrada com sucesso',
   mDisableTitle: 'Desativar autenticação de dois fatores',
@@ -44,20 +48,17 @@ export const security = {
     'Desativar o 2FA tornará sua conta menos segura e aumentará o risco de acesso não autorizado.',
   disableSuccessMessage: 'Autenticação de dois fatores desativada com sucesso',
   exportKeysHeading: 'Exportar chaves privadas',
+  exportKeysSubTitle: 'Selecione as redes para exportar',
   exportKeys: {
-    checkboxes: {
-      warning:
-        'Ao exportar suas chaves privadas você concorda em ser o responsável pela segurança dos fundos contidos nas carteiras exportadas.',
-      checkAll: 'Marcar todos',
-      uncheckAll: 'Desmarcar todos',
-      export: 'Exportar'
-    },
-    privateKeys: {
-      warning:
-        'Não compartilhe sua chave privada! Qualquer pessoa em posse dela será capaz de mover os fundos contidos nela.',
-      copy: 'Copiar',
-      copied: 'Copiado!',
-      back: 'Voltar'
-    }
+    checkWarning:
+      'Ao exportar suas chaves privadas você concorda em ser o responsável pela segurança dos fundos contidos nas carteiras exportadas.',
+    checkAll: 'Marcar todos',
+    uncheckAll: 'Desmarcar todos',
+    export: 'Exportar',
+    warning:
+      'Não compartilhe sua chave privada! Qualquer pessoa em posse dela será capaz de mover seus fundos.',
+    copy: 'Copiar',
+    copied: 'Copiado!',
+    back: 'Voltar'
   }
 }
