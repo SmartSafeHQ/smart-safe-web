@@ -1,3 +1,4 @@
+// import axios from 'axios'
 import { providers, Wallet, utils } from 'ethers'
 import {
   PublicKey,
@@ -17,11 +18,11 @@ import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
 import type { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
 import type { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
 import type { FetchCoinFeeDataResponse } from '@hooks/global/coins/queries/useCoinFeeData'
-import type { SupportedNetworks } from '@/utils/global/types'
+import type { SupportedNetworks, WalletKeypair } from '@/utils/global/types'
 
 interface SendFunctionInput {
   to: string
-  fromWalletPrivateKey: string
+  fromWallet: WalletKeypair
   amount: number
   chainId: number | null
   symbol: string
@@ -42,7 +43,7 @@ async function sendFunction(
     // we're receiving the private as a string like so: '22, 59, 265, 100'
     // without brackets. This is why we're creating the below string inside `JSON.pase()`
     const privateKeyFromStringToArray: number[] = JSON.parse(
-      `[${input.fromWalletPrivateKey}]`
+      `[${input.fromWallet.privateKey}]`
     )
     const privateKeyFromArrayToUin8Array = Uint8Array.from(
       privateKeyFromStringToArray
@@ -73,12 +74,34 @@ async function sendFunction(
   }
 
   if (input.networkType === 'bitcoin') {
+    // const ECPair = ECPairFactory(ecc)
+
+    // const privateKeyBuffer = new TextEncoder().encode(
+    //   input.fromWallet.privateKey
+    // )
+    // console.log(privateKeyBuffer)
+    // // ECPair.fromPrivateKey(privateKeyBuffer)
+
+    // const { data } = await axios.get<AddressEndpointResponse>(
+    //   `${input.rpcUrl}/addrs/${input.fromWallet.address}`
+    // )
+
+    // // partially signed bitcoin transaction
+    // const tx = new Psbt({ network: networks.testnet })
+
+    // tx.addInput({ hash: data.txrefs[0].tx_hash, index: 0 })
+    // tx.addOutput({
+    //   address: input.to,
+    //   value: input.amount * SATOSHI_PER_BITCOIN
+    // })
+    // await tx.signInput(0, { publicKey: input.fromWallet.address })
+
     return { transactionHash: '' }
   }
 
   if (input.networkType === 'evm') {
     const provider = new providers.JsonRpcProvider(input.rpcUrl)
-    const wallet = new Wallet(input.fromWalletPrivateKey, provider)
+    const wallet = new Wallet(input.fromWallet.privateKey, provider)
 
     const amountToSend = utils.parseEther(input?.amount.toFixed(6))
 
