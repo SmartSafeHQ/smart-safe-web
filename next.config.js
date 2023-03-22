@@ -11,10 +11,10 @@ const nextConfig = {
       {
         source: '/accounts',
         destination: '/',
-        permanent: true,
-      },
+        permanent: true
+      }
     ]
-  },
+  }
 }
 
 module.exports = nextConfig
