@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
+import Image from 'next/image'
 import { ArrowSquareOut, CheckCircle } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
-import { Avatar } from '@components/Avatar'
 import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { HoverCard } from '@components/HoverCard'
@@ -55,9 +55,13 @@ export function SendSuccess({ transactionUrl }: SendSuccessProps) {
               <h3>{t.send.amount}</h3>
             </Heading>
 
-            <Avatar.Root fallbackName={coin.symbol} className="w-5 h-5 mr-1">
-              <Avatar.Image src={coin.avatar} alt={`${coin.avatar} icon`} />
-            </Avatar.Root>
+            <Image
+              src={coin.avatar}
+              alt={`${coin.avatar} icon`}
+              width={20}
+              height={20}
+              className="mr-1"
+            />
           </div>
 
           <Text className="text-sm">

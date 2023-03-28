@@ -1,6 +1,7 @@
+import Image from 'next/image'
+
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
-import { Avatar } from '@components/Avatar'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { CoinsDropDownInput } from '@components/Inputs/CoinsDropDownInput'
 
@@ -46,15 +47,12 @@ export function SendSelectCoin({
       <Skeleton isLoading={coinsIsLoading} className="w-52 h-24 mx-auto">
         {selectedCoin && (
           <div className="w-full flex items-center justify-center gap-3">
-            <Avatar.Root
-              fallbackName={selectedCoin.symbol}
-              className="w-24 h-24"
-            >
-              <Avatar.Image
-                src={selectedCoin.avatar}
-                alt={`${selectedCoin.symbol} coin`}
-              />
-            </Avatar.Root>
+            <Image
+              src={selectedCoin.avatar}
+              alt={`${selectedCoin.symbol} coin`}
+              width={96}
+              height={96}
+            />
 
             <div className="flex flex-col justify-center items-start">
               <Heading className="text-3xl uppercase">
