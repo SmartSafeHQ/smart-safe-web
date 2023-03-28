@@ -1,6 +1,6 @@
 export const buyAndSell = {
   headTitle: 'InWallet | Buy and sell',
-  headDescription: 'Efetue pagamentos usando suas crypto moedas.',
+  headDescription: 'Make payments using your cryptocurrencies.',
   selectAct: {
     title: 'Select buy/sell',
     buyButton: 'Buy Now',
@@ -15,5 +15,13 @@ export const buyAndSell = {
     sellDesc02:
       '2. Send coin to your redemption address, using the provided instructions.',
     sellDesc03: '3. The Coin will be deposited to your bank account.'
+  },
+  buy: {
+    headTitle: 'InWallet | Buy stable coin',
+    headDescription: 'Make stable coins buy.'
+  },
+  sell: {
+    headTitle: 'InWallet | Sell stable coin',
+    headDescription: 'Make stable coins sell.'
   }
 }

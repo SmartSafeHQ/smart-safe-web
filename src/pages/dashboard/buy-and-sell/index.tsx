@@ -29,7 +29,7 @@ const BuyAndSell = () => {
         <section className="w-full flex flex-wrap items-start1 justify-center gap-6">
           <ActionCard
             id="buy"
-            href="/buy-and-sell/buy"
+            href="/dashboard/buy-and-sell/buy"
             ctaTitle={t.buyAndSell.selectAct.buyButton}
             title={t.buyAndSell.selectAct.buyTitle}
             Icon={ShoppingCartSimple}
@@ -41,7 +41,7 @@ const BuyAndSell = () => {
 
           <ActionCard
             id="sell"
-            href="/buy-and-sell/sell"
+            href="/dashboard/buy-and-sell/sell"
             ctaTitle={t.buyAndSell.selectAct.sellButton}
             title={t.buyAndSell.selectAct.sellTitle}
             Icon={PaperPlaneTilt}
