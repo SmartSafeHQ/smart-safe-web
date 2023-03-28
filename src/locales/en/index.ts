@@ -10,6 +10,7 @@ import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
 import { payment } from './payment'
+import { buyAndSell } from './buy-and-sell'
 import { cashback } from './cashback'
 import { security } from './settings/security'
 import { wc } from './accounts/wc'
@@ -26,6 +27,7 @@ export const en = {
   home,
   receive,
   send,
+  buyAndSell,
   cashback,
   settings: { security },
   wc,

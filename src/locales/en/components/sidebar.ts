@@ -58,10 +58,10 @@ export const sidebar = {
       isDisabled: true
     },
     {
-      href: '/dashboard/buy',
+      href: '/dashboard/buy-and-sell',
       icon: CurrencyDollar,
-      title: 'buy crypto',
-      isDisabled: true
+      title: 'buy/sell',
+      isDisabled: false
     },
     {
       href: '/dashboard/settings',
