@@ -47,7 +47,7 @@ const Sell = () => {
         <meta name="description" content={t.buyAndSell.sell.headDescription} />
       </Head>
 
-      <div className="max-w-xl flex flex-1 flex-col items-stretch gap-2 pt-10">
+      <div className="w-full max-w-[500px] flex flex-1 flex-col items-stretch gap-2 pt-10">
         <div className="mb-4">
           <Heading className="text-3xl">{t.sell.heading}</Heading>
         </div>
