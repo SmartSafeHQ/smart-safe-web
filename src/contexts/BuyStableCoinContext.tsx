@@ -24,6 +24,7 @@ interface CurrencyProps {
 
 interface TokenProps {
   symbol: TokenSymbol
+  avatar: string
   parityCurrencySymbol: CurrencySymbol
   contractAddress: string
   contractName: string

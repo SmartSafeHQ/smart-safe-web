@@ -14,14 +14,20 @@ import { useSelectBuyCoin } from '@hooks/buyAndSell/buy/useSelectBuyCoin'
 export function BuyTokensForm() {
   const {
     t,
-    register,
     handleSubmit,
-    currency,
-    isSubmitting,
-    errors,
     onSubmit,
+    errors,
+    register,
+    currency,
     handleChangeCurrency,
-    handleChangeToken
+    handleChangeToken,
+    currencyIsFetching,
+    currencyIsLoading,
+    isPreviousData,
+    currencyData,
+    token,
+    currentAmount,
+    isSubmitting
   } = useSelectBuyCoin()
 
   return (
@@ -41,7 +47,8 @@ export function BuyTokensForm() {
             <TextInput.Content className="rounded-r-none">
               <TextInput.Input
                 {...register('amount', {
-                  valueAsNumber: true
+                  valueAsNumber: true,
+                  min: 0
                 })}
                 required
                 id="amount"
@@ -93,6 +100,7 @@ export function BuyTokensForm() {
             </SelectInput.Content>
           </SelectInput.Root>
         </div>
+
         <label className="flex flex-col gap-2">
           <Text className="font-semibold">{t.buyAndSell.buy.coinLabel}</Text>
 
@@ -101,21 +109,37 @@ export function BuyTokensForm() {
             onValueChange={handleChangeToken}
           />
         </label>
-        <div className="flex items-center text-gray-800 dark:text-gray-200">
-          <Skeleton isLoading={false} className="w-full h-7">
-            <Text className="mr-5">{t.buyAndSell.buy.coinAppr}</Text>
 
-            <Image
-              src="/networks/ibrl-logo.svg"
-              alt="icon"
-              width={20}
-              height={20}
-              className="mr-2"
-            />
+        <div
+          className={clsx(
+            'flex items-center text-gray-800 dark:text-gray-200',
+            {
+              'animate-pulse': currencyIsFetching
+            }
+          )}
+        >
+          <Skeleton
+            isLoading={currencyIsLoading || isPreviousData}
+            className="w-full h-6"
+          >
+            {currencyData && (
+              <>
+                <Text className="mr-5">{t.buyAndSell.buy.coinAppr}</Text>
 
-            <Text className="font-semibold">
-              {'200'.slice(0, 5)} ({currency.currency} {'200'.slice(0, 4)})
-            </Text>
+                <Image
+                  src={token.avatar}
+                  alt={`${token.symbol} icon`}
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                />
+
+                <Text className="font-semibold">
+                  {(currentAmount / currencyData.value).toFixed(3)} (
+                  {currency.currency} {currentAmount.toFixed(2)})
+                </Text>
+              </>
+            )}
           </Skeleton>
         </div>
       </div>
