@@ -16,6 +16,7 @@ import { security } from './settings/security'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
 import { privacy } from './privacy'
+import { sell } from './sell'
 
 export const en = {
   signIn,
@@ -33,5 +34,6 @@ export const en = {
   wc,
   qrCodeReader,
   payment,
-  privacy
+  privacy,
+  sell
 }
