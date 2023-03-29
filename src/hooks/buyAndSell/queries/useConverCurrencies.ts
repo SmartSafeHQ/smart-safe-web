@@ -47,6 +47,6 @@ export function useConverCurrencies(
     queryFn: () => fetchConverCurrencies({ symbol, tsym }),
     enabled,
     keepPreviousData: true,
-    staleTime: 1000 * 10 // 1 minutes
+    staleTime: 1000 * 60 * 1 // 1 minutes
   })
 }
