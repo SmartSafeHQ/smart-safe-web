@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import clsx from 'clsx'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -7,44 +8,64 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { TextInput } from '@components/Inputs/TextInput'
 import { SelectInput } from '@components/Inputs/SelectInput'
 
-import { useI18n } from '@/hooks/useI18n'
-
-const ACCEPTED_CURRENCIES = [
-  { symbol: 'brl', avatar: '/languages/br.svg' },
-  { symbol: 'usd', avatar: '/languages/us.svg' },
-  { symbol: 'eur', avatar: '/languages/eur.svg' }
-]
-
-const ACCEPTED_TOKENS = [
-  { avatar: '/networks/ibrl-logo.svg', symbol: 'ibrl' },
-  { avatar: '/networks/ibrl-logo.svg', symbol: 'ieur' }
-]
+import { ACCEPTED_CURRENCIES, ACCEPTED_TOKENS } from '@utils/stableCoinsUtils'
+import { useSelectBuyCoin } from '@hooks/buyAndSell/buy/useSelectBuyCoin'
 
 export function BuyTokensForm() {
-  const { t } = useI18n()
+  const {
+    t,
+    register,
+    handleSubmit,
+    currency,
+    isSubmitting,
+    errors,
+    onSubmit,
+    handleChangeCurrency,
+    handleChangeToken
+  } = useSelectBuyCoin()
 
   return (
-    <form className="w-full flex flex-col gap-8 items-stretch">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full flex flex-col gap-8 items-stretch"
+    >
       <div className="w-full flex flex-col gap-8 items-stretch">
         <div className="w-full flex items-end justify-center group">
-          <TextInput.Root htmlFor="amount" className="w-full">
+          <TextInput.Root
+            htmlFor="amount"
+            className="w-full"
+            error={errors.amount?.message}
+          >
             <TextInput.Label>{t.buyAndSell.buy.amountLabel}</TextInput.Label>
 
             <TextInput.Content className="rounded-r-none">
               <TextInput.Input
+                {...register('amount', {
+                  valueAsNumber: true
+                })}
                 required
                 id="amount"
                 type="number"
                 min={0.0}
-                placeholder="R$ 0.00"
+                step={0.1}
+                placeholder={`${currency.currency} 0.00`}
               />
             </TextInput.Content>
           </TextInput.Root>
 
-          <SelectInput.Root className="w-44" defaultValue="0">
-            <SelectInput.Trigger className="min-h-[3rem] py-1 rounded-l-none uppercase !ring-gray-300 dark:!ring-gray-700 group-focus-within:ring-2 bg-gray-300 dark:bg-gray-700" />
-
-            {/* error => mb-[1.85rem]  */}
+          <SelectInput.Root
+            className="w-44"
+            defaultValue="0"
+            onValueChange={handleChangeCurrency}
+          >
+            <SelectInput.Trigger
+              className={clsx(
+                'min-h-[3rem] py-1 rounded-l-none uppercase !ring-gray-300 dark:!ring-gray-700 group-focus-within:ring-2 bg-gray-300 dark:bg-gray-700',
+                {
+                  'mb-8 ring-2': !!errors.amount
+                }
+              )}
+            />
 
             <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
               <SelectInput.Group>
@@ -72,13 +93,14 @@ export function BuyTokensForm() {
             </SelectInput.Content>
           </SelectInput.Root>
         </div>
-
         <label className="flex flex-col gap-2">
           <Text className="font-semibold">{t.buyAndSell.buy.coinLabel}</Text>
 
-          <CoinsDropDownInput coins={ACCEPTED_TOKENS} />
+          <CoinsDropDownInput
+            coins={ACCEPTED_TOKENS}
+            onValueChange={handleChangeToken}
+          />
         </label>
-
         <div className="flex items-center text-gray-800 dark:text-gray-200">
           <Skeleton isLoading={false} className="w-full h-7">
             <Text className="mr-5">{t.buyAndSell.buy.coinAppr}</Text>
@@ -92,14 +114,13 @@ export function BuyTokensForm() {
             />
 
             <Text className="font-semibold">
-              {'200'.slice(0, 5)} (R$
-              {'200'.slice(0, 4)})
+              {'200'.slice(0, 5)} ({currency.currency} {'200'.slice(0, 4)})
             </Text>
           </Skeleton>
         </div>
       </div>
 
-      <Button type="submit" className="capitalize">
+      <Button type="submit" isLoading={isSubmitting} className="capitalize">
         {t.buyAndSell.buy.continue}
       </Button>
     </form>
