@@ -30,7 +30,7 @@ export default function Privacy() {
           >
             <Image
               src="/languages/br.svg"
-              alt=""
+              alt="br locale"
               fill
               style={{ objectFit: 'cover' }}
             />
@@ -42,7 +42,7 @@ export default function Privacy() {
           >
             <Image
               src="/languages/us.svg"
-              alt=""
+              alt="us locale"
               fill
               style={{ objectFit: 'cover' }}
             />

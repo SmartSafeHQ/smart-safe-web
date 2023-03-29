@@ -66,3 +66,7 @@ export function formatToCurrency({
     ...props
   }).format(floatAmount)
 }
+
+export function getConvertCurrencyUrl(currency = 'USD', tsyms = 'BRL') {
+  return `https://min-api.cryptocompare.com/data/price?fsym=${currency}&tsyms=${tsyms}`
+}

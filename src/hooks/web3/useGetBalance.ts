@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import { useContract } from './useContract'
 
-import type { IBRL } from '@/utils/web3/typings'
+import type { IBRL } from '@utils/web3/typings'
 
 type Props = {
   customerAddress: string

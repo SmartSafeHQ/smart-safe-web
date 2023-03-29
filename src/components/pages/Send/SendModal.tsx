@@ -1,8 +1,8 @@
 import { PaperPlaneTilt, Wallet } from 'phosphor-react'
+import Image from 'next/image'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
-import { Avatar } from '@components/Avatar'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SendSuccess } from '@components/pages/Send/SendSuccess'
@@ -51,9 +51,12 @@ export function SendModal() {
                   {transaction.formattedCoinAmount} {coin.symbol}
                 </DialogModal.Description>
 
-                <Avatar.Root fallbackName={coin.symbol} className="w-6 h-6">
-                  <Avatar.Image src={coin.avatar} alt={`${coin.symbol} icon`} />
-                </Avatar.Root>
+                <Image
+                  src={coin.avatar}
+                  alt={`${coin.symbol} icon`}
+                  width={24}
+                  height={24}
+                />
               </div>
             </header>
 
@@ -108,12 +111,13 @@ export function SendModal() {
                 <Skeleton isLoading={coinFeeIsLoading} className="w-full h-7">
                   <Text className="mr-2">{t.send.fee}:</Text>
 
-                  <Avatar.Root fallbackName="MA" className="w-5 h-5 mr-2">
-                    <Avatar.Image
-                      src={coin?.avatar}
-                      alt={`${coin?.symbol} icon`}
-                    />
-                  </Avatar.Root>
+                  <Image
+                    src={coin?.avatar}
+                    alt={`${coin?.symbol} icon`}
+                    width={20}
+                    height={20}
+                    className="mr-2"
+                  />
 
                   {coinFeeData && (
                     <Text className="font-semibold">

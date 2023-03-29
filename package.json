@@ -9,7 +9,7 @@
     "lint": "next lint",
     "prepare": "husky install && chmod ug+x .husky/*",
     "commit": "git-cz",
-    "typechain": "npx typechain --target=ethers-v5 --out-dir src/utils/web3/typings 'src/utils/web3/ABIs/*.json'",
+    "typechain": "typechain --target=ethers-v5 --out-dir src/utils/web3/typings 'src/utils/web3/ABIs/*.json'",
     "postinstall": "npm run typechain"
   },
   "dependencies": {

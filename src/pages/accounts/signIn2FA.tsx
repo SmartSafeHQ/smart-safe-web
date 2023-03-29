@@ -61,7 +61,7 @@ export default function SignIn2FA() {
             >
               <Image
                 src="/languages/br.svg"
-                alt=""
+                alt="br locale"
                 fill
                 style={{ objectFit: 'cover' }}
               />
@@ -73,7 +73,7 @@ export default function SignIn2FA() {
             >
               <Image
                 src="/languages/us.svg"
-                alt=""
+                alt="us locale"
                 fill
                 style={{ objectFit: 'cover' }}
               />

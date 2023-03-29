@@ -60,7 +60,6 @@ function TextInputContent({
     <div
       className={clsx(
         'flex items-center gap-x-3 min-h-[3rem] px-3 rounded w-full outline-none ring-brand-foregroundAccent1 focus-within:ring-2',
-        'tokenverse-input-content',
         className
       )}
       {...props}

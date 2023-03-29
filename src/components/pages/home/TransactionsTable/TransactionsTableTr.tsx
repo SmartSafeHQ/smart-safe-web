@@ -1,17 +1,17 @@
 import { HTMLAttributes } from 'react'
+import Image from 'next/image'
 import dayjs from 'dayjs'
 import clsx from 'clsx'
 import { ArrowDown, ArrowSquareOut, ArrowUp } from 'phosphor-react'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
-import { Avatar } from '@components/Avatar'
 
 import { handleCopyToClipboard } from '@utils/global'
 import { formatWalletAddress } from '@utils/web3Utils'
 import { useI18n } from '@hooks/useI18n'
 
-import type { SupportedNetworks } from '@/utils/global/types'
+import type { SupportedNetworks } from '@utils/global/types'
 
 interface TransactionsTableTrProps extends HTMLAttributes<HTMLTableRowElement> {
   transactionLink: string
@@ -63,9 +63,12 @@ export function TransactionsTableTr({
       <td className="min-w-[4rem] pl-2 md:pl-3">
         <HoverCard.Root openDelay={100}>
           <HoverCard.Trigger>
-            <Avatar.Root fallbackName={coin.symbol} className="w-10 h-10">
-              <Avatar.Image src={coin.avatar} alt={`${coin.symbol} contract`} />
-            </Avatar.Root>
+            <Image
+              src={coin.avatar}
+              alt={`${coin.symbol} contract`}
+              width={40}
+              height={40}
+            />
           </HoverCard.Trigger>
 
           <HoverCard.Content
