@@ -19,7 +19,13 @@ export const buyAndSell = {
   },
   buy: {
     headTitle: 'InWallet | Compre stable coin',
-    headDescription: 'Efetue a compra de stable coins.'
+    headDescription: 'Efetue a compra de stable coins.',
+    back: 'voltar',
+    buyCoin: 'Comprar stable coins',
+    amountLabel: 'Qual valor da compra?',
+    coinLabel: 'Qual a moeda?',
+    coinAppr: 'Valor aproximado:',
+    continue: 'continuar'
   },
   sell: {
     headTitle: 'InWallet | Venda stable coin',
