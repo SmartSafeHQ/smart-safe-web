@@ -1,12 +1,13 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { z } from 'zod'
 
 import { useI18n } from '@hooks/useI18n'
 import { ACCEPTED_CURRENCIES, ACCEPTED_TOKENS } from '@utils/stableCoinsUtils'
 import { useBuyStableCoin } from '@contexts/BuyStableCoinContext'
-import { useConverCurrencies } from '@hooks/buyAndSell/queries/useConverCurrencies'
+import { useConverCurrencies } from '@/hooks/buyAndSell/queries/useConverCurrencies'
 
 export const validationSchema = z.object({
   amount: z
@@ -17,8 +18,17 @@ export const validationSchema = z.object({
 type BuyTokensFieldValues = z.infer<typeof validationSchema>
 
 export const useSelectBuyCoin = () => {
+  const { push } = useRouter()
+
   const { t } = useI18n()
   const { currency, token, setCurrency, setToken } = useBuyStableCoin()
+
+  const {
+    data: currencyData,
+    isLoading: currencyIsLoading,
+    isFetching: currencyIsFetching,
+    isPreviousData
+  } = useConverCurrencies(token.parityCurrencySymbol, currency.symbol)
 
   const {
     register,
@@ -29,18 +39,14 @@ export const useSelectBuyCoin = () => {
     resolver: zodResolver(validationSchema)
   })
 
-  const {
-    data: currencyData,
-    isLoading: currencyIsLoading,
-    isFetching: currencyIsFetching,
-    isPreviousData
-  } = useConverCurrencies(token.parityCurrencySymbol, currency.symbol)
+  const currentInputAmount = watch('amount', currency.amount)
 
-  const currentAmount = watch('amount', 0) ? watch('amount', 0) : 0
+  const currentAmount = currentInputAmount || 0
 
   function handleChangeCurrency(value: string) {
     setCurrency(prev => {
-      const selectedCurrency = ACCEPTED_CURRENCIES[+value]
+      const selectedCurrency =
+        ACCEPTED_CURRENCIES.find(c => c.symbol === value) ?? prev
 
       return {
         amount: prev.amount,
@@ -60,6 +66,8 @@ export const useSelectBuyCoin = () => {
         ...prev,
         amount: data.amount
       }))
+
+      push('/dashboard/buy-and-sell/buy/select-method')
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
