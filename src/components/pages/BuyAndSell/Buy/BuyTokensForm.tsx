@@ -48,6 +48,7 @@ export function BuyTokensForm() {
               <TextInput.Input
                 {...register('amount', {
                   valueAsNumber: true,
+                  value: currency.amount || undefined,
                   min: 0
                 })}
                 required
@@ -62,7 +63,8 @@ export function BuyTokensForm() {
 
           <SelectInput.Root
             className="w-44"
-            defaultValue="0"
+            defaultValue={ACCEPTED_CURRENCIES[0].symbol}
+            value={currency.symbol}
             onValueChange={handleChangeCurrency}
           >
             <SelectInput.Trigger
@@ -76,22 +78,23 @@ export function BuyTokensForm() {
 
             <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
               <SelectInput.Group>
-                {ACCEPTED_CURRENCIES.map((currency, i) => (
+                {ACCEPTED_CURRENCIES.map(c => (
                   <SelectInput.Item
-                    key={currency.symbol}
-                    value={String(i)}
+                    key={c.symbol}
+                    value={c.symbol}
                     className="min-h-[1rem] py-1"
                   >
                     <div className="w-full flex items-center justify-start gap-2">
                       <Image
-                        src={currency.avatar}
-                        alt={`${currency.symbol} coin`}
+                        src={c.avatar}
+                        alt={`${c.symbol} coin`}
                         width={26}
                         height={26}
+                        className="w-7 h-6"
                       />
 
                       <Text className="text-lg font-bold dark:text-gray-50 uppercase">
-                        {currency.symbol}
+                        {c.symbol}
                       </Text>
                     </div>
                   </SelectInput.Item>
@@ -107,6 +110,9 @@ export function BuyTokensForm() {
           <CoinsDropDownInput
             coins={ACCEPTED_TOKENS}
             onValueChange={handleChangeToken}
+            value={String(
+              ACCEPTED_TOKENS.findIndex(t => t.symbol === token.symbol) ?? 0
+            )}
           />
         </label>
 
@@ -131,7 +137,7 @@ export function BuyTokensForm() {
                   alt={`${token.symbol} icon`}
                   width={20}
                   height={20}
-                  className="mr-2"
+                  className="mr-2 w-5 h-5"
                 />
 
                 <Text className="font-semibold">

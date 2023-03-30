@@ -30,6 +30,7 @@ export function CoinsDropDownInput({
                   alt={`${coin.symbol} coin`}
                   width={28}
                   height={28}
+                  className="w-7 h-7"
                 />
 
                 <Text className="text-xl font-bold dark:text-gray-50 uppercase">
