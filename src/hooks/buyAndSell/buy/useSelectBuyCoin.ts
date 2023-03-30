@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
+import { useRouter } from 'next/router'
 import { z } from 'zod'
 
 import { useI18n } from '@hooks/useI18n'
@@ -17,6 +18,8 @@ export const validationSchema = z.object({
 type BuyTokensFieldValues = z.infer<typeof validationSchema>
 
 export const useSelectBuyCoin = () => {
+  const { push } = useRouter()
+
   const { t } = useI18n()
   const { currency, token, setCurrency, setToken } = useBuyStableCoin()
 
@@ -60,6 +63,8 @@ export const useSelectBuyCoin = () => {
         ...prev,
         amount: data.amount
       }))
+
+      push('/dashboard/buy-and-sell/buy/select-method')
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }

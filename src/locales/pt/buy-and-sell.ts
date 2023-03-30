@@ -25,7 +25,11 @@ export const buyAndSell = {
     amountLabel: 'Qual valor da compra?',
     coinLabel: 'Qual a moeda?',
     coinAppr: 'Valor aproximado:',
-    continue: 'continuar'
+    continue: 'continuar',
+    selectMethod: 'Selecione o método de pagamento',
+    value: 'valor',
+    pixDesc:
+      'O meio mais rápido de comprar. Pagamento instantâneo a qualquer momento.'
   },
   sell: {
     headTitle: 'InWallet | Venda stable coin',
