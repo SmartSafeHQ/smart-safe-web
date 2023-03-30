@@ -1,0 +1,83 @@
+import { useIMask } from 'react-imask'
+import { FieldErrors, useForm } from 'react-hook-form'
+import { createContext, useContext } from 'react'
+
+import type { IMask } from 'react-imask'
+import type {
+  UseFormRegister,
+  UseFormWatch,
+  UseFormTrigger
+} from 'react-hook-form'
+import type { PropsWithChildren, ChangeEvent, RefObject } from 'react'
+
+type FormInputs = {
+  amountToWithdraw: string
+  bankId: string
+  cpf: string
+  name: string
+  branch: string
+  accountNumber: string
+  lastDigit: string
+}
+
+type SellContextProps = {
+  handleOnChangeAmountToWithdraw: (
+    _event: ChangeEvent<HTMLInputElement>
+  ) => void
+  amountToWithdrawRef: RefObject<HTMLInputElement>
+  register: UseFormRegister<FormInputs>
+  watch: UseFormWatch<FormInputs>
+  errors: FieldErrors<FormInputs>
+  trigger: UseFormTrigger<FormInputs>
+}
+
+const SellContext = createContext<SellContextProps>({} as SellContextProps)
+
+export function SellContextProvider({ children }: PropsWithChildren) {
+  const {
+    register,
+    setValue,
+    watch,
+    trigger,
+    formState: { errors }
+  } = useForm<FormInputs>()
+
+  const maskOptions: IMask.AnyMaskedOptions = {
+    mask: Number,
+    scale: 2,
+    signed: true,
+    padFractionalZeros: true,
+    radix: ',',
+    mapToRadix: ['.'],
+    min: 0
+  }
+  const {
+    ref: amountToWithdrawRef,
+    setValue: setAmountToWithdraw,
+    unmaskedValue: rawAmountToWithdraw
+  } = useIMask(maskOptions)
+
+  function handleOnChangeAmountToWithdraw({
+    target: { value }
+  }: ChangeEvent<HTMLInputElement>) {
+    setAmountToWithdraw(value)
+    setValue('amountToWithdraw', rawAmountToWithdraw)
+  }
+
+  return (
+    <SellContext.Provider
+      value={{
+        handleOnChangeAmountToWithdraw,
+        amountToWithdrawRef,
+        register,
+        watch,
+        trigger,
+        errors
+      }}
+    >
+      {children}
+    </SellContext.Provider>
+  )
+}
+
+export const useSellContext = () => useContext(SellContext)
