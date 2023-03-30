@@ -1,14 +1,14 @@
 import { HTMLAttributes } from 'react'
+import Image from 'next/image'
 import clsx from 'clsx'
 
 import { Text } from '@components/Text'
-import { Avatar } from '@components/Avatar'
 import { CoinsTableDataFetching } from './CoinsTableDataFetching'
 
 import { formatToCurrency } from '@utils/global/coins'
 import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
 import { useCoinValueInUsd } from '@hooks/global/coins/queries/useCoinValueInUsd'
-import { useAuth } from '@/contexts/AuthContext'
+import { useAuth } from '@contexts/AuthContext'
 
 import type { SupportedNetworks } from '@/utils/global/types'
 
@@ -57,12 +57,9 @@ export function CoinsTableTr({
     >
       <td className="pl-4 py-3 !min-w-[12rem]">
         <div className="flex items-center gap-4">
-          <Avatar.Root
-            fallbackName={symbol}
-            className="w-8 h-8 md:w-11 md:h-11"
-          >
-            <Avatar.Image src={avatar} alt={networkName} />
-          </Avatar.Root>
+          <div className="w-8 h-8 md:w-11 md:h-11">
+            <Image src={avatar} alt={networkName} width={44} height={44} />
+          </div>
 
           <div className="flex flex-col">
             <Text className="font-bold uppercase">{symbol}</Text>

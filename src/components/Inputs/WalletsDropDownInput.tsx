@@ -1,6 +1,6 @@
 import * as RadixSelect from '@radix-ui/react-select'
+import Image from 'next/image'
 
-import { Avatar } from '@components/Avatar'
 import { Text } from '@components/Text'
 import { SelectInput } from '@components/Inputs/SelectInput'
 
@@ -28,9 +28,12 @@ export function WalletsDropDownInput({
               className="py-1"
             >
               <div className="w-full flex items-center justify-start gap-2">
-                <Avatar.Root fallbackName={network} className="w-7 h-7">
-                  <Avatar.Image src={icon} alt={`${network} native token`} />
-                </Avatar.Root>
+                <Image
+                  src={icon}
+                  alt={`${network} native token`}
+                  width={28}
+                  height={28}
+                />
 
                 <Text className="text-md font-bold dark:text-gray-50 uppercase">
                   {network}
