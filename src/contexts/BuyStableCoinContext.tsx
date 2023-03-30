@@ -54,8 +54,8 @@ export function BuyStableCoinProvider({
     <BuyStableCoinContext.Provider
       value={{
         currency,
-        setCurrency,
         token,
+        setCurrency,
         setToken
       }}
     >

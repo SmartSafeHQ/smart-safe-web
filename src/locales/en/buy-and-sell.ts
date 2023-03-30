@@ -26,7 +26,7 @@ export const buyAndSell = {
     coinAppr: 'Approximate value:',
     continue: 'Continue',
     selectMethod: 'Select payment method',
-    value: 'value',
+    purchase: 'purchase',
     pixDesc: 'The fastest payment method. Instant payment at any time.'
   },
   sell: {

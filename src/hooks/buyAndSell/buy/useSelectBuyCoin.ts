@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { useI18n } from '@hooks/useI18n'
 import { ACCEPTED_CURRENCIES, ACCEPTED_TOKENS } from '@utils/stableCoinsUtils'
 import { useBuyStableCoin } from '@contexts/BuyStableCoinContext'
-import { useConverCurrencies } from '@hooks/buyAndSell/queries/useConverCurrencies'
+import { useConverCurrencies } from '@/hooks/buyAndSell/queries/useConverCurrencies'
 
 export const validationSchema = z.object({
   amount: z
@@ -24,6 +24,13 @@ export const useSelectBuyCoin = () => {
   const { currency, token, setCurrency, setToken } = useBuyStableCoin()
 
   const {
+    data: currencyData,
+    isLoading: currencyIsLoading,
+    isFetching: currencyIsFetching,
+    isPreviousData
+  } = useConverCurrencies(token.parityCurrencySymbol, currency.symbol)
+
+  const {
     register,
     handleSubmit,
     watch,
@@ -32,18 +39,14 @@ export const useSelectBuyCoin = () => {
     resolver: zodResolver(validationSchema)
   })
 
-  const {
-    data: currencyData,
-    isLoading: currencyIsLoading,
-    isFetching: currencyIsFetching,
-    isPreviousData
-  } = useConverCurrencies(token.parityCurrencySymbol, currency.symbol)
+  const currentInputAmount = watch('amount', currency.amount)
 
-  const currentAmount = watch('amount', 0) ? watch('amount', 0) : 0
+  const currentAmount = currentInputAmount || 0
 
   function handleChangeCurrency(value: string) {
     setCurrency(prev => {
-      const selectedCurrency = ACCEPTED_CURRENCIES[+value]
+      const selectedCurrency =
+        ACCEPTED_CURRENCIES.find(c => c.symbol === value) ?? prev
 
       return {
         amount: prev.amount,

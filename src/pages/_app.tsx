@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, ReactElement, ReactNode } from 'react'
 import Head from 'next/head'
 import { Amplify } from 'aws-amplify'
 
@@ -12,16 +12,34 @@ import { AppProvider } from '@contexts/index'
 import { TokenverseWidget } from '@components/TokenverseWidget'
 
 import type { AppProps } from 'next/app'
+import { NextPage } from 'next'
 
 Amplify.configure(amplifyConfig)
 
-export default function App({ Component, pageProps, ...appProps }: AppProps) {
+export type NextPageWithLayout<P = Record<string, string>, IP = P> = NextPage<
+  P,
+  IP
+> & {
+  getLayout?: (_page: ReactElement) => ReactNode
+}
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+export default function App({
+  Component,
+  pageProps,
+  ...appProps
+}: AppPropsWithLayout) {
   const isDashboardLayoutNeeded =
     appProps.router.pathname.startsWith('/dashboard')
 
   const LayoutComponent = isDashboardLayoutNeeded ? DashboardLayout : Fragment
 
-  return (
+  const getLayout = Component.getLayout ?? (page => page)
+
+  return getLayout(
     <AppProvider>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
