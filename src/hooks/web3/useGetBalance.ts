@@ -11,7 +11,7 @@ type Props = {
 
 export function useGetBalance({ customerAddress, networkRpcUrl }: Props) {
   const { contract } = useContract<IBRL>({
-    contractAddress: '0xfC28Ef7C5ff2f5EA55E70E3944041718Df42A371',
+    contractAddress: '0x78487e03f5e30aA3B6F72105cE247dEC80554418',
     contractName: 'IBRL',
     networkRpcUrl
   })
