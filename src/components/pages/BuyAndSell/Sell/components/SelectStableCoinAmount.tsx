@@ -9,10 +9,10 @@ import { TextInput } from '@/components/Inputs/TextInput'
 export function SelectStableCoinAmount() {
   const { t } = useI18n()
   const {
+    errors,
     register,
     amountToWithdrawRef,
-    handleOnChangeAmountToWithdraw,
-    errors
+    handleOnChangeAmountToWithdraw
   } = useSellContext()
 
   return (

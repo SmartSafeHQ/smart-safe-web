@@ -4,14 +4,15 @@ import { useState } from 'react'
 import { useI18n } from '@hooks/useI18n'
 import { SellContextProvider } from '@contexts/pages/SellContext'
 
-import { StableCoinAmount } from '@/components/pages/Sell/subpages/StableCoinAmount'
-import { BankAccountData } from '@/components/pages/Sell/subpages/BankAccountData'
-import { BankAccountDataConfirmation } from '@/components/pages/Sell/subpages/BankAccountDataConfirmation'
+import { StableCoinAmount } from '@/components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
+import { BankAccountData } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountData'
+import { BankAccountDataConfirmation } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountDataConfirmation'
 
 export type Screens =
   | 'stable-coin-amount'
   | 'bank-account-data'
   | 'bank-account-data-confirmation'
+  | 'withdraw'
 
 const Sell = () => {
   const [currentScreen, setCurrentScreen] =
