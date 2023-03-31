@@ -1,5 +1,5 @@
 import { useIMask } from 'react-imask'
-import { FieldErrors, useForm } from 'react-hook-form'
+import { FieldErrors, useForm, UseFormGetValues } from 'react-hook-form'
 import { createContext, useContext } from 'react'
 
 import type { IMask } from 'react-imask'
@@ -24,10 +24,15 @@ type SellContextProps = {
   handleOnChangeAmountToWithdraw: (
     _event: ChangeEvent<HTMLInputElement>
   ) => void
+  handleSetDropDownInputValue: (
+    _value: string,
+    _field: keyof FormInputs
+  ) => void
   amountToWithdrawRef: RefObject<HTMLInputElement>
   register: UseFormRegister<FormInputs>
   watch: UseFormWatch<FormInputs>
   errors: FieldErrors<FormInputs>
+  getValues: UseFormGetValues<FormInputs>
   trigger: UseFormTrigger<FormInputs>
 }
 
@@ -39,6 +44,7 @@ export function SellContextProvider({ children }: PropsWithChildren) {
     setValue,
     watch,
     trigger,
+    getValues,
     formState: { errors }
   } = useForm<FormInputs>()
 
@@ -64,6 +70,10 @@ export function SellContextProvider({ children }: PropsWithChildren) {
     setValue('amountToWithdraw', rawAmountToWithdraw)
   }
 
+  function handleSetDropDownInputValue(value: string, field: keyof FormInputs) {
+    setValue(field, value)
+  }
+
   return (
     <SellContext.Provider
       value={{
@@ -72,7 +82,9 @@ export function SellContextProvider({ children }: PropsWithChildren) {
         register,
         watch,
         trigger,
-        errors
+        getValues,
+        errors,
+        handleSetDropDownInputValue
       }}
     >
       {children}
