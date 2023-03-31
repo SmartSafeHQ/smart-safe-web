@@ -1,7 +1,9 @@
 import Head from 'next/head'
 import { ReactElement } from 'react'
 import { QRCodeCanvas } from 'qrcode.react'
+import { GetServerSideProps } from 'next'
 import { CopySimple, CurrencyDollar, ShareNetwork } from 'phosphor-react'
+import clsx from 'clsx'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
@@ -9,23 +11,30 @@ import { Button } from '@components/Button'
 import { TokenverseIcon } from '@components/Logos/TokenverseIcon'
 import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
 import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import {
-  BuyStableCoinProvider,
-  useBuyStableCoin
-} from '@contexts/BuyStableCoinContext'
-import { useI18n } from '@hooks/useI18n'
-import { useConverCurrencies } from '@hooks/buyAndSell/queries/useConverCurrencies'
+import { BuyStableCoinProvider } from '@contexts/BuyStableCoinContext'
+import { useBuyCoinPixPayment } from '@hooks/buyAndSell/buy/useBuyCoinPixPayment'
+import { handleCopyToClipboard } from '@utils/global'
+import { NextPageWithLayout } from '@/utils/global/types'
 
-const BuyPaymentPix = () => {
-  const { currency, token } = useBuyStableCoin()
-  const { t } = useI18n()
-  const { data: currencyData } = useConverCurrencies(
-    token.parityCurrencySymbol,
-    currency.symbol
-  )
+interface BuyPaymentPixProps {
+  paymentCode: string
+}
 
-  const amountInTokens = currency.amount / (currencyData?.value ?? 0)
+const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
+  paymentCode
+}) => {
+  const {
+    t,
+    amountInTokens,
+    token,
+    amountInBRL,
+    brlCurrencyIsLoading,
+    brlCurrencyIsRefetching,
+    selectCurrencyIsRefetching,
+    handleValidatePayment
+  } = useBuyCoinPixPayment()
 
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-4 bg-gray-50 dark:bg-gray-900 md:px-8">
@@ -48,15 +57,22 @@ const BuyPaymentPix = () => {
 
         <section className="w-full flex flex-col items-stretch gap-4">
           <div className="w-full flex flex-col items-center gap-4 p-5 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md">
-            <button className="flex items-center gap-2 text-sm font-semibold text-brand-foregroundAccent1 transition-colors hover:text-brand-foregroundAccent2">
+            <button
+              onClick={() => handleCopyToClipboard(paymentCode)}
+              className="flex items-center gap-2 text-sm font-semibold text-brand-foregroundAccent1 transition-colors hover:text-brand-foregroundAccent2"
+            >
               <Text>{t.buyAndSell.buy.pixCopyCode}</Text>
 
               <CopySimple className="w-4 h-4" />
             </button>
 
-            <QRCodeCanvas value={''} size={180} />
+            <QRCodeCanvas value={paymentCode} size={180} />
 
-            <div className="flex flex-col items-center gap-1">
+            <div
+              className={clsx('flex flex-col items-center gap-1', {
+                'animate-pulse': selectCurrencyIsRefetching
+              })}
+            >
               <Text
                 asChild
                 className="texl-lg capitalize font-medium text-gray-500 dark:text-gray-300"
@@ -65,23 +81,31 @@ const BuyPaymentPix = () => {
               </Text>
 
               <Heading className="text-3xl">
-                {token.symbol} {amountInTokens}
+                {token.symbol} {amountInTokens.toFixed(2)}
               </Heading>
             </div>
           </div>
 
           <div className="flex flex-col items-stretch gap-2">
-            <WalletInfos
-              title={t.buyAndSell.buy.value}
-              Icon={CurrencyDollar}
-              className="p-3"
+            <Skeleton
+              isLoading={brlCurrencyIsLoading}
+              className="w-full h-[3.25rem]"
             >
-              <Text asChild className="text-gray-700 dark:text-gray-50">
-                <strong>
-                  {currency.currency} {currency.amount.toFixed(2)}
-                </strong>
-              </Text>
-            </WalletInfos>
+              <WalletInfos
+                title={t.buyAndSell.buy.value}
+                Icon={CurrencyDollar}
+                className="p-3"
+              >
+                <Text
+                  asChild
+                  className={clsx('text-gray-700 dark:text-gray-50', {
+                    'animate-pulse': brlCurrencyIsRefetching
+                  })}
+                >
+                  <strong>R$ {amountInBRL.toFixed(2)}</strong>
+                </Text>
+              </WalletInfos>
+            </Skeleton>
 
             <WalletInfos
               title={t.buyAndSell.buy.network}
@@ -98,7 +122,9 @@ const BuyPaymentPix = () => {
             </WalletInfos>
           </div>
 
-          <Button className="uppercase">{t.buyAndSell.buy.validatePay}</Button>
+          <Button onClick={handleValidatePayment} className="uppercase">
+            {t.buyAndSell.buy.validatePay}
+          </Button>
         </section>
       </div>
     </div>
@@ -110,3 +136,15 @@ BuyPaymentPix.getLayout = function getLayout(page: ReactElement) {
 }
 
 export default BuyPaymentPix
+
+export const getServerSideProps: GetServerSideProps<
+  BuyPaymentPixProps
+> = async () => {
+  const paymentCode = 'temp-mock-payment-code'
+
+  return {
+    props: {
+      paymentCode
+    }
+  }
+}

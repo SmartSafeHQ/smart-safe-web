@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { CaretRight, QrCode } from 'phosphor-react'
 
 import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 
@@ -24,6 +25,14 @@ const BuySelectMethod = () => {
   )
 
   const amountInTokens = currency.amount / (currencyData?.value ?? 0)
+
+  if (currency.amount <= 0)
+    return (
+      <ErrorState
+        title={t.buyAndSell.buy.noAmountError}
+        className="flex-1 p-12"
+      />
+    )
 
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-8 bg-gray-50 dark:bg-gray-900 md:px-8">

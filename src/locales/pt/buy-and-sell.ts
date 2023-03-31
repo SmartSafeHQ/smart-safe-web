@@ -26,6 +26,7 @@ export const buyAndSell = {
     coinLabel: 'Qual a moeda?',
     coinAppr: 'Valor aproximado:',
     continue: 'continuar',
+    noAmountError: 'Por favor insira o valor da compra',
     selectMethod: 'Selecione o método de pagamento',
     purchase: 'comprando',
     network: 'network',

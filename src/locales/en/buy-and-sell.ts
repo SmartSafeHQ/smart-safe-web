@@ -25,6 +25,7 @@ export const buyAndSell = {
     coinLabel: 'Which coin?',
     coinAppr: 'Approximate value:',
     continue: 'Continue',
+    noAmountError: 'Please enter the purchase amount',
     selectMethod: 'Select payment method',
     purchase: 'purchase',
     pixDesc: 'The fastest payment method. Instant payment at any time.',
