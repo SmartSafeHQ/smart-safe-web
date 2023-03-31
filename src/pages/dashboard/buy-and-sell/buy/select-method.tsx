@@ -2,8 +2,10 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { ReactElement } from 'react'
 import Image from 'next/image'
-import { CaretLeft, CaretRight, QrCode } from 'phosphor-react'
+import { CaretRight, QrCode } from 'phosphor-react'
 
+import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 
@@ -24,6 +26,14 @@ const BuySelectMethod = () => {
 
   const amountInTokens = currency.amount / (currencyData?.value ?? 0)
 
+  if (currency.amount <= 0)
+    return (
+      <ErrorState
+        title={t.buyAndSell.buy.noAmountError}
+        className="flex-1 p-12"
+      />
+    )
+
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-8 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
@@ -32,14 +42,7 @@ const BuySelectMethod = () => {
       </Head>
 
       <div className="w-full flex justify-start items-stretch">
-        <Link
-          href="/dashboard/buy-and-sell/buy"
-          className="flex justify-center items-center gap-2 px-3 py-2 rounded-md font-medium capitalize transition-colors hover:bg-gray-200 hover:dark:bg-gray-800"
-        >
-          <CaretLeft className="w-5 h-5" weight="bold" />
-
-          <Text>{t.buyAndSell.buy.back}</Text>
-        </Link>
+        <BackLink href="/dashboard/buy-and-sell/buy" />
       </div>
 
       <div className="w-full max-w-2xl flex flex-1 flex-col gap-10">

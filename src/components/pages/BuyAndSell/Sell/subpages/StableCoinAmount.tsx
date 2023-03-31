@@ -5,7 +5,7 @@ import { useGetBalance } from '@/hooks/web3/useGetBalance'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { useSellContext } from '@/contexts/pages/SellContext'
-import { TokenDropDownInput } from '../../BuyAndSell/TokenDropDownInput'
+import { TokenDropDownInput } from '../../TokenDropDownInput'
 import { SelectStableCoinAmount } from '../components/SelectStableCoinAmount'
 
 import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
@@ -51,7 +51,7 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
     <>
       <div className="flex flex-col gap-2">
         <div className="mb-4">
-          <Heading className="text-3xl">{t.sell.heading}</Heading>
+          <Heading className="text-3xl">{t.sell.headings.sell}</Heading>
         </div>
 
         <div>

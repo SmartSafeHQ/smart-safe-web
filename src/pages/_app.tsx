@@ -1,4 +1,4 @@
-import { Fragment, ReactElement, ReactNode } from 'react'
+import { Fragment } from 'react'
 import Head from 'next/head'
 import { Amplify } from 'aws-amplify'
 
@@ -6,26 +6,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
 import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
+import { TokenverseWidget } from '@components/TokenverseWidget'
 
 import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
-import { TokenverseWidget } from '@components/TokenverseWidget'
-
-import type { AppProps } from 'next/app'
-import { NextPage } from 'next'
+import { AppPropsWithLayout } from '@utils/global/types'
 
 Amplify.configure(amplifyConfig)
-
-export type NextPageWithLayout<P = Record<string, string>, IP = P> = NextPage<
-  P,
-  IP
-> & {
-  getLayout?: (_page: ReactElement) => ReactNode
-}
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout
-}
 
 export default function App({
   Component,

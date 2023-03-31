@@ -1,5 +1,9 @@
 export const sell = {
-  heading: 'Withdraw',
+  headings: {
+    sell: 'Withdraw',
+    bankAccountData: 'Bank Account Data',
+    bankAccountDataConfirmation: 'Account Data Confirmation'
+  },
   wallet: 'Wallet',
   accountBalance: 'You have',
   amountToWithdraw: 'Amount',
@@ -9,9 +13,13 @@ export const sell = {
   bankDataConfirmation: 'Bank account data confirmation',
   withdrawSpread:
     'Attention: the final amount can change due to transaction spreads.',
+  checkout: 'Withdraw',
   inputs: {
     errorMessages: {
       required: 'This field is required.'
+    },
+    bank: {
+      label: 'Financial institution'
     },
     cpf: {
       label: 'CPF',

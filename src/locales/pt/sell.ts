@@ -1,5 +1,9 @@
 export const sell = {
-  heading: 'Saque',
+  headings: {
+    sell: 'Saque',
+    bankAccountData: 'Dados bancários',
+    bankAccountDataConfirmation: 'Confirmar dados'
+  },
   wallet: 'Carteira',
   accountBalance: 'Você possui',
   amountToWithdraw: 'Quantidade',
@@ -7,10 +11,14 @@ export const sell = {
   youWillWithdraw: 'Você irá receber',
   bankData: 'Dados bancários',
   bankDataConfirmation: 'Confirmação dos dados',
+  checkout: 'Sacar',
   withdrawSpread: 'Atenção: o valor de saque pode sofrer alterações.',
   inputs: {
     errorMessages: {
-      required: 'Campo obrigátorio.'
+      required: 'Campo obrigatório.'
+    },
+    bank: {
+      label: 'Instuição financeira'
     },
     cpf: {
       label: 'CPF',
