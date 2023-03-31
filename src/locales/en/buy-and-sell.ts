@@ -25,9 +25,17 @@ export const buyAndSell = {
     coinLabel: 'Which coin?',
     coinAppr: 'Approximate value:',
     continue: 'Continue',
+    noAmountError: 'Please enter the purchase amount',
     selectMethod: 'Select payment method',
     purchase: 'purchase',
-    pixDesc: 'The fastest payment method. Instant payment at any time.'
+    pixDesc: 'The fastest payment method. Instant payment at any time.',
+    network: 'network',
+    value: 'value',
+    validatePay: 'validate payment',
+    pixPaymentTitle: 'Scan the PIX Code',
+    pixCopyCode: 'Copy the PIX code',
+    pixInfo:
+      'Scan QR Code in your bank application to complete the transfer within 24 hours.'
   },
   sell: {
     headTitle: 'InWallet | Sell stable coin',
