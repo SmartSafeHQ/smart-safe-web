@@ -1,8 +1,12 @@
+import { useRouter } from 'next/router'
+
 import { useI18n } from '@hooks/useI18n'
 import { useBuyStableCoin } from '@contexts/BuyStableCoinContext'
 import { useConverCurrencies } from '@/hooks/buyAndSell/queries/useConverCurrencies'
 
 export const useBuyCoinPixPayment = () => {
+  const { push } = useRouter()
+
   const { currency, token } = useBuyStableCoin()
   const { t } = useI18n()
   const { data: selectCurrencyData, isRefetching: selectCurrencyIsRefetching } =
@@ -17,7 +21,7 @@ export const useBuyCoinPixPayment = () => {
   const amountInBRL = amountInTokens * (brlCurrencyData?.value ?? 0)
 
   function handleValidatePayment() {
-    console.log('Pay')
+    push('/dashboard/buy-and-sell/buy/123/purchase-proof')
   }
 
   return {

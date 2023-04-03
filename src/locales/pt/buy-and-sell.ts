@@ -37,7 +37,10 @@ export const buyAndSell = {
     pixPaymentTitle: 'Escaneie o código PIX',
     pixCopyCode: 'Copiar o código PIX',
     pixInfo:
-      'Escaneie QR Code em seu aplicativo de banco para concluir a transferência dentro de 24 horas.'
+      'Escaneie QR Code em seu aplicativo de banco para concluir a transferência dentro de 24 horas.',
+    proofTitle: 'Compra efetuada',
+    seeInvoice: 'Ver comprovante',
+    backTo: 'Voltar ao início'
   },
   sell: {
     headTitle: 'InWallet | Venda stable coin',

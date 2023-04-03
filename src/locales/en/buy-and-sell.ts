@@ -35,7 +35,10 @@ export const buyAndSell = {
     pixPaymentTitle: 'Scan the PIX Code',
     pixCopyCode: 'Copy the PIX code',
     pixInfo:
-      'Scan QR Code in your bank application to complete the transfer within 24 hours.'
+      'Scan QR Code in your bank application to complete the transfer within 24 hours.',
+    proofTitle: 'Purchase made',
+    seeInvoice: 'See invoice',
+    backTo: 'Back to start'
   },
   sell: {
     headTitle: 'InWallet | Sell stable coin',
