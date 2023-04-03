@@ -14,6 +14,9 @@ export const sell = {
   withdrawSpread:
     'Attention: the final amount can change due to transaction spreads.',
   checkout: 'Withdraw',
+  closeButton: 'Done',
+  withdrawalAmount: 'Withdrawal amount',
+  withdrawalSuccessHeading: 'Withdrawal success!',
   inputs: {
     errorMessages: {
       required: 'This field is required.'

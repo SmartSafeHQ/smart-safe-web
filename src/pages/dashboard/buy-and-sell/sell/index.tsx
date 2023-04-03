@@ -4,8 +4,9 @@ import { useState } from 'react'
 import { useI18n } from '@hooks/useI18n'
 import { SellContextProvider } from '@contexts/pages/SellContext'
 
-import { StableCoinAmount } from '@/components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
+import { Withdraw } from '@/components/pages/BuyAndSell/Sell/subpages/Withdraw'
 import { BankAccountData } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountData'
+import { StableCoinAmount } from '@/components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
 import { BankAccountDataConfirmation } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountDataConfirmation'
 
 export type Screens =
@@ -33,8 +34,10 @@ const Sell = () => {
             <StableCoinAmount setCurrentScreen={setCurrentScreen} />
           ) : currentScreen === 'bank-account-data' ? (
             <BankAccountData setCurrentScreen={setCurrentScreen} />
-          ) : (
+          ) : currentScreen === 'bank-account-data-confirmation' ? (
             <BankAccountDataConfirmation setCurrentScreen={setCurrentScreen} />
+          ) : (
+            <Withdraw setCurrentScreen={setCurrentScreen} />
           )}
         </div>
       </SellContextProvider>
