@@ -16,7 +16,7 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { BuyStableCoinProvider } from '@contexts/BuyStableCoinContext'
 import { useBuyCoinPixPayment } from '@hooks/buyAndSell/buy/useBuyCoinPixPayment'
 import { handleCopyToClipboard } from '@utils/global'
-import { NextPageWithLayout } from '@/utils/global/types'
+import { NextPageWithLayout } from '@utils/global/types'
 
 interface BuyPaymentPixProps {
   paymentCode: string
