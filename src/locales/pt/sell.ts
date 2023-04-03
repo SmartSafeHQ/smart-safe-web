@@ -13,6 +13,9 @@ export const sell = {
   bankDataConfirmation: 'Confirmação dos dados',
   checkout: 'Sacar',
   withdrawSpread: 'Atenção: o valor de saque pode sofrer alterações.',
+  closeButton: 'Concluído',
+  withdrawalAmount: 'Você sacou',
+  withdrawalSuccessHeading: 'Saque efetuado com sucesso!',
   inputs: {
     errorMessages: {
       required: 'Campo obrigatório.'

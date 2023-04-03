@@ -1,12 +1,14 @@
 import { useIMask } from 'react-imask'
-import { FieldErrors, useForm, UseFormGetValues } from 'react-hook-form'
 import { createContext, useContext } from 'react'
+import { FieldErrors, useForm } from 'react-hook-form'
 
 import type { IMask } from 'react-imask'
 import type {
   UseFormRegister,
   UseFormWatch,
-  UseFormTrigger
+  UseFormTrigger,
+  UseFormGetValues,
+  UseFormSetValue
 } from 'react-hook-form'
 import type { PropsWithChildren, ChangeEvent, RefObject } from 'react'
 
@@ -34,6 +36,7 @@ type SellContextProps = {
   errors: FieldErrors<FormInputs>
   getValues: UseFormGetValues<FormInputs>
   trigger: UseFormTrigger<FormInputs>
+  setValue: UseFormSetValue<FormInputs>
 }
 
 const SellContext = createContext<SellContextProps>({} as SellContextProps)
@@ -84,6 +87,7 @@ export function SellContextProvider({ children }: PropsWithChildren) {
         trigger,
         getValues,
         errors,
+        setValue,
         handleSetDropDownInputValue
       }}
     >

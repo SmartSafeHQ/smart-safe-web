@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { useEffect } from 'react'
 
 import { Text } from '@components/Text'
 import { Back } from '../components/Back'
@@ -26,13 +27,11 @@ export const BANKS = [
 
 export function BankAccountData({ setCurrentScreen }: Props) {
   const { t } = useI18n()
-  const { register, errors, trigger, getValues, handleSetDropDownInputValue } =
+  const { register, errors, trigger, handleSetDropDownInputValue, setValue } =
     useSellContext()
 
   async function handlePageChange() {
     const areFieldsValid = await trigger()
-
-    console.log(getValues())
 
     if (!areFieldsValid) {
       return
@@ -40,6 +39,13 @@ export function BankAccountData({ setCurrentScreen }: Props) {
 
     setCurrentScreen('bank-account-data-confirmation')
   }
+
+  useEffect(() => {
+    setValue(
+      'bankId',
+      BANKS.find(({ name }) => name === 'Santander')?.bankId as string
+    )
+  }, [setValue])
 
   return (
     <div className="flex flex-col gap-2">
@@ -58,7 +64,7 @@ export function BankAccountData({ setCurrentScreen }: Props) {
 
         <SelectInput.Root
           className="w-full"
-          defaultValue="0"
+          defaultValue="33"
           onValueChange={value => handleSetDropDownInputValue(value, 'bankId')}
         >
           <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
