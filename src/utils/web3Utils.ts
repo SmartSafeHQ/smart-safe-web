@@ -3,13 +3,13 @@ import { toast } from 'react-toastify'
 import { SupportedLanguages } from '@utils/global/constants/i18n'
 import { pt } from '@/locales/pt'
 import { locales } from '@/locales'
-import { EthereumError } from '@/utils/global/types'
+import type { EthereumError, SupportedNetworks } from '@/utils/global/types'
 
 export function formatWalletAddress({
   network,
   walletAddress
 }: {
-  network: 'solana' | 'evm' | 'bitcoin'
+  network: SupportedNetworks
   walletAddress: string
 }) {
   switch (network) {

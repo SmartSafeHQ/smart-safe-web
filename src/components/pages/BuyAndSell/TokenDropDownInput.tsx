@@ -1,24 +1,43 @@
+import { useEffect } from 'react'
 import * as RadixSelect from '@radix-ui/react-select'
+
+import { useSellContext } from '@/contexts/pages/SellContext'
 
 import { Text } from '@components/Text'
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Avatar } from '@/components/Avatar'
 
 interface ITokenDropDownInput extends RadixSelect.SelectProps {
-  tokens: { symbol: string; name: string; address: string; iconUrl: string }[]
+  tokens: {
+    symbol: 'IBRL' | 'IEUR'
+    name: string
+    address: string
+    iconUrl: string
+  }[]
 }
 
 export function TokenDropDownInput({ tokens, ...props }: ITokenDropDownInput) {
+  const { setValue, handleSetDropDownInputValue } = useSellContext()
+
+  useEffect(() => {
+    setValue('tokenSymbol', tokens[0].symbol)
+  }, [])
+
   return (
-    <SelectInput.Root className="w-full" defaultValue="0" {...props}>
+    <SelectInput.Root
+      className="w-full"
+      defaultValue={tokens[0].symbol}
+      onValueChange={value => handleSetDropDownInputValue(value, 'tokenSymbol')}
+      {...props}
+    >
       <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
 
       <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
         <SelectInput.Group>
-          {tokens.map((token, index) => (
+          {tokens.map(token => (
             <SelectInput.Item
               key={token.symbol}
-              value={String(index)}
+              value={token.symbol}
               className="min-h-[3rem] py-1"
             >
               <div className="w-full flex items-center justify-start gap-2">

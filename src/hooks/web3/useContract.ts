@@ -1,10 +1,11 @@
-import type { Signer } from 'ethers'
 import { useState, useEffect, useCallback } from 'react'
-import type { Provider } from '@ethersproject/providers'
 
 import { useProvider } from './useProvider'
 
-type BaseContractFactory<T> = {
+import type { Signer } from 'ethers'
+import type { Provider } from '@ethersproject/providers'
+
+export type BaseContractFactory<T> = {
   connect(_address: string, _signerOrProvider: Signer | Provider): T
 }
 
@@ -14,7 +15,7 @@ type Props = {
   networkRpcUrl: string
 }
 
-export function useContract<T extends BaseContractFactory<T>>({
+export function useContract<T>({
   contractAddress,
   contractName,
   networkRpcUrl
@@ -24,13 +25,20 @@ export function useContract<T extends BaseContractFactory<T>>({
   const { provider } = useProvider({ networkRpcUrl })
 
   const initializeContract = useCallback(async () => {
+    if (!provider) {
+      return
+    }
+
     try {
-      const importModule = await import(
+      const importedContractFactory = await import(
         `@utils/web3/typings/factories/${contractName}__factory.ts`
       )
-      const contract = importModule[`${contractName}__factory`] as T
+      const contractFactory = importedContractFactory[
+        `${contractName}__factory`
+      ] as BaseContractFactory<T>
+      const contract = contractFactory.connect(contractAddress, provider)
 
-      setContract(contract.connect(contractAddress, provider as Provider) as T)
+      setContract(contract)
     } catch (err) {
       console.log(err)
     }

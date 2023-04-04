@@ -13,6 +13,7 @@ import type {
 import type { PropsWithChildren, ChangeEvent, RefObject } from 'react'
 
 type FormInputs = {
+  tokenSymbol: 'IBRL' | 'IEUR'
   amountToWithdraw: string
   bankId: string
   cpf: string

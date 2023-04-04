@@ -12,30 +12,48 @@ import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
+import type { IBRL } from '@/utils/web3/typings'
 
 type Props = {
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
 }
 
-const STABLE_COINS = [
+type StableCoins = {
+  name: 'IBRL' | 'IEUR'
+  symbol: 'IBRL' | 'IEUR'
+  iconUrl: string
+  address: string
+}
+
+const STABLE_COINS: StableCoins[] = [
   {
     name: 'IBRL',
     symbol: 'IBRL',
     iconUrl: '/favicon.svg',
-    address: '0xfC28Ef7C5ff2f5EA55E70E3944041718Df42A371'
+    address: '0x78487e03f5e30aA3B6F72105cE247dEC80554418'
+  },
+  {
+    name: 'IEUR',
+    symbol: 'IEUR',
+    iconUrl: '/favicon.svg',
+    address: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7'
   }
 ]
 
 export function StableCoinAmount({ setCurrentScreen }: Props) {
   const { t } = useI18n()
   const { customer } = useAuth()
-  const { trigger } = useSellContext()
-  const { data: customerBalance } = useGetBalance({
+  const { trigger, watch } = useSellContext()
+
+  const polygonRpcUrl =
+    COINS_ATTRIBUTES.find(({ networkName }) => networkName === 'polygon')
+      ?.rpcUrl || ''
+  const { data: customerBalance } = useGetBalance<IBRL>({
     customerAddress: customer?.wallets.evm.address || '',
-    networkRpcUrl:
-      COINS_ATTRIBUTES.find(({ networkName }) => networkName === 'polygon')
-        ?.rpcUrl || ''
+    networkRpcUrl: polygonRpcUrl
   })
+
+  const tokenSymbol = watch('tokenSymbol')
 
   async function handlePageChange() {
     const isFieldValid = await trigger('amountToWithdraw')
@@ -65,7 +83,9 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
         <div className="p-2 rounded-md flex border-1 bg-brand-foregroundAccent1/10 border-brand-foregroundAccent2/30 dark:border-gray-800 dark:bg-gray-800/40">
           <p>
             {t.sell.accountBalance}{' '}
-            <span className="font-bold">{customerBalance || 0} iBRL</span>
+            <span className="font-bold">
+              {customerBalance || 0} {tokenSymbol}
+            </span>
           </p>
         </div>
       </div>
