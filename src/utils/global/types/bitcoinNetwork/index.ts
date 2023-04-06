@@ -1,3 +1,5 @@
+// these typings represents the payloads returned by this REST API: https://www.blockcypher.com/dev/#objects
+
 type TXRef = {
   tx_hash: string
   block_height: number

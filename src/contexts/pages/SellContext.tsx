@@ -1,6 +1,6 @@
 import { useIMask } from 'react-imask'
 import { createContext, useContext } from 'react'
-import { FieldErrors, useForm } from 'react-hook-form'
+import { FieldErrors, UseFormReset, useForm } from 'react-hook-form'
 
 import type { IMask } from 'react-imask'
 import type {
@@ -12,7 +12,15 @@ import type {
 } from 'react-hook-form'
 import type { PropsWithChildren, ChangeEvent, RefObject } from 'react'
 
+export type StableCoin = {
+  name: 'IBRL' | 'IEUR'
+  symbol: 'IBRL' | 'IEUR'
+  iconUrl: string
+  address: string
+}
+
 type FormInputs = {
+  tokenSymbol: 'IBRL' | 'IEUR'
   amountToWithdraw: string
   bankId: string
   cpf: string
@@ -20,6 +28,7 @@ type FormInputs = {
   branch: string
   accountNumber: string
   lastDigit: string
+  selectedStableCoin: StableCoin
 }
 
 type SellContextProps = {
@@ -37,9 +46,25 @@ type SellContextProps = {
   getValues: UseFormGetValues<FormInputs>
   trigger: UseFormTrigger<FormInputs>
   setValue: UseFormSetValue<FormInputs>
+  reset: UseFormReset<FormInputs>
 }
 
 const SellContext = createContext<SellContextProps>({} as SellContextProps)
+
+export const STABLE_COINS: StableCoin[] = [
+  {
+    name: 'IEUR',
+    symbol: 'IEUR',
+    iconUrl: '/favicon.svg',
+    address: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7'
+  },
+  {
+    name: 'IBRL',
+    symbol: 'IBRL',
+    iconUrl: '/favicon.svg',
+    address: '0x78487e03f5e30aA3B6F72105cE247dEC80554418'
+  }
+]
 
 export function SellContextProvider({ children }: PropsWithChildren) {
   const {
@@ -48,7 +73,8 @@ export function SellContextProvider({ children }: PropsWithChildren) {
     watch,
     trigger,
     getValues,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm<FormInputs>()
 
   const maskOptions: IMask.AnyMaskedOptions = {
@@ -88,7 +114,8 @@ export function SellContextProvider({ children }: PropsWithChildren) {
         getValues,
         errors,
         setValue,
-        handleSetDropDownInputValue
+        handleSetDropDownInputValue,
+        reset
       }}
     >
       {children}
