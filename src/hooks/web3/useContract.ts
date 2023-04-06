@@ -31,10 +31,10 @@ export function useContract<T>({
 
     try {
       const importedContractFactory = await import(
-        `@utils/web3/typings/factories/${contractName}__factory.ts`
+        `@utils/web3/typings/factories/${contractName.toUpperCase()}__factory.ts`
       )
       const contractFactory = importedContractFactory[
-        `${contractName}__factory`
+        `${contractName.toUpperCase()}__factory`
       ] as TypechainBaseContractFactory<T>
       const contract = contractFactory.connect(contractAddress, provider)
 

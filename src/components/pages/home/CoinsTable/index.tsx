@@ -1,7 +1,11 @@
 import { CoinsTableTh } from '@components/pages/home/CoinsTable/CoinsTableTh'
-import { CoinsTableTr } from '@components/pages/home/CoinsTable/CoinsTableTr'
+import {
+  CoinsTableTr,
+  StableCoinsTableTr
+} from '@components/pages/home/CoinsTable/CoinsTableTr'
 
 export const CoinsTable = {
   Th: CoinsTableTh,
-  Tr: CoinsTableTr
+  Tr: CoinsTableTr,
+  StableTr: StableCoinsTableTr
 }

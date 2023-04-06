@@ -30,7 +30,7 @@ async function fetchConverCurrencies({
     throw Error('invalid inputs')
   }
 
-  const value = Number(response.data[tsym])
+  const value = Number(response.data[tsym.toUpperCase()])
 
   return {
     value

@@ -6,6 +6,7 @@ import { CoinsTable } from '@components/pages/home/CoinsTable'
 
 import { queryClient } from '@lib/reactQuery'
 import { MAX_PAGINATION_COINS_PER_PAGE } from '@utils/global/constants/variables'
+import { STABLE_COINS_ATTRIBUTES } from '@utils/global/coins/stableCoinsConfig'
 import { useCustomerCoins } from '@hooks/global/coins/queries/useCustomerCoins'
 import { useHomeCoinsTab } from '@hooks/home/useHomeCoinsTab'
 import { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
@@ -86,6 +87,21 @@ export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
                         />
                       )
                     })}
+
+                  {STABLE_COINS_ATTRIBUTES.map(coin => {
+                    return (
+                      <CoinsTable.StableTr
+                        key={coin.symbol}
+                        networkName={coin.networkName}
+                        contractName={coin.contractName}
+                        contractAddress={coin.contractAddress}
+                        symbol={coin.symbol}
+                        parityCurrencySymbol={coin.parityCurrencySymbol}
+                        rpcUrl={coin.rpcUrl}
+                        avatar={coin.avatar}
+                      />
+                    )
+                  })}
                 </tbody>
               </table>
             </ScrollArea>
