@@ -1,6 +1,7 @@
+import { utils } from 'ethers'
 import Head from 'next/head'
 import Link from 'next/link'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import { CheckCircle, Receipt } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
@@ -13,7 +14,7 @@ interface PurchaseProofProps {
   invoiceId: string
   tokenSymbol: string
   purchaseDate: string
-  amountInTokens: number
+  amountInTokens: string
 }
 
 const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
@@ -46,12 +47,12 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
           <div className="w-full flex flex-col items-center justify-center gap-6">
             <div className="w-full flex flex-col items-center justify-center gap-4 pb-6 border-b-1 border-gray-300 dark:border-gray-600">
               <Text className="text-lg uppercase text-gray-500 dark:text-gray-400">
-                {purchaseDate}
+                {new Date(purchaseDate).toLocaleDateString('pt-BR')}
               </Text>
 
               <Text asChild className="text-4xl uppercase">
                 <strong>
-                  {tokenSymbol} {amountInTokens.toFixed(2)}
+                  {tokenSymbol} {utils.formatEther(amountInTokens)}
                 </strong>
               </Text>
             </div>
@@ -61,7 +62,7 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
               className="flex flex-col items-center justify-center gap-3 p-3 rounded-md font-medium capitalize transition-colors hover:bg-gray-200 hover:dark:bg-gray-800"
             >
               <a
-                href={`http://tx/${invoiceId}`}
+                href={`https://mumbai.polygonscan.com/tx/${invoiceId}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -86,17 +87,20 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
 
 export default PurchaseProof
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return { paths: [], fallback: 'blocking' }
-}
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   return { paths: [], fallback: 'blocking' }
+// }
 
-export const getStaticProps: GetStaticProps<PurchaseProofProps> = async () => {
+export const getServerSideProps: GetServerSideProps<
+  PurchaseProofProps
+> = async data => {
+  console.log(data.query)
   return {
     props: {
-      invoiceId: '123',
-      tokenSymbol: 'ibrl',
-      purchaseDate: '03 abr 2023, 11:00',
-      amountInTokens: 200
+      invoiceId: (data.query.id as string) || '',
+      tokenSymbol: (data.query.stableCoinSymbol as string) || '',
+      purchaseDate: (data.query.date as string) || '',
+      amountInTokens: (data.query.amount as string) || ''
     }
   }
 }

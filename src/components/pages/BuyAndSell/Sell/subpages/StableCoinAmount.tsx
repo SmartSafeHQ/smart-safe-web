@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
 import { useGetBalance } from '@/hooks/web3/useGetBalance'
@@ -16,7 +18,7 @@ import { Text } from '@components/Text'
 
 import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
 
-import { Dispatch, SetStateAction, useEffect } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
 import type { IBRL } from '@/utils/web3/typings'
 
