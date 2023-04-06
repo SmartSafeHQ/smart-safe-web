@@ -164,7 +164,7 @@ export function StableCoinsTableTr({
   } = useGetBalance({
     contractAddress,
     contractName,
-    customerAddress: customer?.wallets.evm.address ?? '',
+    customerAddress: customer?.wallets.evm.address,
     networkRpcUrl: rpcUrl
   })
 
@@ -208,7 +208,7 @@ export function StableCoinsTableTr({
       <td>
         <div className="flex flex-col">
           <CoinsTableDataFetching
-            isLoading={currencyIsLoading || portfolioIsLoading}
+            isLoading={currencyIsLoading || portfolioIsLoading || !customer}
             isRefetching={currencyIsFetching || portfolioIsRefetching}
             error={!!currencyIsError || !!portfolioError}
             skeletonClassName="h-6"
@@ -219,7 +219,7 @@ export function StableCoinsTableTr({
           </CoinsTableDataFetching>
 
           <CoinsTableDataFetching
-            isLoading={portfolioIsLoading}
+            isLoading={portfolioIsLoading || !customer}
             isRefetching={portfolioIsRefetching}
             error={!!portfolioError}
             className="uppercase text-sm text-gray-500 dark:text-gray-400"

@@ -1,43 +1,68 @@
 import { useQuery } from '@tanstack/react-query'
-import { utils } from 'ethers'
+import { Contract, providers, utils } from 'ethers'
 
-import { useContract } from './useContract'
+import IBRL_ABI from '@utils/web3/ABIs/IBRL.json'
+import IEUR_ABI from '@utils/web3/ABIs/IEUR.json'
 
-import type { BaseContract } from 'ethers'
+export const abis = new Map([
+  ['ibrl', IBRL_ABI],
+  ['ieur', IEUR_ABI]
+])
 
-type Props = {
-  customerAddress: string
+interface FetchBalanceProps {
+  networkRpcUrl: string
+  contractAddress: string
+  contractName: string
+  customerAddress?: string
+}
+
+async function fetchBalance({
+  networkRpcUrl,
+  contractAddress,
+  contractName,
+  customerAddress
+}: FetchBalanceProps) {
+  if (!customerAddress) {
+    throw new Error('account is required')
+  }
+
+  const ABI = abis.get(contractName.toLowerCase())
+
+  if (!ABI) {
+    throw new Error('stable coin not valid')
+  }
+
+  const provider = new providers.JsonRpcProvider(networkRpcUrl)
+  const contract = new Contract(contractAddress, ABI, provider)
+
+  const balance = await contract.functions.balanceOf(customerAddress)
+
+  return utils.formatEther(balance.toString())
+}
+
+interface UseGetBalanceProps {
+  customerAddress?: string
   networkRpcUrl: string
   contractAddress: string
   contractName: string
 }
 
-export function useGetBalance<T extends BaseContract>({
+export function useGetBalance({
   customerAddress,
   networkRpcUrl,
   contractAddress,
   contractName
-}: Props) {
-  const { contract } = useContract<T>({
-    contractAddress,
-    contractName,
-    networkRpcUrl
-  })
-
-  async function fetchBalance() {
-    if (!contract) return utils.formatEther(0)
-
-    const balance = (
-      await contract.functions.balanceOf(customerAddress)
-    ).toString()
-
-    return utils.formatEther(balance)
-  }
-
+}: UseGetBalanceProps) {
   return useQuery({
-    queryFn: fetchBalance,
-    queryKey: ['useGetBalance', contractAddress, contractName],
-    enabled: true,
+    queryKey: ['useGetBalance', customerAddress, contractAddress, contractName],
+    queryFn: () =>
+      fetchBalance({
+        networkRpcUrl,
+        contractAddress,
+        contractName,
+        customerAddress
+      }),
+    enabled: !!customerAddress,
     refetchOnWindowFocus: false
   })
 }

@@ -20,7 +20,6 @@ import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
-import type { IBRL } from '@/utils/web3/typings'
 
 type Props = {
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
@@ -38,7 +37,7 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
   const polygonRpcUrl =
     COINS_ATTRIBUTES.find(({ networkName }) => networkName === 'polygon')
       ?.rpcUrl || ''
-  const { data: customerBalance } = useGetBalance<IBRL>({
+  const { data: customerBalance } = useGetBalance({
     customerAddress: customer?.wallets.evm.address || '',
     networkRpcUrl: polygonRpcUrl,
     contractAddress: selectedStableCoin?.address || '',
