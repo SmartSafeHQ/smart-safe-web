@@ -1,36 +1,43 @@
 import { useQuery } from '@tanstack/react-query'
+import { utils } from 'ethers'
 
 import { useContract } from './useContract'
-import { BaseContract } from 'ethers'
+
+import type { BaseContract } from 'ethers'
 
 type Props = {
   customerAddress: string
   networkRpcUrl: string
+  contractAddress: string
+  contractName: string
 }
 
 export function useGetBalance<T extends BaseContract>({
   customerAddress,
-  networkRpcUrl
+  networkRpcUrl,
+  contractAddress,
+  contractName
 }: Props) {
   const { contract } = useContract<T>({
-    contractAddress: '0x78487e03f5e30aA3B6F72105cE247dEC80554418',
-    contractName: 'IBRL',
+    contractAddress,
+    contractName,
     networkRpcUrl
   })
 
   async function fetchBalance() {
-    if (!contract) return
+    if (!contract) return utils.formatEther(0)
 
     const balance = (
       await contract.functions.balanceOf(customerAddress)
     ).toString()
 
-    return balance
+    return utils.formatEther(balance)
   }
 
   return useQuery({
     queryFn: fetchBalance,
-    queryKey: ['useGetBalance'],
-    enabled: !!contract
+    queryKey: ['useGetBalance', contractAddress, contractName],
+    enabled: true,
+    refetchOnWindowFocus: false
   })
 }

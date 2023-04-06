@@ -4,13 +4,19 @@ import { useGetBalance } from '@/hooks/web3/useGetBalance'
 
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
-import { useSellContext } from '@/contexts/pages/SellContext'
-import { TokenDropDownInput } from '../../TokenDropDownInput'
+import {
+  STABLE_COINS,
+  StableCoin,
+  useSellContext
+} from '@/contexts/pages/SellContext'
 import { SelectStableCoinAmount } from '../components/SelectStableCoinAmount'
+import { SelectInput } from '@/components/Inputs/SelectInput'
+import { Avatar } from '@/components/Avatar'
+import { Text } from '@components/Text'
 
 import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
 
-import type { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
 import type { IBRL } from '@/utils/web3/typings'
 
@@ -18,42 +24,24 @@ type Props = {
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
 }
 
-type StableCoins = {
-  name: 'IBRL' | 'IEUR'
-  symbol: 'IBRL' | 'IEUR'
-  iconUrl: string
-  address: string
-}
-
-const STABLE_COINS: StableCoins[] = [
-  {
-    name: 'IBRL',
-    symbol: 'IBRL',
-    iconUrl: '/favicon.svg',
-    address: '0x78487e03f5e30aA3B6F72105cE247dEC80554418'
-  },
-  {
-    name: 'IEUR',
-    symbol: 'IEUR',
-    iconUrl: '/favicon.svg',
-    address: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7'
-  }
-]
-
 export function StableCoinAmount({ setCurrentScreen }: Props) {
   const { t } = useI18n()
   const { customer } = useAuth()
-  const { trigger, watch } = useSellContext()
+  const { trigger, watch, setValue, handleSetDropDownInputValue } =
+    useSellContext()
+
+  const tokenSymbol = watch('tokenSymbol')
+  const selectedStableCoin = watch('selectedStableCoin')
 
   const polygonRpcUrl =
     COINS_ATTRIBUTES.find(({ networkName }) => networkName === 'polygon')
       ?.rpcUrl || ''
   const { data: customerBalance } = useGetBalance<IBRL>({
     customerAddress: customer?.wallets.evm.address || '',
-    networkRpcUrl: polygonRpcUrl
+    networkRpcUrl: polygonRpcUrl,
+    contractAddress: selectedStableCoin?.address || '',
+    contractName: selectedStableCoin?.symbol || ''
   })
-
-  const tokenSymbol = watch('tokenSymbol')
 
   async function handlePageChange() {
     const isFieldValid = await trigger('amountToWithdraw')
@@ -64,6 +52,11 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
 
     setCurrentScreen('bank-account-data')
   }
+
+  useEffect(() => {
+    setValue('tokenSymbol', STABLE_COINS[0].symbol)
+    setValue('selectedStableCoin', STABLE_COINS[0])
+  }, [])
 
   return (
     <>
@@ -78,13 +71,55 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
           {customer?.wallets.evm.formattedAddress}
         </div>
 
-        <TokenDropDownInput tokens={STABLE_COINS} />
+        <SelectInput.Root
+          className="w-full"
+          defaultValue={STABLE_COINS[0].symbol}
+          onValueChange={async stableCoinSymbol => {
+            handleSetDropDownInputValue(stableCoinSymbol, 'tokenSymbol')
+            setValue(
+              'selectedStableCoin',
+              STABLE_COINS.find(
+                token => token.symbol === stableCoinSymbol
+              ) as StableCoin
+            )
+          }}
+        >
+          <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
+
+          <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
+            <SelectInput.Group>
+              {STABLE_COINS.map(token => (
+                <SelectInput.Item
+                  key={token.symbol}
+                  value={token.symbol}
+                  className="min-h-[3rem] py-1"
+                >
+                  <div className="w-full flex items-center justify-start gap-2">
+                    <Avatar.Root
+                      fallbackName={token.symbol}
+                      className="w-7 h-7"
+                    >
+                      <Avatar.Image
+                        src={token.iconUrl}
+                        alt={`${token.symbol} token`}
+                      />
+                    </Avatar.Root>
+
+                    <Text className="text-xl font-bold dark:text-gray-50 uppercase">
+                      {token.symbol}
+                    </Text>
+                  </div>
+                </SelectInput.Item>
+              ))}
+            </SelectInput.Group>
+          </SelectInput.Content>
+        </SelectInput.Root>
 
         <div className="p-2 rounded-md flex border-1 bg-brand-foregroundAccent1/10 border-brand-foregroundAccent2/30 dark:border-gray-800 dark:bg-gray-800/40">
           <p>
             {t.sell.accountBalance}{' '}
             <span className="font-bold">
-              {customerBalance || 0} {tokenSymbol}
+              {customerBalance} {tokenSymbol}
             </span>
           </p>
         </div>

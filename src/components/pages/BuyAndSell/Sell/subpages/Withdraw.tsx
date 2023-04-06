@@ -15,7 +15,7 @@ type Props = {
 
 export function Withdraw({ setCurrentScreen }: Props) {
   const { t } = useI18n()
-  const { trigger, getValues } = useSellContext()
+  const { trigger, getValues, reset } = useSellContext()
 
   async function handlePageChange() {
     const areFieldsValid = await trigger()
@@ -24,6 +24,7 @@ export function Withdraw({ setCurrentScreen }: Props) {
       return
     }
 
+    reset()
     setCurrentScreen('stable-coin-amount')
   }
 

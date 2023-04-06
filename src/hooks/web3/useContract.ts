@@ -5,7 +5,7 @@ import { useProvider } from './useProvider'
 import type { Signer } from 'ethers'
 import type { Provider } from '@ethersproject/providers'
 
-export type BaseContractFactory<T> = {
+export type TypechainBaseContractFactory<T> = {
   connect(_address: string, _signerOrProvider: Signer | Provider): T
 }
 
@@ -35,7 +35,7 @@ export function useContract<T>({
       )
       const contractFactory = importedContractFactory[
         `${contractName}__factory`
-      ] as BaseContractFactory<T>
+      ] as TypechainBaseContractFactory<T>
       const contract = contractFactory.connect(contractAddress, provider)
 
       setContract(contract)
