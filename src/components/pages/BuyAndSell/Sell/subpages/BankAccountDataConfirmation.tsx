@@ -5,12 +5,15 @@ import { TextInput } from '@/components/Inputs/TextInput'
 import { AmountToWithdraw } from '../components/AmountToWithdraw'
 
 import { useI18n } from '@/hooks/useI18n'
+import { useAuth } from '@/contexts/AuthContext'
 import { useSellContext } from '@/contexts/pages/SellContext'
+import { useBurnStableCoin } from '@/hooks/buyAndSell/mutations/useSellStableCoin'
 
 import { BANKS } from './BankAccountData'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
+import { utils } from 'ethers'
 
 type Props = {
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
@@ -18,7 +21,9 @@ type Props = {
 
 export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
   const { t } = useI18n()
+  const { customer } = useAuth()
   const { getValues, trigger } = useSellContext()
+  const { mutateAsync: burnStableCoin } = useBurnStableCoin()
 
   async function handlePageChange() {
     const areAllFieldValid = await trigger()
@@ -26,6 +31,16 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
     if (!areAllFieldValid) {
       return
     }
+
+    const amountToWithdrawInWei = utils
+      .parseEther(getValues('amountToWithdraw'))
+      .toString()
+
+    await burnStableCoin({
+      userAddress: customer?.wallets.evm.address || '',
+      amount: amountToWithdrawInWei,
+      contractAddress: getValues('selectedStableCoin.address')
+    })
 
     setCurrentScreen('withdraw')
   }
