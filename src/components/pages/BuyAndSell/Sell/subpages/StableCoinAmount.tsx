@@ -1,22 +1,19 @@
 import { useEffect } from 'react'
+import Image from 'next/image'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
-import { useGetBalance } from '@/hooks/web3/useGetBalance'
+import { useGetBalance } from '@hooks/web3/useGetBalance'
 
-import { Button } from '@/components/Button'
-import { Heading } from '@/components/Heading'
-import {
-  STABLE_COINS,
-  StableCoin,
-  useSellContext
-} from '@/contexts/pages/SellContext'
+import { Button } from '@components/Button'
+import { Heading } from '@components/Heading'
+import { StableCoin, useSellContext } from '@contexts/pages/SellContext'
 import { SelectStableCoinAmount } from '../components/SelectStableCoinAmount'
-import { SelectInput } from '@/components/Inputs/SelectInput'
-import { Avatar } from '@/components/Avatar'
+import { SelectInput } from '@components/Inputs/SelectInput'
 import { Text } from '@components/Text'
 
-import { COINS_ATTRIBUTES } from '@/utils/global/coins/config'
+import { COINS_ATTRIBUTES } from '@utils/global/coins/config'
+import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
@@ -40,7 +37,7 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
   const { data: customerBalance } = useGetBalance({
     customerAddress: customer?.wallets.evm.address || '',
     networkRpcUrl: polygonRpcUrl,
-    contractAddress: selectedStableCoin?.address || '',
+    contractAddress: selectedStableCoin?.contractAddress || '',
     contractName: selectedStableCoin?.symbol || ''
   })
 
@@ -96,15 +93,12 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
                   className="min-h-[3rem] py-1"
                 >
                   <div className="w-full flex items-center justify-start gap-2">
-                    <Avatar.Root
-                      fallbackName={token.symbol}
-                      className="w-7 h-7"
-                    >
-                      <Avatar.Image
-                        src={token.iconUrl}
-                        alt={`${token.symbol} token`}
-                      />
-                    </Avatar.Root>
+                    <Image
+                      src={token.avatar}
+                      alt={`${token.symbol} token`}
+                      width={28}
+                      height={28}
+                    />
 
                     <Text className="text-xl font-bold dark:text-gray-50 uppercase">
                       {token.symbol}

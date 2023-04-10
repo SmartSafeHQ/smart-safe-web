@@ -12,15 +12,16 @@ import type {
 } from 'react-hook-form'
 import type { PropsWithChildren, ChangeEvent, RefObject } from 'react'
 
+import { StableCoinsSymbols } from '@utils/global/coins/stableCoinsConfig'
+
 export type StableCoin = {
-  name: 'IBRL' | 'IEUR'
-  symbol: 'IBRL' | 'IEUR'
-  iconUrl: string
-  address: string
+  symbol: StableCoinsSymbols
+  avatar: string
+  contractAddress: string
 }
 
 type FormInputs = {
-  tokenSymbol: 'IBRL' | 'IEUR'
+  tokenSymbol: StableCoinsSymbols
   amountToWithdraw: string
   bankId: string
   cpf: string
@@ -50,21 +51,6 @@ type SellContextProps = {
 }
 
 const SellContext = createContext<SellContextProps>({} as SellContextProps)
-
-export const STABLE_COINS: StableCoin[] = [
-  {
-    name: 'IEUR',
-    symbol: 'IEUR',
-    iconUrl: '/favicon.svg',
-    address: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7'
-  },
-  {
-    name: 'IBRL',
-    symbol: 'IBRL',
-    iconUrl: '/favicon.svg',
-    address: '0x78487e03f5e30aA3B6F72105cE247dEC80554418'
-  }
-]
 
 export function SellContextProvider({ children }: PropsWithChildren) {
   const {

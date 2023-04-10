@@ -5,9 +5,10 @@ import { useRouter } from 'next/router'
 import { z } from 'zod'
 
 import { useI18n } from '@hooks/useI18n'
-import { ACCEPTED_CURRENCIES, ACCEPTED_TOKENS } from '@utils/stableCoinsUtils'
+import { ACCEPTED_CURRENCIES } from '@utils/stableCoinsUtils'
+import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 import { useBuyStableCoin } from '@contexts/BuyStableCoinContext'
-import { useConverCurrencies } from '@/hooks/buyAndSell/queries/useConverCurrencies'
+import { useConverCurrencies } from '@hooks/buyAndSell/queries/useConverCurrencies'
 
 export const validationSchema = z.object({
   amount: z
@@ -57,7 +58,7 @@ export const useSelectBuyCoin = () => {
   }
 
   function handleChangeToken(value: string) {
-    setToken(ACCEPTED_TOKENS[+value])
+    setToken(STABLE_COINS[+value])
   }
 
   const onSubmit: SubmitHandler<BuyTokensFieldValues> = async data => {

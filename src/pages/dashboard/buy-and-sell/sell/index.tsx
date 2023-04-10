@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import { useState } from 'react'
 
+import { Withdraw } from '@components/pages/BuyAndSell/Sell/subpages/Withdraw'
+import { BankAccountData } from '@components/pages/BuyAndSell/Sell/subpages/BankAccountData'
+import { StableCoinAmount } from '@components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
+import { BankAccountDataConfirmation } from '@components/pages/BuyAndSell/Sell/subpages/BankAccountDataConfirmation'
+
 import { useI18n } from '@hooks/useI18n'
 import { SellContextProvider } from '@contexts/pages/SellContext'
-
-import { Withdraw } from '@/components/pages/BuyAndSell/Sell/subpages/Withdraw'
-import { BankAccountData } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountData'
-import { StableCoinAmount } from '@/components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
-import { BankAccountDataConfirmation } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountDataConfirmation'
 
 export type Screens =
   | 'stable-coin-amount'
@@ -29,7 +29,7 @@ const Sell = () => {
       </Head>
 
       <SellContextProvider>
-        <div className="w-full max-w-[500px] flex flex-1 flex-col items-stretch gap-6 pt-10">
+        <div className="w-full max-w-lg flex flex-1 flex-col items-stretch gap-6 pt-10">
           {currentScreen === 'stable-coin-amount' ? (
             <StableCoinAmount setCurrentScreen={setCurrentScreen} />
           ) : currentScreen === 'bank-account-data' ? (

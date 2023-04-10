@@ -1,5 +1,3 @@
-import { Coin } from 'phosphor-react'
-
 import { useI18n } from '@hooks/useI18n'
 import { useSellContext } from '@contexts/pages/SellContext'
 
@@ -24,10 +22,6 @@ export function SelectStableCoinAmount() {
         <TextInput.Label>{t.sell.amountToWithdraw}</TextInput.Label>
 
         <TextInput.Content>
-          <TextInput.Icon>
-            <Coin size={32} />
-          </TextInput.Icon>
-
           <TextInput.Input
             {...register('amountToWithdraw', {
               required: {

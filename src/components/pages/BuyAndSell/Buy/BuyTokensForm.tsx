@@ -8,7 +8,8 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { TextInput } from '@components/Inputs/TextInput'
 import { SelectInput } from '@components/Inputs/SelectInput'
 
-import { ACCEPTED_CURRENCIES, ACCEPTED_TOKENS } from '@utils/stableCoinsUtils'
+import { ACCEPTED_CURRENCIES } from '@utils/stableCoinsUtils'
+import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 import { useSelectBuyCoin } from '@hooks/buyAndSell/buy/useSelectBuyCoin'
 
 export function BuyTokensForm() {
@@ -108,10 +109,10 @@ export function BuyTokensForm() {
           <Text className="font-semibold">{t.buyAndSell.buy.coinLabel}</Text>
 
           <CoinsDropDownInput
-            coins={ACCEPTED_TOKENS}
+            coins={STABLE_COINS}
             onValueChange={handleChangeToken}
             value={String(
-              ACCEPTED_TOKENS.findIndex(t => t.symbol === token.symbol) ?? 0
+              STABLE_COINS.findIndex(t => t.symbol === token.symbol) ?? 0
             )}
           />
         </label>

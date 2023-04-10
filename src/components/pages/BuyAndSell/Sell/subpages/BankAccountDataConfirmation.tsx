@@ -39,7 +39,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
     await burnStableCoin({
       userAddress: customer?.wallets.evm.address || '',
       amount: amountToWithdrawInWei,
-      contractAddress: getValues('selectedStableCoin.address')
+      contractAddress: getValues('selectedStableCoin.contractAddress')
     })
 
     setCurrentScreen('withdraw')
@@ -68,7 +68,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               value={
                 BANKS.find(({ bankId }) => bankId === getValues('bankId'))?.name
               }
-              type="text"
               id="bankId"
             />
           </TextInput.Content>
@@ -82,7 +81,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               readOnly
               disabled
               value={getValues('cpf')}
-              type="text"
               id="cpf"
             />
           </TextInput.Content>
@@ -96,7 +94,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               readOnly
               disabled
               value={getValues('name')}
-              type="text"
               id="name"
             />
           </TextInput.Content>
@@ -110,7 +107,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               readOnly
               disabled
               value={getValues('branch')}
-              type="text"
               id="branch"
             />
           </TextInput.Content>
@@ -127,7 +123,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
                 readOnly
                 disabled
                 value={getValues('accountNumber')}
-                type="text"
                 id="accountNumber"
               />
             </TextInput.Content>
@@ -141,7 +136,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
                 readOnly
                 disabled
                 value={getValues('lastDigit')}
-                type="text"
                 id="lastDigit"
               />
             </TextInput.Content>
