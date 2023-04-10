@@ -1,11 +1,16 @@
 import { useI18n } from '@/hooks/useI18n'
 import { useSellContext } from '@/contexts/pages/SellContext'
+import { useConverCurrencies } from '@/hooks/buyAndSell/queries/useConverCurrencies'
 
 export function AmountToWithdraw() {
   const { t } = useI18n()
   const { watch } = useSellContext()
 
   const amountToWithdraw = watch('amountToWithdraw')
+  const selectedStableCoinSymbol = watch('selectedStableCoin.symbol')
+  const { data: eurPriceInBrl } = useConverCurrencies(
+    selectedStableCoinSymbol === 'IEUR' ? 'EUR' : 'BRL'
+  )
 
   return (
     <div className="flex flex-col overflow-hidden rounded-md border-1 bg-brand-foregroundAccent1/10 border-brand-foregroundAccent2/30 dark:border-gray-800 dark:bg-gray-800/40">
@@ -15,7 +20,7 @@ export function AmountToWithdraw() {
           {Intl.NumberFormat('pt-BR', {
             currency: 'BRL',
             style: 'currency'
-          }).format(Number(amountToWithdraw || 0))}
+          }).format((eurPriceInBrl?.value || 0) * Number(amountToWithdraw))}
         </span>
       </p>
 
