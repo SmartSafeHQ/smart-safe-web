@@ -1,21 +1,25 @@
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
 
 import { Text } from '@components/Text'
 import { Back } from '../components/Back'
 import { Button } from '@components/Button'
-import { Heading } from '@/components/Heading'
-import { TextInput } from '@/components/Inputs/TextInput'
-import { SelectInput } from '@/components/Inputs/SelectInput'
+import { Heading } from '@components/Heading'
+import { TextInput } from '@components/Inputs/TextInput'
+import { SelectInput } from '@components/Inputs/SelectInput'
 import { AmountToWithdraw } from '../components/AmountToWithdraw'
 
-import { useI18n } from '@/hooks/useI18n'
-import { useSellContext } from '@/contexts/pages/SellContext'
+import {
+  SellBankAccountFieldValues,
+  bvalidationSchema
+} from '@hooks/buyAndSell/sell/useSelectSellCoin'
+import { useI18n } from '@hooks/useI18n'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
 
-type Props = {
+interface BankAccountDataProps {
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
 }
 
@@ -25,27 +29,19 @@ export const BANKS = [
   { bankId: '33', name: 'Santander', iconUrl: '/banks/santander.png' }
 ]
 
-export function BankAccountData({ setCurrentScreen }: Props) {
+export function BankAccountData({ setCurrentScreen }: BankAccountDataProps) {
   const { t } = useI18n()
-  const { register, errors, trigger, handleSetDropDownInputValue, setValue } =
-    useSellContext()
+
+  const {
+    register,
+    formState: { errors }
+  } = useForm<SellBankAccountFieldValues>({
+    resolver: zodResolver(bvalidationSchema)
+  })
 
   async function handlePageChange() {
-    const areFieldsValid = await trigger()
-
-    if (!areFieldsValid) {
-      return
-    }
-
     setCurrentScreen('bank-account-data-confirmation')
   }
-
-  useEffect(() => {
-    setValue(
-      'bankId',
-      BANKS.find(({ name }) => name === 'Santander')?.bankId as string
-    )
-  }, [setValue])
 
   return (
     <div className="flex flex-col gap-2">
@@ -63,9 +59,9 @@ export function BankAccountData({ setCurrentScreen }: Props) {
         <p className="font-bold">{t.sell.inputs.bank.label}</p>
 
         <SelectInput.Root
+          {...register('bankId')}
           className="w-full"
           defaultValue="33"
-          onValueChange={value => handleSetDropDownInputValue(value, 'bankId')}
         >
           <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
 

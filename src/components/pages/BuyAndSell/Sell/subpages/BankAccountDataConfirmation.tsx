@@ -1,19 +1,20 @@
+import { utils } from 'ethers'
+
 import { Back } from '../components/Back'
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { TextInput } from '@/components/Inputs/TextInput'
 import { AmountToWithdraw } from '../components/AmountToWithdraw'
 
-import { useI18n } from '@/hooks/useI18n'
-import { useAuth } from '@/contexts/AuthContext'
-import { useSellContext } from '@/contexts/pages/SellContext'
-import { useBurnStableCoin } from '@/hooks/buyAndSell/mutations/useSellStableCoin'
+import { useI18n } from '@hooks/useI18n'
+import { useAuth } from '@contexts/AuthContext'
+import { useSellStableCoin } from '@contexts/SellStableCoinContext'
+import { useBurnStableCoin } from '@hooks/buyAndSell/mutations/useSellStableCoin'
 
 import { BANKS } from './BankAccountData'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
-import { utils } from 'ethers'
 
 type Props = {
   setCurrentScreen: Dispatch<SetStateAction<Screens>>
@@ -22,24 +23,19 @@ type Props = {
 export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
   const { t } = useI18n()
   const { customer } = useAuth()
-  const { getValues, trigger } = useSellContext()
+  const { selectedStableCoin, bankAccount, withdrawAmount } =
+    useSellStableCoin()
   const { mutateAsync: burnStableCoin } = useBurnStableCoin()
 
   async function handlePageChange() {
-    const areAllFieldValid = await trigger()
-
-    if (!areAllFieldValid) {
-      return
-    }
-
     const amountToWithdrawInWei = utils
-      .parseEther(getValues('amountToWithdraw'))
+      .parseEther(String(withdrawAmount))
       .toString()
 
     await burnStableCoin({
       userAddress: customer?.wallets.evm.address || '',
       amount: amountToWithdrawInWei,
-      contractAddress: getValues('selectedStableCoin.contractAddress')
+      contractAddress: selectedStableCoin.contractAddress
     })
 
     setCurrentScreen('withdraw')
@@ -66,7 +62,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               readOnly
               disabled
               value={
-                BANKS.find(({ bankId }) => bankId === getValues('bankId'))?.name
+                BANKS.find(({ bankId }) => bankId === bankAccount?.bankId)?.name
               }
               id="bankId"
             />
@@ -80,7 +76,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
             <TextInput.Input
               readOnly
               disabled
-              value={getValues('cpf')}
+              value={bankAccount?.cpf}
               id="cpf"
             />
           </TextInput.Content>
@@ -93,7 +89,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
             <TextInput.Input
               readOnly
               disabled
-              value={getValues('name')}
+              value={bankAccount?.name}
               id="name"
             />
           </TextInput.Content>
@@ -106,7 +102,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
             <TextInput.Input
               readOnly
               disabled
-              value={getValues('branch')}
+              value={bankAccount?.branch}
               id="branch"
             />
           </TextInput.Content>
@@ -122,7 +118,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               <TextInput.Input
                 readOnly
                 disabled
-                value={getValues('accountNumber')}
+                value={bankAccount?.accountNumber}
                 id="accountNumber"
               />
             </TextInput.Content>
@@ -135,7 +131,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
               <TextInput.Input
                 readOnly
                 disabled
-                value={getValues('lastDigit')}
+                value={bankAccount?.lastDigit}
                 id="lastDigit"
               />
             </TextInput.Content>

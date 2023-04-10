@@ -11,7 +11,7 @@ import { ACCEPTED_CURRENCIES } from '@utils/stableCoinsUtils'
 import {
   STABLE_COINS,
   CurrencySymbols,
-  StableCoinsSymbols
+  StableCoinsProps
 } from '@utils/global/coins/stableCoinsConfig'
 
 type BuyStableCoinProviderProps = PropsWithChildren<Record<string, unknown>>
@@ -22,20 +22,11 @@ interface CurrencyProps {
   currency: string
 }
 
-interface TokenProps {
-  symbol: StableCoinsSymbols
-  avatar: string
-  parityCurrencySymbol: CurrencySymbols
-  contractAddress: string
-  contractName: string
-  rpcUrl: string
-}
-
 type BuyStableCoinContextData = {
   currency: CurrencyProps
-  token: TokenProps
+  token: StableCoinsProps
   setCurrency: Dispatch<SetStateAction<CurrencyProps>>
-  setToken: Dispatch<SetStateAction<TokenProps>>
+  setToken: Dispatch<SetStateAction<StableCoinsProps>>
 }
 
 const BuyStableCoinContext = createContext({} as BuyStableCoinContextData)
@@ -48,7 +39,7 @@ export function BuyStableCoinProvider({
     symbol: ACCEPTED_CURRENCIES[0].symbol,
     currency: ACCEPTED_CURRENCIES[0].currency
   })
-  const [token, setToken] = useState<TokenProps>(STABLE_COINS[0])
+  const [token, setToken] = useState<StableCoinsProps>(STABLE_COINS[0])
 
   return (
     <BuyStableCoinContext.Provider

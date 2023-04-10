@@ -1,68 +1,35 @@
-import { useEffect } from 'react'
 import Image from 'next/image'
-
-import { useI18n } from '@hooks/useI18n'
-import { useAuth } from '@contexts/AuthContext'
-import { useGetBalance } from '@hooks/web3/useGetBalance'
 
 import { Button } from '@components/Button'
 import { Heading } from '@components/Heading'
-import { StableCoin, useSellContext } from '@contexts/pages/SellContext'
 import { SelectStableCoinAmount } from '../components/SelectStableCoinAmount'
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Text } from '@components/Text'
 
-import { COINS_ATTRIBUTES } from '@utils/global/coins/config'
 import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
+import { useSelectSellCoin } from '@hooks/buyAndSell/sell/useSelectSellCoin'
 
-import type { Dispatch, SetStateAction } from 'react'
-import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
-
-type Props = {
-  setCurrentScreen: Dispatch<SetStateAction<Screens>>
-}
-
-export function StableCoinAmount({ setCurrentScreen }: Props) {
-  const { t } = useI18n()
-  const { customer } = useAuth()
-  const { trigger, watch, setValue, handleSetDropDownInputValue } =
-    useSellContext()
-
-  const tokenSymbol = watch('tokenSymbol')
-  const selectedStableCoin = watch('selectedStableCoin')
-
-  const polygonRpcUrl =
-    COINS_ATTRIBUTES.find(({ networkName }) => networkName === 'polygon')
-      ?.rpcUrl || ''
-  const { data: customerBalance } = useGetBalance({
-    customerAddress: customer?.wallets.evm.address || '',
-    networkRpcUrl: polygonRpcUrl,
-    contractAddress: selectedStableCoin?.contractAddress || '',
-    contractName: selectedStableCoin?.symbol || ''
-  })
-
-  async function handlePageChange() {
-    const isFieldValid = await trigger('amountToWithdraw')
-
-    if (!isFieldValid) {
-      return
-    }
-
-    setCurrentScreen('bank-account-data')
-  }
-
-  useEffect(() => {
-    setValue('tokenSymbol', STABLE_COINS[0].symbol)
-    setValue('selectedStableCoin', STABLE_COINS[0])
-  }, [])
+export function StableCoinAmount() {
+  const {
+    t,
+    customer,
+    customerBalance,
+    selectedStableCoin,
+    handleChangeStableCoin,
+    onSubmit,
+    handleSubmit
+  } = useSelectSellCoin()
 
   return (
     <>
-      <div className="flex flex-col gap-2">
-        <div className="mb-4">
-          <Heading className="text-3xl">{t.sell.headings.sell}</Heading>
-        </div>
+      <Heading asChild className="text-gray-800 dark:text-gray-50 text-4xl">
+        <h1>{t.sell.headings.sell}</h1>
+      </Heading>
 
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="w-full flex flex-col gap-8 items-stretch"
+      >
         <div>
           <p className="font-bold">{t.sell.wallet}: </p>
 
@@ -71,25 +38,17 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
 
         <SelectInput.Root
           className="w-full"
-          defaultValue={STABLE_COINS[0].symbol}
-          onValueChange={async stableCoinSymbol => {
-            handleSetDropDownInputValue(stableCoinSymbol, 'tokenSymbol')
-            setValue(
-              'selectedStableCoin',
-              STABLE_COINS.find(
-                token => token.symbol === stableCoinSymbol
-              ) as StableCoin
-            )
-          }}
+          defaultValue="0"
+          onValueChange={handleChangeStableCoin}
         >
           <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
 
           <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
             <SelectInput.Group>
-              {STABLE_COINS.map(token => (
+              {STABLE_COINS.map((token, i) => (
                 <SelectInput.Item
                   key={token.symbol}
-                  value={token.symbol}
+                  value={String(i)}
                   className="min-h-[3rem] py-1"
                 >
                   <div className="w-full flex items-center justify-start gap-2">
@@ -114,16 +73,16 @@ export function StableCoinAmount({ setCurrentScreen }: Props) {
           <p>
             {t.sell.accountBalance}{' '}
             <span className="font-bold">
-              {customerBalance} {tokenSymbol}
+              {customerBalance} {selectedStableCoin.symbol}
             </span>
           </p>
         </div>
-      </div>
+      </form>
 
       <div className="flex flex-col gap-2">
         <SelectStableCoinAmount />
 
-        <Button onClick={handlePageChange}>{t.sell.bankData}</Button>
+        <Button>{t.sell.bankData}</Button>
       </div>
     </>
   )

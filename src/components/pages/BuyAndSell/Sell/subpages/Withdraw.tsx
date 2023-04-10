@@ -1,10 +1,10 @@
 import { CheckCircle } from 'phosphor-react'
 
-import { Button } from '@/components/Button'
-import { Heading } from '@/components/Heading'
+import { Button } from '@components/Button'
+import { Heading } from '@components/Heading'
 
-import { useI18n } from '@/hooks/useI18n'
-import { useSellContext } from '@/contexts/pages/SellContext'
+import { useI18n } from '@hooks/useI18n'
+import { useSellStableCoin } from '@contexts/SellStableCoinContext'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { Screens } from '@/pages/dashboard/buy-and-sell/sell'
@@ -15,16 +15,9 @@ type Props = {
 
 export function Withdraw({ setCurrentScreen }: Props) {
   const { t } = useI18n()
-  const { trigger, getValues, reset } = useSellContext()
+  const { withdrawAmount } = useSellStableCoin()
 
   async function handlePageChange() {
-    const areFieldsValid = await trigger()
-
-    if (!areFieldsValid) {
-      return
-    }
-
-    reset()
     setCurrentScreen('stable-coin-amount')
   }
 
@@ -45,7 +38,7 @@ export function Withdraw({ setCurrentScreen }: Props) {
           {Intl.NumberFormat('pt-BR', {
             currency: 'BRL',
             style: 'currency'
-          }).format(Number(getValues('amountToWithdraw')) || 0)}
+          }).format(withdrawAmount)}
         </span>
       </div>
 

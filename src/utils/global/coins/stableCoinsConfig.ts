@@ -1,7 +1,7 @@
 export type StableCoinsSymbols = 'IUSD' | 'IBRL' | 'IEUR'
 export type CurrencySymbols = 'USD' | 'BRL' | 'EUR'
 
-interface StableCoinsSettings {
+export interface StableCoinsProps {
   symbol: StableCoinsSymbols
   networkName: string
   networkType: 'solana' | 'evm' | 'bitcoin'
@@ -16,7 +16,7 @@ interface StableCoinsSettings {
   contractName: string
 }
 
-const TESTNET_STABLE_COINS: StableCoinsSettings[] = [
+const TESTNET_STABLE_COINS: StableCoinsProps[] = [
   {
     symbol: 'IBRL',
     networkName: 'polygon',
@@ -47,7 +47,7 @@ const TESTNET_STABLE_COINS: StableCoinsSettings[] = [
   }
 ]
 
-const MAINNET_STABLE_COINS: StableCoinsSettings[] = [
+const MAINNET_STABLE_COINS: StableCoinsProps[] = [
   {
     symbol: 'IBRL',
     networkName: 'polygon',
