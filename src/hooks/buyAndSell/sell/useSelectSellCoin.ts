@@ -50,13 +50,10 @@ export const useSelectSellCoin = () => {
     isLoading: currencyIsLoading,
     isFetching: currencyIsFetching,
     isPreviousData
-  } = useConverCurrencies(
-    selectedStableCoin.parityCurrencySymbol,
-    selectedStableCoin.symbol
-  )
+  } = useConverCurrencies(selectedStableCoin.parityCurrencySymbol, 'brl')
 
   const { data: customerBalance } = useGetBalance({
-    customerAddress: customer?.wallets.evm.address || '',
+    customerAddress: customer?.wallets.evm.address,
     networkRpcUrl: selectedStableCoin.rpcUrl,
     contractAddress: selectedStableCoin.contractAddress,
     contractName: selectedStableCoin.contractName

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { ReactElement } from 'react'
 
 import { BuyTokensForm } from '@components/pages/BuyAndSell/Buy/BuyTokensForm'
-import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
 import { Heading } from '@components/Heading'
 
 import { BuyStableCoinProvider } from '@contexts/BuyStableCoinContext'

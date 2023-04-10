@@ -1,10 +1,10 @@
 import { utils } from 'ethers'
 
-import { Back } from '../components/Back'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
+
 import { Button } from '@/components/Button'
 import { Heading } from '@/components/Heading'
 import { TextInput } from '@/components/Inputs/TextInput'
-import { AmountToWithdraw } from '../components/AmountToWithdraw'
 
 import { useI18n } from '@hooks/useI18n'
 import { useAuth } from '@contexts/AuthContext'
@@ -43,7 +43,7 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
 
   return (
     <div>
-      <Back page="bank-account-data" setCurrentScreen={setCurrentScreen} />
+      <BackLink href="/dashboard/buy-and-sell" />
 
       <div className="flex flex-col gap-2">
         <div className="mb-4">
@@ -51,8 +51,6 @@ export function BankAccountDataConfirmation({ setCurrentScreen }: Props) {
             {t.sell.headings.bankAccountDataConfirmation}
           </Heading>
         </div>
-
-        <AmountToWithdraw />
 
         <TextInput.Root htmlFor="bankId">
           <TextInput.Label>{t.sell.inputs.bank.label}</TextInput.Label>

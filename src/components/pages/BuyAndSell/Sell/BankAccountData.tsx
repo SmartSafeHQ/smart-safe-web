@@ -3,12 +3,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 import { Text } from '@components/Text'
-import { Back } from '../components/Back'
+import { BackLink } from '../BackLink'
 import { Button } from '@components/Button'
 import { Heading } from '@components/Heading'
 import { TextInput } from '@components/Inputs/TextInput'
 import { SelectInput } from '@components/Inputs/SelectInput'
-import { AmountToWithdraw } from '../components/AmountToWithdraw'
 
 import {
   SellBankAccountFieldValues,
@@ -45,15 +44,13 @@ export function BankAccountData({ setCurrentScreen }: BankAccountDataProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <Back page="stable-coin-amount" setCurrentScreen={setCurrentScreen} />
+      <BackLink href="/dashboard/buy-and-sell" />
 
       <div className="mb-4">
         <Heading className="text-3xl">
           {t.sell.headings.bankAccountData}
         </Heading>
       </div>
-
-      <AmountToWithdraw />
 
       <label>
         <p className="font-bold">{t.sell.inputs.bank.label}</p>

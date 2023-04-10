@@ -1,11 +1,11 @@
 import Head from 'next/head'
 import { useState } from 'react'
 
-import { Withdraw } from '@components/pages/BuyAndSell/Sell/subpages/Withdraw'
-import { BankAccountData } from '@components/pages/BuyAndSell/Sell/subpages/BankAccountData'
-import { StableCoinAmount } from '@components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
-import { BankAccountDataConfirmation } from '@components/pages/BuyAndSell/Sell/subpages/BankAccountDataConfirmation'
-import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { Withdraw } from '@components/pages/BuyAndSell/Sell/Withdraw'
+import { BankAccountData } from '@/components/pages/BuyAndSell/Sell/BankAccountData'
+import { StableCoinAmount } from '@components/pages/BuyAndSell/Sell/StableCoinAmount'
+import { BankAccountDataConfirmation } from '@components/pages/BuyAndSell/Sell/BankAccountDataConfirmation'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
 
 import { useI18n } from '@hooks/useI18n'
 import { SellStableCoinContextProvider } from '@/contexts/SellStableCoinContext'
