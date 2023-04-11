@@ -59,7 +59,7 @@ export function CoinsTab({ isFetching, isTabActive = false }: CoinsTabProps) {
                 </thead>
 
                 <tbody>
-                  {data.coins
+                  {data.nativeTokens
                     .sort((a, b) => {
                       const coinBalanceA =
                         queryClient.getQueryData<FetchCoinPortfolioResponse>([

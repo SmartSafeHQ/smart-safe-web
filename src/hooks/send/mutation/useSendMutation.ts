@@ -1,5 +1,5 @@
 // import axios from 'axios'
-import { providers, Wallet, utils } from 'ethers'
+import { providers, Wallet, utils, Contract } from 'ethers'
 import {
   PublicKey,
   Keypair,
@@ -15,6 +15,8 @@ import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@lib/reactQuery'
 import { DEFAULT_GAS_LIMIT } from '@utils/global/constants/variables'
 
+import { abis } from '@/hooks/web3/useGetBalance'
+
 import type { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useCoinsBalanceInUsd'
 import type { FetchCoinPortfolioResponse } from '@hooks/global/coins/queries/useCoinPortfolio'
 import type { FetchCoinFeeDataResponse } from '@hooks/global/coins/queries/useCoinFeeData'
@@ -28,6 +30,8 @@ interface SendFunctionInput {
   symbol: string
   rpcUrl: string
   networkType: SupportedNetworks
+  contractAddress?: string
+  contractName?: string
 }
 
 export interface SendFunctionOutput {
@@ -37,6 +41,30 @@ export interface SendFunctionOutput {
 async function sendFunction(
   input: SendFunctionInput
 ): Promise<SendFunctionOutput> {
+  if (input.symbol === 'ibrl' || input.symbol === 'ieur') {
+    const ABI = abis.get(input.symbol.toLowerCase())
+
+    if (!ABI) {
+      throw new Error('stable coin not valid')
+    }
+
+    const signer = new Wallet(input.fromWallet.privateKey)
+    const provider = new providers.JsonRpcProvider(input.rpcUrl)
+    const signerAndProvider = signer.connect(provider)
+    const contract = new Contract(
+      input.contractAddress || '',
+      ABI,
+      signerAndProvider
+    )
+
+    const transaction = await contract.functions.transfer(
+      input.to,
+      utils.parseEther(input.amount.toString())
+    )
+
+    return { transactionHash: transaction.hash }
+  }
+
   if (input.networkType === 'solana') {
     const transaction = new Transaction()
 

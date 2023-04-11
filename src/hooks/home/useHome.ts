@@ -59,7 +59,7 @@ export const useHome = () => {
       .then(async result => {
         let balanceAmount = 0
 
-        const balancePromise = result.coins.map(async coin => {
+        const balancePromise = result.nativeTokens.map(async coin => {
           const coinPortfolioResponse =
             await queryClient.ensureQueryData<FetchCoinPortfolioResponse>({
               queryKey: ['coinPortfolio', coin.rpcUrl],

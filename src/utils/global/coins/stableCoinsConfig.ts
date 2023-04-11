@@ -1,4 +1,4 @@
-interface StableCoinsSettings {
+export interface StableCoinsSettings {
   symbol: string
   networkName: string
   networkType: 'solana' | 'evm' | 'bitcoin'
