@@ -19,7 +19,7 @@ export const useHomeCoinsTab = () => {
 
     if (!query) return
 
-    query.coins.forEach(coin => {
+    query.nativeTokens.forEach(coin => {
       queryClient.invalidateQueries({
         queryKey: ['coinPortfolio', coin.rpcUrl],
         exact: true

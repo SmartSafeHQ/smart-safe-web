@@ -1,13 +1,13 @@
 import Image from 'next/image'
 
-import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
+import { Heading } from '@components/Heading'
+import { SelectInput } from '@/components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
-import { CoinsDropDownInput } from '@components/Inputs/CoinsDropDownInput'
 
+import { useSend } from '@contexts/SendContext'
 import { useCustomSendHook } from '@hooks/send/useSend'
 import { useCoinPortfolio } from '@hooks/global/coins/queries/useCoinPortfolio'
-import { useSend } from '@contexts/SendContext'
 import { FetchCustomerCoinsResponse } from '@hooks/global/coins/queries/useCustomerCoins'
 
 interface SendSelectCoinProps {
@@ -36,10 +36,63 @@ export function SendSelectCoin({
 
         <Skeleton isLoading={coinsIsLoading} className="w-full h-12">
           {coinsData && (
-            <CoinsDropDownInput
-              coins={coinsData.coins}
+            <SelectInput.Root
+              className="w-full"
               onValueChange={handleChangeCoin}
-            />
+              defaultValue={coinsData.nativeTokens[0].symbol}
+            >
+              <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
+
+              <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
+                <SelectInput.Group labelText="Native Tokens">
+                  {coinsData.nativeTokens.map(coin => (
+                    <SelectInput.Item
+                      key={coin.symbol}
+                      value={coin.symbol}
+                      className="min-h-[3rem] py-1"
+                    >
+                      <div className="w-full flex items-center justify-start gap-2">
+                        <Image
+                          src={coin.avatar}
+                          alt={`${coin.symbol} coin`}
+                          width={28}
+                          height={28}
+                          className="w-7 h-7"
+                        />
+
+                        <Text className="text-xl font-bold dark:text-gray-50 uppercase">
+                          {coin.symbol}
+                        </Text>
+                      </div>
+                    </SelectInput.Item>
+                  ))}
+                </SelectInput.Group>
+
+                <SelectInput.Group labelText="Stable Coins">
+                  {coinsData.stableCoins.map(stableCoin => (
+                    <SelectInput.Item
+                      key={stableCoin.symbol}
+                      value={stableCoin.symbol}
+                      className="min-h-[3rem] py-1"
+                    >
+                      <div className="w-full flex items-center justify-start gap-2">
+                        <Image
+                          src={stableCoin.avatar}
+                          alt={`${stableCoin.symbol} coin`}
+                          width={28}
+                          height={28}
+                          className="w-7 h-7"
+                        />
+
+                        <Text className="text-xl font-bold dark:text-gray-50 uppercase">
+                          {stableCoin.symbol}
+                        </Text>
+                      </div>
+                    </SelectInput.Item>
+                  ))}
+                </SelectInput.Group>
+              </SelectInput.Content>
+            </SelectInput.Root>
           )}
         </Skeleton>
       </div>

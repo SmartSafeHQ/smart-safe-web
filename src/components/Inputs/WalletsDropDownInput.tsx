@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { SelectInput } from '@components/Inputs/SelectInput'
 
-interface CoinsDropDownInputProps extends RadixSelect.SelectProps {
+interface WalletsDropDownInputProps extends RadixSelect.SelectProps {
   wallets: {
     network: string
     icon: string
@@ -14,7 +14,7 @@ interface CoinsDropDownInputProps extends RadixSelect.SelectProps {
 export function WalletsDropDownInput({
   wallets,
   ...props
-}: CoinsDropDownInputProps) {
+}: WalletsDropDownInputProps) {
   return (
     <SelectInput.Root className="w-full" defaultValue="0" {...props}>
       <SelectInput.Trigger className="min-h-[3rem] py-1" />

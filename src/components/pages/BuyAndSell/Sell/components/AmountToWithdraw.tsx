@@ -8,7 +8,7 @@ export function AmountToWithdraw() {
 
   const amountToWithdraw = watch('amountToWithdraw')
   const selectedStableCoinSymbol = watch('selectedStableCoin.symbol')
-  const { data: eurPriceInBrl } = useConverCurrencies(
+  const { data: eurPriceToBrl } = useConverCurrencies(
     selectedStableCoinSymbol === 'IEUR' ? 'EUR' : 'BRL'
   )
 
@@ -20,7 +20,7 @@ export function AmountToWithdraw() {
           {Intl.NumberFormat('pt-BR', {
             currency: 'BRL',
             style: 'currency'
-          }).format((eurPriceInBrl?.value || 0) * Number(amountToWithdraw))}
+          }).format((eurPriceToBrl?.value || 0) * Number(amountToWithdraw))}
         </span>
       </p>
 
