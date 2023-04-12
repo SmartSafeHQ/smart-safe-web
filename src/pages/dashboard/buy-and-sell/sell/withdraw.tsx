@@ -1,5 +1,6 @@
 import { ReactElement } from 'react'
 import Head from 'next/head'
+import Link from 'next/link'
 import { CheckCircle } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
@@ -9,7 +10,6 @@ import {
   useSellStableCoin
 } from '@contexts/SellStableCoinContext'
 import { useI18n } from '@hooks/useI18n'
-import Link from 'next/link'
 
 const SellWithdraw = () => {
   const { t } = useI18n()

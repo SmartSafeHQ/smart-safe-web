@@ -8,11 +8,11 @@ export const sell = {
   accountBalance: 'You have',
   amountToWithdraw: 'What is the withdraw amount?',
   amountOfTokensToWithdraw: '0.00',
-  youWillWithdraw: 'Cashing out',
+  youWillWithdraw: 'Withdrawing',
   continue: 'continue',
-  bankDataConfirmation: 'Bank account data confirmation',
-  withdrawSpread: 'The final amount can change due to transaction spreads.',
+  withdrawSpread: 'The withdrawal amount is approximate and may change.',
   checkout: 'Withdraw',
+  insufficientFunds: 'Insufficient funds to withdraw',
   closeButton: 'Done',
   withdrawalAmount: 'Withdrawal amount',
   withdrawalSuccessHeading: 'Withdrawal success!',
@@ -21,27 +21,27 @@ export const sell = {
       required: 'This field is required.'
     },
     bank: {
-      label: 'Financial institution'
+      label: 'Financial Institution'
     },
     cpf: {
-      label: 'CPF',
-      placeholder: 'Your CPF'
+      label: 'CPF (identification number)',
+      placeholder: 'Enter your CPF'
     },
     name: {
-      label: 'Nome',
-      placeholder: 'Your full name'
+      label: 'Full Name',
+      placeholder: 'Enter your full name'
     },
     branch: {
       label: 'Branch',
-      placeholder: 'Your bank branch'
+      placeholder: 'Enter your branch'
     },
     accountNumber: {
-      label: 'Account number',
-      placeholder: 'Account number'
+      label: 'Account Number',
+      placeholder: 'Enter the account number'
     },
     lastDigit: {
-      label: 'Last digit',
-      placeholder: 'Account number last digit'
+      label: 'Last Digit',
+      placeholder: 'Enter the last digit'
     }
   }
 }

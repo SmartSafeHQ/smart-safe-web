@@ -10,9 +10,9 @@ export const sell = {
   amountOfTokensToWithdraw: '0.00',
   youWillWithdraw: 'Sacando',
   continue: 'continuar',
-  bankDataConfirmation: 'Confirmação dos dados',
   checkout: 'Sacar',
-  withdrawSpread: 'O valor de saque pode sofrer alterações.',
+  insufficientFunds: 'Fundos insuficientes para saque',
+  withdrawSpread: 'O valor de saque é aproximado e pode sofrer alterações.',
   closeButton: 'Concluído',
   withdrawalAmount: 'Você sacou',
   withdrawalSuccessHeading: 'Saque efetuado com sucesso!',
@@ -25,23 +25,23 @@ export const sell = {
     },
     cpf: {
       label: 'CPF',
-      placeholder: 'Seu CPF'
+      placeholder: 'Digite seu CPF'
     },
     name: {
-      label: 'Nome',
-      placeholder: 'Seu nome completo'
+      label: 'Nome completo',
+      placeholder: 'Digite seu nome completo'
     },
     branch: {
       label: 'Agência',
-      placeholder: 'Sua agência'
+      placeholder: 'Digite sua agência'
     },
     accountNumber: {
-      label: 'Número',
-      placeholder: 'Número da conta'
+      label: 'Número da conta',
+      placeholder: 'Digite o número da conta'
     },
     lastDigit: {
-      label: 'Dígito',
-      placeholder: 'Último digito'
+      label: 'Último Dígito',
+      placeholder: 'Digite o último digito'
     }
   }
 }

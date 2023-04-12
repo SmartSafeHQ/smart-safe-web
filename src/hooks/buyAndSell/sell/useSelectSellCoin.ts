@@ -38,12 +38,13 @@ export const useSelectSellCoin = () => {
     isPreviousData
   } = useConverCurrencies(selectedStableCoin.parityCurrencySymbol, 'brl')
 
-  const { data: customerBalance } = useGetBalance({
-    customerAddress: customer?.wallets.evm.address,
-    networkRpcUrl: selectedStableCoin.rpcUrl,
-    contractAddress: selectedStableCoin.contractAddress,
-    contractName: selectedStableCoin.contractName
-  })
+  const { data: customerBalance, isFetching: customerBalanceIsFetching } =
+    useGetBalance({
+      customerAddress: customer?.wallets.evm.address,
+      networkRpcUrl: selectedStableCoin.rpcUrl,
+      contractAddress: selectedStableCoin.contractAddress,
+      contractName: selectedStableCoin.contractName
+    })
 
   const {
     register,
@@ -63,10 +64,17 @@ export const useSelectSellCoin = () => {
   }
 
   const onSubmit: SubmitHandler<SellStableCoinFieldValues> = async data => {
+    if (!customerBalance) return
+
+    if (data.amount > +customerBalance) {
+      toast.error(t.sell.insufficientFunds)
+      return
+    }
+
     try {
       setWithdrawAmount(data.amount)
 
-      push('/dashboard/buy-and-sell/sell/back-account')
+      push('/dashboard/buy-and-sell/sell/bank-account')
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }
@@ -83,10 +91,12 @@ export const useSelectSellCoin = () => {
     currencyIsLoading,
     currencyIsFetching,
     isPreviousData,
+    customerBalanceIsFetching,
     selectedStableCoin,
     handleChangeStableCoin,
     isSubmitting,
     errors,
-    onSubmit
+    onSubmit,
+    withdrawAmount
   }
 }

@@ -18,15 +18,13 @@ export interface SelectInputRootProps extends RadixSelect.SelectProps {
   error?: string
 }
 
-function SelectInputRoot({
-  children,
-  labelText,
-  error,
-  className,
-  ...props
-}: SelectInputRootProps) {
+const SelectInputRoot: ForwardRefRenderFunction<
+  HTMLLabelElement,
+  SelectInputRootProps
+> = ({ children, labelText, error, className, ...props }, ref) => {
   return (
     <label
+      ref={ref}
       className={clsx(
         'flex flex-col gap-2',
         {
@@ -172,7 +170,7 @@ const SelectInputItem: ForwardRefRenderFunction<
 SelectInputItem.displayName = 'SelectInput.Item'
 
 export const SelectInput = {
-  Root: SelectInputRoot,
+  Root: forwardRef(SelectInputRoot),
   Trigger: SelectInputTrigger,
   Content: SelectInputContent,
   Group: SelectInputGroup,
