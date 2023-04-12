@@ -17,21 +17,7 @@ export const validationSchema = z.object({
     .min(0.1, { message: 'min 0.1' })
 })
 
-type SellTokensFieldValues = z.infer<typeof validationSchema>
-
-export const bvalidationSchema = z.object({
-  amount: z
-    .number({ invalid_type_error: 'min 0.1' })
-    .min(0.1, { message: 'min 0.1' }),
-  bankId: z.string().min(1, { message: 'bank required' }),
-  cpf: z.string().min(1, { message: 'cpf required' }),
-  name: z.string().min(1, { message: 'name required' }),
-  branch: z.string().min(1, { message: 'branch required' }),
-  accountNumber: z.string().min(1, { message: 'account number required' }),
-  lastDigit: z.string().min(1, { message: 'last digit required' })
-})
-
-export type SellBankAccountFieldValues = z.infer<typeof bvalidationSchema>
+type SellStableCoinFieldValues = z.infer<typeof validationSchema>
 
 export const useSelectSellCoin = () => {
   const { push } = useRouter()
@@ -64,7 +50,7 @@ export const useSelectSellCoin = () => {
     handleSubmit,
     watch,
     formState: { isSubmitting, errors }
-  } = useForm<SellTokensFieldValues>({
+  } = useForm<SellStableCoinFieldValues>({
     resolver: zodResolver(validationSchema)
   })
 
@@ -76,11 +62,11 @@ export const useSelectSellCoin = () => {
     setSelectedStableCoin(STABLE_COINS[+value])
   }
 
-  const onSubmit: SubmitHandler<SellTokensFieldValues> = async data => {
+  const onSubmit: SubmitHandler<SellStableCoinFieldValues> = async data => {
     try {
       setWithdrawAmount(data.amount)
 
-      push('/dashboard/buy-and-sell/buy/select-method')
+      push('/dashboard/buy-and-sell/sell/back-account')
     } catch (error) {
       toast.error(`Error. ${(error as Error).message}`)
     }

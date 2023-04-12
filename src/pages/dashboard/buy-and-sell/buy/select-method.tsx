@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import Image from 'next/image'
 import { CaretRight, QrCode } from 'phosphor-react'
 
-import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'

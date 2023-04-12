@@ -87,10 +87,6 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
 
 export default PurchaseProof
 
-// export const getStaticPaths: GetStaticPaths = async () => {
-//   return { paths: [], fallback: 'blocking' }
-// }
-
 export const getServerSideProps: GetServerSideProps<
   PurchaseProofProps
 > = async data => {

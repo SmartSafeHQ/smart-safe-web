@@ -15,7 +15,7 @@ import {
   StableCoinsProps,
   StableCoinsSymbols
 } from '@utils/global/coins/stableCoinsConfig'
-import { SellBankAccountFieldValues } from '@hooks/buyAndSell/sell/useSelectSellCoin'
+import { SellBankAccountFieldValues } from '@/pages/dashboard/buy-and-sell/sell/back-account'
 
 export type StableCoin = {
   symbol: StableCoinsSymbols

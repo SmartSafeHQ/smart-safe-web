@@ -10,7 +10,7 @@ import { Text } from '@components/Text'
 import { Button } from '@components/Button'
 import { TokenverseIcon } from '@components/Logos/TokenverseIcon'
 import { WalletInfos } from '@components/pages/Layouts/WalletInfos'
-import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { BuyStableCoinProvider } from '@contexts/BuyStableCoinContext'
