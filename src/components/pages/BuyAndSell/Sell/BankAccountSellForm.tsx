@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { Controller } from 'react-hook-form'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -11,55 +12,74 @@ import {
 } from '@hooks/buyAndSell/sell/useBankAccountSell'
 
 export function BankAccountSellForm() {
-  const { t, register, handleSubmit, isSubmitting, errors, onSubmit } =
-    useBankAccountSell()
+  const {
+    t,
+    bankAccount,
+    register,
+    control,
+    handleSubmit,
+    isSubmitting,
+    errors,
+    onSubmit
+  } = useBankAccountSell()
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full max-w-lg flex flex-col gap-4 items-stretch"
     >
-      <SelectInput.Root
-        {...register('bankId')}
-        className="w-full"
-        defaultValue="33"
-        labelText={t.sell.inputs.bank.label}
-      >
-        <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
+      <Controller
+        name="bankId"
+        control={control}
+        defaultValue={bankAccount?.bankId ?? '33'}
+        render={({ field: { onChange, value, ref, ...props } }) => (
+          <SelectInput.Root
+            {...props}
+            onValueChange={onChange}
+            value={value}
+            ref={ref}
+            className="w-full"
+            labelText={t.sell.inputs.bank.label}
+          >
+            <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
 
-        <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
-          <SelectInput.Group>
-            {BANKS.map(bank => (
-              <SelectInput.Item
-                key={bank.bankId}
-                value={bank.bankId}
-                className="min-h-[3rem] py-1"
-              >
-                <div className="w-full flex items-center justify-start gap-3">
-                  <Image
-                    src={bank.iconUrl}
-                    alt={`${bank.name} bank`}
-                    className="w-6 h-6"
-                    width={24}
-                    height={24}
-                  />
+            <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
+              <SelectInput.Group>
+                {BANKS.map(bank => (
+                  <SelectInput.Item
+                    key={bank.bankId}
+                    value={bank.bankId}
+                    className="min-h-[3rem] py-1"
+                  >
+                    <div className="w-full flex items-center justify-start gap-3">
+                      <Image
+                        src={bank.iconUrl}
+                        alt={`${bank.name} bank`}
+                        className="w-6 h-6"
+                        width={24}
+                        height={24}
+                      />
 
-                  <Text className="text-xl font-bold dark:text-gray-50 uppercase">
-                    {bank.name}
-                  </Text>
-                </div>
-              </SelectInput.Item>
-            ))}
-          </SelectInput.Group>
-        </SelectInput.Content>
-      </SelectInput.Root>
+                      <Text className="text-xl font-bold dark:text-gray-50 uppercase">
+                        {bank.name}
+                      </Text>
+                    </div>
+                  </SelectInput.Item>
+                ))}
+              </SelectInput.Group>
+            </SelectInput.Content>
+          </SelectInput.Root>
+        )}
+      />
 
       <TextInput.Root htmlFor="cpf" error={errors.cpf?.message}>
         <TextInput.Label>{t.sell.inputs.cpf.label}</TextInput.Label>
 
         <TextInput.Content>
           <TextInput.Input
-            {...register('cpf')}
+            {...register('cpf', {
+              value: bankAccount?.cpf || undefined
+            })}
             required
             id="cpf"
             placeholder={t.sell.inputs.cpf.placeholder}
@@ -72,7 +92,9 @@ export function BankAccountSellForm() {
 
         <TextInput.Content>
           <TextInput.Input
-            {...register('name')}
+            {...register('name', {
+              value: bankAccount?.name || undefined
+            })}
             required
             id="name"
             placeholder={t.sell.inputs.name.placeholder}
@@ -85,7 +107,9 @@ export function BankAccountSellForm() {
 
         <TextInput.Content>
           <TextInput.Input
-            {...register('branch')}
+            {...register('branch', {
+              value: bankAccount?.branch || undefined
+            })}
             required
             id="branch"
             placeholder={t.sell.inputs.branch.placeholder}
@@ -102,7 +126,9 @@ export function BankAccountSellForm() {
 
           <TextInput.Content>
             <TextInput.Input
-              {...register('accountNumber')}
+              {...register('accountNumber', {
+                value: bankAccount?.accountNumber || undefined
+              })}
               required
               id="accountNumber"
               type="number"
@@ -116,7 +142,9 @@ export function BankAccountSellForm() {
 
           <TextInput.Content>
             <TextInput.Input
-              {...register('lastDigit')}
+              {...register('lastDigit', {
+                value: bankAccount?.lastDigit || undefined
+              })}
               type="number"
               required
               id="lastDigit"

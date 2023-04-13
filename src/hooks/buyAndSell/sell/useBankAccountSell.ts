@@ -8,9 +8,6 @@ import { useI18n } from '@hooks/useI18n'
 import { useSellStableCoin } from '@contexts/SellStableCoinContext'
 
 export const validationSchema = z.object({
-  amount: z
-    .number({ invalid_type_error: 'min 0.1' })
-    .min(0.1, { message: 'min 0.1' }),
   bankId: z.string().min(1, { message: 'bank required' }),
   cpf: z.string().min(1, { message: 'cpf required' }),
   name: z.string().min(1, { message: 'name required' }),
@@ -30,11 +27,12 @@ export const BANKS = [
 export const useBankAccountSell = () => {
   const { push } = useRouter()
   const { t } = useI18n()
-  const { setBankAccount } = useSellStableCoin()
+  const { bankAccount, setBankAccount } = useSellStableCoin()
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { isSubmitting, errors }
   } = useForm<SellBankAccountFieldValues>({
     resolver: zodResolver(validationSchema)
@@ -42,7 +40,6 @@ export const useBankAccountSell = () => {
 
   const onSubmit: SubmitHandler<SellBankAccountFieldValues> = async data => {
     try {
-      console.log(data)
       setBankAccount(data)
 
       push('/dashboard/buy-and-sell/sell/data-confirmation')
@@ -53,8 +50,10 @@ export const useBankAccountSell = () => {
 
   return {
     t,
+    bankAccount,
     register,
     handleSubmit,
+    control,
     isSubmitting,
     errors,
     onSubmit

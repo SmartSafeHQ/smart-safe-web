@@ -40,8 +40,6 @@ export const useBuyCoinPixPayment = () => {
         amount: utils.parseEther(String(amountInTokens)).toString()
       }
     })
-
-    // push(`/dashboard/buy-and-sell/buy/${transactionHash}/purchase-proof`)
   }
 
   return {
