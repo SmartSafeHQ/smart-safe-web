@@ -16,7 +16,7 @@ export const sell = {
   invalidDataError: 'Por favor insira o valor do saque e seus dados bancários',
   closeButton: 'Concluído',
   withdrawalAmount: 'Você sacou',
-  withdrawalSuccessHeading: 'Saque efetuado com sucesso!',
+  withdrawalSuccessHeading: 'Saque efetuado com sucesso',
   inputs: {
     errorMessages: {
       required: 'Campo obrigatório.'

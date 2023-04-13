@@ -16,7 +16,7 @@ export const sell = {
   insufficientFunds: 'Insufficient funds to withdraw',
   closeButton: 'Done',
   withdrawalAmount: 'Withdrawal amount',
-  withdrawalSuccessHeading: 'Withdrawal success!',
+  withdrawalSuccessHeading: 'Successful withdrawal',
   inputs: {
     errorMessages: {
       required: 'This field is required.'
