@@ -1,4 +1,3 @@
-import { useIMask } from 'react-imask'
 import {
   Dispatch,
   SetStateAction,
@@ -7,8 +6,7 @@ import {
   useState
 } from 'react'
 
-import type { IMask } from 'react-imask'
-import type { PropsWithChildren, RefObject } from 'react'
+import type { PropsWithChildren } from 'react'
 
 import {
   STABLE_COINS,
@@ -24,7 +22,6 @@ export type StableCoin = {
 }
 
 type SellStableCoinContextProps = {
-  amountToWithdrawRef: RefObject<HTMLInputElement>
   selectedStableCoin: StableCoinsProps
   withdrawAmount: number
   bankAccount: SellBankAccountFieldValues | null
@@ -38,18 +35,6 @@ const SellStableCoinContext = createContext<SellStableCoinContextProps>(
 )
 
 export function SellStableCoinContextProvider({ children }: PropsWithChildren) {
-  const maskOptions: IMask.AnyMaskedOptions = {
-    mask: Number,
-    scale: 2,
-    signed: true,
-    padFractionalZeros: true,
-    radix: ',',
-    mapToRadix: ['.'],
-    min: 0
-  }
-
-  const { ref: amountToWithdrawRef } = useIMask(maskOptions)
-
   const [selectedStableCoin, setSelectedStableCoin] =
     useState<StableCoinsProps>(STABLE_COINS[0])
   const [bankAccount, setBankAccount] =
@@ -59,7 +44,6 @@ export function SellStableCoinContextProvider({ children }: PropsWithChildren) {
   return (
     <SellStableCoinContext.Provider
       value={{
-        amountToWithdrawRef,
         selectedStableCoin,
         setSelectedStableCoin,
         withdrawAmount,
