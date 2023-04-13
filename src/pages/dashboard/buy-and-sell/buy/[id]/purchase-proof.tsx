@@ -28,14 +28,14 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-4 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
-        <title>{t.buyAndSell.buy.headTitle}</title>
-        <meta name="description" content={t.buyAndSell.buy.headDescription} />
+        <title>{t.buyStableCoin.headTitle}</title>
+        <meta name="description" content={t.buyStableCoin.headDescription} />
       </Head>
 
       <section className="w-full max-w-lg flex flex-col items-center justify-center gap-6">
         <div className="w-full flex flex-col items-center justify-center gap-8">
           <Heading asChild className="text-gray-800 dark:text-gray-50 text-4xl">
-            <h1>{t.buyAndSell.buy.proofTitle}</h1>
+            <h1>{t.buyStableCoin.proofTitle}</h1>
           </Heading>
 
           <div className="p-3 rounded-full bg-gray-200 dark:bg-gray-800">
@@ -68,7 +68,7 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
               >
                 <Receipt className="w-8 h-8 text-brand-foregroundAccent1" />
 
-                <Text>{t.buyAndSell.buy.seeInvoice}</Text>
+                <Text>{t.buyStableCoin.seeInvoice}</Text>
               </a>
             </Text>
           </div>
@@ -77,7 +77,7 @@ const PurchaseProof: NextPageWithLayout<PurchaseProofProps> = ({
             href="/dashboard/buy-and-sell"
             className="font-medium transition-colors underline text-brand-foregroundAccent1 hover:text-brand-foregroundAccent2"
           >
-            {t.buyAndSell.buy.backTo}
+            {t.buyStableCoin.backTo}
           </Link>
         </div>
       </section>

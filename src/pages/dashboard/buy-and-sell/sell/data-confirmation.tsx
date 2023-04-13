@@ -14,8 +14,8 @@ const SellDataConfirmation = () => {
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-8 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
-        <title>{t.buyAndSell.sell.headTitle}</title>
-        <meta name="description" content={t.buyAndSell.sell.headDescription} />
+        <title>{t.sellStableCoin.headTitle}</title>
+        <meta name="description" content={t.sellStableCoin.headDescription} />
       </Head>
 
       <div className="w-full flex justify-start items-stretch">
@@ -24,7 +24,7 @@ const SellDataConfirmation = () => {
 
       <div className="w-full max-w-lg flex flex-1 flex-col gap-10">
         <Heading className="text-3xl">
-          {t.sell.headings.bankAccountDataConfirmation}
+          {t.sellStableCoin.headings.bankAccountDataConfirmation}
         </Heading>
 
         <SellDataConfirmationSection />

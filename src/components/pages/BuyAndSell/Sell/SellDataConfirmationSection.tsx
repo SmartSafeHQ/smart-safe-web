@@ -27,7 +27,10 @@ export function SellDataConfirmationSection() {
 
   if (!bankAccount || !selectedBank || withdrawAmount <= 0)
     return (
-      <ErrorState title={t.sell.invalidDataError} className="flex-1 p-12" />
+      <ErrorState
+        title={t.sellStableCoin.invalidDataError}
+        className="flex-1 p-12"
+      />
     )
 
   return (
@@ -42,7 +45,7 @@ export function SellDataConfirmationSection() {
       >
         <div className="flex flex-col gap-2">
           <Text>
-            {t.sell.youWillWithdraw} ({selectedStableCoin.symbol})
+            {t.sellStableCoin.youWillWithdraw} ({selectedStableCoin.symbol})
           </Text>
 
           <Skeleton
@@ -64,7 +67,7 @@ export function SellDataConfirmationSection() {
       <ul className="w-full flex flex-col gap-5 items-stretch">
         <li className="w-full flex flex-col gap-2">
           <Heading className="text-xl font-semibold" asChild>
-            <h4>{t.sell.inputs.bank.label}</h4>
+            <h4>{t.sellStableCoin.inputs.bank.label}</h4>
           </Heading>
 
           <div className="w-full flex items-center  justify-start gap-3">
@@ -83,35 +86,35 @@ export function SellDataConfirmationSection() {
         </li>
 
         <DataConfirmationItem
-          title={t.sell.inputs.cpf.label}
+          title={t.sellStableCoin.inputs.cpf.label}
           value={bankAccount.cpf}
         />
 
         <DataConfirmationItem
-          title={t.sell.inputs.name.label}
+          title={t.sellStableCoin.inputs.name.label}
           value={bankAccount.name}
         />
 
         <DataConfirmationItem
-          title={t.sell.inputs.branch.label}
+          title={t.sellStableCoin.inputs.branch.label}
           value={bankAccount.branch}
         />
 
         <div className="flex gap-2 items-center">
           <DataConfirmationItem
-            title={t.sell.inputs.accountNumber.label}
+            title={t.sellStableCoin.inputs.accountNumber.label}
             value={bankAccount.accountNumber}
           />
 
           <DataConfirmationItem
-            title={t.sell.inputs.lastDigit.label}
+            title={t.sellStableCoin.inputs.lastDigit.label}
             value={bankAccount.lastDigit}
           />
         </div>
       </ul>
 
       <Button onClick={handleSell} isLoading={isLoading}>
-        {t.sell.checkout}
+        {t.sellStableCoin.checkout}
       </Button>
     </section>
   )

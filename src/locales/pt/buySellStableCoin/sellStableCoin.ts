@@ -1,4 +1,6 @@
-export const sell = {
+export const sellStableCoin = {
+  headTitle: 'InWallet | Saque stable coin',
+  headDescription: 'Efetue o saque de stable coins.',
   headings: {
     sell: 'Saque',
     bankAccountData: 'Dados bancários',

@@ -25,14 +25,17 @@ const SellWithdraw = () => {
 
   if (withdrawAmount <= 0)
     return (
-      <ErrorState title={t.sell.invalidDataError} className="flex-1 p-12" />
+      <ErrorState
+        title={t.sellStableCoin.invalidDataError}
+        className="flex-1 p-12"
+      />
     )
 
   return (
     <div className="w-full flex flex-1 flex-col items-center px-4 pt-24 gap-8 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
-        <title>{t.buyAndSell.sell.headTitle}</title>
-        <meta name="description" content={t.buyAndSell.sell.headDescription} />
+        <title>{t.sellStableCoin.headTitle}</title>
+        <meta name="description" content={t.sellStableCoin.headDescription} />
       </Head>
 
       <section className="w-full max-w-lg flex flex-col items-center justify-center gap-6">
@@ -41,7 +44,7 @@ const SellWithdraw = () => {
             asChild
             className="text-center text-gray-800 dark:text-gray-50 text-3xl md:text-4xl"
           >
-            <h1>{t.sell.withdrawalSuccessHeading}</h1>
+            <h1>{t.sellStableCoin.withdrawalSuccessHeading}</h1>
           </Heading>
 
           <div className="p-3 rounded-full bg-gray-200 dark:bg-gray-800">
@@ -71,7 +74,7 @@ const SellWithdraw = () => {
             href="/dashboard/buy-and-sell"
             className="font-medium transition-colors underline text-brand-foregroundAccent1 hover:text-brand-foregroundAccent2"
           >
-            {t.buyAndSell.buy.backTo}
+            {t.buyStableCoin.backTo}
           </Link>
         </div>
       </section>

@@ -1,3 +1,4 @@
+import { utils } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 
 import { tokenverseApi } from '@/lib/axios'
@@ -41,16 +42,19 @@ export function useBurnStableCoin() {
         }
       )
 
+      const formattedSoldAmount = +utils.formatEther(variables.amount)
+
       queryClient.setQueryData<string>(
         ['useGetBalance', variables.userAddress, variables.contractAddress],
         prevBalance => {
           if (!prevBalance) {
-            const updattedAmount = +currentStableCoinAmount - +variables.amount
+            const updattedAmount =
+              +currentStableCoinAmount - formattedSoldAmount
 
             return String(updattedAmount)
           }
 
-          const updattedAmount = +prevBalance - +variables.amount
+          const updattedAmount = +prevBalance - formattedSoldAmount
 
           return String(updattedAmount)
         }

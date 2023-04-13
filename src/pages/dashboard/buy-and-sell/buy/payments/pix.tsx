@@ -39,8 +39,8 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-4 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
-        <title>{t.buyAndSell.buy.headTitle}</title>
-        <meta name="description" content={t.buyAndSell.buy.headDescription} />
+        <title>{t.buyStableCoin.headTitle}</title>
+        <meta name="description" content={t.buyStableCoin.headDescription} />
       </Head>
 
       <div className="w-full flex justify-start items-stretch">
@@ -52,7 +52,7 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
           asChild
           className="max-w-sm text-gray-800 dark:text-gray-50 text-xl md:max-w-xl md:text-2xl"
         >
-          <h1>{t.buyAndSell.buy.pixPaymentTitle}</h1>
+          <h1>{t.buyStableCoin.pixPaymentTitle}</h1>
         </Heading>
 
         <section className="w-full flex flex-col items-stretch gap-4">
@@ -61,7 +61,7 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
               onClick={() => handleCopyToClipboard(paymentCode)}
               className="flex items-center gap-2 text-sm font-semibold text-brand-foregroundAccent1 transition-colors hover:text-brand-foregroundAccent2"
             >
-              <Text>{t.buyAndSell.buy.pixCopyCode}</Text>
+              <Text>{t.buyStableCoin.pixCopyCode}</Text>
 
               <CopySimple className="w-4 h-4" />
             </button>
@@ -77,7 +77,7 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
                 asChild
                 className="texl-lg capitalize font-medium text-gray-500 dark:text-gray-300"
               >
-                <strong>{t.buyAndSell.buy.purchase}</strong>
+                <strong>{t.buyStableCoin.purchase}</strong>
               </Text>
 
               <Heading className="text-3xl">
@@ -92,7 +92,7 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
               className="w-full h-[3.25rem]"
             >
               <WalletInfos
-                title={t.buyAndSell.buy.value}
+                title={t.buyStableCoin.value}
                 Icon={CurrencyDollar}
                 className="p-3"
               >
@@ -108,7 +108,7 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
             </Skeleton>
 
             <WalletInfos
-              title={t.buyAndSell.buy.network}
+              title={t.buyStableCoin.network}
               Icon={ShareNetwork}
               className="p-3"
             >
@@ -123,7 +123,7 @@ const BuyPaymentPix: NextPageWithLayout<BuyPaymentPixProps> = ({
           </div>
 
           <Button onClick={handleValidatePayment} className="uppercase">
-            {t.buyAndSell.buy.validatePay}
+            {t.buyStableCoin.validatePay}
           </Button>
         </section>
       </div>

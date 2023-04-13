@@ -67,7 +67,7 @@ export const useSelectSellCoin = () => {
     if (!customerBalance) return
 
     if (data.amount > +customerBalance) {
-      toast.error(t.sell.insufficientFunds)
+      toast.error(t.sellStableCoin.insufficientFunds)
       return
     }
 

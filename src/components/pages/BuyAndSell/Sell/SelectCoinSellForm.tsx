@@ -38,7 +38,7 @@ export function SelectCoinSellForm() {
     >
       <div className="flex items-center gap-2">
         <Text asChild className="font-semibold">
-          <p>{t.sell.wallet}:</p>
+          <p>{t.sellStableCoin.wallet}:</p>
         </Text>
 
         {customer?.wallets.evm.formattedAddress}
@@ -62,7 +62,7 @@ export function SelectCoinSellForm() {
           >
             {customerBalance && (
               <Text className="text-sm text-gray-600 dark:text-gray-400">
-                {t.sell.accountBalance} {customerBalance}{' '}
+                {t.sellStableCoin.accountBalance} {customerBalance}{' '}
                 {selectedStableCoin.symbol}
               </Text>
             )}
@@ -72,7 +72,7 @@ export function SelectCoinSellForm() {
 
       <div className="flex flex-col gap-4">
         <TextInput.Root htmlFor="amount" error={errors.amount?.message}>
-          <TextInput.Label>{t.sell.amountToWithdraw}</TextInput.Label>
+          <TextInput.Label>{t.sellStableCoin.amountToWithdraw}</TextInput.Label>
 
           <TextInput.Content>
             <TextInput.Input
@@ -85,7 +85,7 @@ export function SelectCoinSellForm() {
               type="number"
               min={0.0}
               step={0.1}
-              placeholder={`${selectedStableCoin.symbol} ${t.sell.amountOfTokensToWithdraw}`}
+              placeholder={`${selectedStableCoin.symbol} ${t.sellStableCoin.amountOfTokensToWithdraw}`}
             />
           </TextInput.Content>
         </TextInput.Root>
@@ -104,7 +104,7 @@ export function SelectCoinSellForm() {
           >
             {currencyData && (
               <Text className="flex gap-2">
-                {t.sell.youWillWithdraw}{' '}
+                {t.sellStableCoin.youWillWithdraw}{' '}
                 {Intl.NumberFormat('pt-BR', {
                   currency: 'BRL',
                   style: 'currency'
@@ -118,12 +118,12 @@ export function SelectCoinSellForm() {
           <Info className="w-6 h-6 text-red-500" />
 
           <Text asChild>
-            <p>{t.sell.withdrawSpread}</p>
+            <p>{t.sellStableCoin.withdrawSpread}</p>
           </Text>
         </div>
 
         <Button type="submit" isLoading={isSubmitting} className="capitalize">
-          {t.sell.continue}
+          {t.sellStableCoin.continue}
         </Button>
       </div>
     </form>

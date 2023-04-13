@@ -43,7 +43,7 @@ export function BuyTokensForm() {
             className="w-full"
             error={errors.amount?.message}
           >
-            <TextInput.Label>{t.buyAndSell.buy.amountLabel}</TextInput.Label>
+            <TextInput.Label>{t.buyStableCoin.amountLabel}</TextInput.Label>
 
             <TextInput.Content className="rounded-r-none">
               <TextInput.Input
@@ -106,7 +106,7 @@ export function BuyTokensForm() {
         </div>
 
         <label className="flex flex-col gap-2">
-          <Text className="font-semibold">{t.buyAndSell.buy.coinLabel}</Text>
+          <Text className="font-semibold">{t.buyStableCoin.coinLabel}</Text>
 
           <CoinsDropDownInput
             coins={STABLE_COINS}
@@ -131,7 +131,7 @@ export function BuyTokensForm() {
           >
             {currencyData && (
               <>
-                <Text className="mr-5">{t.buyAndSell.buy.coinAppr}</Text>
+                <Text className="mr-5">{t.buyStableCoin.coinAppr}</Text>
 
                 <Image
                   src={token.avatar}
@@ -152,7 +152,7 @@ export function BuyTokensForm() {
       </div>
 
       <Button type="submit" isLoading={isSubmitting} className="capitalize">
-        {t.buyAndSell.buy.continue}
+        {t.buyStableCoin.continue}
       </Button>
     </form>
   )

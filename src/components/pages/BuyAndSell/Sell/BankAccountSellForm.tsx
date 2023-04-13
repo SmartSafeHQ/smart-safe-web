@@ -27,7 +27,10 @@ export function BankAccountSellForm() {
 
   if (withdrawAmount <= 0)
     return (
-      <ErrorState title={t.sell.invalidDataError} className="flex-1 p-12" />
+      <ErrorState
+        title={t.sellStableCoin.invalidDataError}
+        className="flex-1 p-12"
+      />
     )
 
   return (
@@ -46,7 +49,7 @@ export function BankAccountSellForm() {
             value={value}
             ref={ref}
             className="w-full"
-            labelText={t.sell.inputs.bank.label}
+            labelText={t.sellStableCoin.inputs.bank.label}
           >
             <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
 
@@ -80,7 +83,7 @@ export function BankAccountSellForm() {
       />
 
       <TextInput.Root htmlFor="cpf" error={errors.cpf?.message}>
-        <TextInput.Label>{t.sell.inputs.cpf.label}</TextInput.Label>
+        <TextInput.Label>{t.sellStableCoin.inputs.cpf.label}</TextInput.Label>
 
         <TextInput.Content>
           <TextInput.Input
@@ -89,13 +92,13 @@ export function BankAccountSellForm() {
             })}
             required
             id="cpf"
-            placeholder={t.sell.inputs.cpf.placeholder}
+            placeholder={t.sellStableCoin.inputs.cpf.placeholder}
           />
         </TextInput.Content>
       </TextInput.Root>
 
       <TextInput.Root htmlFor="name" error={errors.name?.message}>
-        <TextInput.Label>{t.sell.inputs.name.label}</TextInput.Label>
+        <TextInput.Label>{t.sellStableCoin.inputs.name.label}</TextInput.Label>
 
         <TextInput.Content>
           <TextInput.Input
@@ -104,13 +107,15 @@ export function BankAccountSellForm() {
             })}
             required
             id="name"
-            placeholder={t.sell.inputs.name.placeholder}
+            placeholder={t.sellStableCoin.inputs.name.placeholder}
           />
         </TextInput.Content>
       </TextInput.Root>
 
       <TextInput.Root htmlFor="branch" error={errors.branch?.message}>
-        <TextInput.Label>{t.sell.inputs.branch.label}</TextInput.Label>
+        <TextInput.Label>
+          {t.sellStableCoin.inputs.branch.label}
+        </TextInput.Label>
 
         <TextInput.Content>
           <TextInput.Input
@@ -119,7 +124,7 @@ export function BankAccountSellForm() {
             })}
             required
             id="branch"
-            placeholder={t.sell.inputs.branch.placeholder}
+            placeholder={t.sellStableCoin.inputs.branch.placeholder}
           />
         </TextInput.Content>
       </TextInput.Root>
@@ -129,7 +134,9 @@ export function BankAccountSellForm() {
           htmlFor="accountNumber"
           error={errors.accountNumber?.message}
         >
-          <TextInput.Label>{t.sell.inputs.accountNumber.label}</TextInput.Label>
+          <TextInput.Label>
+            {t.sellStableCoin.inputs.accountNumber.label}
+          </TextInput.Label>
 
           <TextInput.Content>
             <TextInput.Input
@@ -139,13 +146,15 @@ export function BankAccountSellForm() {
               required
               id="accountNumber"
               type="number"
-              placeholder={t.sell.inputs.accountNumber.placeholder}
+              placeholder={t.sellStableCoin.inputs.accountNumber.placeholder}
             />
           </TextInput.Content>
         </TextInput.Root>
 
         <TextInput.Root htmlFor="lastDigit" error={errors.lastDigit?.message}>
-          <TextInput.Label>{t.sell.inputs.lastDigit.label}</TextInput.Label>
+          <TextInput.Label>
+            {t.sellStableCoin.inputs.lastDigit.label}
+          </TextInput.Label>
 
           <TextInput.Content>
             <TextInput.Input
@@ -155,14 +164,14 @@ export function BankAccountSellForm() {
               type="number"
               required
               id="lastDigit"
-              placeholder={t.sell.inputs.lastDigit.placeholder}
+              placeholder={t.sellStableCoin.inputs.lastDigit.placeholder}
             />
           </TextInput.Content>
         </TextInput.Root>
       </div>
 
       <Button type="submit" isLoading={isSubmitting} className="capitalize">
-        {t.sell.continue}
+        {t.sellStableCoin.continue}
       </Button>
     </form>
   )
