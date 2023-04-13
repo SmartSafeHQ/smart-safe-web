@@ -3,12 +3,12 @@ import { ReactElement } from 'react'
 
 import { Heading } from '@components/Heading'
 import { BackLink } from '@components/pages/BuyAndSell/BackLink'
-import { SelectCoinSellForm } from '@components/pages/BuyAndSell/Sell/SelectCoinSellForm'
+import { SellDataConfirmationSection } from '@components/pages/BuyAndSell/Sell/SellDataConfirmationSection'
 
-import { useSelectSellCoin } from '@hooks/buyAndSell/sell/useSelectSellCoin'
 import { SellStableCoinContextProvider } from '@contexts/SellStableCoinContext'
+import { useSelectSellCoin } from '@hooks/buyAndSell/sell/useSelectSellCoin'
 
-const Sell = () => {
+const SellDataConfirmation = () => {
   const { t } = useSelectSellCoin()
 
   return (
@@ -19,22 +19,22 @@ const Sell = () => {
       </Head>
 
       <div className="w-full flex justify-start items-stretch">
-        <BackLink href="/dashboard/buy-and-sell" />
+        <BackLink href="/dashboard/buy-and-sell/sell/bank-account" />
       </div>
 
       <div className="w-full max-w-lg flex flex-1 flex-col gap-10">
-        <Heading asChild className="text-gray-800 dark:text-gray-50 text-4xl">
-          <h1>{t.sellStableCoin.headings.sell}</h1>
+        <Heading className="text-3xl">
+          {t.sellStableCoin.headings.bankAccountDataConfirmation}
         </Heading>
 
-        <SelectCoinSellForm />
+        <SellDataConfirmationSection />
       </div>
     </div>
   )
 }
 
-Sell.getLayout = function getLayout(page: ReactElement) {
+SellDataConfirmation.getLayout = function getLayout(page: ReactElement) {
   return <SellStableCoinContextProvider>{page}</SellStableCoinContextProvider>
 }
 
-export default Sell
+export default SellDataConfirmation

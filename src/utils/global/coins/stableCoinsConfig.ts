@@ -1,5 +1,8 @@
-export interface StableCoinsSettings {
-  symbol: string
+export type StableCoinsSymbols = 'IUSD' | 'IBRL' | 'IEUR'
+export type CurrencySymbols = 'USD' | 'BRL' | 'EUR'
+
+export interface StableCoinsProps {
+  symbol: StableCoinsSymbols
   networkName: string
   networkType: 'solana' | 'evm' | 'bitcoin'
   avatar: string
@@ -8,14 +11,14 @@ export interface StableCoinsSettings {
   rpcUrl: string
   explorerUrl: string
   scanUrl: string
-  parityCurrencySymbol: string
+  parityCurrencySymbol: CurrencySymbols
   contractAddress: string
   contractName: string
 }
 
-const TESTNET_STABLE_COINS_ATTRIBUTES: StableCoinsSettings[] = [
+const TESTNET_STABLE_COINS: StableCoinsProps[] = [
   {
-    symbol: 'ibrl',
+    symbol: 'IBRL',
     networkName: 'polygon',
     networkType: 'evm',
     avatar: '/networks/ibrl-logo.svg',
@@ -23,13 +26,13 @@ const TESTNET_STABLE_COINS_ATTRIBUTES: StableCoinsSettings[] = [
     decimals: 18,
     contractName: 'ibrl',
     contractAddress: '0x78487e03f5e30aA3B6F72105cE247dEC80554418',
-    parityCurrencySymbol: 'brl',
+    parityCurrencySymbol: 'BRL',
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     explorerUrl: 'https://mumbai.polygonscan.com/',
     scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
-    symbol: 'ieur',
+    symbol: 'IEUR',
     networkName: 'polygon',
     networkType: 'evm',
     avatar: '/networks/ieur-logo.svg',
@@ -37,16 +40,16 @@ const TESTNET_STABLE_COINS_ATTRIBUTES: StableCoinsSettings[] = [
     decimals: 18,
     contractName: 'ieur',
     contractAddress: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7',
-    parityCurrencySymbol: 'eur',
+    parityCurrencySymbol: 'EUR',
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     explorerUrl: 'https://mumbai.polygonscan.com/',
     scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   }
 ]
 
-const MAINNET_STABLE_COINS_ATTRIBUTES: StableCoinsSettings[] = [
+const MAINNET_STABLE_COINS: StableCoinsProps[] = [
   {
-    symbol: 'ibrl',
+    symbol: 'IBRL',
     networkName: 'polygon',
     networkType: 'evm',
     avatar: '/networks/ibrl-logo.svg',
@@ -54,13 +57,13 @@ const MAINNET_STABLE_COINS_ATTRIBUTES: StableCoinsSettings[] = [
     decimals: 18,
     contractName: 'ibrl',
     contractAddress: '0x78487e03f5e30aA3B6F72105cE247dEC80554418',
-    parityCurrencySymbol: 'brl',
+    parityCurrencySymbol: 'BRL',
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     explorerUrl: 'https://mumbai.polygonscan.com/',
     scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
-    symbol: 'ieur',
+    symbol: 'IEUR',
     networkName: 'polygon',
     networkType: 'evm',
     avatar: '/networks/ieur-logo.svg',
@@ -68,19 +71,18 @@ const MAINNET_STABLE_COINS_ATTRIBUTES: StableCoinsSettings[] = [
     decimals: 18,
     contractName: 'ieur',
     contractAddress: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7',
-    parityCurrencySymbol: 'eur',
+    parityCurrencySymbol: 'EUR',
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     explorerUrl: 'https://mumbai.polygonscan.com/',
     scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   }
 ]
 
-const NETWORKS_STABLE_COINS_ATTRIBUTES = new Map([
-  ['production', TESTNET_STABLE_COINS_ATTRIBUTES],
-  ['development', MAINNET_STABLE_COINS_ATTRIBUTES]
+const NETWORKS_STABLE_COINS = new Map([
+  ['production', TESTNET_STABLE_COINS],
+  ['development', MAINNET_STABLE_COINS]
 ])
 
-export const STABLE_COINS_ATTRIBUTES =
-  NETWORKS_STABLE_COINS_ATTRIBUTES.get(
-    process.env.NEXT_PUBLIC_ENV ?? 'production'
-  ) ?? MAINNET_STABLE_COINS_ATTRIBUTES
+export const STABLE_COINS =
+  NETWORKS_STABLE_COINS.get(process.env.NEXT_PUBLIC_ENV ?? 'production') ??
+  MAINNET_STABLE_COINS

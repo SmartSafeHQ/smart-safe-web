@@ -17,7 +17,7 @@ export function BackLink({ ...props }: BackLinkProps) {
     >
       <CaretLeft className="w-5 h-5" weight="bold" />
 
-      <Text>{t.buyAndSell.buy.back}</Text>
+      <Text>{t.buyStableCoin.back}</Text>
     </Link>
   )
 }

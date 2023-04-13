@@ -5,8 +5,8 @@ import {
   type NetworkSettings
 } from '@utils/global/coins/config'
 import {
-  STABLE_COINS_ATTRIBUTES,
-  type StableCoinsSettings
+  STABLE_COINS,
+  type StableCoinsProps
 } from '@utils/global/coins/stableCoinsConfig'
 import { MAX_PAGINATION_COINS_PER_PAGE } from '@utils/global/constants/variables'
 
@@ -17,7 +17,7 @@ interface FetchCustomerCoinsInput {
 
 export interface FetchCustomerCoinsResponse {
   nativeTokens: NetworkSettings[]
-  stableCoins: StableCoinsSettings[]
+  stableCoins: StableCoinsProps[]
   totalCount: number
 }
 
@@ -26,8 +26,8 @@ export async function fetchCustomerCoins(
 ): Promise<FetchCustomerCoinsResponse> {
   return {
     nativeTokens: COINS_ATTRIBUTES,
-    stableCoins: STABLE_COINS_ATTRIBUTES,
-    totalCount: COINS_ATTRIBUTES.length + STABLE_COINS_ATTRIBUTES.length
+    stableCoins: STABLE_COINS,
+    totalCount: COINS_ATTRIBUTES.length + STABLE_COINS.length
   }
 }
 

@@ -8,7 +8,8 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { TextInput } from '@components/Inputs/TextInput'
 import { SelectInput } from '@components/Inputs/SelectInput'
 
-import { ACCEPTED_CURRENCIES, ACCEPTED_TOKENS } from '@utils/stableCoinsUtils'
+import { ACCEPTED_CURRENCIES } from '@utils/stableCoinsUtils'
+import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 import { useSelectBuyCoin } from '@hooks/buyAndSell/buy/useSelectBuyCoin'
 
 export function BuyTokensForm() {
@@ -42,7 +43,7 @@ export function BuyTokensForm() {
             className="w-full"
             error={errors.amount?.message}
           >
-            <TextInput.Label>{t.buyAndSell.buy.amountLabel}</TextInput.Label>
+            <TextInput.Label>{t.buyStableCoin.amountLabel}</TextInput.Label>
 
             <TextInput.Content className="rounded-r-none">
               <TextInput.Input
@@ -105,13 +106,13 @@ export function BuyTokensForm() {
         </div>
 
         <label className="flex flex-col gap-2">
-          <Text className="font-semibold">{t.buyAndSell.buy.coinLabel}</Text>
+          <Text className="font-semibold">{t.buyStableCoin.coinLabel}</Text>
 
           <CoinsDropDownInput
-            coins={ACCEPTED_TOKENS}
+            coins={STABLE_COINS}
             onValueChange={handleChangeToken}
             value={String(
-              ACCEPTED_TOKENS.findIndex(t => t.symbol === token.symbol) ?? 0
+              STABLE_COINS.findIndex(t => t.symbol === token.symbol) ?? 0
             )}
           />
         </label>
@@ -130,7 +131,7 @@ export function BuyTokensForm() {
           >
             {currencyData && (
               <>
-                <Text className="mr-5">{t.buyAndSell.buy.coinAppr}</Text>
+                <Text className="mr-5">{t.buyStableCoin.coinAppr}</Text>
 
                 <Image
                   src={token.avatar}
@@ -151,7 +152,7 @@ export function BuyTokensForm() {
       </div>
 
       <Button type="submit" isLoading={isSubmitting} className="capitalize">
-        {t.buyAndSell.buy.continue}
+        {t.buyStableCoin.continue}
       </Button>
     </form>
   )

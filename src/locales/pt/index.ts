@@ -10,13 +10,14 @@ import { home } from './home'
 import { receive } from './receive'
 import { send } from './send'
 import { payment } from './payment'
-import { buyAndSell } from './buy-and-sell'
+import { stableCoinAct } from './buySellStableCoin'
+import { buyStableCoin } from './buySellStableCoin/buyStableCoin'
+import { sellStableCoin } from './buySellStableCoin/sellStableCoin'
 import { cashback } from './cashback'
 import { security } from './settings/security'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
 import { privacy } from './privacy'
-import { sell } from './sell'
 
 export const pt = {
   signIn,
@@ -27,13 +28,14 @@ export const pt = {
   pagination,
   home,
   receive,
-  buyAndSell,
   send,
+  stableCoinAct,
+  buyStableCoin,
+  sellStableCoin,
   cashback,
   settings: { security },
   wc,
   qrCodeReader,
   payment,
-  privacy,
-  sell
+  privacy
 }

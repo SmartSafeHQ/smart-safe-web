@@ -225,7 +225,7 @@ export function StableCoinsTableTr({
             className="uppercase text-sm text-gray-500 dark:text-gray-400"
             skeletonClassName="h-6 mt-1"
           >
-            {portfolioData && `${portfolioData} ${symbol}`}
+            {portfolioData && `${(+portfolioData).toFixed(2)} ${symbol}`}
           </CoinsTableDataFetching>
         </div>
       </td>
