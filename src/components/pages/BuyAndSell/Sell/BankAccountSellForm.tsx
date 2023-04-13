@@ -10,11 +10,13 @@ import {
   BANKS,
   useBankAccountSell
 } from '@hooks/buyAndSell/sell/useBankAccountSell'
+import { ErrorState } from '@/components/FetchingStates/ErrorState'
 
 export function BankAccountSellForm() {
   const {
     t,
     bankAccount,
+    withdrawAmount,
     register,
     control,
     handleSubmit,
@@ -22,6 +24,11 @@ export function BankAccountSellForm() {
     errors,
     onSubmit
   } = useBankAccountSell()
+
+  if (withdrawAmount <= 0)
+    return (
+      <ErrorState title={t.sell.invalidDataError} className="flex-1 p-12" />
+    )
 
   return (
     <form

@@ -27,7 +27,7 @@ export const BANKS = [
 export const useBankAccountSell = () => {
   const { push } = useRouter()
   const { t } = useI18n()
-  const { bankAccount, setBankAccount } = useSellStableCoin()
+  const { bankAccount, setBankAccount, withdrawAmount } = useSellStableCoin()
 
   const {
     register,
@@ -50,6 +50,7 @@ export const useBankAccountSell = () => {
 
   return {
     t,
+    withdrawAmount,
     bankAccount,
     register,
     handleSubmit,

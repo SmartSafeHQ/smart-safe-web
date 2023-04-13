@@ -54,7 +54,7 @@ export function useGetBalance({
   contractName
 }: UseGetBalanceProps) {
   return useQuery({
-    queryKey: ['useGetBalance', customerAddress, contractAddress, contractName],
+    queryKey: ['useGetBalance', customerAddress, contractAddress],
     queryFn: () =>
       fetchBalance({
         networkRpcUrl,

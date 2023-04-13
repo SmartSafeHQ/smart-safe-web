@@ -13,6 +13,7 @@ export const sell = {
   checkout: 'Sacar',
   insufficientFunds: 'Fundos insuficientes para saque',
   withdrawSpread: 'O valor de saque é aproximado e pode sofrer alterações.',
+  invalidDataError: 'Por favor insira o valor do saque e seus dados bancários',
   closeButton: 'Concluído',
   withdrawalAmount: 'Você sacou',
   withdrawalSuccessHeading: 'Saque efetuado com sucesso!',

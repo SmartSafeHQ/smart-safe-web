@@ -1,93 +1,114 @@
-import { utils } from 'ethers'
+import clsx from 'clsx'
+import Image from 'next/image'
 
 import { Button } from '@components/Button'
-import { TextInput } from '@components/Inputs/TextInput'
+import { Heading } from '@components/Heading'
+import { Text } from '@components/Text'
+import { ErrorState } from '@components/FetchingStates/ErrorState'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { DataConfirmationItem } from '@components/pages/BuyAndSell/Sell/DataConfirmationItem'
 
-import { useSelectSellCoin } from '@hooks/buyAndSell/sell/useSelectSellCoin'
-import { BANKS } from '@hooks/buyAndSell/sell/useBankAccountSell'
-import { useSellStableCoin } from '@contexts/SellStableCoinContext'
-import { useBurnStableCoin } from '@hooks/buyAndSell/mutations/useSellStableCoin'
+import { useSellCoinDataConfirm } from '@hooks/buyAndSell/sell/useSellCoinDataConfirm'
 
 export function SellDataConfirmationSection() {
-  const { withdrawAmount, bankAccount } = useSellStableCoin()
-  const { t, customer, selectedStableCoin } = useSelectSellCoin()
-  const { mutateAsync: burnStableCoin, isLoading } = useBurnStableCoin()
+  const {
+    t,
+    withdrawAmount,
+    selectedStableCoin,
+    bankAccount,
+    isLoading,
+    currencyData,
+    currencyIsLoading,
+    currencyIsFetching,
+    isPreviousData,
+    handleSell,
+    selectedBank
+  } = useSellCoinDataConfirm()
 
-  async function handleSell() {
-    const amountToWithdrawInWei = utils
-      .parseEther(String(withdrawAmount))
-      .toString()
-
-    console.log(amountToWithdrawInWei)
-
-    await burnStableCoin({
-      userAddress: customer?.wallets.evm.address || '',
-      amount: amountToWithdrawInWei,
-      contractAddress: selectedStableCoin.contractAddress
-    })
-  }
+  if (!bankAccount || !selectedBank || withdrawAmount <= 0)
+    return (
+      <ErrorState title={t.sell.invalidDataError} className="flex-1 p-12" />
+    )
 
   return (
-    <section className="w-full max-w-lg flex flex-1 flex-col gap-2 items-stretch">
-      <TextInput.Root htmlFor="bankId">
-        <TextInput.Label>{t.sell.inputs.bank.label}</TextInput.Label>
+    <section className="w-full max-w-lg flex flex-1 flex-col gap-4 items-stretch">
+      <div
+        className={clsx(
+          'w-full flex items-center gap-2 pb-3 font-medium border-b-1 border-gray-400 dark:border-gray-600',
+          {
+            'animate-pulse': currencyIsFetching
+          }
+        )}
+      >
+        <div className="flex flex-col gap-2">
+          <Text>
+            {t.sell.youWillWithdraw} ({selectedStableCoin.symbol})
+          </Text>
 
-        <TextInput.Content>
-          <TextInput.Input
-            readOnly
-            disabled
-            value={
-              BANKS.find(({ bankId }) => bankId === bankAccount?.bankId)?.name
-            }
-          />
-        </TextInput.Content>
-      </TextInput.Root>
-
-      <TextInput.Root htmlFor="cpf">
-        <TextInput.Label>{t.sell.inputs.cpf.label}</TextInput.Label>
-
-        <TextInput.Content>
-          <TextInput.Input readOnly disabled value={bankAccount?.cpf} />
-        </TextInput.Content>
-      </TextInput.Root>
-
-      <TextInput.Root htmlFor="name">
-        <TextInput.Label>{t.sell.inputs.name.label}</TextInput.Label>
-
-        <TextInput.Content>
-          <TextInput.Input readOnly disabled value={bankAccount?.name} />
-        </TextInput.Content>
-      </TextInput.Root>
-
-      <TextInput.Root htmlFor="branch">
-        <TextInput.Label>{t.sell.inputs.branch.label}</TextInput.Label>
-
-        <TextInput.Content>
-          <TextInput.Input readOnly disabled value={bankAccount?.branch} />
-        </TextInput.Content>
-      </TextInput.Root>
-
-      <div className="flex gap-2">
-        <TextInput.Root htmlFor="accountNumber">
-          <TextInput.Label>{t.sell.inputs.accountNumber.label}</TextInput.Label>
-
-          <TextInput.Content>
-            <TextInput.Input
-              readOnly
-              disabled
-              value={bankAccount?.accountNumber}
-            />
-          </TextInput.Content>
-        </TextInput.Root>
-
-        <TextInput.Root htmlFor="lastDigit">
-          <TextInput.Label>{t.sell.inputs.lastDigit.label}</TextInput.Label>
-
-          <TextInput.Content>
-            <TextInput.Input readOnly disabled value={bankAccount?.lastDigit} />
-          </TextInput.Content>
-        </TextInput.Root>
+          <Skeleton
+            className="w-full h-6"
+            isLoading={currencyIsLoading || isPreviousData}
+          >
+            {currencyData && (
+              <Text>
+                {Intl.NumberFormat('pt-BR', {
+                  currency: 'BRL',
+                  style: 'currency'
+                }).format(withdrawAmount * (currencyData.value ?? 0))}
+              </Text>
+            )}
+          </Skeleton>
+        </div>
       </div>
+
+      <ul className="w-full flex flex-col gap-5 items-stretch">
+        <li className="w-full flex flex-col gap-2">
+          <Heading className="text-xl font-semibold" asChild>
+            <h4>{t.sell.inputs.bank.label}</h4>
+          </Heading>
+
+          <div className="w-full flex items-center  justify-start gap-3">
+            <Image
+              src={selectedBank.iconUrl}
+              alt={`${selectedBank.name} bank`}
+              className="w-6 h-6"
+              width={24}
+              height={24}
+            />
+
+            <Text className="text-xl text-gray-500 dark:text-gray-400 uppercase">
+              {selectedBank.name}
+            </Text>
+          </div>
+        </li>
+
+        <DataConfirmationItem
+          title={t.sell.inputs.cpf.label}
+          value={bankAccount.cpf}
+        />
+
+        <DataConfirmationItem
+          title={t.sell.inputs.name.label}
+          value={bankAccount.name}
+        />
+
+        <DataConfirmationItem
+          title={t.sell.inputs.branch.label}
+          value={bankAccount.branch}
+        />
+
+        <div className="flex gap-2 items-center">
+          <DataConfirmationItem
+            title={t.sell.inputs.accountNumber.label}
+            value={bankAccount.accountNumber}
+          />
+
+          <DataConfirmationItem
+            title={t.sell.inputs.lastDigit.label}
+            value={bankAccount.lastDigit}
+          />
+        </div>
+      </ul>
 
       <Button onClick={handleSell} isLoading={isLoading}>
         {t.sell.checkout}

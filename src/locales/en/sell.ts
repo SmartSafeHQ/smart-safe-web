@@ -11,6 +11,7 @@ export const sell = {
   youWillWithdraw: 'Withdrawing',
   continue: 'continue',
   withdrawSpread: 'The withdrawal amount is approximate and may change.',
+  invalidDataError: 'Please enter the withdrawal amount and your bank details',
   checkout: 'Withdraw',
   insufficientFunds: 'Insufficient funds to withdraw',
   closeButton: 'Done',
