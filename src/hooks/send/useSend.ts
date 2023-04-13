@@ -99,11 +99,11 @@ export const useCustomSendHook = () => {
       return
     }
 
-    setSelectedCoin(coinsData.coins[0])
+    setSelectedCoin(coinsData.nativeTokens[0])
 
     setAmountInputType({
       ...DEFAULT_AMOUNT_INPUT_TYPE,
-      reverseSymbol: coinsData.coins[0]?.symbol
+      reverseSymbol: coinsData.nativeTokens[0]?.symbol
     })
   }, [coinsData])
 
@@ -148,10 +148,16 @@ export const useCustomSendHook = () => {
     }
   }
 
-  function handleChangeCoin(coinIndex: string) {
+  function handleChangeCoin(coinSymbol: string) {
     if (!coinsData) return
 
-    const coin = coinsData.coins[Number(coinIndex)]
+    const coin = [...coinsData.nativeTokens, ...coinsData.stableCoins].find(
+      coin => coin.symbol === coinSymbol
+    )
+
+    if (!coin) {
+      return
+    }
 
     setSelectedCoin(coin)
     setValue('amount', `${currentAmount.toFixed(2)} ${coin.symbol}`)

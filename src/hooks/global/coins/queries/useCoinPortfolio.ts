@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { providers, utils } from 'ethers'
+import { Contract, providers, utils } from 'ethers'
 import {
   Connection,
   clusterApiUrl,
@@ -16,11 +16,13 @@ import { FetchCoinsBalanceInUsdResponse } from '@hooks/global/coins/queries/useC
 // import { SATOSHI_PER_BITCOIN } from '@/utils/global/constants/variables'
 
 import type { SupportedNetworks, WalletKeypair } from '@utils/global/types'
+import { abis } from '@/hooks/web3/useGetBalance'
 
 interface CoinAttributesInput {
   symbol: string
   networkType: SupportedNetworks
   rpcUrl: string
+  contractAddress?: string
 }
 
 interface CoinProps {
@@ -62,8 +64,30 @@ export async function fetchCoinPortfolio({
   if (!accounts?.evm.address || !accounts?.solana.address) {
     return { balance: 0, changePercent: 0 }
   }
+
   if (!coin) {
     return { balance: 0, changePercent: 0 }
+  }
+
+  if (
+    (coin.symbol === 'ieur' || coin.symbol === 'ibrl') &&
+    coin.contractAddress
+  ) {
+    const ABI = abis.get(coin.symbol.toLowerCase())
+
+    if (!ABI) {
+      throw new Error('stable coin not valid')
+    }
+
+    const provider = new providers.JsonRpcProvider(coin.rpcUrl)
+    const contract = new Contract(coin.contractAddress, ABI, provider)
+
+    const balance = await contract.functions.balanceOf(accounts.evm.address)
+
+    return {
+      balance: Number(utils.formatEther(balance.toString())),
+      changePercent: 0
+    }
   }
 
   if (coin.networkType === 'solana') {
@@ -143,7 +167,7 @@ export function useCoinPortfolio({
   enabled = true
 }: UseCoinPortfolioInput) {
   return useQuery({
-    queryKey: ['coinPortfolio', accounts, coin?.rpcUrl],
+    queryKey: ['coinPortfolio', accounts, coin],
     queryFn: () => fetchCoinPortfolio({ accounts, coin }),
     onSuccess: async data => {
       // onSuccess used to update account balance

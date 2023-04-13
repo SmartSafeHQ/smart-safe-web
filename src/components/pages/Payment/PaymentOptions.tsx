@@ -11,7 +11,7 @@ export function PaymentOptions() {
 
   return (
     <>
-      {nativeCurrencies?.coins.map(({ symbol, avatar }) => (
+      {nativeCurrencies?.nativeTokens.map(({ symbol, avatar }) => (
         <label
           key={symbol}
           htmlFor={symbol}
