@@ -1,14 +1,15 @@
 import Head from 'next/head'
 
-import { Tabs } from '@components/Tabs'
 import {
   SMART_ACCOUNT_TABS_VALUES,
   SmartAccountTabsList
 } from '@components/pages/SmartAccount/SmartAccountTabsList'
+import { Tabs } from '@components/Tabs'
+import { SmartAccountTab } from '@components/pages/SmartAccount'
 
 import { useI18n } from '@hooks/useI18n'
 
-const BuyAndSell = () => {
+const SmartAccount = () => {
   const { t } = useI18n()
 
   return (
@@ -23,7 +24,21 @@ const BuyAndSell = () => {
           <SmartAccountTabsList />
 
           <Tabs.Content value={SMART_ACCOUNT_TABS_VALUES.CONTACTS}>
-            contacts
+            <SmartAccountTab.Root>
+              <SmartAccountTab.Header>
+                <SmartAccountTab.Title>
+                  {t.saContacts.title}
+                </SmartAccountTab.Title>
+
+                <SmartAccountTab.Description>
+                  {t.saContacts.description}
+                </SmartAccountTab.Description>
+              </SmartAccountTab.Header>
+
+              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5">
+                contacts
+              </div>
+            </SmartAccountTab.Root>
           </Tabs.Content>
         </Tabs.Root>
       </div>
@@ -31,4 +46,4 @@ const BuyAndSell = () => {
   )
 }
 
-export default BuyAndSell
+export default SmartAccount

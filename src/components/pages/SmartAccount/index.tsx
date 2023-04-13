@@ -1,15 +1,15 @@
 import { HTMLAttributes, ReactNode } from 'react'
 import { clsx } from 'clsx'
 
-interface SettingsTabRootProps extends HTMLAttributes<HTMLDivElement> {
+interface SmartAccountTabRootProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
 }
 
-function SettingsTabRoot({
+function SmartAccountTabRoot({
   children,
   className,
   ...props
-}: SettingsTabRootProps) {
+}: SmartAccountTabRootProps) {
   return (
     <section
       className={clsx(
@@ -23,17 +23,17 @@ function SettingsTabRoot({
   )
 }
 
-SettingsTabRoot.displayName = 'SettingsTab.Root'
+SmartAccountTabRoot.displayName = 'SmartAccountTab.Root'
 
-interface SettingsTabHeaderProps extends HTMLAttributes<HTMLDivElement> {
+interface SmartAccountTabHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
 }
 
-function SettingsTabHeader({
+function SmartAccountTabHeader({
   children,
   className,
   ...props
-}: SettingsTabHeaderProps) {
+}: SmartAccountTabHeaderProps) {
   return (
     <header className="w-full border-b-1 border-b-gray-400 dark:border-b-gray-700">
       <div
@@ -49,17 +49,17 @@ function SettingsTabHeader({
   )
 }
 
-SettingsTabHeader.displayName = 'SettingsTab.Header'
+SmartAccountTabHeader.displayName = 'SmartAccountTab.Header'
 
-interface SettingsTabTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+interface SmartAccountTabTitleProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode
 }
 
-function SettingsTabTitle({
+function SmartAccountTabTitle({
   children,
   className,
   ...props
-}: SettingsTabTitleProps) {
+}: SmartAccountTabTitleProps) {
   return (
     <h1 className={clsx('text-2xl font-medium', className)} {...props}>
       {children}
@@ -67,18 +67,18 @@ function SettingsTabTitle({
   )
 }
 
-SettingsTabTitle.displayName = 'SettingsTab.Title'
+SmartAccountTabTitle.displayName = 'SmartAccountTab.Title'
 
-interface SettingsTabDescriptionProps
+interface SmartAccountTabDescriptionProps
   extends HTMLAttributes<HTMLParagraphElement> {
   children: ReactNode
 }
 
-function SettingsTabDescription({
+function SmartAccountTabDescription({
   children,
   className,
   ...props
-}: SettingsTabDescriptionProps) {
+}: SmartAccountTabDescriptionProps) {
   return (
     <p
       className={clsx(
@@ -92,11 +92,11 @@ function SettingsTabDescription({
   )
 }
 
-SettingsTabDescription.displayName = 'SettingsTab.Description'
+SmartAccountTabDescription.displayName = 'SmartAccountTab.Description'
 
-export const SettingsTab = {
-  Root: SettingsTabRoot,
-  Header: SettingsTabHeader,
-  Title: SettingsTabTitle,
-  Description: SettingsTabDescription
+export const SmartAccountTab = {
+  Root: SmartAccountTabRoot,
+  Header: SmartAccountTabHeader,
+  Title: SmartAccountTabTitle,
+  Description: SmartAccountTabDescription
 }

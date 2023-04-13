@@ -25,7 +25,7 @@ export function SmartAccountTabsList() {
       >
         <Tabs.Trigger
           value={SMART_ACCOUNT_TABS_VALUES.CONTACTS}
-          className="py-2 w-full max-w-[10rem]"
+          className="max-w-[8rem]"
           asChild
         >
           <Link href="/dashboard/smart-account/contacts">
@@ -35,7 +35,7 @@ export function SmartAccountTabsList() {
 
         <Tabs.Trigger
           value={SMART_ACCOUNT_TABS_VALUES.WITHDRAW_AUTH}
-          className="py-2 w-full max-w-[14rem] pointer-events-none"
+          className="w-full max-w-[11rem] pointer-events-none"
           disabled
           asChild
         >
@@ -49,7 +49,7 @@ export function SmartAccountTabsList() {
 
         <Tabs.Trigger
           value={SMART_ACCOUNT_TABS_VALUES.PAYMENT_SCHEDULE}
-          className="py-2 w-full max-w-[16rem] pointer-events-none"
+          className="w-full max-w-[12rem] pointer-events-none"
           disabled
           asChild
         >
@@ -63,7 +63,7 @@ export function SmartAccountTabsList() {
 
         <Tabs.Trigger
           value={SMART_ACCOUNT_TABS_VALUES.STREAM_PAYMENTS}
-          className="py-2 w-full max-w-[14rem] pointer-events-none"
+          className="w-full max-w-[13rem] pointer-events-none"
           disabled
           asChild
         >
@@ -77,7 +77,7 @@ export function SmartAccountTabsList() {
 
         <Tabs.Trigger
           value={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}
-          className="py-2 w-full max-w-[14rem] pointer-events-none"
+          className="w-full max-w-[10rem] pointer-events-none"
           disabled
           asChild
         >
