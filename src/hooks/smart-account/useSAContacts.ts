@@ -5,7 +5,7 @@ import { useAuth } from '@contexts/AuthContext'
 import { useI18n } from '@hooks/useI18n'
 
 export interface SelectedContactProps {
-  id: string
+  id: number
   name: string
   wallet: {
     address: string
@@ -14,6 +14,7 @@ export interface SelectedContactProps {
 }
 
 export const useSAContacts = () => {
+  const [isCreateContactOpen, setIsCreateContactOpen] = useState(false)
   const [selectedContact, setSelectedContact] =
     useState<SelectedContactProps | null>(null)
   const { t } = useI18n()
@@ -43,6 +44,8 @@ export const useSAContacts = () => {
     isLoading,
     error,
     handleEditContact,
-    handleDeleteContact
+    handleDeleteContact,
+    isCreateContactOpen,
+    setIsCreateContactOpen
   }
 }

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { SelectedContactProps } from '@/pages/dashboard/smart-account/contacts'
+import { SelectedContactProps } from '@hooks/smart-account/useSAContacts'
 
 interface FetchSmartAccountContactsInput {
   id: number
@@ -8,19 +8,19 @@ interface FetchSmartAccountContactsInput {
 
 const MOCK = [
   {
-    id: 'id',
+    id: 1,
     name: 'Paulo reis',
     wallet: {
       address: '0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71',
-      formattedAddress: '0x701...e3d71'
+      formattedAddress: '0x701d...e3d7'
     }
   },
   {
-    id: 'id-1',
+    id: 2,
     name: 'Igor Almeida',
     wallet: {
       address: '0x7f79b85B062a81197196b33EB573D0B98973781A',
-      formattedAddress: '0x7f7...3781A'
+      formattedAddress: '0x7f79...3781'
     }
   }
 ]

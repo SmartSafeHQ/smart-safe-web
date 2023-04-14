@@ -15,5 +15,11 @@ export const saContacts = {
   seeExplorer: 'see on explore',
   menuAriaLabel: 'Manage contacts option',
   edit: 'edit',
-  delete: 'delete'
+  delete: 'delete',
+  createContactTitle: 'Create contact',
+  createContactButton: 'Create contact',
+  nameLabel: 'Name',
+  namePlaceholder: 'Enter the contact name',
+  addressLabel: 'Wallet address',
+  addressPlaceholder: 'Enter the wallet address'
 }

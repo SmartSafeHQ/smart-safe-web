@@ -15,5 +15,11 @@ export const saContacts = {
   seeExplorer: 'ver no explorador',
   menuAriaLabel: 'Opções de gerenciamento de contatos',
   edit: 'editar',
-  delete: 'excluir'
+  delete: 'excluir',
+  createContactTitle: 'Criar contato',
+  createContactButton: 'Criar contato',
+  nameLabel: 'nome',
+  namePlaceholder: 'Insira o nome do contato',
+  addressLabel: 'Endereço da carteira',
+  addressPlaceholder: 'Insira o endereço da carteira'
 }
