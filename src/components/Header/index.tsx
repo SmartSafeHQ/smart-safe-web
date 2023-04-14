@@ -44,7 +44,11 @@ export function Header() {
             </button>
           </DropdownMenu.Trigger>
 
-          <DropdownMenu.Content sideOffset={18} align="end">
+          <DropdownMenu.Content
+            sideOffset={18}
+            align="end"
+            className="w-[100vw] min-w-[15rem] pb-4 md:w-full"
+          >
             <DropdownMenuUserInfos
               name={customer?.name ?? '...'}
               email={customer?.email ?? '...'}
@@ -53,7 +57,7 @@ export function Header() {
 
             <DropdownMenu.Separator />
 
-            <DropdownMenu.Item LeftIcon={User} isDisabled>
+            <DropdownMenu.Item LeftIcon={User} isDisabled className="px-6 py-3">
               {t.header.myProfile}
             </DropdownMenu.Item>
 
@@ -61,6 +65,7 @@ export function Header() {
               <DropdownMenu.Item
                 LeftIcon={Sun}
                 onClick={() => setTheme('dark')}
+                className="px-6 py-3"
               >
                 {t.header.theme}: {t.header.light}
               </DropdownMenu.Item>
@@ -68,6 +73,7 @@ export function Header() {
               <DropdownMenu.Item
                 LeftIcon={Moon}
                 onClick={() => setTheme('light')}
+                className="px-6 py-3"
               >
                 {t.header.theme}: {t.header.dark}
               </DropdownMenu.Item>
@@ -75,11 +81,19 @@ export function Header() {
 
             <DropdownLocales />
 
-            <DropdownMenu.Item LeftIcon={Question} isDisabled>
+            <DropdownMenu.Item
+              LeftIcon={Question}
+              isDisabled
+              className="px-6 py-3"
+            >
               {t.header.helpCenter}
             </DropdownMenu.Item>
 
-            <DropdownMenu.Item LeftIcon={SignOut} onSelect={() => signOut()}>
+            <DropdownMenu.Item
+              LeftIcon={SignOut}
+              onSelect={() => signOut()}
+              className="px-6 py-3"
+            >
               {t.header.logout}
             </DropdownMenu.Item>
           </DropdownMenu.Content>
