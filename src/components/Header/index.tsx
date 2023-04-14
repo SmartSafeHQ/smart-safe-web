@@ -64,7 +64,7 @@ export function Header() {
             {theme === 'light' ? (
               <DropdownMenu.Item
                 LeftIcon={Sun}
-                onClick={() => setTheme('dark')}
+                onSelect={() => setTheme('dark')}
                 className="px-6 py-3"
               >
                 {t.header.theme}: {t.header.light}
@@ -72,7 +72,7 @@ export function Header() {
             ) : (
               <DropdownMenu.Item
                 LeftIcon={Moon}
-                onClick={() => setTheme('light')}
+                onSelect={() => setTheme('light')}
                 className="px-6 py-3"
               >
                 {t.header.theme}: {t.header.dark}
