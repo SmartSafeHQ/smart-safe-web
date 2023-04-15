@@ -11,6 +11,7 @@ import { SmartAccountTab } from '@components/pages/SmartAccount'
 import { ContactsList } from '@components/pages/SmartAccount/contacts/ContactsList'
 import { CreateContactModal } from '@components/pages/SmartAccount/contacts/CreateContactModal'
 import { UpdateContactModal } from '@components/pages/SmartAccount/contacts/UpdateContactModal'
+import { DeleteContactModal } from '@components/pages/SmartAccount/contacts/DeleteContactModal'
 
 import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
 import { SAContactsProvider } from '@contexts/SAContactsContext'
@@ -61,6 +62,7 @@ const SmartAccount = () => {
 
         <CreateContactModal />
         <UpdateContactModal />
+        <DeleteContactModal />
       </div>
     </div>
   )
