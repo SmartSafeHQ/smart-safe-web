@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { SelectedContactProps } from '@hooks/smart-account/useSAContacts'
+import { SelectedContactProps } from '@contexts/SAContactsContext'
 
 interface FetchSmartAccountContactsInput {
   id: number

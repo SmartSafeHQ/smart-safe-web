@@ -7,7 +7,7 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
-import { SelectedContactProps } from '@hooks/smart-account/useSAContacts'
+import { SelectedContactProps } from '@contexts/SAContactsContext'
 import { useI18n } from '@hooks/useI18n'
 import { handleCopyToClipboard } from '@utils/global'
 

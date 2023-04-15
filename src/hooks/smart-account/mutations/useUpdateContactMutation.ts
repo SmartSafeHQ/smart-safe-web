@@ -1,38 +1,25 @@
-import { ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { SelectedContactProps } from '@contexts/SAContactsContext'
 
-interface CreateContactFunctionInput {
+interface UpdateContactFunctionInput {
   customerId: number
+  contactId: number
   name: string
-  address: string
 }
 
-interface CreateContactFunctionOutput {
-  id: number
-}
-
-async function createContactFunction(
-  input: CreateContactFunctionInput
-): Promise<CreateContactFunctionOutput> {
-  const isAddressValid = ethers.utils.isAddress(input.address)
-
-  if (!isAddressValid) {
-    throw new Error('invalid wallet address')
-  }
-
+async function updateContactFunction(
+  input: UpdateContactFunctionInput
+): Promise<void> {
   console.log(input)
-
-  return { id: Math.random() }
 }
 
-export function useCreateContactMutation() {
+export function useUpdateContactMutation() {
   return useMutation({
-    mutationKey: ['createContact'],
-    mutationFn: (input: CreateContactFunctionInput) =>
-      createContactFunction(input),
+    mutationKey: ['updateContact'],
+    mutationFn: (input: UpdateContactFunctionInput) =>
+      updateContactFunction(input),
     onSuccess: async (data, variables) => {
       await queryClient.cancelQueries({
         queryKey: ['smartAccountContacts', variables.customerId]
@@ -44,22 +31,21 @@ export function useCreateContactMutation() {
         queryKey: ['smartAccountContacts', variables.customerId]
       })
 
-      const createdContact = {
-        id: data.id,
-        name: variables.name,
-        wallet: {
-          address: variables.address,
-          formattedAddress: `${variables.address.slice(
-            0,
-            6
-          )}...${variables.address.slice(-4)}`
-        }
-      }
-
       queryClient.setQueryData<SelectedContactProps[]>(
         ['smartAccountContacts', variables.customerId],
         () => {
-          prevContacts?.push(createdContact)
+          const updatedContactIndex = prevContacts.findIndex(
+            contact => contact.id === variables.contactId
+          )
+
+          if (updatedContactIndex < 0) return prevContacts
+
+          const updatedContact = {
+            ...prevContacts[updatedContactIndex],
+            name: variables.name
+          }
+
+          prevContacts.splice(updatedContactIndex, 1, updatedContact)
 
           return prevContacts
         }

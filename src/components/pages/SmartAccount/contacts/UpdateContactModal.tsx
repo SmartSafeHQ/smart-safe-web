@@ -1,4 +1,5 @@
-import { User, Wallet } from 'phosphor-react'
+import { useEffect } from 'react'
+import { User } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -7,39 +8,52 @@ import { z } from 'zod'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
+import { Text } from '@components/Text'
 
-import { useCreateContactMutation } from '@hooks/smart-account/mutations/useCreateContactMutation'
+import { useUpdateContactMutation } from '@hooks/smart-account/mutations/useUpdateContactMutation'
 import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
 
 const validationSchema = z.object({
-  name: z.string().min(1, 'name required'),
-  address: z.string().min(1, { message: 'address required' })
+  name: z.string().min(1, 'name required')
 })
 
 export type FieldValues = z.infer<typeof validationSchema>
 
-export function CreateContactModal() {
-  const { t, customer, isCreateContactOpen, setIsCreateContactOpen } =
-    useSAContactsHook()
-  const { mutateAsync } = useCreateContactMutation()
+export function UpdateContactModal() {
+  const {
+    t,
+    customer,
+    selectedContact,
+    isUpdateContactOpen,
+    setIsUpdateContactOpen
+  } = useSAContactsHook()
+  const { mutateAsync } = useUpdateContactMutation()
 
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm<FieldValues>({
-    resolver: zodResolver(validationSchema)
+    resolver: zodResolver(validationSchema),
+    defaultValues: {
+      name: selectedContact?.name
+    }
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!customer) return
+    if (!customer || !selectedContact) return
 
     try {
-      await mutateAsync({ ...data, customerId: customer.id })
+      await mutateAsync({
+        contactId: selectedContact.id,
+        customerId: customer.id,
+        name: data.name
+      })
 
       reset()
-      setIsCreateContactOpen(false)
+      setIsUpdateContactOpen(false)
     } catch (error) {
       console.log(error)
 
@@ -47,26 +61,33 @@ export function CreateContactModal() {
     }
   }
 
+  useEffect(() => {
+    if (!selectedContact) return
+
+    setValue('name', selectedContact.name)
+  }, [selectedContact])
+
   return (
     <DialogModal.Root
-      open={isCreateContactOpen}
-      onOpenChange={isOpen => {
-        setIsCreateContactOpen(isOpen)
-        reset()
-      }}
+      open={isUpdateContactOpen}
+      onOpenChange={setIsUpdateContactOpen}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-              {t.saContacts.createContactTitle}
+              {t.saContacts.updateContactTitle}
             </DialogModal.Title>
           </header>
 
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-6 items-stretch w-full"
+            className="flex flex-col gap-4 items-stretch w-full"
           >
+            <Text className="capitalize text-gray-600 dark:text-gray-300">
+              {t.saContacts.wallet}: {selectedContact?.wallet.formattedAddress}
+            </Text>
+
             <TextInput.Root
               htmlFor="name"
               variant="secondary"
@@ -88,29 +109,8 @@ export function CreateContactModal() {
               </TextInput.Content>
             </TextInput.Root>
 
-            <TextInput.Root
-              htmlFor="address"
-              variant="secondary"
-              error={errors.address?.message}
-            >
-              <TextInput.Label>{t.saContacts.addressLabel}</TextInput.Label>
-
-              <TextInput.Content>
-                <TextInput.Icon>
-                  <Wallet />
-                </TextInput.Icon>
-
-                <TextInput.Input
-                  {...register('address')}
-                  required
-                  id="address"
-                  placeholder={t.saContacts.addressPlaceholder}
-                />
-              </TextInput.Content>
-            </TextInput.Root>
-
             <Button type="submit" isLoading={isSubmitting} className="mt-1">
-              {t.saContacts.createContactButton}
+              {t.saContacts.updateContactButton}
             </Button>
           </form>
         </div>
