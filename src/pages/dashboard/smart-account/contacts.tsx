@@ -10,10 +10,11 @@ import { SmartAccountTab } from '@components/pages/SmartAccount'
 import { ContactsList } from '@components/pages/SmartAccount/contacts/ContactsList'
 import { CreateContactModal } from '@components/pages/SmartAccount/contacts/CreateContactModal'
 
-import { useSAContacts } from '@hooks/smart-account/useSAContacts'
+import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
+import { SAContactsProvider } from '@contexts/SAContactsContext'
 
 const SmartAccount = () => {
-  const { t, isCreateContactOpen, setIsCreateContactOpen } = useSAContacts()
+  const { t, setIsCreateContactOpen } = useSAContactsHook()
 
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
@@ -22,45 +23,44 @@ const SmartAccount = () => {
         <meta name="description" content={t.saContacts.headDescription} />
       </Head>
 
-      <div className="w-full flex flex-1 flex-col items-stretch">
-        <Tabs.Root defaultValue={SMART_ACCOUNT_TABS_VALUES.CONTACTS}>
-          <SmartAccountTabsList />
+      <SAContactsProvider>
+        <div className="w-full flex flex-1 flex-col items-stretch">
+          <Tabs.Root defaultValue={SMART_ACCOUNT_TABS_VALUES.CONTACTS}>
+            <SmartAccountTabsList />
 
-          <Tabs.Content value={SMART_ACCOUNT_TABS_VALUES.CONTACTS}>
-            <SmartAccountTab.Root>
-              <SmartAccountTab.Header>
-                <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-                  <div className="flex flex-col relative justify-start items-stretch gap-3">
-                    <SmartAccountTab.Title>
-                      {t.saContacts.title}
-                    </SmartAccountTab.Title>
+            <Tabs.Content value={SMART_ACCOUNT_TABS_VALUES.CONTACTS}>
+              <SmartAccountTab.Root>
+                <SmartAccountTab.Header>
+                  <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
+                    <div className="flex flex-col relative justify-start items-stretch gap-3">
+                      <SmartAccountTab.Title>
+                        {t.saContacts.title}
+                      </SmartAccountTab.Title>
 
-                    <SmartAccountTab.Description>
-                      {t.saContacts.description}
-                    </SmartAccountTab.Description>
+                      <SmartAccountTab.Description>
+                        {t.saContacts.description}
+                      </SmartAccountTab.Description>
+                    </div>
+
+                    <Button
+                      className="w-max"
+                      onClick={() => setIsCreateContactOpen(true)}
+                    >
+                      {t.saContacts.addContact}
+                    </Button>
                   </div>
+                </SmartAccountTab.Header>
 
-                  <Button
-                    className="w-max"
-                    onClick={() => setIsCreateContactOpen(true)}
-                  >
-                    {t.saContacts.addContact}
-                  </Button>
+                <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5">
+                  <ContactsList />
                 </div>
-              </SmartAccountTab.Header>
+              </SmartAccountTab.Root>
+            </Tabs.Content>
+          </Tabs.Root>
 
-              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5">
-                <ContactsList />
-              </div>
-            </SmartAccountTab.Root>
-          </Tabs.Content>
-        </Tabs.Root>
-
-        <CreateContactModal
-          isOpen={isCreateContactOpen}
-          setIsOpen={setIsCreateContactOpen}
-        />
-      </div>
+          <CreateContactModal />
+        </div>
+      </SAContactsProvider>
     </div>
   )
 }

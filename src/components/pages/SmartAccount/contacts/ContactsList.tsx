@@ -4,7 +4,7 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { ContactsTable } from '@components/pages/SmartAccount/contacts/ContactsTable'
 import { Text } from '@components/Text'
 
-import { useSAContacts } from '@hooks/smart-account/useSAContacts'
+import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
 
 export function ContactsList() {
   const {
@@ -14,7 +14,7 @@ export function ContactsList() {
     error,
     handleEditContact,
     handleDeleteContact
-  } = useSAContacts()
+  } = useSAContactsHook()
 
   return (
     <ScrollArea className="w-full max-w-full">

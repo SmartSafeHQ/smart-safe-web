@@ -27,6 +27,15 @@ export function useCreateContactMutation() {
     mutationFn: (input: CreateContactFunctionInput) =>
       createContactFunction(input),
     onSuccess: async (data, variables) => {
+      await queryClient.cancelQueries({
+        queryKey: ['smartAccountContacts', variables.customerId]
+      })
+
+      const prevContacts = queryClient.getQueryData<SelectedContactProps[]>([
+        'smartAccountContacts',
+        variables.customerId
+      ])
+
       const createdContact = {
         id: data.id,
         name: variables.name,
@@ -39,22 +48,25 @@ export function useCreateContactMutation() {
         }
       }
 
-      const currentContacts = await queryClient.ensureQueryData<
-        SelectedContactProps[]
-      >({
-        queryKey: ['smartAccountContacts', variables.customerId]
-      })
-
       queryClient.setQueryData<SelectedContactProps[]>(
         ['smartAccountContacts', variables.customerId],
-        () => {
-          currentContacts.push(createdContact)
-
-          return currentContacts
+        prevContacts => {
+          return [...(prevContacts ?? []), createdContact]
         }
       )
 
-      await queryClient.invalidateQueries(['createContact'])
+      return prevContacts
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(
+        ['smartAccountContacts', variables.customerId],
+        context
+      )
+    },
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['smartAccountContacts', variables.customerId]
+      })
     }
   })
 }

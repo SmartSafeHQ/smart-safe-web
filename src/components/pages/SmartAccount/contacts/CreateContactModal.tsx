@@ -8,14 +8,8 @@ import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useCreateContactMutation } from '@hooks/smart-account/useCreateContactMutation'
-import { useI18n } from '@hooks/useI18n'
-import { useAuth } from '@contexts/AuthContext'
-
-interface CreateContactModalProps {
-  isOpen: boolean
-  setIsOpen: (_open: boolean) => void
-}
+import { useCreateContactMutation } from '@hooks/smart-account/mutations/useCreateContactMutation'
+import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
 
 const validationSchema = z.object({
   name: z.string().min(1, 'name required'),
@@ -24,12 +18,9 @@ const validationSchema = z.object({
 
 export type FieldValues = z.infer<typeof validationSchema>
 
-export function CreateContactModal({
-  isOpen,
-  setIsOpen
-}: CreateContactModalProps) {
-  const { t } = useI18n()
-  const { customer } = useAuth()
+export function CreateContactModal() {
+  const { t, customer, isCreateContactOpen, setIsCreateContactOpen } =
+    useSAContactsHook()
   const { mutateAsync } = useCreateContactMutation()
 
   const {
@@ -48,7 +39,7 @@ export function CreateContactModal({
       await mutateAsync({ ...data, customerId: customer.id })
 
       reset()
-      setIsOpen(false)
+      setIsCreateContactOpen(false)
     } catch (error) {
       console.log(error)
 
@@ -58,9 +49,9 @@ export function CreateContactModal({
 
   return (
     <DialogModal.Root
-      open={isOpen}
+      open={isCreateContactOpen}
       onOpenChange={isOpen => {
-        setIsOpen(isOpen)
+        setIsCreateContactOpen(isOpen)
         reset()
       }}
     >
