@@ -41,7 +41,7 @@ const ButtonComponent: ForwardRefRenderFunction<
           'cursor-not-allowed brightness-75': isLoading,
           'bg-brand-foregroundAccent1 text-brand-background hover:bg-brand-foregroundAccent2 disabled:hover:bg-brand-foregroundAccent2':
             variant === 'primary',
-          'bg-red-500 text-gray-50 hover:bg-red-400 disabled:hover:bg-red-500':
+          'bg-red-500 text-gray-50 hover:bg-red-400 disabled:bg-red-500':
             variant === 'red'
         },
         className

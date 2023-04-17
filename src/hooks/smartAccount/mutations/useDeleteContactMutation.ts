@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
+import { tokenverseApi } from '@lib/axios'
 import { SelectedContactProps } from '@contexts/SAContactsContext'
 
 interface DeleteContactFunctionInput {
@@ -11,7 +12,7 @@ interface DeleteContactFunctionInput {
 async function deleteContactFunction(
   input: DeleteContactFunctionInput
 ): Promise<void> {
-  console.log(input)
+  await tokenverseApi.delete(`/widget/contacts/${input.contactId}`)
 }
 
 export function useDeleteContactMutation() {

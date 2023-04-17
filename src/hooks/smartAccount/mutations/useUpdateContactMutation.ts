@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
+import { tokenverseApi } from '@lib/axios'
 import { SelectedContactProps } from '@contexts/SAContactsContext'
 
 interface UpdateContactFunctionInput {
@@ -12,7 +13,10 @@ interface UpdateContactFunctionInput {
 async function updateContactFunction(
   input: UpdateContactFunctionInput
 ): Promise<void> {
-  console.log(input)
+  await tokenverseApi.patch(`/widget/contacts/${input.contactId}`, {
+    customerId: input.customerId,
+    name: input.name
+  })
 }
 
 export function useUpdateContactMutation() {

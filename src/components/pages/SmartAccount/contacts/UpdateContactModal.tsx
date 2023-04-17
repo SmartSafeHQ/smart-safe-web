@@ -2,7 +2,6 @@ import { useEffect } from 'react'
 import { User } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { Button } from '@components/Button'
@@ -15,6 +14,7 @@ import {
   CONTACT_NAME_REGEX,
   useSAContactsHook
 } from '@hooks/smartAccount/useSAContactsHook'
+import { getAxiosErrorMessageWithToast } from '@utils/global'
 
 const validationSchema = z.object({
   name: z
@@ -66,7 +66,7 @@ export function UpdateContactModal() {
     } catch (error) {
       console.log(error)
 
-      toast.error(`${(error as Error).message}`)
+      getAxiosErrorMessageWithToast(error)
     }
   }
 

@@ -1,40 +1,45 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { SelectedContactProps } from '@contexts/SAContactsContext'
+import { tokenverseApi } from '@lib/axios'
+import { formatWalletAddress } from '@/utils/web3Utils'
 
 interface FetchSmartAccountContactsInput {
-  id: number
+  customerId: number
 }
 
-const MOCK = [
-  {
-    id: 1,
-    name: 'Paulo reis',
-    wallet: {
-      address: '0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71',
-      formattedAddress: '0x701d...e3d7'
-    }
-  },
-  {
-    id: 2,
-    name: 'Igor Almeida',
-    wallet: {
-      address: '0x7f79b85B062a81197196b33EB573D0B98973781A',
-      formattedAddress: '0x7f79...3781'
-    }
-  }
-]
+export interface FetchContactsResponse {
+  id: number
+  name: string
+  evmAddress: string
+}
 
 export async function fetchSmartAccountContacts(
-  _data: FetchSmartAccountContactsInput
+  input: FetchSmartAccountContactsInput
 ): Promise<SelectedContactProps[]> {
-  return MOCK
+  const response = await tokenverseApi.get<FetchContactsResponse[]>(
+    `/widget/contacts/${input.customerId}`
+  )
+
+  const formattedContacts = response.data.map(contact => ({
+    id: contact.id,
+    name: contact.name,
+    wallet: {
+      address: contact.evmAddress,
+      formattedAddress: formatWalletAddress({
+        network: 'evm',
+        walletAddress: contact.evmAddress
+      })
+    }
+  }))
+
+  return formattedContacts
 }
 
 export function useSmartAccountContacts(id = 0, enabled = true) {
   return useQuery({
     queryKey: ['smartAccountContacts', id],
-    queryFn: () => fetchSmartAccountContacts({ id }),
+    queryFn: () => fetchSmartAccountContacts({ customerId: id }),
     enabled,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes

@@ -26,6 +26,16 @@ export function ContactsList() {
         />
       ) : isLoading ? (
         <LoadingState title={t.saContacts.loadingContacts} className="mt-10" />
+      ) : contacts && contacts.length === 0 ? (
+        <div className="w-full flex flex-col items-center gap-1 pt-8 text-center">
+          <Text asChild className="text-lg font-medium">
+            <strong>{t.saContacts.noItemsTitle}</strong>
+          </Text>
+
+          <Text asChild className="font-medium text-gray-400">
+            {t.saContacts.noItemsDesc}
+          </Text>
+        </div>
       ) : (
         contacts && (
           <>
@@ -45,18 +55,6 @@ export function ContactsList() {
               </thead>
 
               <tbody>
-                {contacts.length === 0 && (
-                  <div className="max-w-lg flex flex-col items-center gap-1 text-center">
-                    <Text asChild className="text-lg font-medium">
-                      <strong>{t.saContacts.noItemsTitle}</strong>
-                    </Text>
-
-                    <Text asChild className="font-medium text-gray-400">
-                      {t.saContacts.noItemsDesc}
-                    </Text>
-                  </div>
-                )}
-
                 {contacts.map(contact => (
                   <ContactsTable.Tr
                     key={contact.id}

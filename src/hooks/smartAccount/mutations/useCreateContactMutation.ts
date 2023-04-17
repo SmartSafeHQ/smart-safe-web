@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
+import { tokenverseApi } from '@lib/axios'
 import { SelectedContactProps } from '@contexts/SAContactsContext'
 
 interface CreateContactFunctionInput {
@@ -13,12 +14,23 @@ interface CreateContactFunctionOutput {
   id: number
 }
 
+export interface CreateContactApiResponse {
+  id: number
+}
+
 async function createContactFunction(
   input: CreateContactFunctionInput
 ): Promise<CreateContactFunctionOutput> {
-  console.log(input)
+  const response = await tokenverseApi.post<CreateContactApiResponse>(
+    '/widget/contacts',
+    {
+      customerId: input.customerId,
+      name: input.name,
+      address: input.address
+    }
+  )
 
-  return { id: Math.random() }
+  return { id: response.data.id }
 }
 
 export function useCreateContactMutation() {
