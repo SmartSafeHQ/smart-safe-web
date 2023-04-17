@@ -1,5 +1,4 @@
 import {
-  ArrowsClockwise,
   CurrencyDollar,
   Gear,
   House,
@@ -7,7 +6,8 @@ import {
   ShoppingCartSimple,
   Wallet,
   Money,
-  Brain
+  Brain,
+  DiamondsFour
 } from 'phosphor-react'
 
 export const sidebar = {
@@ -35,7 +35,7 @@ export const sidebar = {
     },
     {
       href: '/dashboard/smart-cash',
-      icon: Brain,
+      icon: DiamondsFour,
       title: 'smart cash',
       isDisabled: true
     },
@@ -52,10 +52,10 @@ export const sidebar = {
       isDisable: false
     },
     {
-      href: '/dashboard/swap',
-      icon: ArrowsClockwise,
-      title: 'converter',
-      isDisabled: true
+      href: '/dashboard/smart-account/contacts',
+      icon: Brain,
+      title: 'smart account',
+      isDisabled: false
     },
     {
       href: '/dashboard/buy-and-sell',

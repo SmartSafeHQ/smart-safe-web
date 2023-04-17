@@ -13,7 +13,7 @@ function SettingsTabRoot({
   return (
     <section
       className={clsx(
-        'w-full h-full flex flex-col justify-start items-stretch gap-5 px-2 md:px-4',
+        'w-full h-full flex flex-col justify-start items-stretch gap-5 px-1 md:p-0',
         className
       )}
       {...props}

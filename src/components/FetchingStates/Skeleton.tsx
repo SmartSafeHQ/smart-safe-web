@@ -17,7 +17,7 @@ export function Skeleton({
   return (
     <>
       {isLoading ? (
-        <>
+        <div className="flex flex-col gap-3">
           {[...Array(totalOfLines).keys()].map(item => (
             <div
               key={item}
@@ -27,7 +27,7 @@ export function Skeleton({
               )}
             />
           ))}
-        </>
+        </div>
       ) : (
         children
       )}
