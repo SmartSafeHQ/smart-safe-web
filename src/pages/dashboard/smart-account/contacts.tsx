@@ -13,7 +13,7 @@ import { CreateContactModal } from '@components/pages/SmartAccount/contacts/Crea
 import { UpdateContactModal } from '@components/pages/SmartAccount/contacts/UpdateContactModal'
 import { DeleteContactModal } from '@components/pages/SmartAccount/contacts/DeleteContactModal'
 
-import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
+import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 import { SAContactsProvider } from '@contexts/SAContactsContext'
 
 const SmartAccount = () => {

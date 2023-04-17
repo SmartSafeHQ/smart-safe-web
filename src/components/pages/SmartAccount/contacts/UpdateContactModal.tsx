@@ -10,11 +10,20 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Text } from '@components/Text'
 
-import { useUpdateContactMutation } from '@hooks/smart-account/mutations/useUpdateContactMutation'
-import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
+import { useUpdateContactMutation } from '@hooks/smartAccount/mutations/useUpdateContactMutation'
+import {
+  CONTACT_NAME_REGEX,
+  useSAContactsHook
+} from '@hooks/smartAccount/useSAContactsHook'
 
 const validationSchema = z.object({
-  name: z.string().min(1, 'name required')
+  name: z
+    .string()
+    .min(1, 'name required')
+    .regex(
+      CONTACT_NAME_REGEX,
+      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
+    )
 })
 
 export type FieldValues = z.infer<typeof validationSchema>

@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
@@ -17,12 +16,6 @@ interface CreateContactFunctionOutput {
 async function createContactFunction(
   input: CreateContactFunctionInput
 ): Promise<CreateContactFunctionOutput> {
-  const isAddressValid = ethers.utils.isAddress(input.address)
-
-  if (!isAddressValid) {
-    throw new Error('invalid wallet address')
-  }
-
   console.log(input)
 
   return { id: Math.random() }

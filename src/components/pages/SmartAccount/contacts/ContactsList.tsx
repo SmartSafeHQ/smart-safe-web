@@ -4,7 +4,7 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { ContactsTable } from '@components/pages/SmartAccount/contacts/ContactsTable'
 import { Text } from '@components/Text'
 
-import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
+import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 
 export function ContactsList() {
   const {

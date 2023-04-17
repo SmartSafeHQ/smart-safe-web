@@ -46,9 +46,7 @@ function ContactsTableTr({
   return (
     <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-gray-300 dark:border-gray-700">
       <td className="pl-2 py-3">
-        <Text className="font-medium capitalize md:text-base">
-          {contact.name}
-        </Text>
+        <Text className="font-medium md:text-base">{contact.name}</Text>
       </td>
 
       <td>

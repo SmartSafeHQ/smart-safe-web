@@ -1,3 +1,4 @@
+import { ethers } from 'ethers'
 import { User, Wallet } from 'phosphor-react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -8,12 +9,25 @@ import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useCreateContactMutation } from '@hooks/smart-account/mutations/useCreateContactMutation'
-import { useSAContactsHook } from '@hooks/smart-account/useSAContactsHook'
+import { useCreateContactMutation } from '@hooks/smartAccount/mutations/useCreateContactMutation'
+import {
+  CONTACT_NAME_REGEX,
+  useSAContactsHook
+} from '@hooks/smartAccount/useSAContactsHook'
 
 const validationSchema = z.object({
-  name: z.string().min(1, 'name required'),
-  address: z.string().min(1, { message: 'address required' })
+  name: z
+    .string()
+    .min(1, 'name required')
+    .regex(
+      CONTACT_NAME_REGEX,
+      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
+    ),
+  address: z.string().refine(address => {
+    const isAddressValid = ethers.utils.isAddress(address)
+
+    return isAddressValid
+  }, 'Invalid contact address')
 })
 
 export type FieldValues = z.infer<typeof validationSchema>
