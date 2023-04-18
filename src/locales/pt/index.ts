@@ -16,6 +16,7 @@ import { sellStableCoin } from './buySellStableCoin/sellStableCoin'
 import { cashback } from './cashback'
 import { security } from './settings/security'
 import { saContacts } from './smartAccount/saContacts'
+import { saWithdrawalAuth } from './smartAccount/saWithdrawalAuth'
 import { saGlobal } from './smartAccount'
 import { wc } from './accounts/wc'
 import { qrCodeReader } from './components/qrCodeReader'
@@ -37,6 +38,7 @@ export const pt = {
   cashback,
   settings: { security },
   saContacts,
+  saWithdrawalAuth,
   saGlobal,
   wc,
   qrCodeReader,
