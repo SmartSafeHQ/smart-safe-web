@@ -16,7 +16,7 @@ async function burnStableCoin({
   contractAddress
 }: MintStableCoinPayload): Promise<string> {
   const { data: transactionHash } = await tokenverseApi.post(
-    '/widget/burnStableCoin',
+    '/contract/burnStableCoin',
     {
       amount,
       userAddress,
