@@ -4,6 +4,7 @@ import { ethers } from 'ethers'
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 import { formatWalletAddress } from '@utils/web3Utils'
+import { fetchSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
 import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 import { queryClient } from '@lib/reactQuery'
 
@@ -22,7 +23,7 @@ const WITHDRAWALS_MOCK = [
   },
   {
     index: 2,
-    userAddress: '0x7f79b85B062a81197196b33EB573D0B98973781A',
+    userAddress: '0xb249CEcD86215c99a78F1666e54C7c978e917758',
     tokenAddress: '0xa59f1Ad80e774e00dFb0cebdD70CB9A224b2d6E7',
     tokenAmount: '20',
     startDate: 1681842255429
@@ -32,14 +33,14 @@ const WITHDRAWALS_MOCK = [
 export async function fetchSmartAccountWithdrawalAuths(
   input: FetchSmartAccountWithdrawalAuthsInput
 ): Promise<SelectedWithdrawalProps[]> {
-  const contacts = await queryClient.ensureQueryData<ContactProps[]>([
-    'smartAccountContacts',
-    input.customerId
-  ])
+  const contacts = await queryClient.ensureQueryData<ContactProps[]>({
+    queryKey: ['smartAccountContacts', input.customerId],
+    queryFn: () => fetchSmartAccountContacts({ customerId: input.customerId })
+  })
 
   const formattedWithdrawals = WITHDRAWALS_MOCK.map(withdrawal => {
     const withdrawalCoin = STABLE_COINS.find(
-      coin => coin.contractAddress === withdrawal.userAddress
+      coin => coin.contractAddress === withdrawal.tokenAddress
     )
 
     if (!withdrawalCoin) throw Error('coin not found')

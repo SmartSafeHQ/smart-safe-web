@@ -7,7 +7,7 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
-import { SelectedContactProps } from '@contexts/SAContactsContext'
+import { ContactProps } from '@contexts/SAContactsContext'
 import { useI18n } from '@hooks/useI18n'
 import { handleCopyToClipboard } from '@utils/global'
 
@@ -31,9 +31,9 @@ function ContactsTableTh({ children, className }: ContactsTableThProps) {
 ContactsTableTh.displayName = 'ContactsTable.Th'
 
 interface ContactsTableTrProps {
-  contact: SelectedContactProps
-  handleEditContact: (_contact: SelectedContactProps) => void
-  handleDeleteContact: (_contact: SelectedContactProps) => void
+  contact: ContactProps
+  handleEditContact: (_contact: ContactProps) => void
+  handleDeleteContact: (_contact: ContactProps) => void
 }
 
 function ContactsTableTr({

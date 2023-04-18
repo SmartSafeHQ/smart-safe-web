@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import {
   SMART_ACCOUNT_TABS_VALUES,
   SmartAccountTabsList
-} from '@components/pages/SmartAccount/contacts/SmartAccountTabsList'
+} from '@components/pages/SmartAccount/SmartAccountTabsList'
 import { Button } from '@components/Button'
 import { Tabs } from '@components/Tabs'
 import { SmartAccountTab } from '@components/pages/SmartAccount'
