@@ -9,6 +9,7 @@ import { Button } from '@components/Button'
 import { Tabs } from '@components/Tabs'
 import { SmartAccountTab } from '@components/pages/SmartAccount'
 import { WithdrawalList } from '@components/pages/SmartAccount/withdrawalAuth/WithdrawalList'
+import { CreateWithdrawalAuthModal } from '@components/pages/SmartAccount/withdrawalAuth/CreateWithdrawalAuthModal'
 
 import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
 import { SAWithdrawalAuthProvider } from '@contexts/SAWithdrawalAuthContext'
@@ -56,6 +57,8 @@ const WithdrawalAuthorization = () => {
             </SmartAccountTab.Root>
           </Tabs.Content>
         </Tabs.Root>
+
+        <CreateWithdrawalAuthModal />
       </div>
     </div>
   )

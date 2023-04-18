@@ -24,6 +24,7 @@ export const saWithdrawalAuth = {
   deleteAuthDesc: 'Tokenverse will delete the withdrawal authorization',
   deleteAuthButton: 'Delete Authorization',
   contactLabel: 'Contact',
+  contactPlaceholder: 'Select a contact',
   coinLabel: 'Withdrawal currency',
   amountLabel: 'Amount',
   amountPlaceholder: 'Enter the amount of tokens',

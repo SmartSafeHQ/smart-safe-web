@@ -3,17 +3,18 @@ import Image from 'next/image'
 
 import { Text } from '@components/Text'
 import { SelectInput } from '@components/Inputs/SelectInput'
+import { ForwardRefRenderFunction, forwardRef } from 'react'
 
 interface CoinsDropDownInputProps extends RadixSelect.SelectProps {
   coins: { symbol: string; avatar: string }[]
 }
 
-export function CoinsDropDownInput({
-  coins,
-  ...props
-}: CoinsDropDownInputProps) {
+export const CoinsDropDownInputComponent: ForwardRefRenderFunction<
+  HTMLLabelElement,
+  CoinsDropDownInputProps
+> = ({ coins, ...props }, ref) => {
   return (
-    <SelectInput.Root className="w-full" defaultValue="0" {...props}>
+    <SelectInput.Root ref={ref} className="w-full" defaultValue="0" {...props}>
       <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-200 dark:bg-gray-800" />
 
       <SelectInput.Content className="bg-gray-200 dark:bg-gray-800">
@@ -44,3 +45,5 @@ export function CoinsDropDownInput({
     </SelectInput.Root>
   )
 }
+
+export const CoinsDropDownInput = forwardRef(CoinsDropDownInputComponent)

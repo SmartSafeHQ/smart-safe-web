@@ -50,7 +50,7 @@ function WithdrawalTableTr({
       <td className="pl-2 py-3 min-w-[8rem]">
         <div className="flex flex-col gap-1">
           {withdrawal?.recipientName && (
-            <Text className="uppercase text-sm md:text-base" asChild>
+            <Text className="text-sm md:text-base" asChild>
               <strong>{withdrawal.recipientName}</strong>
             </Text>
           )}
