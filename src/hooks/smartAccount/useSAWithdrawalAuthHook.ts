@@ -2,12 +2,12 @@ import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 
-import { getAxiosErrorMessageWithToast } from '@utils/global'
 import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { useAuth } from '@contexts/AuthContext'
 import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
 import { useI18n } from '@hooks/useI18n'
 import { useSmartAccountContacts } from '@/hooks/smartAccount/queries/useContacts'
+import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
 
 const createWithdrawalValidationSchema = z.object({
   contactAddress: z.string().min(1, { message: 'contact required' }),
@@ -28,7 +28,7 @@ export type CreateWithdrawalFieldValues = z.infer<
 >
 
 export const useSAWithdrawalAuthHook = () => {
-  const { t } = useI18n()
+  const { t, currentLocaleProps } = useI18n()
   const { customer } = useAuth()
   const {
     isCreateWithdrawalOpen,
@@ -73,10 +73,8 @@ export const useSAWithdrawalAuthHook = () => {
     try {
       reset()
       setIsCreateWithdrawalOpen(false)
-    } catch (error) {
-      console.log(error)
-
-      getAxiosErrorMessageWithToast(error)
+    } catch (e) {
+      getWe3ErrorMessageWithToast(e, currentLocaleProps.id)
     }
   }
 

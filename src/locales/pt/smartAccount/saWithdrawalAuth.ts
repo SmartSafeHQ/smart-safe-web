@@ -19,7 +19,7 @@ export const saWithdrawalAuth = {
   cancel: 'cancelar',
   createAuthTitle: 'Criar autorização de saque',
   createAuthButton: 'Criar autorização',
-  deleteAuthTitle: 'Excluir autorização de saque',
+  deleteAuthTitle: 'Excluir autorização',
   deleteAuthDesc: 'Tokenverse irá excluir a autorização do saque',
   deleteAuthButton: 'Excluir autorização',
   contactLabel: 'Contato',
