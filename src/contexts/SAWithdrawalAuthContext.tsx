@@ -9,9 +9,16 @@ import {
 
 type SAWithdrawalAuthProviderProps = PropsWithChildren<Record<string, unknown>>
 
-export interface SelectedContactProps {
-  id: number
-  name: string
+export interface SelectedWithdrawalProps {
+  index: number
+  recipientName?: string
+  coinAmount: number
+  dateFrom: Date
+  coin: {
+    symbol: string
+    avatar: string
+    address: string
+  }
   wallet: {
     address: string
     formattedAddress: string
@@ -19,16 +26,15 @@ export interface SelectedContactProps {
 }
 
 interface SAWithdrawalAuthContextData {
-  selectedContact: SelectedContactProps | null
-  isCreateContactOpen: boolean
-  isUpdateContactOpen: boolean
-  isDeleteContactOpen: boolean
-  setSelectedContact: Dispatch<SetStateAction<SelectedContactProps | null>>
-  setIsCreateContactOpen: Dispatch<SetStateAction<boolean>>
-  setIsUpdateContactOpen: Dispatch<SetStateAction<boolean>>
-  setIsDeleteContactOpen: Dispatch<SetStateAction<boolean>>
-  handleEditContact: (_contact: SelectedContactProps) => void
-  handleDeleteContact: (_contact: SelectedContactProps) => void
+  selectedWithdrawal: SelectedWithdrawalProps | null
+  isCreateWithdrawalOpen: boolean
+  isDeleteWithdrawalOpen: boolean
+  setSelectedWithdrawal: Dispatch<
+    SetStateAction<SelectedWithdrawalProps | null>
+  >
+  setIsCreateWithdrawalOpen: Dispatch<SetStateAction<boolean>>
+  setIsDeleteWithdrawalOpen: Dispatch<SetStateAction<boolean>>
+  handleDeleteWithdrawal: (_withdrawal: SelectedWithdrawalProps) => void
 }
 
 const SAWithdrawalAuthContext = createContext({} as SAWithdrawalAuthContextData)
@@ -36,37 +42,27 @@ const SAWithdrawalAuthContext = createContext({} as SAWithdrawalAuthContextData)
 export function SAWithdrawalAuthProvider({
   children
 }: SAWithdrawalAuthProviderProps) {
-  const [isCreateContactOpen, setIsCreateContactOpen] = useState(false)
-  const [isUpdateContactOpen, setIsUpdateContactOpen] = useState(false)
-  const [isDeleteContactOpen, setIsDeleteContactOpen] = useState(false)
-  const [selectedContact, setSelectedContact] =
-    useState<SelectedContactProps | null>(null)
+  const [isCreateWithdrawalOpen, setIsCreateWithdrawalOpen] = useState(false)
+  const [isDeleteWithdrawalOpen, setIsDeleteWithdrawalOpen] = useState(false)
+  const [selectedWithdrawal, setSelectedWithdrawal] =
+    useState<SelectedWithdrawalProps | null>(null)
 
-  function handleEditContact(contact: SelectedContactProps) {
-    setSelectedContact(contact)
+  function handleDeleteWithdrawal(withdrawal: SelectedWithdrawalProps) {
+    setSelectedWithdrawal(withdrawal)
 
-    setIsUpdateContactOpen(true)
-  }
-
-  function handleDeleteContact(contact: SelectedContactProps) {
-    setSelectedContact(contact)
-
-    setIsDeleteContactOpen(true)
+    setIsDeleteWithdrawalOpen(true)
   }
 
   return (
     <SAWithdrawalAuthContext.Provider
       value={{
-        isCreateContactOpen,
-        setIsCreateContactOpen,
-        isUpdateContactOpen,
-        setIsUpdateContactOpen,
-        isDeleteContactOpen,
-        setIsDeleteContactOpen,
-        selectedContact,
-        setSelectedContact,
-        handleEditContact,
-        handleDeleteContact
+        isCreateWithdrawalOpen,
+        setIsCreateWithdrawalOpen,
+        isDeleteWithdrawalOpen,
+        setIsDeleteWithdrawalOpen,
+        selectedWithdrawal,
+        setSelectedWithdrawal,
+        handleDeleteWithdrawal
       }}
     >
       {children}

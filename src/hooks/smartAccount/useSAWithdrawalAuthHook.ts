@@ -1,47 +1,43 @@
-import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { useAuth } from '@contexts/AuthContext'
-import { useSAContacts } from '@contexts/SAContactsContext'
+import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
 import { useI18n } from '@hooks/useI18n'
-
-export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
 export const useSAWithdrawalAuthHook = () => {
   const { t } = useI18n()
   const { customer } = useAuth()
   const {
-    isCreateContactOpen,
-    setIsCreateContactOpen,
-    isUpdateContactOpen,
-    setIsUpdateContactOpen,
-    isDeleteContactOpen,
-    setIsDeleteContactOpen,
-    selectedContact,
-    setSelectedContact,
-    handleEditContact,
-    handleDeleteContact
-  } = useSAContacts()
+    isCreateWithdrawalOpen,
+    setIsCreateWithdrawalOpen,
+    isDeleteWithdrawalOpen,
+    setIsDeleteWithdrawalOpen,
+    selectedWithdrawal,
+    setSelectedWithdrawal,
+    handleDeleteWithdrawal
+  } = useSAWithdrawalAuth()
 
   const {
-    data: contacts,
+    data: withdrawals,
     isLoading,
     error
-  } = useSmartAccountContacts(customer?.id, !!customer)
+  } = useWithdrawalAuths(
+    customer?.id,
+    customer?.wallets.evm.address ?? '',
+    !!customer
+  )
 
   return {
     t,
     customer,
-    contacts,
+    withdrawals,
     isLoading,
     error,
-    isCreateContactOpen,
-    setIsCreateContactOpen,
-    isUpdateContactOpen,
-    setIsUpdateContactOpen,
-    isDeleteContactOpen,
-    setIsDeleteContactOpen,
-    selectedContact,
-    setSelectedContact,
-    handleEditContact,
-    handleDeleteContact
+    isCreateWithdrawalOpen,
+    setIsCreateWithdrawalOpen,
+    isDeleteWithdrawalOpen,
+    setIsDeleteWithdrawalOpen,
+    selectedWithdrawal,
+    setSelectedWithdrawal,
+    handleDeleteWithdrawal
   }
 }
