@@ -23,7 +23,7 @@ export const saWithdrawalAuth = {
   deleteAuthDesc: 'Tokenverse irá excluir a autorização do saque',
   deleteAuthButton: 'Excluir autorização',
   contactLabel: 'Contato',
-  contactPlaceholder: 'selecione um contato',
+  contactPlaceholder: 'Insira o endereço do contato',
   coinLabel: 'Moeda de saque',
   amountLabel: 'Quantidade',
   amountPlaceholder: 'Insira a quantidade de tokens',

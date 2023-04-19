@@ -1,16 +1,23 @@
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { ethers } from 'ethers'
 
-import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { useAuth } from '@contexts/AuthContext'
 import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
+import { ContactProps } from '@contexts/SAContactsContext'
 import { useI18n } from '@hooks/useI18n'
-import { useSmartAccountContacts } from '@/hooks/smartAccount/queries/useContacts'
+import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
 
 const createWithdrawalValidationSchema = z.object({
-  contactAddress: z.string().min(1, { message: 'contact required' }),
+  contactAddress: z.string().refine(address => {
+    const isAddressValid = ethers.utils.isAddress(address)
+
+    return isAddressValid
+  }, 'Invalid contact address'),
   coinSymbol: z.string().min(1, { message: 'coin required' }),
   amount: z
     .number({ invalid_type_error: 'min 0.1' })
@@ -58,10 +65,34 @@ export const useSAWithdrawalAuthHook = () => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm<CreateWithdrawalFieldValues>({
     resolver: zodResolver(createWithdrawalValidationSchema)
   })
+
+  const [searchContacts, setSearchContacts] = useState<
+    ContactProps[] | undefined
+  >(contacts)
+
+  useEffect(() => {
+    if (!contacts) return
+
+    setSearchContacts(contacts)
+  }, [contacts])
+
+  function handleInputChange(currentValue = '') {
+    if (!currentValue) {
+      setSearchContacts(contacts)
+      return
+    }
+
+    const searchResults = contacts?.filter(contact =>
+      contact.wallet.address.startsWith(currentValue)
+    )
+
+    setSearchContacts(searchResults)
+  }
 
   const onSubmitCreateWithdrawal: SubmitHandler<
     CreateWithdrawalFieldValues
@@ -72,6 +103,7 @@ export const useSAWithdrawalAuthHook = () => {
 
     try {
       reset()
+      setSearchContacts(contacts)
       setIsCreateWithdrawalOpen(false)
     } catch (e) {
       getWe3ErrorMessageWithToast(e, currentLocaleProps.id)
@@ -84,12 +116,16 @@ export const useSAWithdrawalAuthHook = () => {
     withdrawals,
     isLoading,
     error,
+    searchContacts,
+    setSearchContacts,
+    handleInputChange,
     contacts,
     contactsIsLoading,
     control,
     register,
     handleSubmit,
     errors,
+    setValue,
     isSubmitting,
     reset,
     onSubmitCreateWithdrawal,

@@ -72,7 +72,7 @@ function ContactsTableTr({
             <HoverCard.Root>
               <HoverCard.Trigger asChild>
                 <Link
-                  href={`https://goerli.etherscan.io/${contact.wallet.address}`}
+                  href={`https://etherscan.io/address/${contact.wallet.address}`}
                   target="_blank"
                 >
                   <ArrowSquareOut className="w-5 h-5" />

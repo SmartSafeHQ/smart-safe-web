@@ -15,11 +15,15 @@ export function CreateWithdrawalAuthModal() {
   const {
     t,
     contacts,
+    setSearchContacts,
     contactsIsLoading,
     control,
+    searchContacts,
+    handleInputChange,
     register,
     handleSubmit,
     errors,
+    setValue,
     isSubmitting,
     reset,
     onSubmitCreateWithdrawal,
@@ -35,6 +39,7 @@ export function CreateWithdrawalAuthModal() {
       onOpenChange={isOpen => {
         setIsCreateWithdrawalOpen(isOpen)
         reset()
+        setSearchContacts(contacts)
       }}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
@@ -49,56 +54,72 @@ export function CreateWithdrawalAuthModal() {
             onSubmit={handleSubmit(onSubmitCreateWithdrawal)}
             className="flex flex-col gap-6 items-stretch w-full"
           >
-            <Controller
-              name="contactAddress"
-              control={control}
-              render={({ field: { onChange, value, ref, ...props } }) => (
-                <SelectInput.Root
-                  {...props}
-                  onValueChange={onChange}
-                  value={value}
-                  ref={ref}
-                  className="w-full"
-                  labelText={t.saWithdrawalAuth.contactLabel}
+            <div className="flex flex-col gap-1 group">
+              <TextInput.Root
+                htmlFor="contactAddress"
+                variant="secondary"
+                error={errors.contactAddress?.message}
+                onClick={() =>
+                  document
+                    .getElementById('select-contact-id')
+                    ?.classList.remove('!hidden')
+                }
+              >
+                <TextInput.Label>
+                  {t.saWithdrawalAuth.contactLabel}
+                </TextInput.Label>
+
+                <Skeleton isLoading={contactsIsLoading} className="w-full h-12">
+                  {contacts && (
+                    <TextInput.Content>
+                      <TextInput.Input
+                        {...register('contactAddress')}
+                        required
+                        id="contactAddress"
+                        type="search"
+                        autoComplete="off"
+                        role="combobox"
+                        list=""
+                        placeholder={t.saWithdrawalAuth.contactPlaceholder}
+                        onChange={e => handleInputChange(e.target.value)}
+                      />
+                    </TextInput.Content>
+                  )}
+                </Skeleton>
+              </TextInput.Root>
+
+              <div className="relative w-full">
+                <ul
+                  id="select-contact-id"
+                  className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-gray-200 dark:bg-gray-900 rounded"
                 >
-                  <Skeleton
-                    isLoading={contactsIsLoading}
-                    className="w-full h-12"
-                  >
-                    {contacts && (
-                      <>
-                        <SelectInput.Trigger
-                          placeholder={t.saWithdrawalAuth.contactPlaceholder}
-                          className="min-h-[3rem] py-1 bg-gray-50 dark:bg-gray-900"
-                        />
+                  {searchContacts?.map(contact => (
+                    <li key={contact.name} className="min-h-[3rem]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setValue('contactAddress', contact.wallet.address)
+                          handleInputChange(contact.wallet.address)
 
-                        <SelectInput.Content className="bg-gray-50 dark:bg-gray-900">
-                          <SelectInput.Group>
-                            {contacts.map(contact => (
-                              <SelectInput.Item
-                                key={contact.id}
-                                value={contact.wallet.address}
-                                className="min-h-[3rem] py-2"
-                              >
-                                <div className="flex flex-col items-stretch justify-start gap-1">
-                                  <Text asChild className="text-start">
-                                    <strong>{contact.name}</strong>
-                                  </Text>
+                          document
+                            .getElementById('select-contact-id')
+                            ?.classList.add('!hidden')
+                        }}
+                        className="w-full flex flex-col items-stretch justify-start gap-1 p-2 outline-none ring-brand-foregroundAccent1 rounded transition-colors hover:bg-brand-foregroundAccent2 focus-within:bg-brand-foregroundAccent2 hover:!text-gray-50"
+                      >
+                        <Text asChild className="text-start">
+                          <strong>{contact.name}</strong>
+                        </Text>
 
-                                  <Text className="w-min text-sm capitalize text-gray-500 dark:text-gray-300">
-                                    {contact.wallet.formattedAddress}
-                                  </Text>
-                                </div>
-                              </SelectInput.Item>
-                            ))}
-                          </SelectInput.Group>
-                        </SelectInput.Content>
-                      </>
-                    )}
-                  </Skeleton>
-                </SelectInput.Root>
-              )}
-            />
+                        <Text className="w-min text-sm capitalize ">
+                          {contact.wallet.formattedAddress}
+                        </Text>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
             <Controller
               name="coinSymbol"

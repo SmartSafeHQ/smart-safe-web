@@ -42,17 +42,17 @@ export function DeleteWithdrawalAuthModal() {
     >
       <DialogModal.Content className="md:max-w-[36rem]">
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
-          <header className="w-full flex items-center flex-col gap-5 mb-6">
+          <header className="w-full flex flex-col items-stretch gap-5 mb-6">
             <DialogModal.Title className="text-3xl font-bold capitalize text-gray-800 dark:text-gray-50">
               {t.saWithdrawalAuth.deleteAuthTitle}
             </DialogModal.Title>
 
-            <DialogModal.Description className="text-lg text-center">
+            <DialogModal.Description className="text-gray-600 dark:text-gray-300">
               {t.saWithdrawalAuth.deleteAuthDesc}:
             </DialogModal.Description>
           </header>
 
-          <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-4">
+          <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-8">
             <div className="flex flex-col items-stretch justify-start gap-1">
               <Text asChild className="text-start">
                 <strong>{selectedWithdrawal.recipientName}</strong>
@@ -94,7 +94,7 @@ export function DeleteWithdrawalAuthModal() {
             </div>
           </div>
 
-          <div className="w-full flex items-center justify-center gap-4 mt-1">
+          <div className="w-full flex items-center justify-center gap-4">
             <DialogModal.Trigger>
               <Button className="w-full capitalize bg-transparent text-gray-800 dark:text-gray-50 border-2 border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-500">
                 {t.saWithdrawalAuth.cancel}

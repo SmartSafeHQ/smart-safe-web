@@ -5,6 +5,6 @@ export const saGlobal = {
     withdrawAuth: 'autorizar saque',
     paymentSchedule: 'agendar pagamento',
     streamPayments: 'streaming de pagamentos',
-    accountRecovery: 'recuper conta'
+    accountRecovery: 'recuperar conta'
   }
 }
