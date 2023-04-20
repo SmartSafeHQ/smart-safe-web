@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 import Image from 'next/image'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import { ReactNode, ThHTMLAttributes } from 'react'
 import { DotsThreeVertical } from 'phosphor-react'
 
@@ -11,6 +12,8 @@ import { DropdownMenu } from '@components/DropdownMenu'
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { useI18n } from '@hooks/useI18n'
 import { handleCopyToClipboard } from '@utils/global'
+
+dayjs.extend(utc)
 
 interface WithdrawalTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
@@ -43,7 +46,7 @@ function WithdrawalTableTr({
 }: WithdrawalTableTrProps) {
   const { t } = useI18n()
 
-  const formattedDate = dayjs(withdrawal.dateFrom).format('DD/MM/YYYY')
+  const formattedDate = dayjs(withdrawal.dateFrom).utc().format('DD/MM/YYYY')
 
   return (
     <tr className="font-medium border-b-1 border-gray-300 dark:border-gray-700">
