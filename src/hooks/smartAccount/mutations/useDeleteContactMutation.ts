@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
-import { SelectedContactProps } from '@contexts/SAContactsContext'
+import { ContactProps } from '@contexts/SAContactsContext'
 
 interface DeleteContactFunctionInput {
   customerId: number
@@ -25,13 +25,11 @@ export function useDeleteContactMutation() {
         queryKey: ['smartAccountContacts', variables.customerId]
       })
 
-      const prevContacts = await queryClient.ensureQueryData<
-        SelectedContactProps[]
-      >({
+      const prevContacts = await queryClient.ensureQueryData<ContactProps[]>({
         queryKey: ['smartAccountContacts', variables.customerId]
       })
 
-      queryClient.setQueryData<SelectedContactProps[]>(
+      queryClient.setQueryData<ContactProps[]>(
         ['smartAccountContacts', variables.customerId],
         () => {
           const deletedContactIndex = prevContacts.findIndex(

@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { tokenverseApi } from '@lib/axios'
-import { SelectedContactProps } from '@contexts/SAContactsContext'
+import { ContactProps } from '@contexts/SAContactsContext'
 
 interface CreateContactFunctionInput {
   customerId: number
@@ -43,9 +43,7 @@ export function useCreateContactMutation() {
         queryKey: ['smartAccountContacts', variables.customerId]
       })
 
-      const prevContacts = await queryClient.ensureQueryData<
-        SelectedContactProps[]
-      >({
+      const prevContacts = await queryClient.ensureQueryData<ContactProps[]>({
         queryKey: ['smartAccountContacts', variables.customerId]
       })
 
@@ -61,7 +59,7 @@ export function useCreateContactMutation() {
         }
       }
 
-      queryClient.setQueryData<SelectedContactProps[]>(
+      queryClient.setQueryData<ContactProps[]>(
         ['smartAccountContacts', variables.customerId],
         () => {
           prevContacts?.push(createdContact)

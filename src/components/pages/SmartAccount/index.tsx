@@ -38,7 +38,7 @@ function SmartAccountTabHeader({
     <header className="w-full border-b-1 border-b-gray-300 dark:border-b-gray-700">
       <div
         className={clsx(
-          'w-full pb-8 pt-10 flex flex-col relative justify-start items-stretch gap-3',
+          'w-full pb-8 pt-10 pr-2 flex flex-col relative justify-start items-stretch gap-3',
           className
         )}
         {...props}

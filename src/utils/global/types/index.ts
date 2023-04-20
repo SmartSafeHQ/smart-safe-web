@@ -32,6 +32,7 @@ export type CustomerProps = {
   name: string
   email: string
   wallets: {
+    smartAccountAddress: { address: string; formattedAddress: string }
     evm: WalletKeypair & { formattedAddress: string }
     solana: WalletKeypair & { formattedAddress: string }
     bitcoin: WalletKeypair & { formattedAddress: string }
@@ -40,6 +41,7 @@ export type CustomerProps = {
 
 export interface FetchEndUserWalletsResponse {
   id: number
+  smartAccountAddress: string
   evm: WalletKeypair[]
   solana: WalletKeypair[]
   bitcoin: WalletKeypair[]

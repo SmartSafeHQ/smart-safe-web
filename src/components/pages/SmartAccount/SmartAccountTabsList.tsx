@@ -35,14 +35,10 @@ export function SmartAccountTabsList() {
 
         <Tabs.Trigger
           value={SMART_ACCOUNT_TABS_VALUES.WITHDRAW_AUTH}
-          className="w-full max-w-[11rem] pointer-events-none"
-          disabled
+          className="max-w-[11rem]"
           asChild
         >
-          <Link
-            href="/dashboard/smart-account/withdraw-authorization"
-            aria-disabled
-          >
+          <Link href="/dashboard/smart-account/withdraw-authorization">
             <Text>{t.saGlobal.tabsList.withdrawAuth}</Text>
           </Link>
         </Tabs.Trigger>
