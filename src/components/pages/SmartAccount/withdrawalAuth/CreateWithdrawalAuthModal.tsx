@@ -80,6 +80,7 @@ export function CreateWithdrawalAuthModal() {
                         autoComplete="off"
                         role="combobox"
                         list=""
+                        autoFocus={true}
                         placeholder={t.saWithdrawalAuth.contactPlaceholder}
                         onChange={e => handleInputChange(e.target.value)}
                       />
@@ -91,7 +92,7 @@ export function CreateWithdrawalAuthModal() {
               <div className="relative w-full">
                 <ul
                   id="select-contact-id"
-                  className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-gray-200 dark:bg-gray-900 rounded"
+                  className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-gray-100 dark:bg-gray-900 rounded"
                 >
                   {searchContacts?.map(contact => (
                     <li key={contact.name} className="min-h-[3rem]">
@@ -182,8 +183,8 @@ export function CreateWithdrawalAuthModal() {
                   required
                   id="amount"
                   type="number"
-                  min={0.0}
-                  step={0.1}
+                  min={0.01}
+                  step={0.01}
                   placeholder={t.saWithdrawalAuth.amountPlaceholder}
                 />
               </TextInput.Content>
