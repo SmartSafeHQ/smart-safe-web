@@ -6,7 +6,7 @@ import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteContactMutation } from '@hooks/smartAccount/mutations/useDeleteContactMutation'
+import { useDeleteWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useDeleteWithdrawalAuthMutation'
 import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
 import { useI18n } from '@hooks/useI18n'
@@ -21,12 +21,18 @@ export function DeleteWithdrawalAuthModal() {
   } = useSAWithdrawalAuthHook()
   const { currentLocaleProps } = useI18n()
 
-  const { isLoading } = useDeleteContactMutation()
+  const { mutateAsync, isLoading } = useDeleteWithdrawalAuthMutation()
 
   async function handleConfirmDelete() {
     if (!customer || !selectedWithdrawal) return
 
     try {
+      await mutateAsync({
+        smartAccountAddress: customer.wallets.smartAccountAddress.address,
+        customerWalletPrivateKey: customer.wallets.evm.privateKey,
+        withdrawalIndex: selectedWithdrawal.index
+      })
+
       setIsDeleteWithdrawalOpen(false)
     } catch (e) {
       getWe3ErrorMessageWithToast(e, currentLocaleProps.id)
