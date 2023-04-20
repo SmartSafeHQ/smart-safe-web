@@ -86,6 +86,7 @@ function WithdrawalTableTr({
             alt={`${withdrawal.coin.symbol} avatar`}
             width={20}
             height={20}
+            className="w-5 h-5"
           />
         </div>
       </td>

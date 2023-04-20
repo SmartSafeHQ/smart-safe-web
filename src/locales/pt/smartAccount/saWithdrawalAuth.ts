@@ -28,5 +28,6 @@ export const saWithdrawalAuth = {
   amountLabel: 'Quantidade',
   amountPlaceholder: 'Insira a quantidade de tokens',
   fromLabel: 'A partir de',
-  fromPlaceholder: 'Insira a data de autorização'
+  fromPlaceholder: 'Insira a data de autorização',
+  coinNotFound: 'moeda não encontrada'
 }

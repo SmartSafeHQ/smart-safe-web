@@ -11,6 +11,7 @@ interface FetchAccountWalletsInput {
 
 export interface FetchAccountWalletsResponse {
   id: number
+  smartAccountAddress: { address: string; formattedAddress: string }
   evm: WalletKeypair & {
     formattedAddress: string
   }
@@ -33,10 +34,15 @@ export async function fetchAccountWallets({
     '/widget/wallets?privateKey=true'
   )
 
+  const smartAccountAddress = apiResponse.data.smartAccountAddress
   const evmAddresses = apiResponse.data.evm[0]
   const solanaAddresses = apiResponse.data.solana[0]
   const bitcoinAddresses = apiResponse.data.bitcoin[0]
 
+  const smartAccountFormattedAddress = formatWalletAddress({
+    walletAddress: smartAccountAddress,
+    network: 'evm'
+  })
   const evmFormattedAddress = formatWalletAddress({
     walletAddress: evmAddresses.address,
     network: 'evm'
@@ -52,6 +58,10 @@ export async function fetchAccountWallets({
 
   return {
     id: apiResponse.data.id,
+    smartAccountAddress: {
+      address: smartAccountAddress,
+      formattedAddress: smartAccountFormattedAddress
+    },
     evm: {
       address: evmAddresses.address,
       formattedAddress: evmFormattedAddress,
