@@ -11,6 +11,7 @@ import { TokenverseWidget } from '@components/TokenverseWidget'
 import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
 import { AppPropsWithLayout } from '@utils/global/types'
+import { WalletHeader } from '@/components/WalletHeader'
 
 Amplify.configure(amplifyConfig)
 
@@ -36,6 +37,8 @@ export default function App({
 
       <div className="min-w-screen min-h-screen flex flex-col">
         <LayoutComponent>
+          <WalletHeader />
+
           <Component {...pageProps} />
         </LayoutComponent>
       </div>

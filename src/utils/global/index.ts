@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios'
 import { toast, ToastPosition } from 'react-toastify'
 
-export function handleCopyToClipboard(contentToCopy: string) {
-  navigator.clipboard.writeText(contentToCopy)
+export async function handleCopyToClipboard(contentToCopy: string) {
+  await navigator.clipboard.writeText(contentToCopy)
 }
 
 export function handleCopyToClipboardToastMessage(
