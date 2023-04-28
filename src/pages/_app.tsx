@@ -1,19 +1,15 @@
 import { Fragment } from 'react'
 import Head from 'next/head'
-import { Amplify } from 'aws-amplify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
-import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
-import { TokenverseWidget } from '@components/TokenverseWidget'
-
-import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
 import { AppPropsWithLayout } from '@utils/global/types'
-import { WalletHeader } from '@/components/WalletHeader'
 
-Amplify.configure(amplifyConfig)
+import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
+import { WalletHeader } from '@components/WalletHeader'
+import { TokenverseWidget } from '@components/TokenverseWidget'
 
 export default function App({
   Component,

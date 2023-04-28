@@ -13,7 +13,6 @@
     "postinstall": "npm run typechain"
   },
   "dependencies": {
-    "@aws-amplify/cli": "^11.0.2",
     "@hookform/resolvers": "^2.9.10",
     "@json-rpc-tools/utils": "^1.7.6",
     "@next/font": "13.1.4",
@@ -47,7 +46,7 @@
     "@web3-onboard/react": "^2.8.0",
     "@web3-onboard/trezor": "^2.4.0",
     "@web3-onboard/walletconnect": "^2.3.6",
-    "aws-amplify": "^5.0.15",
+    "aws-amplify": "^5.1.4",
     "axios": "^1.2.3",
     "bitcoinjs-lib": "^6.1.0",
     "clsx": "^1.2.1",
