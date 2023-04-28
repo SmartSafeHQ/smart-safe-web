@@ -27,7 +27,7 @@ const Settings = () => {
   }, [tab])
 
   return (
-    <div className="flex flex-1 flex-col items-center px-2 pt-6 bg-gray-50 dark:bg-gray-900">
+    <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
       <Head>
         <title>{t.settings.security.headTitle}</title>
         <meta

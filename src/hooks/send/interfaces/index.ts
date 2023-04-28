@@ -9,6 +9,8 @@ export interface CoinProps {
   explorerUrl: string
   networkName: string
   networkType: SupportedNetworks
+  contractAddress?: string
+  contractName?: string
 }
 
 export interface FormData {

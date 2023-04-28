@@ -91,7 +91,7 @@ export function SendScreen() {
                 { 'animate-pulse': coinInUsdIsFetching }
               )}
             >
-              {amounInReverseCoin.toFixed(amountInputType.decimals)}{' '}
+              {amounInReverseCoin.toFixed(amountInputType.decimals) || 0}{' '}
               {amountInputType?.reverseSymbol}
             </Text>
           </TextInput.Content>

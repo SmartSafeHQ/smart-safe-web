@@ -1,18 +1,15 @@
 import { Fragment } from 'react'
 import Head from 'next/head'
-import { Amplify } from 'aws-amplify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
-import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
-import { TokenverseWidget } from '@components/TokenverseWidget'
-
-import { amplifyConfig } from '@lib/amplify'
 import { AppProvider } from '@contexts/index'
 import { AppPropsWithLayout } from '@utils/global/types'
 
-Amplify.configure(amplifyConfig)
+import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
+import { WalletHeader } from '@components/WalletHeader'
+import { TokenverseWidget } from '@components/TokenverseWidget'
 
 export default function App({
   Component,
@@ -36,6 +33,8 @@ export default function App({
 
       <div className="min-w-screen min-h-screen flex flex-col">
         <LayoutComponent>
+          <WalletHeader />
+
           <Component {...pageProps} />
         </LayoutComponent>
       </div>

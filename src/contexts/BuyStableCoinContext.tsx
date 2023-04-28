@@ -7,35 +7,26 @@ import {
   useState
 } from 'react'
 
+import { ACCEPTED_CURRENCIES } from '@utils/stableCoinsUtils'
 import {
-  ACCEPTED_CURRENCIES,
-  ACCEPTED_TOKENS,
-  CurrencySymbol,
-  TokenSymbol
-} from '@utils/stableCoinsUtils'
+  STABLE_COINS,
+  CurrencySymbols,
+  StableCoinsProps
+} from '@utils/global/coins/stableCoinsConfig'
 
 type BuyStableCoinProviderProps = PropsWithChildren<Record<string, unknown>>
 
 interface CurrencyProps {
   amount: number
-  symbol: CurrencySymbol
+  symbol: CurrencySymbols
   currency: string
-}
-
-interface TokenProps {
-  symbol: TokenSymbol
-  avatar: string
-  parityCurrencySymbol: CurrencySymbol
-  contractAddress: string
-  contractName: string
-  networkRpcUrl: string
 }
 
 type BuyStableCoinContextData = {
   currency: CurrencyProps
-  token: TokenProps
+  token: StableCoinsProps
   setCurrency: Dispatch<SetStateAction<CurrencyProps>>
-  setToken: Dispatch<SetStateAction<TokenProps>>
+  setToken: Dispatch<SetStateAction<StableCoinsProps>>
 }
 
 const BuyStableCoinContext = createContext({} as BuyStableCoinContextData)
@@ -48,7 +39,7 @@ export function BuyStableCoinProvider({
     symbol: ACCEPTED_CURRENCIES[0].symbol,
     currency: ACCEPTED_CURRENCIES[0].currency
   })
-  const [token, setToken] = useState<TokenProps>(ACCEPTED_TOKENS[0])
+  const [token, setToken] = useState<StableCoinsProps>(STABLE_COINS[0])
 
   return (
     <BuyStableCoinContext.Provider

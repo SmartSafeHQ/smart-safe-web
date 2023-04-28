@@ -41,7 +41,7 @@ function DropdownMenuContent({
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.Content
         className={clsx(
-          'w-[100vw] min-w-[15rem] pb-4 bg-gray-50 dark:bg-gray-800 rounded-md shadow-md animate-dropdown-menu-open md:w-full',
+          'bg-gray-50 dark:bg-gray-800 rounded-md shadow-md animate-dropdown-menu-open',
           className
         )}
         sideOffset={5}
@@ -90,7 +90,7 @@ function DropdownMenuItem({
   return (
     <RadixDropdownMenu.Item
       className={clsx(
-        'relative flex items-center justify-start gap-4 px-6 py-3 select-none outline-none text-base font-medium capitalize dark:text-cyan-50 cursor-pointer hover:bg-gray-300 hover:dark:bg-gray-900',
+        'relative flex items-center justify-start gap-4 select-none outline-none text-base font-medium capitalize cursor-pointer dark:text-gray-50 hover:bg-gray-200 hover:dark:bg-gray-700 hover:dark:bg-opacity-40',
         {
           'pointer-events-none text-gray-400 [&>*]:text-brand-foreground dark:brightness-50 dark:text-cyan-50':
             isDisabled

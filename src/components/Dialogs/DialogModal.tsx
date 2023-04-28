@@ -115,7 +115,7 @@ function DialogModalContent({
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-10 p-0 md:p-8">
         <RadixDialog.Content
           className={clsx(
-            'w-full h-full max-w-full bg-gray-100 dark:bg-gray-800 shadow-lg text-gray-50 animate-dialog-open md:rounded-md md:h-max',
+            'w-full h-full max-w-full bg-gray-200 dark:bg-gray-800 shadow-lg animate-dialog-open md:rounded-md md:h-max',
             className
           )}
           {...props}

@@ -22,6 +22,10 @@ export async function fetchCoinValueInUsd({
     throw new Error('coinSymbol is required')
   }
 
+  if (coinSymbol === 'ibrl' || coinSymbol === 'ieur') {
+    return { valueInUsd: 0 }
+  }
+
   const reqUrl = getCoinPriceUrl(coinSymbol)
 
   const response = await axios.get<GetCoinPricesResponse>(reqUrl)

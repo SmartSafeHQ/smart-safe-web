@@ -1,48 +1,40 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { ReactElement } from 'react'
 
-import { useI18n } from '@hooks/useI18n'
-import { SellContextProvider } from '@contexts/pages/SellContext'
+import { Heading } from '@components/Heading'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
+import { SelectCoinSellForm } from '@components/pages/BuyAndSell/Sell/SelectCoinSellForm'
 
-import { Withdraw } from '@/components/pages/BuyAndSell/Sell/subpages/Withdraw'
-import { BankAccountData } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountData'
-import { StableCoinAmount } from '@/components/pages/BuyAndSell/Sell/subpages/StableCoinAmount'
-import { BankAccountDataConfirmation } from '@/components/pages/BuyAndSell/Sell/subpages/BankAccountDataConfirmation'
-
-export type Screens =
-  | 'stable-coin-amount'
-  | 'bank-account-data'
-  | 'bank-account-data-confirmation'
-  | 'withdraw'
+import { useSelectSellCoin } from '@hooks/buyAndSell/sell/useSelectSellCoin'
+import { SellStableCoinContextProvider } from '@contexts/SellStableCoinContext'
 
 const Sell = () => {
-  const [currentScreen, setCurrentScreen] =
-    useState<Screens>('stable-coin-amount')
-
-  const { t } = useI18n()
+  const { t } = useSelectSellCoin()
 
   return (
-    <div className="flex flex-1 flex-col items-center px-4 pt-6 bg-gray-50 dark:bg-gray-900 md:px-8">
+    <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-8 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
-        <title>{t.buyAndSell.sell.headTitle}</title>
-        <meta name="description" content={t.buyAndSell.sell.headDescription} />
+        <title>{t.sellStableCoin.headTitle}</title>
+        <meta name="description" content={t.sellStableCoin.headDescription} />
       </Head>
 
-      <SellContextProvider>
-        <div className="w-full max-w-[500px] flex flex-1 flex-col items-stretch gap-6 pt-10">
-          {currentScreen === 'stable-coin-amount' ? (
-            <StableCoinAmount setCurrentScreen={setCurrentScreen} />
-          ) : currentScreen === 'bank-account-data' ? (
-            <BankAccountData setCurrentScreen={setCurrentScreen} />
-          ) : currentScreen === 'bank-account-data-confirmation' ? (
-            <BankAccountDataConfirmation setCurrentScreen={setCurrentScreen} />
-          ) : (
-            <Withdraw setCurrentScreen={setCurrentScreen} />
-          )}
-        </div>
-      </SellContextProvider>
+      <div className="w-full flex justify-start items-stretch">
+        <BackLink href="/dashboard/buy-and-sell" />
+      </div>
+
+      <div className="w-full max-w-lg flex flex-1 flex-col gap-10">
+        <Heading asChild className="text-gray-800 dark:text-gray-50 text-4xl">
+          <h1>{t.sellStableCoin.headings.sell}</h1>
+        </Heading>
+
+        <SelectCoinSellForm />
+      </div>
     </div>
   )
+}
+
+Sell.getLayout = function getLayout(page: ReactElement) {
+  return <SellStableCoinContextProvider>{page}</SellStableCoinContextProvider>
 }
 
 export default Sell

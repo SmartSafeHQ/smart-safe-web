@@ -1,4 +1,4 @@
-interface NetworkSettings {
+export interface NetworkSettings {
   symbol: string
   networkName: string
   networkType: 'solana' | 'evm' | 'bitcoin'

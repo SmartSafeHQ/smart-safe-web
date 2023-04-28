@@ -4,7 +4,7 @@ import { ReactElement } from 'react'
 import Image from 'next/image'
 import { CaretRight, QrCode } from 'phosphor-react'
 
-import { BackLink } from '@components/pages/BuyAndSell/Buy/BackLink'
+import { BackLink } from '@components/pages/BuyAndSell/BackLink'
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
@@ -29,7 +29,7 @@ const BuySelectMethod = () => {
   if (currency.amount <= 0)
     return (
       <ErrorState
-        title={t.buyAndSell.buy.noAmountError}
+        title={t.buyStableCoin.noAmountError}
         className="flex-1 p-12"
       />
     )
@@ -37,8 +37,8 @@ const BuySelectMethod = () => {
   return (
     <div className="w-full flex flex-1 flex-col items-center justify-center px-4 pt-8 gap-8 bg-gray-50 dark:bg-gray-900 md:px-8">
       <Head>
-        <title>{t.buyAndSell.buy.headTitle}</title>
-        <meta name="description" content={t.buyAndSell.buy.headDescription} />
+        <title>{t.buyStableCoin.headTitle}</title>
+        <meta name="description" content={t.buyStableCoin.headDescription} />
       </Head>
 
       <div className="w-full flex justify-start items-stretch">
@@ -50,7 +50,7 @@ const BuySelectMethod = () => {
           asChild
           className="max-w-sm text-gray-800 dark:text-gray-50 text-2xl md:max-w-xl sm:text-3xl md:text-4xl"
         >
-          <h1>{t.buyAndSell.buy.selectMethod}</h1>
+          <h1>{t.buyStableCoin.selectMethod}</h1>
         </Heading>
 
         <section className="w-full flex flex-col items-stretch">
@@ -60,7 +60,7 @@ const BuySelectMethod = () => {
                 asChild
                 className="capitalize font-medium text-gray-500 dark:text-gray-300"
               >
-                <strong>{t.buyAndSell.buy.purchase}</strong>
+                <strong>{t.buyStableCoin.purchase}</strong>
               </Text>
 
               <div className="flex items-center justify-start gap-2">
@@ -90,7 +90,7 @@ const BuySelectMethod = () => {
                 </Text>
 
                 <Text className="text-xs md:text-sm text-gray-500 dark:text-gray-300">
-                  {t.buyAndSell.buy.pixDesc}
+                  {t.buyStableCoin.pixDesc}
                 </Text>
               </div>
 

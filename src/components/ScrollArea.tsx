@@ -12,7 +12,7 @@ export function ScrollArea({ children, className, ...props }: ScrollAreaProps) {
       className={clsx(`w-full overflow-hidden`, className)}
       {...props}
     >
-      <RadixScrollArea.Viewport className="w-full h-full flex flex-1 [&>div]:!block">
+      <RadixScrollArea.Viewport className="w-full h-full flex flex-1 [&>div]:!block px-[0.1rem] pt-[0.1rem]">
         {children}
       </RadixScrollArea.Viewport>
 

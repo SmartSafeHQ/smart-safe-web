@@ -31,7 +31,7 @@ function TextInputRoot({
         'flex flex-col gap-2 [&>div:has(input)]:bg-gray-200 [&>div:has(input)]:dark:bg-gray-800',
         {
           '[&>div:has(input)]:ring-2 [&>div:has(input)]:ring-red-500': !!error,
-          '[&>div:has(input)]:!bg-gray-50 [&>div:has(input)]:dark:!bg-gray-900':
+          '[&>div:has(input)]:!bg-gray-100 [&>div:has(input)]:dark:!bg-gray-900':
             variant === 'secondary'
         },
         className

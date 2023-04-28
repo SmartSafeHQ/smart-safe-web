@@ -1,7 +1,8 @@
+import { AxiosError } from 'axios'
 import { toast, ToastPosition } from 'react-toastify'
 
-export function handleCopyToClipboard(contentToCopy: string) {
-  navigator.clipboard.writeText(contentToCopy)
+export async function handleCopyToClipboard(contentToCopy: string) {
+  await navigator.clipboard.writeText(contentToCopy)
 }
 
 export function handleCopyToClipboardToastMessage(
@@ -21,4 +22,16 @@ export function handleCopyToClipboardToastMessage(
 
 export function formatCurrencyToNumber(currency: string) {
   return Number(currency.replace(/[^0-9.]+/g, ''))
+}
+
+export function getAxiosErrorMessageWithToast(error: unknown) {
+  let errorMessage = (error as Error).message
+
+  if (error instanceof AxiosError && error?.response?.data) {
+    errorMessage = error.response.data?.message
+  }
+
+  toast.error(errorMessage)
+
+  return errorMessage
 }

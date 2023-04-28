@@ -21,9 +21,36 @@ export const useReceive = () => {
       customer?.wallets.solana.address &&
       customer?.wallets.evm.address
     ) {
-      return coinsData.coins.map(({ avatar, networkName, networkType }) => {
-        if (networkType === 'solana') {
-          const wallet = customer.wallets.solana.address
+      return coinsData.nativeTokens.map(
+        ({ avatar, networkName, networkType }) => {
+          if (networkType === 'solana') {
+            const wallet = customer.wallets.solana.address
+            return {
+              icon: avatar,
+              network: networkName,
+              formattedWallet: formatWalletAddress({
+                network: networkType,
+                walletAddress: wallet
+              }),
+              wallet
+            }
+          }
+
+          if (networkType === 'bitcoin') {
+            const wallet = customer.wallets.bitcoin.address
+
+            return {
+              icon: avatar,
+              network: networkName,
+              formattedWallet: formatWalletAddress({
+                network: networkType,
+                walletAddress: wallet
+              }),
+              wallet
+            }
+          }
+
+          const wallet = customer?.wallets.evm.address
           return {
             icon: avatar,
             network: networkName,
@@ -34,32 +61,7 @@ export const useReceive = () => {
             wallet
           }
         }
-
-        if (networkType === 'bitcoin') {
-          const wallet = customer.wallets.bitcoin.address
-
-          return {
-            icon: avatar,
-            network: networkName,
-            formattedWallet: formatWalletAddress({
-              network: networkType,
-              walletAddress: wallet
-            }),
-            wallet
-          }
-        }
-
-        const wallet = customer?.wallets.evm.address
-        return {
-          icon: avatar,
-          network: networkName,
-          formattedWallet: formatWalletAddress({
-            network: networkType,
-            walletAddress: wallet
-          }),
-          wallet
-        }
-      })
+      )
     }
 
     return [{ network: '', icon: '', wallet: '', formattedWallet: '' }]

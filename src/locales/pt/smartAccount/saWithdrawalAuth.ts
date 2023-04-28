@@ -1,0 +1,33 @@
+export const saWithdrawalAuth = {
+  headTitle: 'InWallet | Autorização de Saque na conta inteligente',
+  headDescription: 'Autorização de Saques cadastrados em sua conta inteligente',
+  title: 'Autorização de Saque',
+  description:
+    'Beneficiários acessarem fundos sem coletar todas as assinaturas',
+  addAuth: 'Adicionar autorização',
+  loadingAuth: 'Carregando as autorizações',
+  authListError:
+    'Não foi possivel carregar suas autorizações de saque, tente novamente',
+  noItemsTitle: 'Nenhuma autorizações de saque cadastrada!',
+  recipient: 'beneficiário',
+  withdrawalAllowed: 'saque permitido',
+  from: 'A partir de',
+  copyAddr: 'copiar endereço',
+  to: 'até',
+  menuAriaLabel: 'Opções de gerenciamento de autorização de saque',
+  delete: 'excluir',
+  cancel: 'cancelar',
+  createAuthTitle: 'Criar autorização de saque',
+  createAuthButton: 'Criar autorização',
+  deleteAuthTitle: 'Excluir autorização',
+  deleteAuthDesc: 'Tokenverse irá excluir a autorização do saque',
+  deleteAuthButton: 'Excluir autorização',
+  contactLabel: 'Contato',
+  contactPlaceholder: 'Insira o endereço do contato',
+  coinLabel: 'Moeda de saque',
+  amountLabel: 'Quantidade',
+  amountPlaceholder: 'Insira a quantidade de tokens',
+  fromLabel: 'A partir de',
+  fromPlaceholder: 'Insira a data de autorização',
+  coinNotFound: 'moeda não encontrada'
+}
