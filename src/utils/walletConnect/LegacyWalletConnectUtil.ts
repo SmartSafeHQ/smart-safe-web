@@ -127,6 +127,7 @@ const onCallRequest = async ({
       const requestEvent = {
         id,
         topic: '',
+        context: {},
         params: {
           request: { method, params },
           chainId: '1'
@@ -139,19 +140,26 @@ const onCallRequest = async ({
         message = utils.toUtf8String(message)
       }
 
-      const response = await approveEIP155Request(
+      console.log(
+        setSessionSignData,
         walletPrivateKey,
-        requestEvent
+        requestEvent,
+        approveEIP155Request
       )
 
-      setSessionSignData({
-        id,
-        topic: requestEvent.topic,
-        blockchains: 'ethereum',
-        isModalOpen: true,
-        message,
-        signResponse: response
-      })
+      // const response = await approveEIP155Request(
+      //   walletPrivateKey,
+      //   requestEvent
+      // )
+
+      // setSessionSignData({
+      //   id,
+      //   topic: requestEvent.topic,
+      //   blockchains: 'ethereum',
+      //   isModalOpen: true,
+      //   message,
+      //   signResponse: response
+      // })
 
       return
     }
