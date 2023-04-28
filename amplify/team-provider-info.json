@@ -1,0 +1,23 @@
+{
+  "prod": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartsafeweb-prod-175247-authRole",
+      "UnauthRoleArn": "arn:aws:iam::639881870935:role/amplify-smartsafeweb-prod-175247-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::639881870935:role/amplify-smartsafeweb-prod-175247-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-smartsafeweb-prod-175247-deployment",
+      "UnauthRoleName": "amplify-smartsafeweb-prod-175247-unauthRole",
+      "StackName": "amplify-smartsafeweb-prod-175247",
+      "StackId": "arn:aws:cloudformation:us-east-1:639881870935:stack/amplify-smartsafeweb-prod-175247/a5ae4fd0-e606-11ed-9284-0e3cc3fc9e57",
+      "AmplifyAppId": "d18yl5avoaduts"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d18yl5avoaduts",
+          "type": "cicd"
+        }
+      }
+    }
+  }
+}
