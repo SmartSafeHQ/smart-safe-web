@@ -9,7 +9,6 @@ import { AppPropsWithLayout } from '@utils/global/types'
 
 import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
 import { WalletHeader } from '@components/WalletHeader'
-import { TokenverseWidget } from '@components/TokenverseWidget'
 
 export default function App({
   Component,
@@ -28,8 +27,6 @@ export default function App({
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-
-      <TokenverseWidget />
 
       <div className="min-w-screen min-h-screen flex flex-col">
         <LayoutComponent>
