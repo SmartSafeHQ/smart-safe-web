@@ -82,7 +82,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     chainId: 42220,
     rpcUrl: 'https://forno.celo.org/',
     explorerUrl: 'https://explorer.celo.org/',
-    scanUrl: `https://explorer.celo.org/mainnet/api`
+    scanUrl: 'https://explorer.celo.org/mainnet/api'
   },
   {
     symbol: 'avax',
