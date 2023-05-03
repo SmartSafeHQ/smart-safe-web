@@ -8,7 +8,6 @@ import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
 import { ContactProps } from '@contexts/SAContactsContext'
-import { useI18n } from '@hooks/useI18n'
 import { handleCopyToClipboard } from '@utils/global'
 
 interface ContactsTableThProps extends ThHTMLAttributes<HTMLTableCellElement> {
@@ -41,8 +40,6 @@ function ContactsTableTr({
   handleEditContact,
   handleDeleteContact
 }: ContactsTableTrProps) {
-  const { t } = useI18n()
-
   return (
     <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-gray-300 dark:border-gray-700">
       <td className="pl-2 py-3">
@@ -64,7 +61,7 @@ function ContactsTableTr({
               </HoverCard.Trigger>
 
               <HoverCard.Content className="text-sm">
-                {t.saContacts.copyAddr}
+                copy address
                 <HoverCard.Arrow />
               </HoverCard.Content>
             </HoverCard.Root>
@@ -80,7 +77,7 @@ function ContactsTableTr({
               </HoverCard.Trigger>
 
               <HoverCard.Content className="text-sm">
-                {t.saContacts.seeExplorer}
+                see on explore
                 <HoverCard.Arrow />
               </HoverCard.Content>
             </HoverCard.Root>
@@ -92,7 +89,7 @@ function ContactsTableTr({
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <button
-              aria-label={t.saContacts.menuAriaLabel}
+              aria-label="Manage contacts option"
               className="p-1 rounded-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
             >
               <DotsThreeVertical className="w-6 h-6" />
@@ -108,16 +105,14 @@ function ContactsTableTr({
               onSelect={() => handleEditContact(contact)}
               className="px-3 py-2 rounded-md text-sm"
             >
-              {t.saContacts.edit}
+              edit
             </DropdownMenu.Item>
 
             <DropdownMenu.Item
               onSelect={() => handleDeleteContact(contact)}
               className="px-3 py-2 rounded-md text-sm"
             >
-              <Text className="text-sm text-red-500">
-                {t.saContacts.delete}
-              </Text>
+              <Text className="text-sm text-red-500">delete</Text>
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>

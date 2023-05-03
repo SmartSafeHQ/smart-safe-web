@@ -13,7 +13,6 @@ import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 
 export function CreateWithdrawalAuthModal() {
   const {
-    t,
     contacts,
     setSearchContacts,
     contactsIsLoading,
@@ -46,7 +45,7 @@ export function CreateWithdrawalAuthModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-              {t.saWithdrawalAuth.createAuthTitle}
+              Create withdrawal authorization
             </DialogModal.Title>
           </header>
 
@@ -65,9 +64,7 @@ export function CreateWithdrawalAuthModal() {
                     ?.classList.remove('!hidden')
                 }
               >
-                <TextInput.Label>
-                  {t.saWithdrawalAuth.contactLabel}
-                </TextInput.Label>
+                <TextInput.Label>Contact</TextInput.Label>
 
                 <Skeleton isLoading={contactsIsLoading} className="w-full h-12">
                   {contacts && (
@@ -81,7 +78,7 @@ export function CreateWithdrawalAuthModal() {
                         role="combobox"
                         list=""
                         autoFocus={true}
-                        placeholder={t.saWithdrawalAuth.contactPlaceholder}
+                        placeholder="Enter contact address"
                         onChange={e => handleInputChange(e.target.value)}
                       />
                     </TextInput.Content>
@@ -133,7 +130,7 @@ export function CreateWithdrawalAuthModal() {
                   value={value}
                   ref={ref}
                   className="w-full"
-                  labelText={t.saWithdrawalAuth.coinLabel}
+                  labelText="Withdrawal currency"
                 >
                   <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-50 dark:bg-gray-900" />
 
@@ -171,9 +168,7 @@ export function CreateWithdrawalAuthModal() {
               variant="secondary"
               error={errors.amount?.message}
             >
-              <TextInput.Label>
-                {t.saWithdrawalAuth.amountLabel}
-              </TextInput.Label>
+              <TextInput.Label>Amount</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Input
@@ -185,7 +180,7 @@ export function CreateWithdrawalAuthModal() {
                   type="number"
                   min={0.01}
                   step={0.01}
-                  placeholder={t.saWithdrawalAuth.amountPlaceholder}
+                  placeholder="Enter the amount of tokens"
                 />
               </TextInput.Content>
             </TextInput.Root>
@@ -195,7 +190,7 @@ export function CreateWithdrawalAuthModal() {
               variant="secondary"
               error={errors.fromDate?.message}
             >
-              <TextInput.Label>{t.saWithdrawalAuth.fromLabel}</TextInput.Label>
+              <TextInput.Label>From date</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Input
@@ -207,13 +202,13 @@ export function CreateWithdrawalAuthModal() {
                   type="date"
                   min={isoDateNow}
                   defaultValue={isoDateNow}
-                  placeholder={t.saWithdrawalAuth.fromPlaceholder}
+                  placeholder="Enter the authorization date"
                 />
               </TextInput.Content>
             </TextInput.Root>
 
             <Button type="submit" isLoading={isSubmitting} className="mt-1">
-              {t.saWithdrawalAuth.createAuthButton}
+              Create Authorization
             </Button>
           </form>
         </div>

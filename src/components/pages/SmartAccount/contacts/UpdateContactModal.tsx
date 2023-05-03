@@ -30,7 +30,6 @@ export type FieldValues = z.infer<typeof validationSchema>
 
 export function UpdateContactModal() {
   const {
-    t,
     customer,
     selectedContact,
     isUpdateContactOpen,
@@ -85,7 +84,7 @@ export function UpdateContactModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-              {t.saContacts.updateContactTitle}
+              Update contact
             </DialogModal.Title>
           </header>
 
@@ -94,7 +93,7 @@ export function UpdateContactModal() {
             className="flex flex-col gap-4 items-stretch w-full"
           >
             <Text className="capitalize text-gray-600 dark:text-gray-300">
-              {t.saContacts.wallet}: {selectedContact?.wallet.formattedAddress}
+              wallet: {selectedContact?.wallet.formattedAddress}
             </Text>
 
             <TextInput.Root
@@ -102,7 +101,7 @@ export function UpdateContactModal() {
               variant="secondary"
               error={errors.name?.message}
             >
-              <TextInput.Label>{t.saContacts.nameLabel}</TextInput.Label>
+              <TextInput.Label>Name</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Icon>
@@ -113,13 +112,13 @@ export function UpdateContactModal() {
                   {...register('name')}
                   required
                   id="name"
-                  placeholder={t.saContacts.namePlaceholder}
+                  placeholder="Enter the contact name"
                 />
               </TextInput.Content>
             </TextInput.Root>
 
             <Button type="submit" isLoading={isSubmitting} className="mt-1">
-              {t.saContacts.updateContactButton}
+              Update contact
             </Button>
           </form>
         </div>

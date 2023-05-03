@@ -33,7 +33,7 @@ const validationSchema = z.object({
 export type FieldValues = z.infer<typeof validationSchema>
 
 export function CreateContactModal() {
-  const { t, customer, isCreateContactOpen, setIsCreateContactOpen } =
+  const { customer, isCreateContactOpen, setIsCreateContactOpen } =
     useSAContactsHook()
   const { mutateAsync } = useCreateContactMutation()
 
@@ -73,7 +73,7 @@ export function CreateContactModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
             <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
-              {t.saContacts.createContactTitle}
+              Create contact
             </DialogModal.Title>
           </header>
 
@@ -86,7 +86,7 @@ export function CreateContactModal() {
               variant="secondary"
               error={errors.name?.message}
             >
-              <TextInput.Label>{t.saContacts.nameLabel}</TextInput.Label>
+              <TextInput.Label>Name</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Icon>
@@ -97,7 +97,7 @@ export function CreateContactModal() {
                   {...register('name')}
                   required
                   id="name"
-                  placeholder={t.saContacts.namePlaceholder}
+                  placeholder="Enter the contact name"
                 />
               </TextInput.Content>
             </TextInput.Root>
@@ -107,7 +107,7 @@ export function CreateContactModal() {
               variant="secondary"
               error={errors.address?.message}
             >
-              <TextInput.Label>{t.saContacts.addressLabel}</TextInput.Label>
+              <TextInput.Label>Wallet address</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Icon>
@@ -118,13 +118,13 @@ export function CreateContactModal() {
                   {...register('address')}
                   required
                   id="address"
-                  placeholder={t.saContacts.addressPlaceholder}
+                  placeholder="Enter the wallet address"
                 />
               </TextInput.Content>
             </TextInput.Root>
 
             <Button type="submit" isLoading={isSubmitting} className="mt-1">
-              {t.saContacts.createContactButton}
+              Create contact
             </Button>
           </form>
         </div>

@@ -16,13 +16,16 @@ import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuth
 import { SAWithdrawalAuthProvider } from '@contexts/SAWithdrawalAuthContext'
 
 const WithdrawalAuthorization = () => {
-  const { t, setIsCreateWithdrawalOpen } = useSAWithdrawalAuthHook()
+  const { setIsCreateWithdrawalOpen } = useSAWithdrawalAuthHook()
 
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
       <Head>
-        <title>{t.saWithdrawalAuth.headTitle}</title>
-        <meta name="description" content={t.saWithdrawalAuth.headDescription} />
+        <title>InWallet | Withdrawal Authorization for Smart Account</title>
+        <meta
+          name="description"
+          content="Withdrawal authorization for withdrawals registered in your smart account"
+        />
       </Head>
 
       <div className="w-full flex flex-1 flex-col items-stretch">
@@ -35,11 +38,12 @@ const WithdrawalAuthorization = () => {
                 <div className="w-full flex flex-col items-stretch justify-between gap-4 md:flex-row md:items-center">
                   <div className="flex flex-col relative justify-start items-stretch gap-3">
                     <SmartAccountTab.Title>
-                      {t.saWithdrawalAuth.title}
+                      Withdrawal Authorization
                     </SmartAccountTab.Title>
 
                     <SmartAccountTab.Description>
-                      {t.saWithdrawalAuth.description}
+                      Set rules for beneficiaries to access funds without having
+                      to collect all signatures
                     </SmartAccountTab.Description>
                   </div>
 
@@ -47,7 +51,7 @@ const WithdrawalAuthorization = () => {
                     className="w-max"
                     onClick={() => setIsCreateWithdrawalOpen(true)}
                   >
-                    {t.saWithdrawalAuth.addAuth}
+                    Add Authorization
                   </Button>
                 </div>
               </SmartAccountTab.Header>

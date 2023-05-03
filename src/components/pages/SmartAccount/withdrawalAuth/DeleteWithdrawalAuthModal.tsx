@@ -9,17 +9,14 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { useDeleteWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useDeleteWithdrawalAuthMutation'
 import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
-import { useI18n } from '@hooks/useI18n'
 
 export function DeleteWithdrawalAuthModal() {
   const {
-    t,
     customer,
     selectedWithdrawal,
     isDeleteWithdrawalOpen,
     setIsDeleteWithdrawalOpen
   } = useSAWithdrawalAuthHook()
-  const { currentLocaleProps } = useI18n()
 
   const { mutateAsync, isLoading } = useDeleteWithdrawalAuthMutation()
 
@@ -35,7 +32,7 @@ export function DeleteWithdrawalAuthModal() {
 
       setIsDeleteWithdrawalOpen(false)
     } catch (e) {
-      getWe3ErrorMessageWithToast(e, currentLocaleProps.id)
+      getWe3ErrorMessageWithToast(e)
     }
   }
 
@@ -50,11 +47,11 @@ export function DeleteWithdrawalAuthModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex flex-col items-stretch gap-5 mb-6">
             <DialogModal.Title className="text-3xl font-bold capitalize text-gray-800 dark:text-gray-50">
-              {t.saWithdrawalAuth.deleteAuthTitle}
+              Delete withdrawal authorization
             </DialogModal.Title>
 
             <DialogModal.Description className="text-gray-600 dark:text-gray-300">
-              {t.saWithdrawalAuth.deleteAuthDesc}:
+              Tokenverse will delete the withdrawal authorization
             </DialogModal.Description>
           </header>
 
@@ -72,7 +69,7 @@ export function DeleteWithdrawalAuthModal() {
             <div className="w-full flex items-start justify-between gap-2 ">
               <div className="flex items-center gap-2">
                 <Heading asChild className="capitalize">
-                  <h3>{t.saWithdrawalAuth.amountLabel}</h3>
+                  <h3>Amount</h3>
                 </Heading>
 
                 <Image
@@ -91,7 +88,7 @@ export function DeleteWithdrawalAuthModal() {
 
             <div className="w-full flex items-start justify-between gap-1">
               <Heading asChild>
-                <h3>{t.saWithdrawalAuth.fromLabel}</h3>
+                <h3>From date</h3>
               </Heading>
 
               <Text className="text-sm">
@@ -103,7 +100,7 @@ export function DeleteWithdrawalAuthModal() {
           <div className="w-full flex items-center justify-center gap-4">
             <DialogModal.Trigger>
               <Button className="w-full capitalize bg-transparent text-gray-800 dark:text-gray-50 border-2 border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-500">
-                {t.saWithdrawalAuth.cancel}
+                cancel
               </Button>
             </DialogModal.Trigger>
 
@@ -113,7 +110,7 @@ export function DeleteWithdrawalAuthModal() {
               variant="red"
               className="w-full"
             >
-              {t.saWithdrawalAuth.deleteAuthButton}
+              Delete Authorization
             </Button>
           </div>
         </div>

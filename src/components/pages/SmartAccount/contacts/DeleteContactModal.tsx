@@ -8,7 +8,6 @@ import { getAxiosErrorMessageWithToast } from '@utils/global'
 
 export function DeleteContactModal() {
   const {
-    t,
     customer,
     selectedContact,
     isDeleteContactOpen,
@@ -42,11 +41,11 @@ export function DeleteContactModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-5 mb-6">
             <DialogModal.Title className="text-3xl font-bold capitalize text-gray-800 dark:text-gray-50">
-              {t.saContacts.deleteContactTitle}
+              delete contact
             </DialogModal.Title>
 
             <DialogModal.Description className="text-lg text-center">
-              {t.saContacts.deleteContactDesc}
+              Tokenverse will delete the contact
               <Text asChild className="ml-1">
                 <strong>{selectedContact?.name}</strong>
               </Text>
@@ -56,7 +55,7 @@ export function DeleteContactModal() {
           <div className="w-full flex items-center justify-center gap-4 mt-1">
             <DialogModal.Trigger>
               <Button className="w-full capitalize bg-transparent text-gray-800 dark:text-gray-50 border-2 border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-500">
-                {t.saContacts.cancel}
+                cancel
               </Button>
             </DialogModal.Trigger>
 
@@ -66,7 +65,7 @@ export function DeleteContactModal() {
               variant="red"
               className="w-full"
             >
-              {t.saContacts.deleteContactButton}
+              Delete contact
             </Button>
           </div>
         </div>

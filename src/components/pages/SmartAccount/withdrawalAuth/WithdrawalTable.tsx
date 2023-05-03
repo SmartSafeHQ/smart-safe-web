@@ -10,7 +10,7 @@ import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
-import { useI18n } from '@hooks/useI18n'
+
 import { handleCopyToClipboard } from '@utils/global'
 
 dayjs.extend(utc)
@@ -44,8 +44,6 @@ function WithdrawalTableTr({
   withdrawal,
   handleDeleteWithdrawal
 }: WithdrawalTableTrProps) {
-  const { t } = useI18n()
-
   const formattedDate = dayjs(withdrawal.dateFrom).utc().format('DD/MM/YYYY')
 
   return (
@@ -71,7 +69,7 @@ function WithdrawalTableTr({
             </HoverCard.Trigger>
 
             <HoverCard.Content className="text-sm">
-              {t.saWithdrawalAuth.copyAddr}
+              copy address
               <HoverCard.Arrow />
             </HoverCard.Content>
           </HoverCard.Root>
@@ -105,7 +103,7 @@ function WithdrawalTableTr({
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <button
-                aria-label={t.saWithdrawalAuth.menuAriaLabel}
+                aria-label="Withdrawal authorization management options"
                 className="p-1 rounded-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
               >
                 <DotsThreeVertical className="w-6 h-6" />
@@ -121,9 +119,7 @@ function WithdrawalTableTr({
                 onSelect={() => handleDeleteWithdrawal(withdrawal)}
                 className="px-3 py-2 rounded-md text-sm"
               >
-                <Text className="text-sm text-red-500">
-                  {t.saWithdrawalAuth.delete}
-                </Text>
+                <Text className="text-sm text-red-500">delete</Text>
               </DropdownMenu.Item>
             </DropdownMenu.Content>
           </DropdownMenu.Root>

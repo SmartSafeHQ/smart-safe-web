@@ -4,8 +4,6 @@ import { Tabs } from '@components/Tabs'
 import { Text } from '@components/Text'
 import { ScrollArea } from '@components/ScrollArea'
 
-import { useI18n } from '@hooks/useI18n'
-
 export const SMART_ACCOUNT_TABS_VALUES = Object.freeze({
   CONTACTS: 'contacts',
   WITHDRAW_AUTH: 'withdrawAuth',
@@ -15,12 +13,10 @@ export const SMART_ACCOUNT_TABS_VALUES = Object.freeze({
 })
 
 export function SmartAccountTabsList() {
-  const { t } = useI18n()
-
   return (
     <ScrollArea className="w-full max-w-full">
       <Tabs.List
-        aria-label={t.saGlobal.tabsList.ariaLabel}
+        aria-label="Manage your smart account"
         className="w-full min-w-[36rem] text-center text-sm"
       >
         <Tabs.Trigger
@@ -29,7 +25,7 @@ export function SmartAccountTabsList() {
           asChild
         >
           <Link href="/dashboard/smart-account/contacts">
-            <Text>{t.saGlobal.tabsList.contacts}</Text>
+            <Text>contacts</Text>
           </Link>
         </Tabs.Trigger>
 
@@ -39,7 +35,7 @@ export function SmartAccountTabsList() {
           asChild
         >
           <Link href="/dashboard/smart-account/withdraw-authorization">
-            <Text>{t.saGlobal.tabsList.withdrawAuth}</Text>
+            <Text>authorize withdrawal</Text>
           </Link>
         </Tabs.Trigger>
 
@@ -53,7 +49,7 @@ export function SmartAccountTabsList() {
             href="/dashboard/smart-account/payment-scheduling"
             aria-disabled
           >
-            <Text>{t.saGlobal.tabsList.paymentSchedule}</Text>
+            <Text>payment scheduling</Text>
           </Link>
         </Tabs.Trigger>
 
@@ -67,7 +63,7 @@ export function SmartAccountTabsList() {
             href="/dashboard/smart-account/streaming-payments"
             aria-disabled
           >
-            <Text>{t.saGlobal.tabsList.streamPayments}</Text>
+            <Text>streaming payments</Text>
           </Link>
         </Tabs.Trigger>
 
@@ -78,7 +74,7 @@ export function SmartAccountTabsList() {
           asChild
         >
           <Link href="/dashboard/smart-account/account-recovery" aria-disabled>
-            <Text>{t.saGlobal.tabsList.accountRecovery}</Text>
+            <Text>account recovery</Text>
           </Link>
         </Tabs.Trigger>
       </Tabs.List>

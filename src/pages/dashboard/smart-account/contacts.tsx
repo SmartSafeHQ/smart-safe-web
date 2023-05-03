@@ -17,13 +17,16 @@ import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 import { SAContactsProvider } from '@contexts/SAContactsContext'
 
 const SmartAccount = () => {
-  const { t, setIsCreateContactOpen } = useSAContactsHook()
+  const { setIsCreateContactOpen } = useSAContactsHook()
 
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
       <Head>
-        <title>{t.saContacts.headTitle}</title>
-        <meta name="description" content={t.saContacts.headDescription} />
+        <title>InWallet | Smart Account Contacts</title>
+        <meta
+          name="description"
+          content="Management of the contacts registered in your smart account"
+        />
       </Head>
 
       <div className="w-full flex flex-1 flex-col items-stretch">
@@ -35,12 +38,10 @@ const SmartAccount = () => {
               <SmartAccountTab.Header>
                 <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
                   <div className="flex flex-col relative justify-start items-stretch gap-3">
-                    <SmartAccountTab.Title>
-                      {t.saContacts.title}
-                    </SmartAccountTab.Title>
+                    <SmartAccountTab.Title>Contacts</SmartAccountTab.Title>
 
                     <SmartAccountTab.Description>
-                      {t.saContacts.description}
+                      Manage your network contacts
                     </SmartAccountTab.Description>
                   </div>
 
@@ -48,7 +49,7 @@ const SmartAccount = () => {
                     className="w-max"
                     onClick={() => setIsCreateContactOpen(true)}
                   >
-                    {t.saContacts.addContact}
+                    Add contact
                   </Button>
                 </div>
               </SmartAccountTab.Header>

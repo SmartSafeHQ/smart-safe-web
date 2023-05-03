@@ -1,9 +1,6 @@
 import { toast } from 'react-toastify'
 
-import { SupportedLanguages } from '@utils/global/constants/i18n'
-import { pt } from '@/locales/pt'
-import { locales } from '@/locales'
-import type { EthereumError, SupportedNetworks } from '@/utils/global/types'
+import type { EthereumError, SupportedNetworks } from '@utils/global/types'
 
 const formatAdressFunctions = new Map<
   SupportedNetworks,
@@ -31,16 +28,10 @@ export function formatWalletAddress({
   return formatFunction(walletAddress)
 }
 
-export function getWe3ErrorMessageWithToast(
-  e: unknown,
-  locale: SupportedLanguages
-) {
-  const code = (e as EthereumError)?.code
+export function getWe3ErrorMessageWithToast(e: unknown) {
+  const errorMessage = (e as EthereumError)?.message
 
-  const t = locales.get(locale)?.errors ?? pt.errors
-  const errorMessage = t.web3E.get(code)?.message
-
-  toast.error(errorMessage ?? t.default)
+  toast.error(errorMessage)
 
   return errorMessage
 }
