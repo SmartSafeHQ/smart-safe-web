@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
-import { tokenverseApi } from '@lib/axios'
+import { smartSafeApi } from '@lib/axios'
+
 import { ContactProps } from '@contexts/SAContactsContext'
 
 interface UpdateContactFunctionInput {
@@ -13,7 +14,7 @@ interface UpdateContactFunctionInput {
 async function updateContactFunction(
   input: UpdateContactFunctionInput
 ): Promise<void> {
-  await tokenverseApi.patch(`/widget/contacts/${input.contactId}`, {
+  await smartSafeApi.patch(`/widget/contacts/${input.contactId}`, {
     customerId: input.customerId,
     name: input.name
   })

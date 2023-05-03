@@ -4,6 +4,6 @@ export const nextApiRoutes = axios.create({
   baseURL: '/api'
 })
 
-export const tokenverseApi = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_TOKENVERSE_API_URL
+export const smartSafeApi = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_SMART_SAFE_API_URL
 })

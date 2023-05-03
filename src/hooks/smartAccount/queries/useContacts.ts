@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 
 import { ContactProps } from '@contexts/SAContactsContext'
-import { tokenverseApi } from '@lib/axios'
-import { formatWalletAddress } from '@/utils/web3Utils'
+
+import { smartSafeApi } from '@lib/axios'
+import { formatWalletAddress } from '@utils/web3Utils'
 
 interface FetchSmartAccountContactsInput {
   customerId: number
@@ -17,7 +18,7 @@ export interface FetchContactsResponse {
 export async function fetchSmartAccountContacts(
   input: FetchSmartAccountContactsInput
 ): Promise<ContactProps[]> {
-  const response = await tokenverseApi.get<FetchContactsResponse[]>(
+  const response = await smartSafeApi.get<FetchContactsResponse[]>(
     `/widget/contacts/${input.customerId}`
   )
 

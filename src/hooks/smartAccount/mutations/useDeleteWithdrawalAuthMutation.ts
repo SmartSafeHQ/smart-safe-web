@@ -1,10 +1,11 @@
 import { useMutation } from '@tanstack/react-query'
 import { Contract, Wallet, providers } from 'ethers'
 
+import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
+
 import { queryClient } from '@lib/reactQuery'
 import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 import ACCOUNT_ABSTRACTION_ABI from '@utils/web3/ABIs/AccountAbstraction.json'
-import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 
 interface DeleteWithdrawalAuthFunctionInput {
   smartAccountAddress: string

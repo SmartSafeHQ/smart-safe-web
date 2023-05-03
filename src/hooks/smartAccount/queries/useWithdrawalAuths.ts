@@ -3,6 +3,7 @@ import { Contract, providers, utils } from 'ethers'
 
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
+
 import { formatWalletAddress } from '@utils/web3Utils'
 import ACCOUNT_ABSTRACTION_ABI from '@utils/web3/ABIs/AccountAbstraction.json'
 import { fetchSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'

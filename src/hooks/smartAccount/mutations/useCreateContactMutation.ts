@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
-import { tokenverseApi } from '@lib/axios'
+import { smartSafeApi } from '@lib/axios'
+
 import { ContactProps } from '@contexts/SAContactsContext'
 
 interface CreateContactFunctionInput {
@@ -21,7 +22,7 @@ export interface CreateContactApiResponse {
 async function createContactFunction(
   input: CreateContactFunctionInput
 ): Promise<CreateContactFunctionOutput> {
-  const response = await tokenverseApi.post<CreateContactApiResponse>(
+  const response = await smartSafeApi.post<CreateContactApiResponse>(
     '/widget/contacts',
     {
       customerId: input.customerId,
