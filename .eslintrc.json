@@ -2,24 +2,14 @@
   "env": {
     "browser": true,
     "es2021": true,
-    "node": true
+    "jest": true
   },
   "extends": [
-    "next/core-web-vitals",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@next/next/recommended",
-    "plugin:prettier/recommended",
     "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "eslint:recommended",
+    "plugin:react-hooks/recommended",
     "standard",
-    "prettier"
+    "plugin:prettier/recommended"
   ],
-  "settings": {
-    "react": {
-      "version": "detect"
-    }
-  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
@@ -28,20 +18,46 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
-  "globals": {
-    "HTMLOrSVGElement": false
-  },
+  "plugins": ["react", "jsx-a11y", "@typescript-eslint"],
   "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 80,
+        "tabWidth": 2,
+        "singleQuote": true,
+        "trailingComma": "none",
+        "arrowParens": "avoid",
+        "semi": false,
+        "endOfLine": "auto"
+      }
+    ],
+    "no-undef": "off",
+    "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "prettier/prettier": "error",
-    "camelcase": "off",
-    "space-before-function-paren": "off",
-    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "jsx-a11y/alt-text": [
+      "warn",
+      {
+        "elements": ["img"],
+        "img": ["Image"]
+      }
+    ],
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "accessor-pairs": ["off", { "setWithoutGet": true }]
+    "jsx-a11y/aria-props": "warn",
+    "jsx-a11y/aria-proptypes": "warn",
+    "jsx-a11y/aria-unsupported-elements": "warn",
+    "jsx-a11y/role-has-required-aria-props": "warn",
+    "jsx-a11y/role-supports-aria-props": "warn"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/parsers": {
+      "[require.resolve('@typescript-eslint/parser')]": [".ts", ".tsx", ".d.ts"]
+    }
   }
 }
