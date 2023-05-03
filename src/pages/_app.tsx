@@ -1,14 +1,20 @@
 import { Fragment } from 'react'
 import Head from 'next/head'
+import clsx from 'clsx'
+import { Inter } from '@next/font/google'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
 import { AppProvider } from '@contexts/index'
-import { AppPropsWithLayout } from '@/utils/types'
+import { AppPropsWithLayout } from '@utils/types'
 
 import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
-import { WalletHeader } from '@components/WalletHeader'
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter'
+})
 
 export default function App({
   Component,
@@ -28,10 +34,13 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
 
-      <div className="min-w-screen min-h-screen flex flex-col">
+      <div
+        className={clsx(
+          inter.variable,
+          'min-w-screen min-h-screen flex flex-col font-sans'
+        )}
+      >
         <LayoutComponent>
-          <WalletHeader />
-
           <Component {...pageProps} />
         </LayoutComponent>
       </div>
