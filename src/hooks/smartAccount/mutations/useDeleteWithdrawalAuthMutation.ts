@@ -1,11 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
-import { Contract, Wallet, providers } from 'ethers'
 
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 
 import { queryClient } from '@lib/reactQuery'
-import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
-import ACCOUNT_ABSTRACTION_ABI from '@utils/web3/ABIs/AccountAbstraction.json'
 
 interface DeleteWithdrawalAuthFunctionInput {
   smartAccountAddress: string
@@ -16,16 +13,16 @@ interface DeleteWithdrawalAuthFunctionInput {
 async function deleteWithdrawalAuthFunction(
   input: DeleteWithdrawalAuthFunctionInput
 ): Promise<void> {
-  const provider = new providers.JsonRpcProvider(STABLE_COINS[0].rpcUrl)
-  const signer = new Wallet(input.customerWalletPrivateKey, provider)
+  console.log(input)
 
-  const contract = new Contract(
-    input.smartAccountAddress,
-    ACCOUNT_ABSTRACTION_ABI,
-    signer
-  )
-
-  await contract.functions.removeAuthorizedUser(input.withdrawalIndex)
+  // const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
+  // const signer = new Wallet(input.customerWalletPrivateKey, provider)
+  // const contract = new Contract(
+  //   input.smartAccountAddress,
+  //   ACCOUNT_ABSTRACTION_ABI,
+  //   signer
+  // )
+  // await contract.functions.removeAuthorizedUser(input.withdrawalIndex)
 }
 
 export function useDeleteWithdrawalAuthMutation() {

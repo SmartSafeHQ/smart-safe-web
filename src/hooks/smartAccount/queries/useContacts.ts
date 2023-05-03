@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ContactProps } from '@contexts/SAContactsContext'
 
 import { smartSafeApi } from '@lib/axios'
-import { formatWalletAddress } from '@utils/web3Utils'
+import { formatWalletAddress } from '@utils/web3'
 
 interface FetchSmartAccountContactsInput {
   customerId: number
@@ -28,7 +28,6 @@ export async function fetchSmartAccountContacts(
     wallet: {
       address: contact.evmAddress,
       formattedAddress: formatWalletAddress({
-        network: 'evm',
         walletAddress: contact.evmAddress
       })
     }

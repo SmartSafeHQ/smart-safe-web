@@ -33,8 +33,7 @@ const validationSchema = z.object({
 export type FieldValues = z.infer<typeof validationSchema>
 
 export function CreateContactModal() {
-  const { customer, isCreateContactOpen, setIsCreateContactOpen } =
-    useSAContactsHook()
+  const { isCreateContactOpen, setIsCreateContactOpen } = useSAContactsHook()
   const { mutateAsync } = useCreateContactMutation()
 
   const {
@@ -47,10 +46,8 @@ export function CreateContactModal() {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!customer) return
-
     try {
-      await mutateAsync({ ...data, customerId: customer.id })
+      await mutateAsync({ ...data, customerId: 1 })
 
       reset()
       setIsCreateContactOpen(false)

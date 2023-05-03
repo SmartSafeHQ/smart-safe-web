@@ -22,7 +22,7 @@ const SmartAccount = () => {
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
       <Head>
-        <title>InWallet | Smart Account Contacts</title>
+        <title>SmartSafe | Smart Account Contacts</title>
         <meta
           name="description"
           content="Management of the contacts registered in your smart account"

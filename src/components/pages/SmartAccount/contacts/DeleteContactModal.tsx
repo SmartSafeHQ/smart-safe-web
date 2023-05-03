@@ -8,21 +8,17 @@ import { useDeleteContactMutation } from '@hooks/smartAccount/mutations/useDelet
 import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 
 export function DeleteContactModal() {
-  const {
-    customer,
-    selectedContact,
-    isDeleteContactOpen,
-    setIsDeleteContactOpen
-  } = useSAContactsHook()
+  const { selectedContact, isDeleteContactOpen, setIsDeleteContactOpen } =
+    useSAContactsHook()
   const { mutateAsync, isLoading } = useDeleteContactMutation()
 
   async function handleConfirmDelete() {
-    if (!customer || !selectedContact) return
+    if (!selectedContact) return
 
     try {
       await mutateAsync({
         contactId: selectedContact.id,
-        customerId: customer.id
+        customerId: 1
       })
 
       setIsDeleteContactOpen(false)
@@ -48,7 +44,7 @@ export function DeleteContactModal() {
             </DialogModal.Title>
 
             <DialogModal.Description className="text-lg text-center">
-              Tokenverse will delete the contact
+              SmartSafe will delete the contact
               <Text asChild className="ml-1">
                 <strong>{selectedContact?.name}</strong>
               </Text>

@@ -5,16 +5,14 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 
-import { useAuth } from '@contexts/AuthContext'
 import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { useI18n } from '@hooks/useI18n'
 import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
 import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { useCreateWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useCreateWithdrawalAuthMutation'
-import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
-import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { getWe3ErrorMessageWithToast } from '@utils/web3'
 
 const createWithdrawalValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
@@ -39,8 +37,6 @@ export type CreateWithdrawalFieldValues = z.infer<
 >
 
 export const useSAWithdrawalAuthHook = () => {
-  const { t, currentLocaleProps } = useI18n()
-  const { customer } = useAuth()
   const {
     isCreateWithdrawalOpen,
     setIsCreateWithdrawalOpen,
@@ -52,18 +48,10 @@ export const useSAWithdrawalAuthHook = () => {
   } = useSAWithdrawalAuth()
 
   const { data: contacts, isLoading: contactsIsLoading } =
-    useSmartAccountContacts(customer?.id, !!customer)
+    useSmartAccountContacts(1)
   const { mutateAsync } = useCreateWithdrawalAuthMutation()
 
-  const {
-    data: withdrawals,
-    isLoading,
-    error
-  } = useWithdrawalAuths(
-    customer?.id,
-    customer?.wallets.smartAccountAddress.address ?? '',
-    !!customer
-  )
+  const { data: withdrawals, isLoading, error } = useWithdrawalAuths(1, '1')
 
   const {
     control,
@@ -102,11 +90,10 @@ export const useSAWithdrawalAuthHook = () => {
   const onSubmitCreateWithdrawal: SubmitHandler<
     CreateWithdrawalFieldValues
   > = async data => {
-    if (!customer) return
     if (!contacts) return
 
     try {
-      const withdrawalCoin = STABLE_COINS.find(
+      const withdrawalCoin = CHAINS_ATTRIBUTES.find(
         coin => coin.symbol === data.coinSymbol
       )
 
@@ -115,14 +102,14 @@ export const useSAWithdrawalAuthHook = () => {
       )
 
       if (!withdrawalCoin) {
-        toast.error(t.saWithdrawalAuth.coinNotFound)
+        toast.error('coin not found')
         return
       }
 
       await mutateAsync({
         ...data,
-        smartAccountAddress: customer.wallets.smartAccountAddress.address,
-        customerWalletPrivateKey: customer.wallets.evm.privateKey,
+        smartAccountAddress: 'address',
+        customerWalletPrivateKey: 'privateKey',
         coin: withdrawalCoin,
         recipientName: findContactForRecipient?.name
       })
@@ -131,13 +118,13 @@ export const useSAWithdrawalAuthHook = () => {
       setSearchContacts(contacts)
       setIsCreateWithdrawalOpen(false)
     } catch (e) {
-      getWe3ErrorMessageWithToast(e, currentLocaleProps.id)
+      console.log(e)
+
+      getWe3ErrorMessageWithToast(e)
     }
   }
 
   return {
-    t,
-    customer,
     withdrawals,
     isLoading,
     error,

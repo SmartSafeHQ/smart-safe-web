@@ -5,7 +5,7 @@ import trezorModule from '@web3-onboard/trezor'
 import ledgerModule from '@web3-onboard/ledger'
 import keystoneModule from '@web3-onboard/keystone'
 
-import { COINS_ATTRIBUTES } from '@/utils/web3/supportedChains'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 import type { InitOptions } from '@web3-onboard/core'
 import type { PropsWithChildren } from 'react'
@@ -21,7 +21,7 @@ export function WalletContextProvider({ children }: PropsWithChildren) {
   const keystone = keystoneModule()
   const wallets = [injected, walletConnect, trezor, ledger, keystone]
 
-  const chains: InitOptions['chains'] = COINS_ATTRIBUTES.map(token => ({
+  const chains: InitOptions['chains'] = CHAINS_ATTRIBUTES.map(token => ({
     id: token.chainId,
     namespace: 'evm',
     rpcUrl: token.rpcUrl,

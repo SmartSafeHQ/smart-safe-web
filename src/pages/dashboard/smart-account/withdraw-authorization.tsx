@@ -21,7 +21,7 @@ const WithdrawalAuthorization = () => {
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
       <Head>
-        <title>InWallet | Withdrawal Authorization for Smart Account</title>
+        <title>SmartSafe | Withdrawal Authorization for Smart Account</title>
         <meta
           name="description"
           content="Withdrawal authorization for withdrawals registered in your smart account"

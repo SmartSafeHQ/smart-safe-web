@@ -4,11 +4,10 @@ import { Contract, providers, utils } from 'ethers'
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { formatWalletAddress } from '@utils/web3Utils'
-import ACCOUNT_ABSTRACTION_ABI from '@utils/web3/ABIs/AccountAbstraction.json'
 import { fetchSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
-import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
 import { queryClient } from '@lib/reactQuery'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { formatWalletAddress } from '@utils/web3'
 
 interface FetchSmartAccountWithdrawalAuthsInput {
   smartAccountAddress: string
@@ -23,12 +22,8 @@ export async function fetchSmartAccountWithdrawalAuths(
     queryFn: () => fetchSmartAccountContacts({ customerId: input.customerId })
   })
 
-  const provider = new providers.JsonRpcProvider(STABLE_COINS[0].rpcUrl)
-  const contract = new Contract(
-    input.smartAccountAddress,
-    ACCOUNT_ABSTRACTION_ABI,
-    provider
-  )
+  const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
+  const contract = new Contract(input.smartAccountAddress, '{}', provider)
 
   const totalAuthorizations = await contract.functions.totalAuthorizations()
 
@@ -39,8 +34,8 @@ export async function fetchSmartAccountWithdrawalAuths(
   for (let i = 0; i < formattedAuthorizationsCount; i++) {
     const authorization = await contract.functions.authorizations(i)
 
-    const withdrawalCoin = STABLE_COINS.find(
-      coin => coin.contractAddress === authorization.tokenAddress
+    const withdrawalCoin = CHAINS_ATTRIBUTES.find(
+      coin => coin.rpcUrl === authorization.tokenAddress
     )
 
     if (!withdrawalCoin) continue
@@ -62,13 +57,12 @@ export async function fetchSmartAccountWithdrawalAuths(
       dateFrom: formattedDate,
       coin: {
         symbol: withdrawalCoin?.symbol,
-        avatar: withdrawalCoin?.avatar,
-        address: withdrawalCoin?.contractAddress
+        avatar: withdrawalCoin?.icon,
+        address: withdrawalCoin?.scanUrl
       },
       wallet: {
         address: authorization.userAddress,
         formattedAddress: formatWalletAddress({
-          network: 'evm',
           walletAddress: authorization.userAddress
         })
       }

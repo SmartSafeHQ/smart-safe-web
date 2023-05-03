@@ -12,7 +12,6 @@ import { getWe3ErrorMessageWithToast } from '@utils/web3'
 
 export function DeleteWithdrawalAuthModal() {
   const {
-    customer,
     selectedWithdrawal,
     isDeleteWithdrawalOpen,
     setIsDeleteWithdrawalOpen
@@ -21,12 +20,12 @@ export function DeleteWithdrawalAuthModal() {
   const { mutateAsync, isLoading } = useDeleteWithdrawalAuthMutation()
 
   async function handleConfirmDelete() {
-    if (!customer || !selectedWithdrawal) return
+    if (!selectedWithdrawal) return
 
     try {
       await mutateAsync({
-        smartAccountAddress: customer.wallets.smartAccountAddress.address,
-        customerWalletPrivateKey: customer.wallets.evm.privateKey,
+        smartAccountAddress: 'address',
+        customerWalletPrivateKey: 'privateKey',
         withdrawalIndex: selectedWithdrawal.index
       })
 
@@ -51,7 +50,7 @@ export function DeleteWithdrawalAuthModal() {
             </DialogModal.Title>
 
             <DialogModal.Description className="text-gray-600 dark:text-gray-300">
-              Tokenverse will delete the withdrawal authorization
+              SmartSafe will delete the withdrawal authorization
             </DialogModal.Description>
           </header>
 

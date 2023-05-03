@@ -1,13 +1,10 @@
 import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
-import { useAuth } from '@contexts/AuthContext'
+
 import { useSAContacts } from '@contexts/SAContactsContext'
-import { useI18n } from '@hooks/useI18n'
 
 export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
 export const useSAContactsHook = () => {
-  const { t } = useI18n()
-  const { customer } = useAuth()
   const {
     isCreateContactOpen,
     setIsCreateContactOpen,
@@ -21,15 +18,9 @@ export const useSAContactsHook = () => {
     handleDeleteContact
   } = useSAContacts()
 
-  const {
-    data: contacts,
-    isLoading,
-    error
-  } = useSmartAccountContacts(customer?.id, !!customer)
+  const { data: contacts, isLoading, error } = useSmartAccountContacts(1)
 
   return {
-    t,
-    customer,
     contacts,
     isLoading,
     error,

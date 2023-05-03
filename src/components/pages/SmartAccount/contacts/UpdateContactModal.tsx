@@ -29,12 +29,8 @@ const validationSchema = z.object({
 export type FieldValues = z.infer<typeof validationSchema>
 
 export function UpdateContactModal() {
-  const {
-    customer,
-    selectedContact,
-    isUpdateContactOpen,
-    setIsUpdateContactOpen
-  } = useSAContactsHook()
+  const { selectedContact, isUpdateContactOpen, setIsUpdateContactOpen } =
+    useSAContactsHook()
   const { mutateAsync } = useUpdateContactMutation()
 
   const {
@@ -51,12 +47,12 @@ export function UpdateContactModal() {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!customer || !selectedContact) return
+    if (!selectedContact) return
 
     try {
       await mutateAsync({
         contactId: selectedContact.id,
-        customerId: customer.id,
+        customerId: 1,
         name: data.name
       })
 
