@@ -8,7 +8,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { useDeleteWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useDeleteWithdrawalAuthMutation'
 import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
-import { getWe3ErrorMessageWithToast } from '@utils/web3Utils'
+import { getWe3ErrorMessageWithToast } from '@utils/web3'
 
 export function DeleteWithdrawalAuthModal() {
   const {

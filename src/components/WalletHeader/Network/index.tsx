@@ -1,17 +1,18 @@
+import type { InitOptions } from '@web3-onboard/core'
+
 import * as Popover from '@radix-ui/react-popover'
-import { COINS_ATTRIBUTES } from '@/utils/web3/supportedChains'
 
 import { UnsupportedNetwork } from './UnsupportedNetwork'
 
 import { useConnectWallet, useSetChain } from '@web3-onboard/react'
 
-import type { InitOptions } from '@web3-onboard/core'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 export function Network() {
   const [{ wallet }] = useConnectWallet()
   const [, setChain] = useSetChain()
 
-  const supportedChains: InitOptions['chains'] = COINS_ATTRIBUTES.map(
+  const supportedChains: InitOptions['chains'] = CHAINS_ATTRIBUTES.map(
     token => ({
       id: token.chainId,
       namespace: 'evm',

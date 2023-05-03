@@ -10,8 +10,7 @@ import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
-
-import { handleCopyToClipboard } from '@utils/global'
+import { handleCopyToClipboard } from '@utils/clipboard'
 
 dayjs.extend(utc)
 

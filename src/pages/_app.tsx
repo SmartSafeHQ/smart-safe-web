@@ -5,7 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
 import { AppProvider } from '@contexts/index'
-import { AppPropsWithLayout } from '@utils/global/types'
+import { AppPropsWithLayout } from '@/utils/types'
 
 import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
 import { WalletHeader } from '@components/WalletHeader'

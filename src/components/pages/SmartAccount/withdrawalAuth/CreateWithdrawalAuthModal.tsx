@@ -9,7 +9,7 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
-import { STABLE_COINS } from '@utils/global/coins/stableCoinsConfig'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 export function CreateWithdrawalAuthModal() {
   const {
@@ -122,7 +122,7 @@ export function CreateWithdrawalAuthModal() {
             <Controller
               name="coinSymbol"
               control={control}
-              defaultValue={STABLE_COINS[0].symbol}
+              defaultValue={CHAINS_ATTRIBUTES[0].symbol}
               render={({ field: { onChange, value, ref, ...props } }) => (
                 <SelectInput.Root
                   {...props}
@@ -136,7 +136,7 @@ export function CreateWithdrawalAuthModal() {
 
                   <SelectInput.Content className="bg-gray-50 dark:bg-gray-900">
                     <SelectInput.Group>
-                      {STABLE_COINS.map(coin => (
+                      {CHAINS_ATTRIBUTES.map(coin => (
                         <SelectInput.Item
                           key={coin.symbol}
                           value={coin.symbol}
@@ -144,7 +144,7 @@ export function CreateWithdrawalAuthModal() {
                         >
                           <div className="w-full flex items-center justify-start gap-2">
                             <Image
-                              src={coin.avatar}
+                              src={coin.icon}
                               alt={`${coin.symbol} coin`}
                               width={28}
                               height={28}

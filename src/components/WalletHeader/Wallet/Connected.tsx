@@ -1,13 +1,13 @@
+import type { WalletState, DisconnectOptions } from '@web3-onboard/core'
+
 import { useState } from 'react'
 import { Copy } from 'phosphor-react'
 import { useSetChain } from '@web3-onboard/react'
 import * as Popover from '@radix-ui/react-popover'
 import * as Tooltip from '@radix-ui/react-tooltip'
 
-import { handleCopyToClipboard } from '@utils/global'
-import { formatWalletAddress } from '@utils/web3Utils'
-
-import type { WalletState, DisconnectOptions } from '@web3-onboard/core'
+import { formatWalletAddress } from '@utils/web3'
+import { handleCopyToClipboard } from '@utils/clipboard'
 
 interface Props {
   wallet: WalletState
@@ -25,8 +25,7 @@ export function Connected({ wallet, disconnect }: Props) {
       <Popover.Trigger asChild>
         <p className="leading-[48px]">
           {formatWalletAddress({
-            walletAddress: wallet.accounts[0].address,
-            network: 'evm'
+            walletAddress: wallet.accounts[0].address
           })}
         </p>
       </Popover.Trigger>
@@ -37,8 +36,7 @@ export function Connected({ wallet, disconnect }: Props) {
             <div className="flex gap-2 items-center justify-center p-2 bg-gray-900">
               <p className="text-sm">
                 {formatWalletAddress({
-                  walletAddress: wallet.accounts[0].address,
-                  network: 'evm'
+                  walletAddress: wallet.accounts[0].address
                 })}
               </p>
               <Tooltip.Provider delayDuration={100}>

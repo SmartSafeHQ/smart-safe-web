@@ -8,7 +8,7 @@ import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
 import { ContactProps } from '@contexts/SAContactsContext'
-import { handleCopyToClipboard } from '@utils/global'
+import { handleCopyToClipboard } from '@utils/clipboard'
 
 interface ContactsTableThProps extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode

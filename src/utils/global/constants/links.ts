@@ -1,7 +1,0 @@
-export const TOKENVERSE_CONTACT_LINK = '#'
-export const TOKENVERSE_TERMS_OF_SERVICES_LINK = '#'
-export const TOKENVERSE_DISCORD_LINK = '#'
-export const TOKENVERSE_TWITTER_LINK = 'https://twitter.com/InWalletApp'
-export const TOKENVERSE_LINKEDIN_LINK = '#'
-export const TOKENVERSE_PLAY_STORE_LINK = '#'
-export const TOKENVERSE_APPLE_STORE_LINK = '#'

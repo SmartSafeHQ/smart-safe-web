@@ -1,10 +1,11 @@
+import { toast } from 'react-toastify'
+
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { useDeleteContactMutation } from '@hooks/smartAccount/mutations/useDeleteContactMutation'
 import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
-import { getAxiosErrorMessageWithToast } from '@utils/global'
 
 export function DeleteContactModal() {
   const {
@@ -28,7 +29,9 @@ export function DeleteContactModal() {
     } catch (error) {
       console.log(error)
 
-      getAxiosErrorMessageWithToast(error)
+      const errorMessage = (error as Error)?.message
+
+      toast.error(errorMessage)
     }
   }
 
