@@ -3,7 +3,7 @@ import { Network } from './Network'
 
 export function WalletHeader() {
   return (
-    <div className="w-full items-center justify-end flex border-b-1 border-stone-700">
+    <div className="w-full items-center justify-end flex border-b-1 border-gray-700">
       <Wallet />
 
       <Network />

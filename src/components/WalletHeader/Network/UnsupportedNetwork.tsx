@@ -1,6 +1,6 @@
 import { useSetChain } from '@web3-onboard/react'
 
-import { COINS_ATTRIBUTES } from '@/utils/web3/supportedChains'
+import { COINS_ATTRIBUTES } from '@utils/web3/supportedChains'
 
 export function UnsupportedNetwork() {
   const [, setChain] = useSetChain()

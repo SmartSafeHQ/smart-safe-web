@@ -4,8 +4,8 @@ import { useSetChain } from '@web3-onboard/react'
 import * as Popover from '@radix-ui/react-popover'
 import * as Tooltip from '@radix-ui/react-tooltip'
 
-import { handleCopyToClipboard } from '@/utils/global'
-import { formatWalletAddress } from '@/utils/web3Utils'
+import { handleCopyToClipboard } from '@utils/global'
+import { formatWalletAddress } from '@utils/web3Utils'
 
 import type { WalletState, DisconnectOptions } from '@web3-onboard/core'
 
