@@ -36,10 +36,10 @@ const ButtonComponent: ForwardRefRenderFunction<
       ref={ref}
       disabled={isLoading}
       className={clsx(
-        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed disabled:bg-brand-foregroundAccent2',
+        'flex items-center justify-center py-3 px-4 rounded text-sm transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed disabled:bg-cyan-600',
         {
           'cursor-not-allowed brightness-75': isLoading,
-          'bg-brand-foregroundAccent1 text-brand-background hover:bg-brand-foregroundAccent2 disabled:hover:bg-brand-foregroundAccent2':
+          'bg-cyan-500 text-brand-background hover:bg-cyan-600 disabled:hover:bg-cyan-600':
             variant === 'primary',
           'bg-red-500 text-gray-50 hover:bg-red-400 disabled:bg-red-500':
             variant === 'red'
