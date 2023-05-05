@@ -7,10 +7,17 @@ export interface NavigationMenuRootProps
   children: ReactNode
 }
 
-function NavigationMenuRoot({ children, ...props }: NavigationMenuRootProps) {
+function NavigationMenuRoot({
+  children,
+  className,
+  ...props
+}: NavigationMenuRootProps) {
   return (
     <RadixNavigationMenu.Root
-      className="relative flex justify-center w-full z-10 [&>div]:w-full"
+      className={clsx(
+        'relative flex justify-center z-10 [&>div]:w-full',
+        className
+      )}
       {...props}
     >
       {children}
@@ -109,7 +116,7 @@ function NavigationMenuContent({
 }: NavigationMenuContentProps) {
   return (
     <RadixNavigationMenu.Content
-      className="w-auto absolute top-0 left-0 bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 rounded-md animate-dialog-open"
+      className="w-full absolute top-0 left-0 bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 rounded-md animate-dialog-open"
       onPointerEnter={event => event.preventDefault()}
       onPointerLeave={event => event.preventDefault()}
       {...props}

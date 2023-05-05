@@ -72,7 +72,7 @@ function SelectInputTrigger({
       <RadixSelect.Value placeholder={placeholder} />
 
       <RadixSelect.Icon>
-        <SelectIcon className="w-5 h-5 " weight="bold" />
+        <SelectIcon className="w-4 h-4 text-zinc-400" weight="bold" />
       </RadixSelect.Icon>
     </RadixSelect.Trigger>
   )

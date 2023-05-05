@@ -22,7 +22,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'avax',
-    networkName: 'Avalanche',
+    networkName: 'avalanche',
     icon: '/networks/avalanche-logo.svg',
     chainId: '0xa869',
     hexColor: '#e84142',
@@ -42,7 +42,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'bnb',
-    networkName: 'binance smart chain',
+    networkName: 'bnb',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x61',
     hexColor: '#fbdc45',
@@ -95,7 +95,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'avax',
-    networkName: 'Avalanche',
+    networkName: 'avalanche',
     icon: '/networks/avalanche-logo.svg',
     chainId: '0xa86a',
     hexColor: '#e84142',
