@@ -21,14 +21,15 @@ export function WalletContextProvider({ children }: PropsWithChildren) {
   const keystone = keystoneModule()
   const wallets = [injected, walletConnect, trezor, ledger, keystone]
 
-  const chains: InitOptions['chains'] = CHAINS_ATTRIBUTES.map(token => ({
-    id: token.chainId,
+  const chains: InitOptions['chains'] = CHAINS_ATTRIBUTES.map(chain => ({
+    id: chain.chainId,
     namespace: 'evm',
-    rpcUrl: token.rpcUrl,
-    token: token.symbol,
-    label: token.networkName,
-    icon: token.icon,
-    blockExplorerUrl: token.explorerUrl
+    rpcUrl: chain.rpcUrl,
+    color: chain.hexColor,
+    token: chain.symbol,
+    label: chain.networkName,
+    icon: chain.icon,
+    blockExplorerUrl: chain.explorerUrl
   }))
 
   const web3Onboard = init({
