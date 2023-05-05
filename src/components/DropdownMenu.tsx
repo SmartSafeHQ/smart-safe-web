@@ -41,7 +41,7 @@ function DropdownMenuContent({
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.Content
         className={clsx(
-          'bg-gray-50 dark:bg-gray-800 rounded-md shadow-md animate-dropdown-menu-open',
+          'rounded-md shadow-md animate-dropdown-menu-open',
           className
         )}
         sideOffset={5}
@@ -64,7 +64,7 @@ function DropdownMenuSeparator({
   return (
     <RadixDropdownMenu.Separator
       className={clsx(
-        'h-[1px] bg-gray-300 dark:bg-gray-700 my-1 mx-3',
+        'h-[1px] bg-zinc-300 dark:bg-zinc-700 my-1 mx-3',
         className
       )}
       {...props}
@@ -90,7 +90,7 @@ function DropdownMenuItem({
   return (
     <RadixDropdownMenu.Item
       className={clsx(
-        'relative flex items-center justify-start gap-4 select-none outline-none text-base font-medium capitalize cursor-pointer dark:text-gray-50 hover:bg-gray-200 hover:dark:bg-gray-700 hover:dark:bg-opacity-40',
+        'relative flex items-center justify-start gap-4 select-none outline-none text-base font-medium capitalize cursor-pointer',
         {
           'pointer-events-none text-gray-400 [&>*]:text-brand-foreground dark:brightness-50 dark:text-cyan-50':
             isDisabled

@@ -28,10 +28,10 @@ function TextInputRoot({
   return (
     <label
       className={clsx(
-        'flex flex-col gap-2 [&>div:has(input)]:bg-gray-200 [&>div:has(input)]:dark:bg-gray-800',
+        'flex flex-col gap-2 [&>div:has(input)]:bg-white [&>div:has(input)]:dark:bg-black',
         {
           '[&>div:has(input)]:ring-2 [&>div:has(input)]:ring-red-500': !!error,
-          '[&>div:has(input)]:!bg-gray-100 [&>div:has(input)]:dark:!bg-gray-900':
+          '[&>div:has(input)]:!bg-zinc-100 [&>div:has(input)]:dark:!bg-zinc-900':
             variant === 'secondary'
         },
         className
@@ -59,7 +59,7 @@ function TextInputContent({
   return (
     <div
       className={clsx(
-        'flex items-center gap-x-3 min-h-[3rem] px-3 rounded w-full outline-none ring-brand-foregroundAccent1 focus-within:ring-2',
+        'flex items-center gap-x-3 min-h-[2.5rem] px-3 rounded w-full outline-none ring-zinc-800 dark:ring-zinc-300 focus-within:ring-1 border-1 border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 hover:dark:border-zinc-600',
         className
       )}
       {...props}
@@ -81,7 +81,13 @@ function TextInputLabel({
   ...props
 }: TextInputLabelProps) {
   return (
-    <Text className={clsx('font-semibold', className)} {...props}>
+    <Text
+      className={clsx(
+        'text-sm text-zinc-900 dark:text-zinc-100 font-medium',
+        className
+      )}
+      {...props}
+    >
       {children}
     </Text>
   )
@@ -94,7 +100,7 @@ export interface TextInputIconProps {
 }
 
 function TextInputIcon({ children }: TextInputIconProps) {
-  return <Slot className="w-6 h-6 text-gray-400">{children}</Slot>
+  return <Slot className="w-5 h-5 text-zinc-500">{children}</Slot>
 }
 
 TextInputIcon.displayName = 'TextInput.Icon'
@@ -109,7 +115,7 @@ const TextInputInput: ForwardRefRenderFunction<
     <input
       ref={ref}
       className={clsx(
-        'flex flex-1 w-full h-full outline-none text-gray-800 dark:text-gray-100 bg-transparent placeholder:text-gray-400',
+        'flex flex-1 w-full h-full outline-none text-sm text-zinc-900 dark:text-zinc-100 bg-transparent placeholder:text-zinc-400',
         className
       )}
       {...props}

@@ -154,7 +154,7 @@ const SelectInputItem: ForwardRefRenderFunction<
       ref={ref}
       className={clsx(
         className,
-        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-brand-foregroundAccent1 data-[highlighted]:!text-gray-100 group'
+        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none group'
       )}
       {...props}
     >
