@@ -30,7 +30,7 @@ import {
   CHAINS_ATTRIBUTES,
   ChainSettings
 } from '@utils/web3/chains/supportedChains'
-import { formatWalletAddress } from '@utils/web3'
+import { useWallet } from '@/contexts/WalletContext'
 
 export const SAFE_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
@@ -56,6 +56,7 @@ export default function Welcome() {
   const [{ wallet }, connect] = useConnectWallet()
   const [, setChain] = useSetChain()
   const { theme, setTheme } = useTheme()
+  const { formattedAddress } = useWallet()
 
   const [safeInfos, setSafeInfos] = useState<SafeInfosProps | null>(null)
 
@@ -198,9 +199,7 @@ export default function Welcome() {
                                 />
 
                                 <Text className="text-sm">
-                                  {formatWalletAddress({
-                                    walletAddress: wallet.accounts[0].address
-                                  })}
+                                  {formattedAddress}
                                 </Text>
                               </div>
 
@@ -225,9 +224,7 @@ export default function Welcome() {
                                 />
 
                                 <Text className="text-sm">
-                                  {formatWalletAddress({
-                                    walletAddress: wallet.accounts[0].address
-                                  })}
+                                  {formattedAddress}
                                 </Text>
                               </div>
                             </div>
