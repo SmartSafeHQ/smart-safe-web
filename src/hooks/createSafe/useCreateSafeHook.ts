@@ -63,7 +63,7 @@ export const useCreateSafeHook = () => {
         chain: findSelectedChainInSupportedList
       })
 
-      push('create-safe')
+      push('/create-safe')
     } catch (error) {
       console.log(error)
 
