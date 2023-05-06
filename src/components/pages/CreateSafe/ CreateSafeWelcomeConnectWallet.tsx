@@ -6,6 +6,7 @@ import { Text } from '@components/Text'
 
 export function CreateSafeWelcomeConnectWallet() {
   const [, connect] = useConnectWallet()
+
   return (
     <div className="h-[22rem] flex flex-col items-center justify-center relative mt-3 p-12 rounded-md bg-zinc-50 dark:bg-zinc-900 border-1 border-zinc-200 dark:border-zinc-700">
       <div className="max-w-full flex flex-1 flex-col items-center justify-start gap-6 relative">

@@ -1,10 +1,6 @@
 import { Shield, ArrowRight } from 'phosphor-react'
-import { useConnectWallet, useSetChain } from '@web3-onboard/react'
 import Link from 'next/link'
-import { useForm, SubmitHandler, Controller } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
-import { z } from 'zod'
+import { Controller } from 'react-hook-form'
 
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Button } from '@components/Button'
@@ -13,69 +9,20 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { WalletProfileNavigation } from './WalletProfileNavigation'
 
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
-
-export const SAFE_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
-
-const validationSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'name required')
-    .regex(
-      SAFE_NAME_REGEX,
-      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
-    ),
-  chainId: z.string().min(1, 'chain required')
-})
-
-export type FieldValues = z.infer<typeof validationSchema>
+import { useCreateSafeHook } from '@hooks/createSafe/useCreateSafeHook'
 
 export function CreateSafeWelcomeForm() {
-  const [{ wallet }] = useConnectWallet()
-
-  const [, setChain] = useSetChain()
-  const { safeInfos, setSafeInfos } = useCreateSafe()
   const {
-    control,
-    register,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = useForm<FieldValues>({
-    resolver: zodResolver(validationSchema)
-  })
-
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    try {
-      const checkWalletChainPermission = wallet?.chains.find(
-        chain => chain.id === data.chainId
-      )
-
-      if (!checkWalletChainPermission) {
-        setChain({ chainId: data.chainId })
-        return
-      }
-
-      const findSelectedChainInSupportedList = CHAINS_ATTRIBUTES.find(
-        chain => chain.chainId === data.chainId
-      )
-
-      if (!findSelectedChainInSupportedList) {
-        toast.error('Chain not found in supported chain list')
-        return
-      }
-
-      setSafeInfos({
-        name: data.name,
-        chain: findSelectedChainInSupportedList
-      })
-    } catch (error) {
-      console.log(error)
-
-      const errorMessage = (error as Error)?.message
-
-      toast.error(errorMessage)
-    }
-  }
+    onSubmit,
+    control,
+    safeInfos,
+    wallet,
+    setChain,
+    register,
+    errors,
+    isSubmitting
+  } = useCreateSafeHook()
 
   return (
     <form
@@ -130,10 +77,7 @@ export function CreateSafeWelcomeForm() {
         />
       </div>
 
-      <div
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-3 items-stretch w-full pt-4"
-      >
+      <div className="flex flex-col gap-3 items-stretch w-full pt-4">
         <TextInput.Root
           htmlFor="name"
           defaultValue={safeInfos?.name}
