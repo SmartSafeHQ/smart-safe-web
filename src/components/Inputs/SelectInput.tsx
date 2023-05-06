@@ -160,7 +160,7 @@ const SelectInputItem: ForwardRefRenderFunction<
     >
       <RadixSelect.ItemText asChild>{children}</RadixSelect.ItemText>
 
-      <RadixSelect.ItemIndicator className="w-7 inline-flex items-center justify-center absolute left-0 text-brand-foregroundAccent1 font-medium group-data-[highlighted]:text-gray-100">
+      <RadixSelect.ItemIndicator className="w-7 inline-flex items-center justify-center absolute left-0 text-cyan-500 font-medium">
         <Check weight="bold" />
       </RadixSelect.ItemIndicator>
     </RadixSelect.Item>

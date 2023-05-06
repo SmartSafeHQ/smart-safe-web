@@ -37,7 +37,6 @@ function CollapsibleTrigger({
   return (
     <RadixCollapsible.Trigger
       className={clsx('data-[state=open]:brightness-90', className)}
-      asChild
       {...props}
     >
       {children}
