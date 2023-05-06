@@ -12,6 +12,11 @@ import { useConnectWallet, useSetChain } from '@web3-onboard/react'
 import Image from 'next/image'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useForm, SubmitHandler, Controller } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { toast } from 'react-toastify'
+import { useState } from 'react'
+import { z } from 'zod'
 
 import { Heading } from '@components/Heading'
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
@@ -21,13 +26,80 @@ import { Text } from '@components/Text'
 import { TextInput } from '@components/Inputs/TextInput'
 import { NavigationMenu } from '@components/NavigationMenu'
 
+import {
+  CHAINS_ATTRIBUTES,
+  ChainSettings
+} from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
-import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+
+export const SAFE_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
+
+const validationSchema = z.object({
+  name: z
+    .string()
+    .min(1, 'name required')
+    .regex(
+      SAFE_NAME_REGEX,
+      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
+    ),
+  chainId: z.string().min(1, 'chain required')
+})
+
+export type FieldValues = z.infer<typeof validationSchema>
+
+type SafeInfosProps = {
+  name: string
+  chain: ChainSettings
+}
 
 export default function Welcome() {
   const [{ wallet }, connect] = useConnectWallet()
   const [, setChain] = useSetChain()
   const { theme, setTheme } = useTheme()
+
+  const [safeInfos, setSafeInfos] = useState<SafeInfosProps | null>(null)
+
+  const {
+    control,
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<FieldValues>({
+    resolver: zodResolver(validationSchema)
+  })
+
+  const onSubmit: SubmitHandler<FieldValues> = async data => {
+    try {
+      const checkWalletChainPermission = wallet?.chains.find(
+        chain => chain.id === data.chainId
+      )
+
+      if (!checkWalletChainPermission) {
+        setChain({ chainId: data.chainId })
+        return
+      }
+
+      const findSelectedChainInSupportedList = CHAINS_ATTRIBUTES.find(
+        chain => chain.chainId === data.chainId
+      )
+
+      if (!findSelectedChainInSupportedList) {
+        toast.error('Chain not found in supported chain list')
+        return
+      }
+
+      setSafeInfos({
+        name: data.name,
+        chain: findSelectedChainInSupportedList
+      })
+    } catch (error) {
+      console.log(error)
+
+      const errorMessage = (error as Error)?.message
+
+      toast.error(errorMessage)
+    }
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center">
@@ -100,7 +172,10 @@ export default function Welcome() {
               </div>
 
               {wallet ? (
-                <div className="w-full flex flex-col items-center justify-center relative mt-4">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="w-full flex flex-col items-center justify-center relative mt-4"
+                >
                   <div className="w-full flex flex-col items-center justify-center flex-wrap gap-4 relative pb-5 border-b-1 border-zinc-200 dark:border-zinc-700 sm:flex-row">
                     <NavigationMenu.Root className="w-full min-w-[15rem] flex flex-1">
                       <NavigationMenu.List>
@@ -172,38 +247,64 @@ export default function Welcome() {
                       </NavigationMenu.List>
                     </NavigationMenu.Root>
 
-                    <SelectInput.Root
-                      className="w-full flex flex-1"
-                      defaultValue={CHAINS_ATTRIBUTES[0].chainId}
-                      onValueChange={async chainId => setChain({ chainId })}
-                    >
-                      <SelectInput.Trigger className="w-full h-10 px-3 text-left overflow-hidden rounded-md bg-white dark:bg-black capitalize border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
+                    <Controller
+                      name="chainId"
+                      control={control}
+                      defaultValue={
+                        safeInfos?.chain.chainId ?? wallet.chains[0].id
+                      }
+                      render={({
+                        field: { value, onChange, ref, ...props }
+                      }) => (
+                        <SelectInput.Root
+                          {...props}
+                          onValueChange={async chainId => {
+                            const isApproved = await setChain({ chainId })
 
-                      <SelectInput.Content className="w-full border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
-                        <SelectInput.Group className="w-full">
-                          {CHAINS_ATTRIBUTES.map(chain => (
-                            <SelectInput.Item
-                              key={chain.chainId}
-                              value={chain.chainId}
-                              className="w-full h-9 px-2 text-left overflow-hidden rounded-md capitalize pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800"
-                            >
-                              <div className="flex items-center gap-3">
-                                <span
-                                  className="w-3 h-3 rounded-full"
-                                  style={{ backgroundColor: chain.hexColor }}
-                                />
+                            if (isApproved) onChange(chainId)
+                          }}
+                          value={value}
+                          ref={ref}
+                          className="w-full flex flex-1"
+                        >
+                          <SelectInput.Trigger className="w-full h-10 px-3 text-left overflow-hidden rounded-md bg-white dark:bg-black capitalize border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
 
-                                <Text>{chain.networkName}</Text>
-                              </div>
-                            </SelectInput.Item>
-                          ))}
-                        </SelectInput.Group>
-                      </SelectInput.Content>
-                    </SelectInput.Root>
+                          <SelectInput.Content className="w-full border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
+                            <SelectInput.Group className="w-full">
+                              {CHAINS_ATTRIBUTES.map(chain => (
+                                <SelectInput.Item
+                                  key={chain.chainId}
+                                  value={chain.chainId}
+                                  className="w-full h-9 px-2 text-left overflow-hidden rounded-md capitalize pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <span
+                                      className="w-3 h-3 rounded-full"
+                                      style={{
+                                        backgroundColor: chain.hexColor
+                                      }}
+                                    />
+
+                                    <Text>{chain.networkName}</Text>
+                                  </div>
+                                </SelectInput.Item>
+                              ))}
+                            </SelectInput.Group>
+                          </SelectInput.Content>
+                        </SelectInput.Root>
+                      )}
+                    />
                   </div>
 
-                  <form className="flex flex-col gap-3 items-stretch w-full pt-4">
-                    <TextInput.Root htmlFor="name">
+                  <div
+                    onSubmit={handleSubmit(onSubmit)}
+                    className="flex flex-col gap-3 items-stretch w-full pt-4"
+                  >
+                    <TextInput.Root
+                      htmlFor="name"
+                      defaultValue={safeInfos?.name}
+                      error={errors.name?.message}
+                    >
                       <TextInput.Label>Safe name</TextInput.Label>
 
                       <TextInput.Content>
@@ -212,6 +313,7 @@ export default function Welcome() {
                         </TextInput.Icon>
 
                         <TextInput.Input
+                          {...register('name')}
                           required
                           id="name"
                           placeholder="Enter your safe name"
@@ -238,11 +340,15 @@ export default function Welcome() {
                       <ArrowRight className="w-4 h-4 text-cyan-500" />
                     </div>
 
-                    <Button type="submit" className="w-full mt-3 font-semibold">
+                    <Button
+                      type="submit"
+                      isLoading={isSubmitting}
+                      className="w-full mt-3 font-semibold"
+                    >
                       Continue
                     </Button>
-                  </form>
-                </div>
+                  </div>
+                </form>
               ) : (
                 <div className="h-[22rem] flex flex-col items-center justify-center relative mt-3 p-12 rounded-md bg-zinc-50 dark:bg-zinc-900 border-1 border-zinc-200 dark:border-zinc-700">
                   <div className="max-w-full flex flex-1 flex-col items-center justify-start gap-6 relative">
