@@ -1,15 +1,11 @@
-import { useConnectWallet } from '@web3-onboard/react'
 import Image from 'next/image'
 
 import { Text } from '@components/Text'
 
-import { useWallet } from '@contexts/WalletContext'
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function DeploySafeInfos() {
-  const [{ wallet }] = useConnectWallet()
-  const { formattedAddress } = useWallet()
-  const { safeInfos } = useCreateSafe()
+  const { wallet, formattedAddress, safeInfos } = useDeploySafeHook()
 
   return (
     <aside className="w-full flex flex-col items-stretch justify-start lg:w-72">

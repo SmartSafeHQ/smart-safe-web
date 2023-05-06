@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import {
   FieldArrayWithId,
-  UseFieldArrayAppend,
   UseFieldArrayRemove,
   useFormContext
 } from 'react-hook-form'
@@ -9,33 +8,25 @@ import { ArrowSquareOut, CaretDown, Plus, Trash } from 'phosphor-react'
 
 import { TextInput } from '@components/Inputs/TextInput'
 import { Collapsible } from '@components/Collapsible'
-import { FieldValues } from '@components/pages/CreateSafe/DeploySafeForm'
 import { Text } from '@components/Text'
+
+import { FieldValues } from '@hooks/createSafe/useDeploySafeHook'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
-  append: UseFieldArrayAppend<FieldValues, 'owners'>
   remove: UseFieldArrayRemove
+  addNewOwner: () => Promise<void>
 }
 
 export function OwnersConfig({
   ownersFields,
-  append,
+  addNewOwner,
   remove
 }: OwnersConfigProps) {
   const {
     register,
-    trigger,
     formState: { errors }
   } = useFormContext<FieldValues>()
-
-  async function addNewOwner() {
-    const checkLastOwnerFieldsIdValid = await trigger('owners')
-
-    if (!checkLastOwnerFieldsIdValid) return
-
-    append({ name: '', address: '' })
-  }
 
   return (
     <Collapsible.Root

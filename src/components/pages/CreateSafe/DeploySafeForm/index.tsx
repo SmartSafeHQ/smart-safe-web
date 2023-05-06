@@ -1,15 +1,4 @@
-import { useConnectWallet } from '@web3-onboard/react'
-import {
-  useForm,
-  useFieldArray,
-  SubmitHandler,
-  Controller,
-  FormProvider
-} from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { toast } from 'react-toastify'
-import { z } from 'zod'
-import { ethers } from 'ethers'
+import { Controller, FormProvider } from 'react-hook-form'
 
 import { OwnersConfig } from '@components/pages/CreateSafe/DeploySafeForm/OwnersConfig'
 import { NetworkFeeEst } from '@components/pages/CreateSafe/DeploySafeForm/NetworkFeeEst'
@@ -18,78 +7,24 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
-import { SAFE_NAME_REGEX } from '@hooks/createSafe/useCreateSafeHook'
-
-const validationSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'name required')
-    .regex(
-      SAFE_NAME_REGEX,
-      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
-    ),
-  owners: z
-    .array(
-      z.object({
-        name: z.string().min(1, 'Owner name required'),
-        address: z
-          .string()
-          .min(1, 'Owner address required')
-          .refine(address => {
-            const isAddressValid = ethers.utils.isAddress(address)
-
-            return isAddressValid
-          }, 'Invalid owner address')
-      })
-    )
-    .min(1, {
-      message: 'At least 1 owner must be assigned.'
-    }),
-  requiredSignaturesCount: z.string().min(1, 'Signatures count required')
-})
-
-export type FieldValues = z.infer<typeof validationSchema>
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function DeploySafeForm() {
-  const [{ wallet }] = useConnectWallet()
-  const { safeInfos } = useCreateSafe()
-
-  const formMethods = useForm<FieldValues>({
-    resolver: zodResolver(validationSchema),
-    defaultValues: {
-      owners: [{ name: '', address: wallet?.accounts[0].address }]
-    }
-  })
-
   const {
-    control,
-    register,
-    watch,
+    wallet,
+    safeInfos,
+    formMethods,
     handleSubmit,
-    formState: { errors, isSubmitting }
-  } = formMethods
-
-  const {
-    fields: ownersFields,
-    append,
-    remove
-  } = useFieldArray({
+    onSubmit,
+    errors,
+    ownersFields,
+    register,
+    remove,
+    addNewOwner,
+    watch,
     control,
-    name: 'owners'
-  })
-
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    try {
-      console.log(data)
-    } catch (error) {
-      console.log(error)
-
-      const errorMessage = (error as Error)?.message
-
-      toast.error(errorMessage)
-    }
-  }
+    isSubmitting
+  } = useDeploySafeHook()
 
   if (!wallet || !safeInfos) return null
 
@@ -115,7 +50,7 @@ export function DeploySafeForm() {
 
         <OwnersConfig
           ownersFields={ownersFields}
-          append={append}
+          addNewOwner={addNewOwner}
           remove={remove}
         />
 

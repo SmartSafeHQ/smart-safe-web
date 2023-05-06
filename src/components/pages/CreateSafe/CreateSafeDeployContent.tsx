@@ -1,27 +1,12 @@
 import Link from 'next/link'
-import { useConnectWallet } from '@web3-onboard/react'
 import { ArrowLeft } from 'phosphor-react'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
-
-import { useWallet } from '@contexts/WalletContext'
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
-import { DeploySafeInfos } from '@/components/pages/CreateSafe/DeploySafeInfos'
-import { DeploySafeForm } from '@/components/pages/CreateSafe/DeploySafeForm'
+import { DeploySafeInfos } from '@components/pages/CreateSafe/DeploySafeInfos'
+import { DeploySafeForm } from '@components/pages/CreateSafe/DeploySafeForm'
 
 export function CreateSafeDeployContent() {
-  const { push } = useRouter()
-  const [{ wallet }] = useConnectWallet()
-  const { formattedAddress } = useWallet()
-  const { safeInfos } = useCreateSafe()
-
-  useEffect(() => {
-    if (!wallet || !formattedAddress || !safeInfos) push('/')
-  })
-
   return (
     <div className="w-full min-h-[calc(100vh-64px)] flex flex-col flex-1 justify-center items-center px-6 py-7 relative lg:py-12">
       <div className="w-full max-w-[76rem] flex flex-1 flex-col items-stretch justify-start">
