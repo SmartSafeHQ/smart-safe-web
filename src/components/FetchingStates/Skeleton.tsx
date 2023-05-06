@@ -17,12 +17,12 @@ export function Skeleton({
   return (
     <>
       {isLoading ? (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-1 flex-col gap-3">
           {[...Array(totalOfLines).keys()].map(item => (
             <div
               key={item}
               className={clsx(
-                'rounded-md animate-pulse bg-gray-300 dark:bg-gray-700',
+                'rounded-md animate-pulse bg-zinc-300 dark:bg-zinc-700',
                 className
               )}
             />
