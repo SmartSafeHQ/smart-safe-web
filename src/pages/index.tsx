@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import { ReactElement } from 'react'
 
-import { CreateSafeWelcomeHeader } from '@components/pages/CreateSafe/CreateSafeWelcomeHeader'
+import { CreateSafeHeader } from '@components/pages/CreateSafe/CreateSafeHeader'
 import { CreateSafeWelcomeContent } from '@components/pages/CreateSafe/CreateSafeWelcomeContent'
 
 import { CreateSafeProvider } from '@contexts/create-safe/CreateSafeContext'
@@ -17,7 +17,7 @@ const CreateSafeWelcome = () => {
         />
       </Head>
 
-      <CreateSafeWelcomeHeader />
+      <CreateSafeHeader />
 
       <CreateSafeWelcomeContent />
     </div>

@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
 
-export function CreateSafeWelcomeHeader() {
+export function CreateSafeHeader() {
   const { theme, setTheme } = useTheme()
 
   return (

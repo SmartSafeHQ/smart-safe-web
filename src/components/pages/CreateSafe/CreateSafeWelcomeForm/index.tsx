@@ -78,11 +78,7 @@ export function CreateSafeWelcomeForm() {
       </div>
 
       <div className="flex flex-col gap-3 items-stretch w-full pt-4">
-        <TextInput.Root
-          htmlFor="name"
-          defaultValue={safeInfos?.name}
-          error={errors.name?.message}
-        >
+        <TextInput.Root htmlFor="name" error={errors.name?.message}>
           <TextInput.Label>Safe name</TextInput.Label>
 
           <TextInput.Content>
@@ -94,26 +90,24 @@ export function CreateSafeWelcomeForm() {
               {...register('name')}
               required
               id="name"
+              defaultValue={safeInfos?.name}
               placeholder="Enter your safe name"
             />
           </TextInput.Content>
         </TextInput.Root>
 
-        <div className="w-full flex items-center gap-2">
-          <Text
-            asChild
-            className="text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600"
+        <Text
+          asChild
+          className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600"
+        >
+          <Link
+            href={process.env.NEXT_PUBLIC_SMART_SAFE_DISCORD_LINK ?? ''}
+            target="_blank"
           >
-            <Link
-              href={process.env.NEXT_PUBLIC_SMART_SAFE_DISCORD_LINK ?? ''}
-              target="_blank"
-            >
-              Join community to see updates
-            </Link>
-          </Text>
-
-          <ArrowRight className="w-4 h-4 text-cyan-500" />
-        </div>
+            Join community to see updates
+            <ArrowRight className="w-4 h-4 text-cyan-500" />
+          </Link>
+        </Text>
 
         <Button
           type="submit"
