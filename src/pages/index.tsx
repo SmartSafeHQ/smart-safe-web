@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
-import { useState } from 'react'
+import { ReactElement } from 'react'
 import { z } from 'zod'
 
 import { Heading } from '@components/Heading'
@@ -26,11 +26,12 @@ import { Text } from '@components/Text'
 import { TextInput } from '@components/Inputs/TextInput'
 import { NavigationMenu } from '@components/NavigationMenu'
 
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { useWallet } from '@contexts/WalletContext'
 import {
-  CHAINS_ATTRIBUTES,
-  ChainSettings
-} from '@utils/web3/chains/supportedChains'
-import { useWallet } from '@/contexts/WalletContext'
+  CreateSafeProvider,
+  useCreateSafe
+} from '@contexts/create-safe/CreateSafeContext'
 
 export const SAFE_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
@@ -47,19 +48,12 @@ const validationSchema = z.object({
 
 export type FieldValues = z.infer<typeof validationSchema>
 
-type SafeInfosProps = {
-  name: string
-  chain: ChainSettings
-}
-
-export default function Welcome() {
+const CreateSafeWelcome = () => {
   const [{ wallet }, connect] = useConnectWallet()
   const [, setChain] = useSetChain()
   const { theme, setTheme } = useTheme()
   const { formattedAddress } = useWallet()
-
-  const [safeInfos, setSafeInfos] = useState<SafeInfosProps | null>(null)
-
+  const { safeInfos, setSafeInfos } = useCreateSafe()
   const {
     control,
     register,
@@ -391,3 +385,9 @@ export default function Welcome() {
     </div>
   )
 }
+
+CreateSafeWelcome.getLayout = function getLayout(page: ReactElement) {
+  return <CreateSafeProvider>{page}</CreateSafeProvider>
+}
+
+export default CreateSafeWelcome

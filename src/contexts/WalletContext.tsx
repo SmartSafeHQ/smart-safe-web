@@ -6,7 +6,7 @@ import {
   useState
 } from 'react'
 import { useConnectWallet } from '@web3-onboard/react'
-import { formatWalletAddress } from '@/utils/web3'
+import { formatWalletAddress } from '@utils/web3'
 
 type WalletProviderProps = PropsWithChildren<Record<string, unknown>>
 
