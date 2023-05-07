@@ -46,7 +46,7 @@ export const useDeploySafeHook = () => {
   const { push } = useRouter()
   const [{ wallet }] = useConnectWallet()
   const { formattedAddress } = useWallet()
-  const { safeInfos, setDeployStatus } = useCreateSafe()
+  const { safeInfos, deployStatus, setDeployStatus } = useCreateSafe()
   const { mutateAsync: mutateDeploySafe } = useDeploySafeMutation()
 
   const formMethods = useForm<FieldValues>({
@@ -122,6 +122,7 @@ export const useDeploySafeHook = () => {
     watch,
     addNewOwner,
     control,
-    isSubmitting
+    isSubmitting,
+    deployStatus
   }
 }

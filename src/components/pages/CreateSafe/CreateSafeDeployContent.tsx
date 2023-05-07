@@ -1,3 +1,4 @@
+import clsx from 'clsx'
 import Link from 'next/link'
 import { ArrowLeft } from 'phosphor-react'
 
@@ -5,8 +6,13 @@ import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
 import { DeploySafeInfos } from '@components/pages/CreateSafe/DeploySafeInfos'
 import { DeploySafeForm } from '@components/pages/CreateSafe/DeploySafeForm'
+import { CreateSafeDeployStatus } from '@components/pages/CreateSafe/CreateSafeDeployStatus'
+
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function CreateSafeDeployContent() {
+  const { deployStatus } = useDeploySafeHook()
+
   return (
     <div className="w-full min-h-[calc(100vh-64px)] flex flex-col flex-1 justify-center items-center px-6 py-7 relative lg:py-12">
       <div className="w-full max-w-[76rem] flex flex-1 flex-col items-stretch justify-start">
@@ -41,14 +47,26 @@ export function CreateSafeDeployContent() {
         <div className="w-full flex flex-col flex-1 items-stretch justify-start gap-9 lg:flex-row lg:gap-[4.5rem]">
           <DeploySafeInfos />
 
-          <main className="min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start gap-6 p-6 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8">
-            <div className="flex justify-start items-stretch pb-5 border-b-1 border-zinc-200 dark:border-zinc-700">
-              <Heading className="text-2xl font-semibold">
-                Configure safe
-              </Heading>
-            </div>
+          <main className="flex flex-col flex-1 items-stretch justify-start gap-12">
+            <article
+              className={clsx(
+                'min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start gap-6 p-6 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
+                {
+                  'pointer-events-none brightness-50':
+                    deployStatus.isLoading || deployStatus.isDeployed
+                }
+              )}
+            >
+              <div className="flex justify-start items-stretch pb-5 border-b-1 border-zinc-200 dark:border-zinc-700">
+                <Heading className="text-2xl font-semibold">
+                  Configure safe
+                </Heading>
+              </div>
 
-            <DeploySafeForm />
+              <DeploySafeForm />
+            </article>
+
+            <CreateSafeDeployStatus />
           </main>
         </div>
       </div>

@@ -45,8 +45,9 @@ export const useCreateSafeHook = () => {
       )
 
       if (!checkWalletChainPermission) {
-        setChain({ chainId: data.chainId })
-        return
+        const isChainChanged = await setChain({ chainId: data.chainId })
+
+        if (!isChainChanged) return
       }
 
       const findSelectedChainInSupportedList = CHAINS_ATTRIBUTES.find(
