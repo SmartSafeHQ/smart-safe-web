@@ -85,13 +85,17 @@ export const useDeploySafeHook = () => {
         behavior: 'smooth'
       })
 
-      await mutateDeploySafe({
-        name: data.name,
-        owners: data.owners,
-        requiredSignaturesCount: +data.requiredSignaturesCount
-      })
+      const timer = setTimeout(async () => {
+        await mutateDeploySafe({
+          name: data.name,
+          owners: data.owners,
+          requiredSignaturesCount: +data.requiredSignaturesCount
+        })
 
-      setDeployStatus({ isLoading: false, isDeployed: true })
+        setDeployStatus({ isLoading: false, isDeployed: true })
+
+        clearTimeout(timer)
+      }, 5000)
     } catch (error) {
       console.log(error)
       setDeployStatus({ isLoading: false, isDeployed: false })

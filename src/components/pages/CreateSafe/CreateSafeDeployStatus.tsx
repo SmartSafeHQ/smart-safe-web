@@ -16,7 +16,8 @@ export function CreateSafeDeployStatus() {
       className={clsx(
         'min-w-[23.25rem] min-h-[23rem] flex flex-col flex-1 items-stretch justify-start gap-6 px-6 pt-6 pb-12 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
         {
-          'brightness-50': !deployStatus.isLoading && !deployStatus.isDeployed
+          'brightness-90 dark:brightness-50':
+            !deployStatus.isLoading && !deployStatus.isDeployed
         }
       )}
     >
@@ -47,7 +48,7 @@ export function CreateSafeDeployStatus() {
       )}
 
       {deployStatus.isDeployed && (
-        <div className="w-full flex flex-col items-center justify-center gap-2">
+        <div className="w-full flex flex-col items-center justify-center gap-2 z-10">
           <CheckCircle className="w-24 h-24 text-cyan-500" />
 
           <Heading asChild className="text-2xl">

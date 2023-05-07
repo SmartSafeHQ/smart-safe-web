@@ -8,7 +8,7 @@ interface AvatarRootProps extends RadixAvatar.AvatarProps {
 }
 
 export function AvatarRoot({
-  fallbackName = 'in',
+  fallbackName = 'sa',
   className,
   children,
   ...props

@@ -7,6 +7,7 @@ import { Text } from '@components/Text'
 import { DeploySafeInfos } from '@components/pages/CreateSafe/DeploySafeInfos'
 import { DeploySafeForm } from '@components/pages/CreateSafe/DeploySafeForm'
 import { CreateSafeDeployStatus } from '@components/pages/CreateSafe/CreateSafeDeployStatus'
+import { SafeDeployedConfettiAnimation } from './SafeDeployedConfettiAnimation'
 
 import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
@@ -52,7 +53,7 @@ export function CreateSafeDeployContent() {
               className={clsx(
                 'min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start gap-6 p-6 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
                 {
-                  'pointer-events-none brightness-50':
+                  'pointer-events-none brightness-90 dark:brightness-50':
                     deployStatus.isLoading || deployStatus.isDeployed
                 }
               )}
@@ -67,6 +68,10 @@ export function CreateSafeDeployContent() {
             </article>
 
             <CreateSafeDeployStatus />
+
+            {deployStatus.isDeployed && (
+              <SafeDeployedConfettiAnimation className="fixed top-0 left-0" />
+            )}
           </main>
         </div>
       </div>
