@@ -15,21 +15,34 @@ type SafeInfosProps = {
   chain: ChainSettings
 }
 
+type DeployStatusProps = {
+  isLoading: boolean
+  isDeployed: boolean
+}
+
 interface CreateSafeContextData {
   safeInfos: SafeInfosProps | null
   setSafeInfos: Dispatch<SetStateAction<SafeInfosProps | null>>
+  deployStatus: DeployStatusProps
+  setDeployStatus: Dispatch<SetStateAction<DeployStatusProps>>
 }
 
 const CreateSafeContext = createContext({} as CreateSafeContextData)
 
 export function CreateSafeProvider({ children }: CreateSafeProviderProps) {
   const [safeInfos, setSafeInfos] = useState<SafeInfosProps | null>(null)
+  const [deployStatus, setDeployStatus] = useState<DeployStatusProps>({
+    isLoading: false,
+    isDeployed: false
+  })
 
   return (
     <CreateSafeContext.Provider
       value={{
         safeInfos,
-        setSafeInfos
+        setSafeInfos,
+        deployStatus,
+        setDeployStatus
       }}
     >
       {children}

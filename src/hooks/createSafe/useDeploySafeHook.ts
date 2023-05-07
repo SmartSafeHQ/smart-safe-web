@@ -10,6 +10,7 @@ import { z } from 'zod'
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useWallet } from '@contexts/WalletContext'
 import { SAFE_NAME_REGEX } from '@hooks/createSafe/useCreateSafeHook'
+import { useDeploySafeMutation } from '@hooks/createSafe/mutation/useDeploySafeMutation'
 
 const validationSchema = z.object({
   name: z
@@ -45,7 +46,8 @@ export const useDeploySafeHook = () => {
   const { push } = useRouter()
   const [{ wallet }] = useConnectWallet()
   const { formattedAddress } = useWallet()
-  const { safeInfos } = useCreateSafe()
+  const { safeInfos, setDeployStatus } = useCreateSafe()
+  const { mutateAsync: mutateDeploySafe } = useDeploySafeMutation()
 
   const formMethods = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
@@ -74,19 +76,24 @@ export const useDeploySafeHook = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
-      console.log(data)
+      setDeployStatus({ isLoading: true, isDeployed: false })
+
+      await mutateDeploySafe({
+        name: data.name,
+        owners: data.owners,
+        requiredSignaturesCount: +data.requiredSignaturesCount
+      })
+
+      setDeployStatus({ isLoading: false, isDeployed: true })
     } catch (error) {
       console.log(error)
+      setDeployStatus({ isLoading: false, isDeployed: false })
 
       const errorMessage = (error as Error)?.message
 
       toast.error(errorMessage)
     }
   }
-
-  useEffect(() => {
-    if (!wallet || !formattedAddress || !safeInfos) push('/')
-  })
 
   async function addNewOwner() {
     const checkLastOwnerFieldsIdValid = await trigger('owners')
@@ -95,6 +102,10 @@ export const useDeploySafeHook = () => {
 
     append({ name: '', address: '' })
   }
+
+  useEffect(() => {
+    if (!wallet || !formattedAddress || !safeInfos) push('/')
+  })
 
   return {
     push,
