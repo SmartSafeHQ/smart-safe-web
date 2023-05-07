@@ -78,6 +78,13 @@ export const useDeploySafeHook = () => {
     try {
       setDeployStatus({ isLoading: true, isDeployed: false })
 
+      const docHeight = document.documentElement.scrollHeight
+
+      window.scrollTo({
+        top: docHeight,
+        behavior: 'smooth'
+      })
+
       await mutateDeploySafe({
         name: data.name,
         owners: data.owners,

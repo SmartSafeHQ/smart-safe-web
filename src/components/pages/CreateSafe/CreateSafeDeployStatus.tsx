@@ -14,10 +14,9 @@ export function CreateSafeDeployStatus() {
   return (
     <article
       className={clsx(
-        'min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start gap-6 px-6 pt-6 pb-12 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
+        'min-w-[23.25rem] min-h-[23rem] flex flex-col flex-1 items-stretch justify-start gap-6 px-6 pt-6 pb-12 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
         {
-          'pointer-events-none brightness-50':
-            !deployStatus.isLoading && !deployStatus.isDeployed
+          'brightness-50': !deployStatus.isLoading && !deployStatus.isDeployed
         }
       )}
     >
