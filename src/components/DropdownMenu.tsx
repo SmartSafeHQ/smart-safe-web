@@ -92,7 +92,7 @@ function DropdownMenuItem({
       className={clsx(
         'relative flex items-center justify-start gap-4 select-none outline-none text-base font-medium capitalize cursor-pointer',
         {
-          'pointer-events-none text-gray-400 [&>*]:text-brand-foreground dark:brightness-50 dark:text-cyan-50':
+          'pointer-events-none text-zinc-400 dark:brightness-50 dark:text-zinc-50':
             isDisabled
         },
         className
@@ -100,7 +100,7 @@ function DropdownMenuItem({
       {...props}
     >
       {LeftIcon && (
-        <Slot className="w-5 h-5 text-brand-foregroundAccent1">
+        <Slot className="w-5 h-5 text-cyan-500">
           <LeftIcon weight="fill" />
         </Slot>
       )}

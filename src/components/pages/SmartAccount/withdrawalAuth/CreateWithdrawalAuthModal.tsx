@@ -44,7 +44,7 @@ export function CreateWithdrawalAuthModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
-            <DialogModal.Title className="text-3xl font-bold text-gray-800 dark:text-gray-50">
+            <DialogModal.Title className="text-3xl font-bold text-zinc-800 dark:text-zinc-50">
               Create withdrawal authorization
             </DialogModal.Title>
           </header>
@@ -89,7 +89,7 @@ export function CreateWithdrawalAuthModal() {
               <div className="relative w-full">
                 <ul
                   id="select-contact-id"
-                  className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-gray-100 dark:bg-gray-900 rounded"
+                  className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-zinc-100 dark:bg-zinc-900 rounded"
                 >
                   {searchContacts?.map(contact => (
                     <li key={contact.name} className="min-h-[3rem]">
@@ -103,7 +103,7 @@ export function CreateWithdrawalAuthModal() {
                             .getElementById('select-contact-id')
                             ?.classList.add('!hidden')
                         }}
-                        className="w-full flex flex-col items-stretch justify-start gap-1 p-2 outline-none ring-brand-foregroundAccent1 rounded transition-colors hover:bg-brand-foregroundAccent2 focus-within:bg-brand-foregroundAccent2 hover:!text-gray-50"
+                        className="w-full flex flex-col items-stretch justify-start gap-1 p-2 outline-none ring-cyan-500 rounded transition-colors hover:bg-cyan-600 focus-within:bg-cyan-600 hover:!text-zinc-50"
                       >
                         <Text asChild className="text-start">
                           <strong>{contact.name}</strong>
@@ -132,9 +132,9 @@ export function CreateWithdrawalAuthModal() {
                   className="w-full"
                   labelText="Withdrawal currency"
                 >
-                  <SelectInput.Trigger className="min-h-[3rem] py-1 bg-gray-50 dark:bg-gray-900" />
+                  <SelectInput.Trigger className="min-h-[3rem] py-1 bg-zinc-50 dark:bg-zinc-900" />
 
-                  <SelectInput.Content className="bg-gray-50 dark:bg-gray-900">
+                  <SelectInput.Content className="bg-zinc-50 dark:bg-zinc-900">
                     <SelectInput.Group>
                       {CHAINS_ATTRIBUTES.map(coin => (
                         <SelectInput.Item
@@ -151,7 +151,7 @@ export function CreateWithdrawalAuthModal() {
                               className="w-7 h-7"
                             />
 
-                            <Text className="text-xl font-bold dark:text-gray-50 uppercase">
+                            <Text className="text-xl font-bold dark:text-zinc-50 uppercase">
                               {coin.symbol}
                             </Text>
                           </div>

@@ -2,19 +2,23 @@ import { Fragment } from 'react'
 import Head from 'next/head'
 import clsx from 'clsx'
 import { Inter } from '@next/font/google'
+import { Amplify } from 'aws-amplify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import '../styles/globals.css'
 
+import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
+
 import { AppProvider } from '@contexts/index'
 import { AppPropsWithLayout } from '@utils/types'
-
-import { DashboardLayout } from '@components/pages/Layouts/DashboardLayout'
+import { amplifyConfig } from '@lib/amplify'
 
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter'
 })
+
+Amplify.configure(amplifyConfig)
 
 export default function App({
   Component,
