@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import Link from 'next/link'
 import { CheckCircle, WarningCircle } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
@@ -55,7 +56,9 @@ export function CreateSafeDeployStatus() {
             <h2>Safe successfully created</h2>
           </Heading>
 
-          <Button className="w-full max-w-[15rem] mt-6">See now</Button>
+          <Button asChild className="w-full max-w-[15rem] mt-6">
+            <Link href={`/dashboard/${deployStatus?.safeId}`}>See now</Link>
+          </Button>
         </div>
       )}
     </article>

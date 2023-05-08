@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { ethers } from 'ethers'
+import axios from 'axios'
 import { z } from 'zod'
 
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
@@ -91,6 +92,8 @@ export const useDeploySafeHook = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
+      if (!safeInfos) throw new Error('no safe infos available')
+
       setDeployStatus({ isLoading: true, isDeployed: false })
 
       const docHeight = document.documentElement.scrollHeight
@@ -100,22 +103,33 @@ export const useDeploySafeHook = () => {
         behavior: 'smooth'
       })
 
-      const timer = setTimeout(async () => {
-        await mutateDeploySafe({
-          name: data.name,
-          owners: data.owners,
-          requiredSignaturesCount: +data.requiredSignaturesCount
-        })
+      const response = await mutateDeploySafe({
+        safeName: data.name,
+        safeNetwork: safeInfos.chain.chainId,
+        requiredSignaturesCount: +data.requiredSignaturesCount,
+        owners: data.owners
+      })
 
-        setDeployStatus({ isLoading: false, isDeployed: true })
-
-        clearTimeout(timer)
-      }, 5000)
+      setDeployStatus({
+        isLoading: false,
+        isDeployed: true,
+        safeId: response.id
+      })
     } catch (error) {
       console.log(error)
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+
       setDeployStatus({ isLoading: false, isDeployed: false })
 
-      const errorMessage = (error as Error)?.message
+      let errorMessage = (error as Error)?.message
+
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        errorMessage = error.response?.data?.message
+      }
 
       toast.error(errorMessage)
     }

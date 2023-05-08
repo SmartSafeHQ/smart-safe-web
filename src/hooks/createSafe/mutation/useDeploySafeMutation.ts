@@ -1,18 +1,36 @@
 import { useMutation } from '@tanstack/react-query'
 
+import { smartSafeApi } from '@lib/axios'
+
 export type DeploySafeFunctionInput = {
-  name: string
+  safeName: string
+  safeNetwork: string
+  requiredSignaturesCount: number
   owners: {
     address: string
     name: string
   }[]
-  requiredSignaturesCount: number
+}
+
+interface DeploySafeFunctionOutput {
+  id: string
+}
+
+export interface DeploySafeApiResponse {
+  id: string
 }
 
 async function deploySafeFunction(
   input: DeploySafeFunctionInput
-): Promise<void> {
-  console.log(input)
+): Promise<DeploySafeFunctionOutput> {
+  const response = await smartSafeApi.post<DeploySafeApiResponse>('/safe', {
+    safeName: input.safeName,
+    safeAddress: '0x701dfd1cb16664cdf1e47988a3faf979f48e3d71',
+    safeNetwork: input.safeNetwork,
+    owners: input.owners
+  })
+
+  return { id: response.data.id }
 }
 
 export function useDeploySafeMutation() {

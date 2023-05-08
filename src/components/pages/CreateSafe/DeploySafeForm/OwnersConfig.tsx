@@ -28,8 +28,6 @@ export function OwnersConfig({
     formState: { errors }
   } = useFormContext<FieldValues>()
 
-  console.log(errors)
-
   return (
     <Collapsible.Root
       defaultOpen={true}
