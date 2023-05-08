@@ -36,7 +36,22 @@ const validationSchema = z.object({
     )
     .min(1, {
       message: 'At least 1 owner must be assigned.'
-    }),
+    })
+    .refine(addresses => {
+      // Check that the current address is unique
+      const checkSomeOwnerAddressIsRepeated = addresses.find((owner, index) => {
+        const findSomeOwnerWithSameAddress = addresses.some(
+          (someOwner, someIndex) =>
+            !!owner.address &&
+            someIndex !== index &&
+            someOwner.address === owner.address
+        )
+
+        return findSomeOwnerWithSameAddress
+      })
+
+      return !checkSomeOwnerAddressIsRepeated
+    }, "Each safe owner's address must be unique."),
   requiredSignaturesCount: z.string().min(1, 'Signatures count required')
 })
 

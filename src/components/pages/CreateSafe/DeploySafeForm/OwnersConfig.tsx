@@ -28,6 +28,8 @@ export function OwnersConfig({
     formState: { errors }
   } = useFormContext<FieldValues>()
 
+  console.log(errors)
+
   return (
     <Collapsible.Root
       defaultOpen={true}
@@ -100,6 +102,12 @@ export function OwnersConfig({
               </div>
             )
           })}
+
+          {errors.owners?.message && (
+            <Text className="text-sm text-red-500">
+              {errors.owners.message}
+            </Text>
+          )}
         </div>
 
         <div className="w-full flex items-stretch justify-start pt-4">
