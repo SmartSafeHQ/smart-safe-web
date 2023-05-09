@@ -10,7 +10,7 @@ export function Toggle({ children, className, ...props }: ToggleProps) {
   return (
     <RadixToggle.Root
       className={clsx(
-        'border-2 border-transparent data-[state=on]:brightness-95 data-[state=on]:dark:brightness-90 data-[state=on]:border-brand-foregroundAccent1 transition-colors hover:border-brand-foregroundAccent2 focus:shadow-md',
+        'border-2 border-transparent data-[state=on]:brightness-95 data-[state=on]:dark:brightness-90 data-[state=on]:border-cyan-500 transition-colors hover:border-cyan-600 focus:shadow-md',
         className
       )}
       aria-label="Toggle item"

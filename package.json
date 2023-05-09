@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install && chmod ug+x .husky/*",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "typechain": "typechain --target=ethers-v5 --out-dir src/utils/web3/typings 'src/utils/web3/ABIs/*.json'",
+    "postinstall": "npm run typechain"
   },
   "dependencies": {
     "@hookform/resolvers": "^2.9.10",
@@ -27,9 +29,9 @@
     "@radix-ui/react-toggle": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.5",
     "@tanstack/react-query": "^4.22.4",
-    "@types/node": "18.11.18",
-    "@types/react": "18.0.27",
-    "@types/react-dom": "18.0.10",
+    "@types/node": "^20.1.0",
+    "@types/react": "^18.2.6",
+    "@types/react-dom": "^18.2.4",
     "@web3-onboard/core": "^2.17.0",
     "@web3-onboard/injected-wallets": "^2.8.5",
     "@web3-onboard/keystone": "^2.3.5",
@@ -37,7 +39,7 @@
     "@web3-onboard/react": "^2.8.0",
     "@web3-onboard/trezor": "^2.4.0",
     "@web3-onboard/walletconnect": "^2.3.6",
-    "aws-amplify": "^5.1.4",
+    "aws-amplify": "^5.2.0",
     "axios": "^1.2.3",
     "clsx": "^1.2.1",
     "dayjs": "^1.11.7",
@@ -52,16 +54,14 @@
     "react-spinners": "^0.13.8",
     "react-toastify": "^9.1.1",
     "sharp": "^0.32.0",
-    "typescript": "4.9.4",
+    "typescript": "^5.0.4",
     "zod": "^3.20.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.6.1",
     "@commitlint/config-conventional": "^17.6.1",
     "@next/eslint-plugin-next": "^13.3.4",
-    "@types/node": "18.16.0",
-    "@types/react": "18.0.38",
-    "@types/react-dom": "18.0.11",
+    "@typechain/ethers-v5": "^10.2.1",
     "@typescript-eslint/eslint-plugin": "^5.59.0",
     "@typescript-eslint/parser": "^5.59.0",
     "autoprefixer": "^10.4.14",
@@ -84,7 +84,7 @@
     "prettier": "^2.8.8",
     "tailwindcss": "^3.3.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "5.0.4"
+    "typechain": "^8.1.1"
   },
   "config": {
     "commitizen": {

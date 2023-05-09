@@ -10,7 +10,7 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 
-import { FieldValues } from '@hooks/createSafe/useDeploySafeHook'
+import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
@@ -100,6 +100,12 @@ export function OwnersConfig({
               </div>
             )
           })}
+
+          {errors.owners?.message && (
+            <Text className="text-sm text-red-500">
+              {errors.owners.message}
+            </Text>
+          )}
         </div>
 
         <div className="w-full flex items-stretch justify-start pt-4">

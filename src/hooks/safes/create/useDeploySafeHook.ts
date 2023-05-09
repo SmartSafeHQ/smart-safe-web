@@ -5,12 +5,13 @@ import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
 import { ethers } from 'ethers'
+import axios from 'axios'
 import { z } from 'zod'
 
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useWallet } from '@contexts/WalletContext'
-import { SAFE_NAME_REGEX } from '@hooks/createSafe/useCreateSafeHook'
-import { useDeploySafeMutation } from '@hooks/createSafe/mutation/useDeploySafeMutation'
+import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
+import { useDeploySafeMutation } from '@hooks/safes/create/mutation/useDeploySafeMutation'
 
 const validationSchema = z.object({
   name: z
@@ -36,7 +37,22 @@ const validationSchema = z.object({
     )
     .min(1, {
       message: 'At least 1 owner must be assigned.'
-    }),
+    })
+    .refine(addresses => {
+      // Check that the current address is unique
+      const checkSomeOwnerAddressIsRepeated = addresses.find((owner, index) => {
+        const findSomeOwnerWithSameAddress = addresses.some(
+          (someOwner, someIndex) =>
+            !!owner.address &&
+            someIndex !== index &&
+            someOwner.address === owner.address
+        )
+
+        return findSomeOwnerWithSameAddress
+      })
+
+      return !checkSomeOwnerAddressIsRepeated
+    }, "Each safe owner's address must be unique."),
   requiredSignaturesCount: z.string().min(1, 'Signatures count required')
 })
 
@@ -76,6 +92,8 @@ export const useDeploySafeHook = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
+      if (!safeInfos || !wallet) throw new Error('no safe infos available')
+
       setDeployStatus({ isLoading: true, isDeployed: false })
 
       const docHeight = document.documentElement.scrollHeight
@@ -85,22 +103,37 @@ export const useDeploySafeHook = () => {
         behavior: 'smooth'
       })
 
-      const timer = setTimeout(async () => {
-        await mutateDeploySafe({
-          name: data.name,
-          owners: data.owners,
-          requiredSignaturesCount: +data.requiredSignaturesCount
-        })
+      const response = await mutateDeploySafe({
+        safeName: data.name,
+        deployWalletAddress: wallet.accounts[0].address,
+        chain: {
+          id: safeInfos.chain.chainId,
+          name: safeInfos.chain.networkName
+        },
+        requiredSignaturesCount: +data.requiredSignaturesCount,
+        owners: data.owners
+      })
 
-        setDeployStatus({ isLoading: false, isDeployed: true })
-
-        clearTimeout(timer)
-      }, 5000)
+      setDeployStatus({
+        isLoading: false,
+        isDeployed: true,
+        safeAddress: response.safeAddress
+      })
     } catch (error) {
       console.log(error)
+
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+
       setDeployStatus({ isLoading: false, isDeployed: false })
 
-      const errorMessage = (error as Error)?.message
+      let errorMessage = (error as Error)?.message
+
+      if (axios.isAxiosError(error) && error.response?.data?.message) {
+        errorMessage = error.response?.data?.message
+      }
 
       toast.error(errorMessage)
     }

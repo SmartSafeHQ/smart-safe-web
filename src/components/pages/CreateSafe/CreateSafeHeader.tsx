@@ -1,11 +1,23 @@
 import { Moon, Sun } from 'phosphor-react'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
+import { SmartSafeTextLogo } from '@components/Logos/SmartSafeTextLogo'
 
 export function CreateSafeHeader() {
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Workaround, when mounted on client, now we can show the UI
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <header className="sticky top-0 left-0 w-full h-16 z-10 bg-zinc-50 dark:bg-zinc-950">
@@ -15,7 +27,8 @@ export function CreateSafeHeader() {
             href="/home"
             className="block w-7 h-6 p-2 -m-2 box-content relative"
           >
-            <SmartSafeIconLogo className="w-6 h-6" />
+            <SmartSafeTextLogo className="w-52 h-11 hidden sm:block" />
+            <SmartSafeIconLogo className="w-7 h-9 block sm:hidden" />
           </Link>
         </div>
 

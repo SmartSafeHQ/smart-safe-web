@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import Link from 'next/link'
 import { CheckCircle, WarningCircle } from 'phosphor-react'
 
 import { Heading } from '@components/Heading'
@@ -6,7 +7,7 @@ import { Text } from '@components/Text'
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
 import { Button } from '@components/Button'
 
-import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
 export function CreateSafeDeployStatus() {
   const { deployStatus } = useDeploySafeHook()
@@ -55,7 +56,11 @@ export function CreateSafeDeployStatus() {
             <h2>Safe successfully created</h2>
           </Heading>
 
-          <Button className="w-full max-w-[15rem] mt-6">See now</Button>
+          <Button asChild className="w-full max-w-[15rem] mt-6">
+            <Link href={`/dashboard/${deployStatus?.safeAddress}`}>
+              See now
+            </Link>
+          </Button>
         </div>
       )}
     </article>
