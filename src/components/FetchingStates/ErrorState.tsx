@@ -28,10 +28,12 @@ export function ErrorState({
       )}
       {...props}
     >
+      <SmartSafeIconLogo className="w-20 h-20 opacity-60" />
+
       <div className="max-w-lg flex flex-col items-center gap-1 text-center">
         <Text
           asChild
-          className="text-lg font-medium text-gray-800 dark:text-gray-300"
+          className="text-lg font-medium  text-zinc-800 dark:text-zinc-400"
         >
           <strong>{title}</strong>
         </Text>
@@ -42,8 +44,6 @@ export function ErrorState({
           </Text>
         )}
       </div>
-
-      <SmartSafeIconLogo className="w-20 h-20 opacity-60" />
     </Comp>
   )
 }

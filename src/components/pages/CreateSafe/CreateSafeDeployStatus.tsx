@@ -7,7 +7,7 @@ import { Text } from '@components/Text'
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
 import { Button } from '@components/Button'
 
-import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
 export function CreateSafeDeployStatus() {
   const { deployStatus } = useDeploySafeHook()

@@ -10,8 +10,8 @@ import { z } from 'zod'
 
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useWallet } from '@contexts/WalletContext'
-import { SAFE_NAME_REGEX } from '@hooks/createSafe/useCreateSafeHook'
-import { useDeploySafeMutation } from '@hooks/createSafe/mutation/useDeploySafeMutation'
+import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
+import { useDeploySafeMutation } from '@hooks/safes/create/mutation/useDeploySafeMutation'
 
 const validationSchema = z.object({
   name: z

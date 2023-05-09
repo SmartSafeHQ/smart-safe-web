@@ -10,7 +10,7 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 
-import { FieldValues } from '@hooks/createSafe/useDeploySafeHook'
+import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
