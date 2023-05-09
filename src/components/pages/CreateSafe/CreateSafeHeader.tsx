@@ -4,13 +4,20 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
+import { SmartSafeTextLogo } from '@components/Logos/SmartSafeTextLogo'
 
 export function CreateSafeHeader() {
   const { theme, setTheme } = useTheme()
-  const [resolvedTheme, setResolvedTheme] = useState('dark')
+  const [mounted, setMounted] = useState(false)
 
   // Workaround, when mounted on client, now we can show the UI
-  useEffect(() => setResolvedTheme(theme ?? 'dark'), [theme])
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
 
   return (
     <header className="sticky top-0 left-0 w-full h-16 z-10 bg-zinc-50 dark:bg-zinc-950">
@@ -20,12 +27,13 @@ export function CreateSafeHeader() {
             href="/home"
             className="block w-7 h-6 p-2 -m-2 box-content relative"
           >
-            <SmartSafeIconLogo className="w-6 h-6" />
+            <SmartSafeTextLogo className="w-52 h-11 hidden sm:block" />
+            <SmartSafeIconLogo className="w-7 h-9 block sm:hidden" />
           </Link>
         </div>
 
         <div className="flex flex-grow-0 flex-shrink-0 items-center justify-end z-50">
-          {resolvedTheme === 'dark' ? (
+          {theme === 'dark' ? (
             <button
               onClick={() => setTheme('light')}
               className="p-2 flex items-center justify-center overflow-hidden border-1 border-zinc-700 rounded-full hover:border-zinc-500 hover:bg-zinc-900"
