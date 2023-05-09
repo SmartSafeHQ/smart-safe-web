@@ -18,7 +18,7 @@ type SafeInfosProps = {
 type DeployStatusProps = {
   isLoading: boolean
   isDeployed: boolean
-  safeId?: string
+  safeAddress?: string
 }
 
 interface CreateSafeContextData {

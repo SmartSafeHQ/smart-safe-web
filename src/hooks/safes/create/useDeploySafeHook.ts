@@ -92,7 +92,7 @@ export const useDeploySafeHook = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
-      if (!safeInfos) throw new Error('no safe infos available')
+      if (!safeInfos || !wallet) throw new Error('no safe infos available')
 
       setDeployStatus({ isLoading: true, isDeployed: false })
 
@@ -105,7 +105,11 @@ export const useDeploySafeHook = () => {
 
       const response = await mutateDeploySafe({
         safeName: data.name,
-        safeNetwork: safeInfos.chain.chainId,
+        deployWalletAddress: wallet.accounts[0].address,
+        chain: {
+          id: safeInfos.chain.chainId,
+          name: safeInfos.chain.networkName
+        },
         requiredSignaturesCount: +data.requiredSignaturesCount,
         owners: data.owners
       })
@@ -113,7 +117,7 @@ export const useDeploySafeHook = () => {
       setDeployStatus({
         isLoading: false,
         isDeployed: true,
-        safeId: response.id
+        safeAddress: response.safeAddress
       })
     } catch (error) {
       console.log(error)

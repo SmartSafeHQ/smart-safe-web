@@ -57,7 +57,9 @@ export function CreateSafeDeployStatus() {
           </Heading>
 
           <Button asChild className="w-full max-w-[15rem] mt-6">
-            <Link href={`/dashboard/${deployStatus?.safeId}`}>See now</Link>
+            <Link href={`/dashboard/${deployStatus?.safeAddress}`}>
+              See now
+            </Link>
           </Button>
         </div>
       )}
