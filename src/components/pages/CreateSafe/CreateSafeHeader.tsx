@@ -24,7 +24,7 @@ export function CreateSafeHeader() {
       <nav className="h-16 flex items-center m-auto px-6 select-none relative">
         <div className="flex flex-1 items-center pr-6 z-50">
           <Link
-            href="/home"
+            href="/"
             className="block w-7 h-6 p-2 -m-2 box-content relative"
           >
             <SmartSafeTextLogo className="w-52 h-11 hidden sm:block" />

@@ -18,6 +18,9 @@ type OwnersConfigProps = {
   addNewOwner: () => Promise<void>
 }
 
+const MULTI_SIGN_OWNERS_LINK =
+  'https://ethereum.org/en/roadmap/account-abstraction/'
+
 export function OwnersConfig({
   ownersFields,
   addNewOwner,
@@ -124,7 +127,7 @@ export function OwnersConfig({
             asChild
             className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600"
           >
-            <Link href={'link to'} target="_blank">
+            <Link href={MULTI_SIGN_OWNERS_LINK} target="_blank">
               Learn more about multi sign owners
               <ArrowSquareOut className="w-4 h-4 text-cyan-500" />
             </Link>
