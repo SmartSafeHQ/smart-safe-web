@@ -12,7 +12,7 @@ import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts
 import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { useCreateWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useCreateWithdrawalAuthMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { getWe3ErrorMessageWithToast } from '@utils/web3'
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const createWithdrawalValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
@@ -117,10 +117,8 @@ export const useSAWithdrawalAuthHook = () => {
       reset()
       setSearchContacts(contacts)
       setIsCreateWithdrawalOpen(false)
-    } catch (e) {
-      console.log(e)
-
-      getWe3ErrorMessageWithToast(e)
+    } catch (error) {
+      getWe3ErrorMessageWithToast(error)
     }
   }
 

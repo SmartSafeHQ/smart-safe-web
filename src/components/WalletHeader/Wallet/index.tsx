@@ -3,6 +3,8 @@ import { useConnectWallet } from '@web3-onboard/react'
 import { Connected } from './Connected'
 import { NotConnected } from './NotConnected'
 
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
+
 export function Wallet() {
   const [{ wallet }, connect, disconnect] = useConnectWallet()
 
@@ -11,8 +13,8 @@ export function Wallet() {
 
     try {
       await connect()
-    } catch (err) {
-      console.error('WalletHeader#handleWalletConnect', err)
+    } catch (error) {
+      getWe3ErrorMessageWithToast(error)
     }
   }
 

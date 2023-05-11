@@ -7,6 +7,7 @@ import { UnsupportedNetwork } from './UnsupportedNetwork'
 import { useConnectWallet, useSetChain } from '@web3-onboard/react'
 
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 export function Network() {
   const [{ wallet }] = useConnectWallet()
@@ -27,8 +28,8 @@ export function Network() {
   async function handleChainChange(chainId: string) {
     try {
       await setChain({ chainId })
-    } catch (err) {
-      console.error('[Network#handleChainChange]:', err)
+    } catch (error) {
+      getWe3ErrorMessageWithToast(error)
     }
   }
 

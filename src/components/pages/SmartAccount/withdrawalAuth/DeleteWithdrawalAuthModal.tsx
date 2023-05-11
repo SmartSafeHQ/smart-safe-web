@@ -8,8 +8,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { useDeleteWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useDeleteWithdrawalAuthMutation'
 import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
-import { getWe3ErrorMessageWithToast } from '@utils/web3'
-
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 export function DeleteWithdrawalAuthModal() {
   const {
     selectedWithdrawal,
@@ -30,8 +29,8 @@ export function DeleteWithdrawalAuthModal() {
       })
 
       setIsDeleteWithdrawalOpen(false)
-    } catch (e) {
-      getWe3ErrorMessageWithToast(e)
+    } catch (error) {
+      getWe3ErrorMessageWithToast(error)
     }
   }
 

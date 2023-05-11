@@ -12,6 +12,7 @@ import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useWallet } from '@contexts/WalletContext'
 import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
 import { useDeploySafeMutation } from '@hooks/safes/create/mutation/useDeploySafeMutation'
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const validationSchema = z.object({
   name: z
@@ -121,8 +122,6 @@ export const useDeploySafeHook = () => {
         safeAddress: response.safeAddress
       })
     } catch (error) {
-      console.log(error)
-
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
@@ -130,13 +129,15 @@ export const useDeploySafeHook = () => {
 
       setDeployStatus({ isLoading: false, isDeployed: false })
 
-      let errorMessage = (error as Error)?.message
-
       if (axios.isAxiosError(error) && error.response?.data?.message) {
-        errorMessage = error.response?.data?.message
+        console.error(error)
+
+        const errorMessage = error.response?.data?.message ?? error.message
+        toast.error(errorMessage)
+        return
       }
 
-      toast.error(errorMessage)
+      getWe3ErrorMessageWithToast(error)
     }
   }
 
