@@ -73,7 +73,8 @@ export function WalletCreatedSafes() {
               </div>
             )}
 
-            {addressSafes &&
+            {!!wallet &&
+              addressSafes &&
               addressSafes.map(safe => (
                 <div
                   key={safe.safeId}

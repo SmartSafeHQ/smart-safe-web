@@ -12,7 +12,7 @@ export interface ChainSettings {
 const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
     symbol: 'celo',
-    networkName: 'celo',
+    networkName: 'celo testnet',
     icon: '/networks/celo-logo.svg',
     chainId: '0xaef3',
     hexColor: '#fcff52',
@@ -22,7 +22,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'avax',
-    networkName: 'avalanche',
+    networkName: 'avalanche testnet',
     icon: '/networks/avalanche-logo.svg',
     chainId: '0xa869',
     hexColor: '#e84142',
@@ -32,7 +32,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'matic',
-    networkName: 'polygon',
+    networkName: 'polygon testnet',
     icon: '/networks/polygon-logo.svg',
     chainId: '0x13881',
     hexColor: '#8247e5',
@@ -42,7 +42,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'bnb',
-    networkName: 'bnb',
+    networkName: 'binance smart chain testnet',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x61',
     hexColor: '#fbdc45',
@@ -51,13 +51,33 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   },
   {
+    symbol: 'xdc',
+    networkName: 'XDC testnet',
+    icon: '/networks/xdc-logo.svg',
+    chainId: '0x33',
+    hexColor: '#9ff3ff',
+    rpcUrl: 'https://rpc.apothem.network/',
+    explorerUrl: 'https://explorer.xinfin.network/',
+    scanUrl: ''
+  },
+  {
+    symbol: 'okb',
+    networkName: 'OKT testnet',
+    icon: '/networks/okt-logo.svg',
+    chainId: '0xc3',
+    hexColor: '#fff',
+    rpcUrl: 'https://okbtestrpc.okbchain.org/v1',
+    explorerUrl: 'https://www.oklink.com/cn/okbc-test',
+    scanUrl: ''
+  },
+  {
     symbol: 'eth',
-    networkName: 'ethereum',
+    networkName: 'ethereum testnet',
     icon: '/networks/eth-logo.svg',
-    chainId: '0x5',
+    chainId: '0xaa36a7',
     hexColor: '#464a76',
-    rpcUrl: 'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
-    explorerUrl: 'https://goerli.etherscan.io/',
+    rpcUrl: 'https://rpc2.sepolia.org',
+    explorerUrl: 'https://sepolia.etherscan.io/',
     scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   }
 ]
@@ -104,8 +124,29 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
   },
   {
+    symbol: 'xdc',
+    networkName: 'XDC',
+    icon: '/networks/xdc-logo.svg',
+    chainId: '0x32',
+    hexColor: '#9ff3ff',
+    rpcUrl: 'https://rpc.xinfin.network',
+    explorerUrl: 'https://explorer.xinfin.network/',
+    scanUrl: ''
+  },
+  // OBK currently doesn't have a mainnet
+  {
+    symbol: 'okb',
+    networkName: 'OKT Chain',
+    icon: '/networks/okt-logo.svg',
+    chainId: '0xc3',
+    hexColor: '#fff',
+    rpcUrl: 'https://okbtestrpc.okbchain.org/v1',
+    explorerUrl: 'https://www.oklink.com/cn/okbc-test',
+    scanUrl: ''
+  },
+  {
     symbol: 'eth',
-    networkName: 'ethereum',
+    networkName: 'Ethereum',
     icon: '/networks/eth-logo.svg',
     chainId: '0x1',
     hexColor: '#464a76',

@@ -1,4 +1,5 @@
 import { useConnectWallet } from '@web3-onboard/react'
+import { Suspense } from 'react'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'
@@ -39,11 +40,13 @@ export function CreateSafeWelcomeContent() {
               </Heading>
             </div>
 
-            {wallet ? (
-              <CreateSafeWelcomeForm />
-            ) : (
-              <CreateSafeWelcomeConnectWallet />
-            )}
+            <Suspense>
+              {wallet ? (
+                <CreateSafeWelcomeForm />
+              ) : (
+                <CreateSafeWelcomeConnectWallet />
+              )}
+            </Suspense>
           </main>
 
           <WalletCreatedSafes />
