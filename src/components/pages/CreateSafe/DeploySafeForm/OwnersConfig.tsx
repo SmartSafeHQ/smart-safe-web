@@ -1,9 +1,5 @@
 import Link from 'next/link'
-import {
-  FieldArrayWithId,
-  UseFieldArrayRemove,
-  useFormContext
-} from 'react-hook-form'
+import { FieldArrayWithId, useFormContext } from 'react-hook-form'
 import { ArrowSquareOut, CaretDown, Plus, Trash } from 'phosphor-react'
 
 import { TextInput } from '@components/Inputs/TextInput'
@@ -14,7 +10,7 @@ import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
-  remove: UseFieldArrayRemove
+  removeOwner: (index: number | number[]) => void
   addNewOwner: () => Promise<void>
 }
 
@@ -24,7 +20,7 @@ const MULTI_SIGN_OWNERS_LINK =
 export function OwnersConfig({
   ownersFields,
   addNewOwner,
-  remove
+  removeOwner
 }: OwnersConfigProps) {
   const {
     register,
@@ -93,7 +89,7 @@ export function OwnersConfig({
 
                   {index > 0 && (
                     <button
-                      onClick={() => remove(index)}
+                      onClick={() => removeOwner(index)}
                       className="absolute top-[2.4rem] right-0 text-zinc-600 dark:text-zinc-400 transition-colors hover:!text-red-500"
                     >
                       <Trash className="w-5 h-5  " />

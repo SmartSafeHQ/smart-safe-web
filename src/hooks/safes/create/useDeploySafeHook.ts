@@ -77,6 +77,8 @@ export const useDeploySafeHook = () => {
     control,
     register,
     trigger,
+    getValues,
+    setValue,
     watch,
     handleSubmit,
     formState: { errors, isSubmitting }
@@ -149,6 +151,18 @@ export const useDeploySafeHook = () => {
     append({ name: '', address: '' })
   }
 
+  function removeOwner(index: number | number[]) {
+    // check if there are more required signatures than owners
+    const requiredSignaturesCount = +getValues('requiredSignaturesCount')
+    const updattedOwnersCount = ownersFields.length - 1
+
+    if (requiredSignaturesCount > updattedOwnersCount) {
+      setValue('requiredSignaturesCount', String(updattedOwnersCount))
+    }
+
+    remove(index)
+  }
+
   useEffect(() => {
     if (!wallet || !formattedAddress || !safeInfos) push('/')
   })
@@ -167,6 +181,7 @@ export const useDeploySafeHook = () => {
     remove,
     watch,
     addNewOwner,
+    removeOwner,
     control,
     isSubmitting,
     deployStatus

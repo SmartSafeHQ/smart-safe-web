@@ -19,7 +19,7 @@ export function DeploySafeForm() {
     errors,
     ownersFields,
     register,
-    remove,
+    removeOwner,
     addNewOwner,
     watch,
     control,
@@ -51,7 +51,7 @@ export function DeploySafeForm() {
         <OwnersConfig
           ownersFields={ownersFields}
           addNewOwner={addNewOwner}
-          remove={remove}
+          removeOwner={removeOwner}
         />
 
         <div className="flex flex-col justify-start items-stretch gap-4">
