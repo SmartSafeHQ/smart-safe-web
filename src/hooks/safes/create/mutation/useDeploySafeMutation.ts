@@ -1,11 +1,14 @@
-import { Contract, providers } from 'ethers'
+import { Contract, providers, utils } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
+import { EIP1193Provider } from '@web3-onboard/core'
 
 import { smartSafeApi } from '@lib/axios'
+import { queryClient } from '@lib/reactQuery'
 import SMART_SAFE_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeFactory.json'
 import { SMART_SAFE_FACTORY_ADDRESS } from '@utils/web3/ABIs/adresses'
 
 export type DeploySafeFunctionInput = {
+  provider: EIP1193Provider
   safeName: string
   deployWalletAddress: string
   requiredSignaturesCount: number
@@ -30,11 +33,7 @@ export interface DeploySafeApiResponse {
 async function deploySafeFunction(
   input: DeploySafeFunctionInput
 ): Promise<DeploySafeFunctionOutput> {
-  if (!window.ethereum) {
-    throw new Error('no ethereum on the window')
-  }
-
-  const provider = new providers.Web3Provider(window.ethereum, {
+  const provider = new providers.Web3Provider(input.provider, {
     chainId: parseInt(input.chain.id, 16),
     name: input.chain.name
   })
@@ -46,7 +45,9 @@ async function deploySafeFunction(
     signer
   )
 
-  const ownersAdressesList = input.owners.map(owner => owner.address)
+  const ownersAdressesList = input.owners.map(owner =>
+    utils.getAddress(owner.address)
+  )
 
   const computedAddress = await contract.functions.computeAddress(
     ownersAdressesList,
@@ -56,7 +57,8 @@ async function deploySafeFunction(
 
   await contract.functions.deploySmartSafe(
     ownersAdressesList,
-    input.requiredSignaturesCount
+    input.requiredSignaturesCount,
+    { gasLimit: 5000000, gasPrice: utils.parseUnits('30', 'gwei') }
   )
 
   await smartSafeApi.post<DeploySafeApiResponse>('/safe', {
@@ -72,6 +74,22 @@ async function deploySafeFunction(
 export function useDeploySafeMutation() {
   return useMutation({
     mutationKey: ['deploySafe'],
-    mutationFn: (input: DeploySafeFunctionInput) => deploySafeFunction(input)
+    mutationFn: (input: DeploySafeFunctionInput) => deploySafeFunction(input),
+    onSuccess: async (data, variables) => {
+      await queryClient.cancelQueries({
+        queryKey: ['addressSafes', variables.deployWalletAddress]
+      })
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(
+        ['addressSafes', variables.deployWalletAddress],
+        context
+      )
+    },
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['addressSafes', variables.deployWalletAddress]
+      })
+    }
   })
 }
