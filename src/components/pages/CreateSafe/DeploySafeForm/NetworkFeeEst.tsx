@@ -4,17 +4,21 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
-import { useChainFee } from '@hooks/chains/queries/useChainFee'
+import { useDeploySmartSafeFee } from '@hooks/safes/create/queries/useDeploySmartSafeFee'
+import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
 export function NetworkFeeEst() {
-  const { safeInfos } = useCreateSafe()
+  const { ownersFields, safeInfos } = useDeploySafeHook()
   const {
     data: feeData,
     isLoading: feeIsLoading,
     isFetching: feeIsFetching,
     isPreviousData: feeIsPreviousData
-  } = useChainFee(safeInfos?.chain.rpcUrl ?? '', !!safeInfos)
+  } = useDeploySmartSafeFee(
+    safeInfos?.chain.rpcUrl ?? '',
+    [ownersFields[0].address],
+    !!safeInfos
+  )
 
   return (
     <div
@@ -39,7 +43,7 @@ export function NetworkFeeEst() {
 
           {feeData && (
             <Text>
-              {feeData.valueInCoin.slice(0, 5)} {safeInfos.chain.networkName}
+              {feeData.valueInCoin.slice(0, 5)} {safeInfos.chain.symbol}
             </Text>
           )}
         </Skeleton>

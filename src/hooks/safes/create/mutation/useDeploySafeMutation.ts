@@ -55,10 +55,12 @@ async function deploySafeFunction(
   )
   const deployContractAddress = computedAddress.toString()
 
+  const gasPrice = await provider.getGasPrice()
+
   await contract.functions.deploySmartSafe(
     ownersAdressesList,
     input.requiredSignaturesCount,
-    { gasLimit: 5000000, gasPrice: utils.parseUnits('30', 'gwei') }
+    { gasLimit: 3000000, gasPrice }
   )
 
   await smartSafeApi.post<DeploySafeApiResponse>('/safe', {
