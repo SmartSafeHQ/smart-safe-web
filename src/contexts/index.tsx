@@ -21,6 +21,7 @@ export function AppProvider({ children }: AppProviderProps) {
           attribute="class"
           disableTransitionOnChange
           enableColorScheme
+          defaultTheme="dark"
         >
           <WalletProvider>{children}</WalletProvider>
         </ThemeProvider>

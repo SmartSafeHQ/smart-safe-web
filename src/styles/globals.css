@@ -12,4 +12,8 @@
     --toastify-color-error: #ef4444 !important;
     --toastify-color-transparent: rgba(255, 255, 255, 0.7) !important;
   }
+
+  body {
+    font-family: Inter, system-ui, sans-serif;
+  }
 }
