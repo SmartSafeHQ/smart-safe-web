@@ -31,8 +31,8 @@ export function CreateSafeWelcomeContent() {
           </Text>
         </div>
 
-        <div className="w-full flex flex-col flex-1 items-stretch justify-start gap-11 flex-wrap md:flex-row">
-          <main className="min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start p-8 relative rounded-lg border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black">
+        <div className="w-full flex flex-col-reverse flex-1 items-stretch justify-start gap-6 flex-wrap-reverse md:flex-row lg:gap-11">
+          <main className="flex flex-col flex-1 items-stretch justify-start p-8 relative rounded-lg border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:min-w-[23.25rem]">
             <div className="flex justify-center items-stretch pt-2 md:justify-start">
               <Heading asChild className="text-xl font-semibold">
                 <h1>Create your safe</h1>

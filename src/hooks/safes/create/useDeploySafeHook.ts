@@ -104,6 +104,7 @@ export const useDeploySafeHook = () => {
       })
 
       const response = await mutateDeploySafe({
+        provider: wallet.provider,
         safeName: data.name,
         deployWalletAddress: wallet.accounts[0].address,
         chain: {
