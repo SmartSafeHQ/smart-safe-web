@@ -11,12 +11,10 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <DialogDrawer.Root>
-      <div className="w-full max-w-full flex flex-1 pt-16 md:pt-16">
+      <div className="w-full max-w-full flex flex-1 lg:gap-5">
         <Sidebar />
 
-        <main className="w-full max-w-full flex flex-col pb-3 md:max-w-[calc(100vw_-_7.25rem)] lg:max-w-[calc(100vw_-_18rem)]">
-          {children}
-        </main>
+        <main className="flex flex-1 flex-col">{children}</main>
       </div>
 
       <SidebarDrawer />
