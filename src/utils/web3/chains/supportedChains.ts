@@ -65,7 +65,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     networkName: 'OKT testnet',
     icon: '/networks/okt-logo.svg',
     chainId: '0xc3',
-    hexColor: '#fff',
+    hexColor: '#e5e7eb',
     rpcUrl: 'https://okbtestrpc.okbchain.org',
     explorerUrl: 'https://www.oklink.com/cn/okbc-test',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
@@ -139,7 +139,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     networkName: 'OKT Chain',
     icon: '/networks/okt-logo.svg',
     chainId: '0xc3',
-    hexColor: '#fff',
+    hexColor: '#e5e7eb',
     rpcUrl: 'https://okbtestrpc.okbchain.org/v1',
     explorerUrl: 'https://www.oklink.com/cn/okbc-test',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'

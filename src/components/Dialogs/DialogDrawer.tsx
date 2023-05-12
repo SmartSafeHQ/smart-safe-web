@@ -107,11 +107,11 @@ interface DialogDrawerContentProps extends RadixDialog.DialogPortalProps {
 function DialogDrawerContent({ children, ...props }: DialogDrawerContentProps) {
   return (
     <RadixDialog.Portal {...props}>
-      <RadixDialog.Overlay className="fixed z-50 inset-0 bg-black bg-opacity-50 animate-dialog-open" />
+      <RadixDialog.Overlay className="fixed z-50 inset-0 bg-black bg-opacity-50 animate-dialog-open md:hidden" />
 
       <RadixDialog.Content
         className={clsx(
-          'fixed top-0 left-0 z-50 w-full h-full overflow-auto bg-zinc-50 dark:bg-zinc-950 shadow-lg text-zinc-900 dark:text-zinc-50 animate-dialog-open-left md:hidden',
+          'fixed top-0 left-0 z-50 w-full h-full md:hidden overflow-auto bg-zinc-50 dark:bg-zinc-950 shadow-lg text-zinc-900 dark:text-zinc-50 animate-dialog-open-left',
           props.className
         )}
       >

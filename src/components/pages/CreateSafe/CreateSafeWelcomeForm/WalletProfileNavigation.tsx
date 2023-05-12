@@ -21,7 +21,7 @@ export function WalletProfileNavigation() {
             type="button"
             onPointerMove={event => event.preventDefault()}
             onPointerLeave={event => event.preventDefault()}
-            className="w-full h-10 text-left overflow-hidden rounded-md bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600"
+            className="w-full h-10 text-left overflow-hidden rounded-md bg-zinc-50 dark:bg-zinc-950 border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600"
           >
             <CreateSafeWalletProfile
               icon={wallet.icon}
