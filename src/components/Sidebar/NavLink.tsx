@@ -6,7 +6,7 @@ import {
   RefAttributes
 } from 'react'
 import Link, { LinkProps } from 'next/link'
-import { IconProps, IconWeight } from 'phosphor-react'
+import { IconProps, IconWeight } from '@phosphor-icons/react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 

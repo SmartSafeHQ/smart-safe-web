@@ -1,4 +1,4 @@
-import { CirclesThree, House } from 'phosphor-react'
+import { CirclesThree, House } from '@phosphor-icons/react'
 
 import { NavLink } from './NavLink'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'

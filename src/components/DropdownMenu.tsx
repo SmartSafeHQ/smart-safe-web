@@ -1,7 +1,7 @@
 import { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react'
 import { clsx } from 'clsx'
 import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu'
-import { IconProps } from 'phosphor-react'
+import { IconProps } from '@phosphor-icons/react'
 import { Slot } from '@radix-ui/react-slot'
 
 export interface DropdownMenuRootProps

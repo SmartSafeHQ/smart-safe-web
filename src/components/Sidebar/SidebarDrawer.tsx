@@ -1,4 +1,4 @@
-import { List } from 'phosphor-react'
+import { List } from '@phosphor-icons/react'
 import Link from 'next/link'
 
 import { SmartSafeTextLogo } from '@components/Logos/SmartSafeTextLogo'

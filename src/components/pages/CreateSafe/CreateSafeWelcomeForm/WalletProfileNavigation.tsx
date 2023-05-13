@@ -1,4 +1,4 @@
-import { ArrowsClockwise } from 'phosphor-react'
+import { ArrowsClockwise } from '@phosphor-icons/react'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { Text } from '@components/Text'

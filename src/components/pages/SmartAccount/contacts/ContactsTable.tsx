@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import { ReactNode, ThHTMLAttributes } from 'react'
-import { ArrowSquareOut, Copy, DotsThreeVertical } from 'phosphor-react'
+import { ArrowSquareOut, Copy, DotsThreeVertical } from '@phosphor-icons/react'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'

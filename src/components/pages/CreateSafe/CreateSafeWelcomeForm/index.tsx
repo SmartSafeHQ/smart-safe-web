@@ -1,4 +1,4 @@
-import { Shield, ArrowRight } from 'phosphor-react'
+import { Shield, ArrowRight } from '@phosphor-icons/react'
 import Link from 'next/link'
 import { Controller } from 'react-hook-form'
 

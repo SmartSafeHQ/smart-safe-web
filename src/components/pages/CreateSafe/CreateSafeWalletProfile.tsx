@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { CaretDown } from 'phosphor-react'
+import { CaretDown } from '@phosphor-icons/react'
 
 import { Text } from '@components/Text'
 

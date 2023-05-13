@@ -1,7 +1,7 @@
 import { ScrollArea } from '@components/ScrollArea'
 import * as RadixDialog from '@radix-ui/react-dialog'
 import clsx from 'clsx'
-import { IconProps, X } from 'phosphor-react'
+import { IconProps, X } from '@phosphor-icons/react'
 import {
   ForwardRefExoticComponent,
   HtmlHTMLAttributes,

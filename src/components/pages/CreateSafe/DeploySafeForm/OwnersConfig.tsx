@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { FieldArrayWithId, useFormContext } from 'react-hook-form'
-import { ArrowSquareOut, CaretDown, Plus, Trash } from 'phosphor-react'
+import { ArrowSquareOut, CaretDown, Plus, Trash } from '@phosphor-icons/react'
 
 import { TextInput } from '@components/Inputs/TextInput'
 import { Collapsible } from '@components/Collapsible'
