@@ -1,20 +1,20 @@
+import { useConnectWallet } from '@web3-onboard/react'
+
 import { ScrollArea } from '@components/ScrollArea'
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { AssetsTable } from '@components/pages/Assets/AssetsTable'
 
-const assets = [
-  {
-    tokenSymbol: 'bnb',
-    tokenIcon: '/networks/bnb-logo.svg',
-    balance: 0.009,
-    valueInUsd: 0.03
-  }
-]
-const isLoading = false
-const error = false
+import { useSafeTokens } from '@hooks/assets/queries/useSafeTokens'
 
 export function AssetsList() {
+  const [{ wallet }] = useConnectWallet()
+  const {
+    data: assets,
+    error,
+    isLoading
+  } = useSafeTokens(wallet?.accounts[0].address, !!wallet?.accounts[0])
+
   return (
     <ScrollArea className="w-full max-w-full px-2">
       {error ? (

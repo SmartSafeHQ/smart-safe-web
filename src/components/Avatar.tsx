@@ -16,14 +16,14 @@ export function AvatarRoot({
   return (
     <RadixAvatar.Root
       className={clsx(
-        'inline-flex items-center justify-center align-middle overflow-hidden select-none rounded-full bg-gray-300 dark:bg-gray-800',
+        'inline-flex items-center justify-center align-middle overflow-hidden select-none rounded-full bg-zinc-300 dark:bg-zinc-800',
         className
       )}
       {...props}
     >
       {children}
 
-      <RadixAvatar.Fallback className="w-full min-h-full flex flex-1 items-center justify-center uppercase text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-cyan-500 md:text-lg">
+      <RadixAvatar.Fallback className="w-full min-h-full flex flex-1 items-center justify-center uppercase font-semibold bg-zinc-200 dark:bg-zinc-700 text-cyan-500">
         {fallbackName.substring(0, 2)}
       </RadixAvatar.Fallback>
     </RadixAvatar.Root>

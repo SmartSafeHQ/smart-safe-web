@@ -41,7 +41,7 @@ function DropdownMenuContent({
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.Content
         className={clsx(
-          'py-2 shadow-md animate-dropdown-menu-open rounded-md bg-zinc-50 dark:bg-zinc-950 border-1 border-zinc-200 dark:border-zinc-700 z-20',
+          'py-2 shadow-lg animate-dropdown-menu-open rounded-md bg-zinc-50 dark:bg-zinc-950 dark:border-1 dark:border-zinc-600 z-20',
           className
         )}
         sideOffset={5}

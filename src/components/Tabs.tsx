@@ -27,7 +27,7 @@ export function TabsList({ className, children, ...props }: TabsListProps) {
   return (
     <RadixTabs.List
       className={clsx(
-        'flex flex-shrink-0 border-b-1 border-b-zinc-400 dark:border-b-zinc-700',
+        'flex flex-shrink-0 border-b-1 border-b-zinc-300 dark:border-b-zinc-700',
         className
       )}
       {...props}

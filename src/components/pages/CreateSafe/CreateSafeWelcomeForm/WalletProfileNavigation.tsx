@@ -40,12 +40,10 @@ export function WalletProfileNavigation() {
 
             <button
               type="button"
+              onClick={() => connect()}
               className="w-full h-9 px-2 text-left overflow-hidden rounded-md pointer hover:bg-zinc-200 hover:dark:bg-zinc-800"
             >
-              <div
-                onClick={() => connect()}
-                className="flex items-center gap-3"
-              >
+              <div className="flex items-center gap-3">
                 <ArrowsClockwise className="w-4 h-4" />
 
                 <Text className="text-sm">Switch wallet</Text>
