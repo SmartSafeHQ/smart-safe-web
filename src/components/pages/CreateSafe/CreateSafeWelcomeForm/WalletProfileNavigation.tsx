@@ -5,11 +5,11 @@ import { Text } from '@components/Text'
 import { NavigationMenu } from '@components/NavigationMenu'
 import { CreateSafeWalletProfile } from '@components/pages/CreateSafe/CreateSafeWalletProfile'
 
-import { useWallet } from '@contexts/WalletContext'
+import { useSafe } from '@contexts/SafeContext'
 
 export function WalletProfileNavigation() {
   const [{ wallet }, connect] = useConnectWallet()
-  const { formattedAddress } = useWallet()
+  const { formattedOwnerAddress } = useSafe()
 
   if (!wallet) return null
 
@@ -25,7 +25,7 @@ export function WalletProfileNavigation() {
           >
             <CreateSafeWalletProfile
               icon={wallet.icon}
-              formattedAddress={formattedAddress ?? ''}
+              formattedOwnerAddress={formattedOwnerAddress ?? ''}
             />
           </NavigationMenu.Trigger>
 
@@ -35,7 +35,7 @@ export function WalletProfileNavigation() {
           >
             <CreateSafeWalletProfile
               icon={wallet.icon}
-              formattedAddress={formattedAddress ?? ''}
+              formattedOwnerAddress={formattedOwnerAddress ?? ''}
             />
 
             <button

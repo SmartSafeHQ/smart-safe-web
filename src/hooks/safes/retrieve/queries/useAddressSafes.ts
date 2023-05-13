@@ -11,7 +11,7 @@ interface FetchAddressSafesInput {
   address?: string
 }
 
-interface FetchAddressSafesOutput {
+export interface FetchAddressSafesOutput {
   ownerId: string
   ownerName: string
   safeId: string
@@ -21,7 +21,7 @@ interface FetchAddressSafesOutput {
   chain: ChainSettings
 }
 
-export interface FetchAddressSafesApiResponse {
+interface FetchAddressSafesApiResponse {
   safes: {
     id: string
     name: string
