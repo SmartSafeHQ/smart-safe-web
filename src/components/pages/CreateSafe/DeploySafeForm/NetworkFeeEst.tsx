@@ -42,7 +42,7 @@ export function NetworkFeeEst() {
           />
 
           {feeData && (
-            <Text>
+            <Text className="uppercase">
               {feeData.valueInCoin.slice(0, 5)} {safeInfos.chain.symbol}
             </Text>
           )}
