@@ -61,13 +61,13 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: ''
   },
   {
-    symbol: 'okb',
-    networkName: 'OKT testnet',
+    symbol: 'okt',
+    networkName: 'OKExChain Testnet',
     icon: '/networks/okt-logo.svg',
-    chainId: '0xc3',
+    chainId: '0x41',
     hexColor: '#e5e7eb',
-    rpcUrl: 'https://okbtestrpc.okbchain.org',
-    explorerUrl: 'https://www.oklink.com/cn/okbc-test',
+    rpcUrl: 'https://exchaintestrpc.okex.org/',
+    explorerUrl: 'https://www.oklink.com/okexchain-test/',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
   },
   {
@@ -133,15 +133,14 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     explorerUrl: 'https://explorer.xinfin.network/',
     scanUrl: ''
   },
-  // OBK currently doesn't have a mainnet
   {
-    symbol: 'okb',
-    networkName: 'OKT Chain',
+    symbol: 'okt',
+    networkName: 'OKExChain',
     icon: '/networks/okt-logo.svg',
-    chainId: '0xc3',
+    chainId: '0x42',
     hexColor: '#e5e7eb',
-    rpcUrl: 'https://okbtestrpc.okbchain.org/v1',
-    explorerUrl: 'https://www.oklink.com/cn/okbc-test',
+    rpcUrl: 'https://exchainrpc.okex.org/',
+    explorerUrl: 'https://www.oklink.com/okexchain/',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
   },
   {
