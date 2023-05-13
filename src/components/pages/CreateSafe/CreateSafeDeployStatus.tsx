@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import { CheckCircle, WarningCircle } from 'phosphor-react'
+import { CheckCircle, WarningCircle } from '@phosphor-icons/react'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'

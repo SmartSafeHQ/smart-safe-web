@@ -3,7 +3,7 @@ import Image from 'next/image'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { ReactNode, ThHTMLAttributes } from 'react'
-import { DotsThreeVertical } from 'phosphor-react'
+import { DotsThreeVertical } from '@phosphor-icons/react'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'

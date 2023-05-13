@@ -9,7 +9,7 @@ import axios from 'axios'
 import { z } from 'zod'
 
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
-import { useWallet } from '@contexts/WalletContext'
+import { useSafe } from '@contexts/SafeContext'
 import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
 import { useDeploySafeMutation } from '@hooks/safes/create/mutation/useDeploySafeMutation'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
@@ -62,7 +62,7 @@ export type FieldValues = z.infer<typeof validationSchema>
 export const useDeploySafeHook = () => {
   const { push } = useRouter()
   const [{ wallet }] = useConnectWallet()
-  const { formattedAddress } = useWallet()
+  const { formattedOwnerAddress } = useSafe()
   const { safeInfos, deployStatus, setDeployStatus } = useCreateSafe()
   const { mutateAsync: mutateDeploySafe } = useDeploySafeMutation()
 
@@ -164,13 +164,13 @@ export const useDeploySafeHook = () => {
   }
 
   useEffect(() => {
-    if (!wallet || !formattedAddress || !safeInfos) push('/')
+    if (!wallet || !formattedOwnerAddress || !safeInfos) push('/')
   })
 
   return {
     push,
     wallet,
-    formattedAddress,
+    formattedOwnerAddress,
     safeInfos,
     formMethods,
     handleSubmit,

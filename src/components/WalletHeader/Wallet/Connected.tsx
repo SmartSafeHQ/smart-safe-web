@@ -1,7 +1,7 @@
 import type { WalletState, DisconnectOptions } from '@web3-onboard/core'
 
 import { useState } from 'react'
-import { Copy } from 'phosphor-react'
+import { Copy } from '@phosphor-icons/react'
 import { useSetChain } from '@web3-onboard/react'
 import * as Popover from '@radix-ui/react-popover'
 import * as Tooltip from '@radix-ui/react-tooltip'

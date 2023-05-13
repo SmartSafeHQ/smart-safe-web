@@ -6,7 +6,7 @@ import {
   RefAttributes
 } from 'react'
 import { clsx } from 'clsx'
-import { CaretDown, CaretUp, Check, IconProps } from 'phosphor-react'
+import { CaretDown, CaretUp, Check, IconProps } from '@phosphor-icons/react'
 import * as RadixSelect from '@radix-ui/react-select'
 
 import { Text } from '@components/Text'

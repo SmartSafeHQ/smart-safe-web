@@ -65,7 +65,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     networkName: 'OKExChain Testnet',
     icon: '/networks/okt-logo.svg',
     chainId: '0x41',
-    hexColor: '#fff',
+    hexColor: '#e5e7eb',
     rpcUrl: 'https://exchaintestrpc.okex.org/',
     explorerUrl: 'https://www.oklink.com/okexchain-test/',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
@@ -138,7 +138,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     networkName: 'OKExChain',
     icon: '/networks/okt-logo.svg',
     chainId: '0x42',
-    hexColor: '#fff',
+    hexColor: '#e5e7eb',
     rpcUrl: 'https://exchainrpc.okex.org/',
     explorerUrl: 'https://www.oklink.com/okexchain/',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { User } from 'phosphor-react'
+import { User } from '@phosphor-icons/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'

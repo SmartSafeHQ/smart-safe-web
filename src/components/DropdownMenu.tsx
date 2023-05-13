@@ -1,7 +1,7 @@
 import { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react'
 import { clsx } from 'clsx'
 import * as RadixDropdownMenu from '@radix-ui/react-dropdown-menu'
-import { IconProps } from 'phosphor-react'
+import { IconProps } from '@phosphor-icons/react'
 import { Slot } from '@radix-ui/react-slot'
 
 export interface DropdownMenuRootProps
@@ -41,7 +41,7 @@ function DropdownMenuContent({
     <RadixDropdownMenu.Portal>
       <RadixDropdownMenu.Content
         className={clsx(
-          'rounded-md shadow-md animate-dropdown-menu-open',
+          'py-2 shadow-lg animate-dropdown-menu-open rounded-md bg-zinc-50 dark:bg-zinc-950 dark:border-1 dark:border-zinc-600 z-20',
           className
         )}
         sideOffset={5}
@@ -64,7 +64,7 @@ function DropdownMenuSeparator({
   return (
     <RadixDropdownMenu.Separator
       className={clsx(
-        'h-[1px] bg-zinc-300 dark:bg-zinc-700 my-1 mx-3',
+        'h-[1px] bg-zinc-50 dark:bg-zinc-950 my-1 mx-3',
         className
       )}
       {...props}
@@ -90,7 +90,7 @@ function DropdownMenuItem({
   return (
     <RadixDropdownMenu.Item
       className={clsx(
-        'relative flex items-center justify-start gap-4 select-none outline-none text-base font-medium capitalize cursor-pointer',
+        'relative flex items-center justify-start gap-4 px-5 py-2 select-none outline-none text-base font-medium capitalize cursor-pointer',
         {
           'pointer-events-none text-zinc-400 dark:brightness-50 dark:text-zinc-50':
             isDisabled
@@ -100,8 +100,8 @@ function DropdownMenuItem({
       {...props}
     >
       {LeftIcon && (
-        <Slot className="w-5 h-5 text-cyan-500">
-          <LeftIcon weight="fill" />
+        <Slot className="w-5 h-5">
+          <LeftIcon weight="regular" />
         </Slot>
       )}
 

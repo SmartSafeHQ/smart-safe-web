@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { CaretDown } from 'phosphor-react'
+import { CaretDown } from '@phosphor-icons/react'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { Text } from '@components/Text'

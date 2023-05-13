@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import Link from 'next/link'
-import { ArrowLeft } from 'phosphor-react'
+import { ArrowLeft } from '@phosphor-icons/react'
 
 import { Heading } from '@components/Heading'
 import { Text } from '@components/Text'

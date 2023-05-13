@@ -1,4 +1,4 @@
-import { Keyhole } from 'phosphor-react'
+import { Keyhole } from '@phosphor-icons/react'
 
 export function NotConnected() {
   return (
