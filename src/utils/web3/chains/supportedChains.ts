@@ -11,8 +11,8 @@ export interface ChainSettings {
 
 const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
-    symbol: 'celo',
-    networkName: 'celo testnet',
+    symbol: 'CELO',
+    networkName: 'Celo Testnet',
     icon: '/networks/celo-logo.svg',
     chainId: '0xaef3',
     hexColor: '#fcff52',
@@ -21,8 +21,8 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: 'https://explorer.celo.org/alfajores/api'
   },
   {
-    symbol: 'avax',
-    networkName: 'avalanche testnet',
+    symbol: 'AVAX',
+    networkName: 'Avalanche Testnet',
     icon: '/networks/avalanche-logo.svg',
     chainId: '0xa869',
     hexColor: '#e84142',
@@ -31,8 +31,8 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api-testnet.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
   },
   {
-    symbol: 'matic',
-    networkName: 'polygon testnet',
+    symbol: 'MATIC',
+    networkName: 'Polygon Testnet',
     icon: '/networks/polygon-logo.svg',
     chainId: '0x13881',
     hexColor: '#8247e5',
@@ -41,8 +41,8 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
-    symbol: 'bnb',
-    networkName: 'binance smart chain testnet',
+    symbol: 'BNB',
+    networkName: 'Binance Smart Chain Testnet',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x61',
     hexColor: '#fbdc45',
@@ -51,8 +51,8 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   },
   {
-    symbol: 'xdc',
-    networkName: 'XDC testnet',
+    symbol: 'XDC',
+    networkName: 'XDC Testnet',
     icon: '/networks/xdc-logo.svg',
     chainId: '0x33',
     hexColor: '#9ff3ff',
@@ -61,7 +61,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: ''
   },
   {
-    symbol: 'okt',
+    symbol: 'OKT',
     networkName: 'OKExChain Testnet',
     icon: '/networks/okt-logo.svg',
     chainId: '0x41',
@@ -71,8 +71,8 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
   },
   {
-    symbol: 'eth',
-    networkName: 'ethereum testnet',
+    symbol: 'ETH',
+    networkName: 'Ethereum Sepolia Testnet',
     icon: '/networks/eth-logo.svg',
     chainId: '0xaa36a7',
     hexColor: '#464a76',
@@ -84,8 +84,8 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
 
 const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
-    symbol: 'matic',
-    networkName: 'polygon',
+    symbol: 'MATIC',
+    networkName: 'Polygon',
     icon: '/networks/polygon-logo.svg',
     chainId: '0x89',
     hexColor: '#8247e5',
@@ -94,8 +94,8 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
-    symbol: 'bnb',
-    networkName: 'binance smart chain',
+    symbol: 'BNB',
+    networkName: 'Binance Smart Chain',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x38',
     hexColor: '#fbdc45',
@@ -104,8 +104,8 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   },
   {
-    symbol: 'celo',
-    networkName: 'celo',
+    symbol: 'CELO',
+    networkName: 'Celo',
     icon: '/networks/celo-logo.svg',
     chainId: '0xa4ec',
     hexColor: '#fcff52',
@@ -114,8 +114,8 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: 'https://explorer.celo.org/mainnet/api'
   },
   {
-    symbol: 'avax',
-    networkName: 'avalanche',
+    symbol: 'AVAX',
+    networkName: 'Avalanche',
     icon: '/networks/avalanche-logo.svg',
     chainId: '0xa86a',
     hexColor: '#e84142',
@@ -124,7 +124,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
   },
   {
-    symbol: 'xdc',
+    symbol: 'XDC',
     networkName: 'XDC',
     icon: '/networks/xdc-logo.svg',
     chainId: '0x32',
@@ -134,7 +134,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: ''
   },
   {
-    symbol: 'okt',
+    symbol: 'OKT',
     networkName: 'OKExChain',
     icon: '/networks/okt-logo.svg',
     chainId: '0x42',
@@ -144,7 +144,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
   },
   {
-    symbol: 'eth',
+    symbol: 'ETH',
     networkName: 'Ethereum',
     icon: '/networks/eth-logo.svg',
     chainId: '0x1',
