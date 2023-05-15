@@ -16,6 +16,7 @@ export function NetworkFeeEst() {
     isPreviousData: feeIsPreviousData
   } = useDeploySmartSafeFee(
     safeInfos?.chain.rpcUrl ?? '',
+    safeInfos?.chain.symbol ?? '',
     [ownersFields[0].address],
     !!safeInfos
   )

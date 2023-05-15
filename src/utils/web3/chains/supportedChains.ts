@@ -42,7 +42,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'BNB',
-    networkName: 'Binance Smart Chain Testnet',
+    networkName: 'BNB Smart Chain Testnet',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x61',
     hexColor: '#fbdc45',
@@ -95,7 +95,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'BNB',
-    networkName: 'Binance Smart Chain',
+    networkName: 'BNB Smart Chain',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x38',
     hexColor: '#fbdc45',

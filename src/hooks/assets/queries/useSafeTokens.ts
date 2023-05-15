@@ -20,8 +20,8 @@ export async function fetchSafeTokens(
 
   return [
     {
-      tokenSymbol: 'bnb',
-      tokenIcon: '/networks/bnb-logo.svg',
+      tokenSymbol: 'matic',
+      tokenIcon: '/networks/polygon-logo.svg',
       balance: 0.009,
       valueInUsd: 0.03
     }

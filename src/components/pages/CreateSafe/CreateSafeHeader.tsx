@@ -23,10 +23,7 @@ export function CreateSafeHeader() {
     <header className="sticky top-0 left-0 w-full h-16 z-10 bg-zinc-50 dark:bg-zinc-950">
       <nav className="h-16 flex items-center m-auto px-6 select-none relative">
         <div className="flex flex-1 items-center pr-6 z-50">
-          <Link
-            href="/"
-            className="block w-7 h-6 p-2 -m-2 box-content relative"
-          >
+          <Link href="/" className="block box-content relative">
             <SmartSafeTextLogo className="w-52 h-11 hidden sm:block" />
             <SmartSafeIconLogo className="w-7 h-9 block sm:hidden" />
           </Link>
