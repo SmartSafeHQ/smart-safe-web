@@ -2,10 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import { Contract, providers, utils } from 'ethers'
 
 import SMART_SAFE_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeFactory.json'
-import { SMART_SAFE_FACTORY_ADDRESS } from '@utils/web3/ABIs/adresses'
+import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
 
 interface FetchDeploySmartSafeFeeInput {
   rpcUrl: string
+  chainSymbol: string
   owners: string[]
 }
 
@@ -15,12 +16,18 @@ export interface FetchDeploySmartSafeFeeResponse {
 
 async function fetchDeploySmartSafeFee({
   rpcUrl,
+  chainSymbol,
   owners
 }: FetchDeploySmartSafeFeeInput): Promise<FetchDeploySmartSafeFeeResponse> {
+  const smartSafeFactoryAddress =
+    SMART_SAFE_FACTORY_CHAINS_ADRESSES.get(chainSymbol)
+
+  if (!smartSafeFactoryAddress) throw new Error('Chain not supported')
+
   const provider = new providers.JsonRpcProvider(rpcUrl)
 
   const contract = new Contract(
-    SMART_SAFE_FACTORY_ADDRESS,
+    smartSafeFactoryAddress,
     SMART_SAFE_FACTORY_ABI,
     provider
   )
@@ -44,12 +51,13 @@ async function fetchDeploySmartSafeFee({
 
 export function useDeploySmartSafeFee(
   rpcUrl: string,
+  chainSymbol: string,
   owners: string[],
   enabled = true
 ) {
   return useQuery({
     queryKey: ['deploySmartSafeFee', rpcUrl],
-    queryFn: () => fetchDeploySmartSafeFee({ rpcUrl, owners }),
+    queryFn: () => fetchDeploySmartSafeFee({ rpcUrl, chainSymbol, owners }),
     enabled,
     staleTime: 1000 * 60 * 1 // 1 minute
   })

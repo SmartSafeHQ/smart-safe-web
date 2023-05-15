@@ -112,7 +112,8 @@ export const useDeploySafeHook = () => {
         deployWalletAddress: wallet.accounts[0].address,
         chain: {
           id: safeInfos.chain.chainId,
-          name: safeInfos.chain.networkName
+          name: safeInfos.chain.networkName,
+          symbol: safeInfos.chain.symbol
         },
         requiredSignaturesCount: +data.requiredSignaturesCount,
         owners: data.owners

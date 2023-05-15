@@ -5,7 +5,7 @@ import { EIP1193Provider } from '@web3-onboard/core'
 import { smartSafeApi } from '@lib/axios'
 import { queryClient } from '@lib/reactQuery'
 import SMART_SAFE_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeFactory.json'
-import { SMART_SAFE_FACTORY_ADDRESS } from '@utils/web3/ABIs/adresses'
+import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
 
 export type DeploySafeFunctionInput = {
   provider: EIP1193Provider
@@ -15,6 +15,7 @@ export type DeploySafeFunctionInput = {
   chain: {
     id: string
     name: string
+    symbol: string
   }
   owners: {
     address: string
@@ -33,6 +34,12 @@ export interface DeploySafeApiResponse {
 async function deploySafeFunction(
   input: DeploySafeFunctionInput
 ): Promise<DeploySafeFunctionOutput> {
+  const smartSafeFactoryAddress = SMART_SAFE_FACTORY_CHAINS_ADRESSES.get(
+    input.chain.symbol
+  )
+
+  if (!smartSafeFactoryAddress) throw new Error('Chain not supported')
+
   const provider = new providers.Web3Provider(input.provider, {
     chainId: parseInt(input.chain.id, 16),
     name: input.chain.name
@@ -40,7 +47,7 @@ async function deploySafeFunction(
 
   const signer = provider.getSigner()
   const contract = new Contract(
-    SMART_SAFE_FACTORY_ADDRESS,
+    smartSafeFactoryAddress,
     SMART_SAFE_FACTORY_ABI,
     signer
   )
