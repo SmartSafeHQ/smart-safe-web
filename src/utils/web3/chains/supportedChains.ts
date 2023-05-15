@@ -57,7 +57,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     chainId: '0x33',
     hexColor: '#9ff3ff',
     rpcUrl: 'https://rpc.apothem.network/',
-    explorerUrl: 'https://explorer.xinfin.network/',
+    explorerUrl: 'https://explorer.apothem.network/',
     scanUrl: ''
   },
   {
