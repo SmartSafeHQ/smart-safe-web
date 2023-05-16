@@ -31,7 +31,10 @@ export function NetworkFeeEst() {
       )}
     >
       {safeInfos && (
-        <Skeleton isLoading={feeIsLoading || feeIsPreviousData} className="h-5">
+        <Skeleton
+          isLoading={feeIsLoading || feeIsPreviousData}
+          className="w-full h-5"
+        >
           <Text className="mr-2">Est. network fee:</Text>
 
           <Image
