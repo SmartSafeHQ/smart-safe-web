@@ -130,6 +130,17 @@ export function SafeProvider({ children }: SafeProviderProps) {
           chain: checkSafeExists.chain
         })
       })
+      .catch(error => {
+        console.log(error)
+
+        push('/').then(() =>
+          toast.error(
+            'An unknown error occurred retrieving your safe information. Please try again.'
+          )
+        )
+
+        setSafe(null)
+      })
   }, [query.safeAddress, wallet])
 
   return (

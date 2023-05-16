@@ -5,13 +5,15 @@ import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
 
 const NAV_LINKS = [
   {
-    href: 'home',
+    href: '',
+    activePath: undefined,
     icon: House,
     title: 'Home',
     isDisabled: false
   },
   {
     href: 'assets',
+    activePath: 'assets',
     icon: CirclesThree,
     title: 'Assets',
     isDisabled: false
@@ -28,6 +30,7 @@ export function SidebarNav() {
               href={navLink.href}
               Icon={navLink.icon}
               isDisabled={navLink.isDisabled}
+              activePath={navLink.activePath}
             >
               {navLink.title}
             </NavLink>

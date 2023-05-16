@@ -12,23 +12,31 @@ import clsx from 'clsx'
 
 import { Text } from '@components/Text'
 
+import { useSafe } from '@contexts/SafeContext'
+
 interface NavLinkProps extends LinkProps {
   Icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
-  isDisabled?: boolean
   children: ReactNode
+  activePath?: string
+  isDisabled?: boolean
 }
 
 const NavLinkComponent: ForwardRefRenderFunction<
   HTMLAnchorElement,
   NavLinkProps
-> = ({ Icon, isDisabled = false, children, ...props }, ref) => {
+> = (
+  { Icon, isDisabled = false, href, activePath, children, ...props },
+  ref
+) => {
   const { asPath } = useRouter()
+
+  const { safe } = useSafe()
 
   let isActive = false
   let iconWeight: IconWeight = 'regular'
   const parentRoute = asPath.split('/')[3]
 
-  if (parentRoute === props.href || parentRoute === props.as) {
+  if (parentRoute === activePath) {
     isActive = true
     iconWeight = 'fill'
   }
@@ -41,11 +49,12 @@ const NavLinkComponent: ForwardRefRenderFunction<
         {
           'bg-zinc-500/10 dark:bg-zinc-50/10 font-medium hover:bg-zinc-500/20 hover:dark:bg-zinc-50/20 md:max-lg:bg-transparent':
             isActive,
-          'pointer-events-none text-gray-400 dark:brightness-50': isDisabled
+          'pointer-events-none text-gray-400 dark:brightness-50':
+            isDisabled || !safe?.id
         }
       )}
     >
-      <Link ref={ref} {...props}>
+      <Link ref={ref} href={`/dashboard/${safe?.address}/${href}`} {...props}>
         <Icon className="w-6 h-6" weight={iconWeight} />
 
         <Text>{children}</Text>

@@ -1,11 +1,11 @@
 import Head from 'next/head'
 
-import { Button } from '@components/Button'
-import { Tabs } from '@components/Tabs'
 import {
   AssetsTabsList,
   SAFE_ASSETS_TABS_VALUES
 } from '@components/pages/Assets/AssetsTabsList'
+import { Button } from '@components/Button'
+import { Tabs } from '@components/Tabs'
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
 import { AssetsList } from '@components/pages/Assets/AssetsList'
 
