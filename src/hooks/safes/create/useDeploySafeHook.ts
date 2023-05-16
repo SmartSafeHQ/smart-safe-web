@@ -11,7 +11,7 @@ import { z } from 'zod'
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useSafe } from '@contexts/SafeContext'
 import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
-import { useDeploySafeMutation } from '@hooks/safes/create/mutation/useDeploySafeMutation'
+import { useDeploySafeProxyMutation } from '@/hooks/safes/create/mutation/useDeploySafeProxyMutation'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const validationSchema = z.object({
@@ -64,7 +64,7 @@ export const useDeploySafeHook = () => {
   const [{ wallet }] = useConnectWallet()
   const { formattedOwnerAddress } = useSafe()
   const { safeInfos, deployStatus, setDeployStatus } = useCreateSafe()
-  const { mutateAsync: mutateDeploySafe } = useDeploySafeMutation()
+  const { mutateAsync: mutateDeploySafe } = useDeploySafeProxyMutation()
 
   const formMethods = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
