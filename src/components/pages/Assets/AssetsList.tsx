@@ -6,14 +6,20 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { AssetsTable } from '@components/pages/Assets/AssetsTable'
 
 import { useSafeTokens } from '@hooks/assets/queries/useSafeTokens'
+import { useSafe } from '@/contexts/SafeContext'
 
 export function AssetsList() {
   const [{ wallet }] = useConnectWallet()
+  const { safe } = useSafe()
   const {
     data: assets,
     error,
     isLoading
-  } = useSafeTokens(wallet?.accounts[0].address, !!wallet?.accounts[0])
+  } = useSafeTokens(
+    wallet?.accounts[0].address,
+    safe?.chain.chainId,
+    !!wallet?.accounts[0] && !!safe
+  )
 
   return (
     <ScrollArea className="w-full max-w-full px-2">

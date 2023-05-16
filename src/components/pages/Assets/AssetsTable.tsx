@@ -59,7 +59,7 @@ function AssetsTableTr({
       </td>
 
       <td className="py-3 uppercase text-gray-800 dark:text-gray-400">
-        <Text>{valueInUsd.toFixed(3)} usd</Text>
+        <Text>{valueInUsd.toFixed(4)} usd</Text>
       </td>
     </tr>
   )
