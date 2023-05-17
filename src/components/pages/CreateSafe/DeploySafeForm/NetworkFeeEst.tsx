@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useDeploySmartSafeFee } from '@hooks/safes/create/queries/useDeploySmartSafeFee'
+import { useDeploySmartSafeProxyFee } from '@/hooks/safes/create/queries/useDeploySmartSafeProxyFee'
 import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
 export function NetworkFeeEst() {
@@ -14,7 +14,7 @@ export function NetworkFeeEst() {
     isLoading: feeIsLoading,
     isFetching: feeIsFetching,
     isPreviousData: feeIsPreviousData
-  } = useDeploySmartSafeFee(
+  } = useDeploySmartSafeProxyFee(
     safeInfos?.chain.rpcUrl ?? '',
     safeInfos?.chain.symbol ?? '',
     [ownersFields[0].address],

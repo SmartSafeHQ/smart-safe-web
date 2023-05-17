@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Contract, providers, utils } from 'ethers'
 
-import SMART_SAFE_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeFactory.json'
+import SMART_SAFE_FACTORY_PROXY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
 import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
 
 interface FetchDeploySmartSafeFeeInput {
@@ -14,30 +14,28 @@ export interface FetchDeploySmartSafeFeeResponse {
   valueInCoin: string
 }
 
-async function fetchDeploySmartSafeFee({
+async function fetchDeploySmartSafeProxyFee({
   rpcUrl,
   chainSymbol,
   owners
 }: FetchDeploySmartSafeFeeInput): Promise<FetchDeploySmartSafeFeeResponse> {
-  const smartSafeFactoryAddress =
+  const smartSafeProxyFactoryAddress =
     SMART_SAFE_FACTORY_CHAINS_ADRESSES.get(chainSymbol)
 
-  if (!smartSafeFactoryAddress) throw new Error('Chain not supported')
+  if (!smartSafeProxyFactoryAddress) throw new Error('Chain not supported')
 
   const provider = new providers.JsonRpcProvider(rpcUrl)
 
   const contract = new Contract(
-    smartSafeFactoryAddress,
-    SMART_SAFE_FACTORY_ABI,
+    smartSafeProxyFactoryAddress,
+    SMART_SAFE_FACTORY_PROXY_ABI,
     provider
   )
 
-  const ownersAdressesList = owners.map(owner => owner)
-
   const gasPrice = await provider.getGasPrice()
 
-  const estimatedGas = await contract.estimateGas.deploySmartSafe(
-    ownersAdressesList,
+  const estimatedGas = await contract.estimateGas.deploySmartSafeProxy(
+    owners,
     1
   )
 
@@ -49,7 +47,7 @@ async function fetchDeploySmartSafeFee({
   }
 }
 
-export function useDeploySmartSafeFee(
+export function useDeploySmartSafeProxyFee(
   rpcUrl: string,
   chainSymbol: string,
   owners: string[],
@@ -57,7 +55,8 @@ export function useDeploySmartSafeFee(
 ) {
   return useQuery({
     queryKey: ['deploySmartSafeFee', rpcUrl],
-    queryFn: () => fetchDeploySmartSafeFee({ rpcUrl, chainSymbol, owners }),
+    queryFn: () =>
+      fetchDeploySmartSafeProxyFee({ rpcUrl, chainSymbol, owners }),
     enabled,
     staleTime: 1000 * 60 * 1 // 1 minute
   })
