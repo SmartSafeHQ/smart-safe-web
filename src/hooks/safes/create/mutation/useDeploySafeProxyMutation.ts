@@ -4,7 +4,7 @@ import { EIP1193Provider } from '@web3-onboard/core'
 
 import { smartSafeApi } from '@lib/axios'
 import { queryClient } from '@lib/reactQuery'
-import SMART_SAFE_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeFactory.json'
+import SMART_SAFE_PROXY_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
 import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
 
 export type DeploySafeFunctionInput = {
@@ -31,14 +31,14 @@ export interface DeploySafeApiResponse {
   id: string
 }
 
-async function deploySafeFunction(
+async function deploySafeProxyFunction(
   input: DeploySafeFunctionInput
 ): Promise<DeploySafeFunctionOutput> {
-  const smartSafeFactoryAddress = SMART_SAFE_FACTORY_CHAINS_ADRESSES.get(
+  const smartSafeProxyFactoryAddress = SMART_SAFE_FACTORY_CHAINS_ADRESSES.get(
     input.chain.symbol
   )
 
-  if (!smartSafeFactoryAddress) throw new Error('Chain not supported')
+  if (!smartSafeProxyFactoryAddress) throw new Error('Chain not supported')
 
   const provider = new providers.Web3Provider(input.provider, {
     chainId: parseInt(input.chain.id, 16),
@@ -47,8 +47,8 @@ async function deploySafeFunction(
 
   const signer = provider.getSigner()
   const contract = new Contract(
-    smartSafeFactoryAddress,
-    SMART_SAFE_FACTORY_ABI,
+    smartSafeProxyFactoryAddress,
+    SMART_SAFE_PROXY_FACTORY_ABI,
     signer
   )
 
@@ -57,17 +57,17 @@ async function deploySafeFunction(
   )
 
   const computedAddress = await contract.functions.computeAddress(
-    ownersAdressesList,
-    input.requiredSignaturesCount
+    ownersAdressesList[0]
   )
 
   const deployContractAddress = computedAddress.toString()
+  console.log({ deployContractAddress })
   const gasPrice = await provider.getGasPrice()
 
   let gasLimit: number | string = 3000000
 
   try {
-    const estimatedGas = await contract.estimateGas.deploySmartSafe(
+    const estimatedGas = await contract.estimateGas.deploySmartSafeProxy(
       ownersAdressesList,
       input.requiredSignaturesCount,
       { gasLimit, gasPrice }
@@ -78,7 +78,7 @@ async function deploySafeFunction(
     console.error(err)
   }
 
-  await contract.functions.deploySmartSafe(
+  await contract.functions.deploySmartSafeProxy(
     ownersAdressesList,
     input.requiredSignaturesCount,
     { gasLimit, gasPrice }
@@ -94,10 +94,11 @@ async function deploySafeFunction(
   return { safeAddress: deployContractAddress }
 }
 
-export function useDeploySafeMutation() {
+export function useDeploySafeProxyMutation() {
   return useMutation({
     mutationKey: ['deploySafe'],
-    mutationFn: (input: DeploySafeFunctionInput) => deploySafeFunction(input),
+    mutationFn: (input: DeploySafeFunctionInput) =>
+      deploySafeProxyFunction(input),
     onSuccess: async (data, variables) => {
       await queryClient.cancelQueries({
         queryKey: ['addressSafes', variables.deployWalletAddress]
