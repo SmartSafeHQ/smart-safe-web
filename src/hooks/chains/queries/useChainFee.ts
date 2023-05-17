@@ -6,7 +6,7 @@ interface FetchChainFeeInput {
 }
 
 export interface FetchChainFeeResponse {
-  valueInCoin: string
+  valueInToken: string
   valueInWei: string
 }
 
@@ -22,11 +22,11 @@ async function fetchChainFee({
   const gasEstimate = await provider.getGasPrice()
 
   const gasCostInWei = gasEstimate.mul(21000)
-  const gasCostInCoin = gasCostInWei.toNumber() / 10 ** 18
+  const gasCostInToken = gasCostInWei.toNumber() / 10 ** 18
 
   return {
     valueInWei: gasCostInWei.toString(),
-    valueInCoin: gasCostInCoin.toString()
+    valueInToken: gasCostInToken.toString()
   }
 }
 

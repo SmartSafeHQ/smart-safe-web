@@ -165,7 +165,13 @@ export const useDeploySafeHook = () => {
   }
 
   useEffect(() => {
-    if (!wallet || !formattedOwnerAddress || !safeInfos) push('/')
+    if (!wallet || !formattedOwnerAddress || !safeInfos) {
+      console.log('wallet =>', wallet)
+      console.log('formattedOwnerAddress =>', formattedOwnerAddress)
+      console.log('safeInfos =>', safeInfos)
+
+      push('/')
+    }
   })
 
   return {
