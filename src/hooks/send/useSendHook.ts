@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useEffect } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { toast } from 'react-toastify'
@@ -11,21 +11,7 @@ import { useSend } from '@contexts/SendContext'
 import { formatWalletAddress } from '@utils/web3'
 import { useSafe } from '@contexts/SafeContext'
 
-export function getTokenAmountInUsd(
-  amountInTokens: number,
-  usdPerToken: number
-) {
-  return amountInTokens * usdPerToken
-}
-
-export interface AmountInputType {
-  symbol: 'usd' | string
-  defaultValue: number
-  decimals: number
-  convertTokens: (_amount: number, _usdPerToken: number) => number
-  currency?: string
-  reverseSymbol?: string
-}
+const AMOUNT_REGEX = /(?<=\..*)\.|[^0-9.]/g
 
 export const validationSchema = z.object({
   to: z
@@ -36,19 +22,14 @@ export const validationSchema = z.object({
 
       return isAddressValid
     }, 'Invalid address'),
-  amount: z.number().min(0.0001, 'min 0.0001')
+  amount: z.string().refine(amount => {
+    const isNumberValid = !isNaN(+amount)
+
+    return isNumberValid
+  }, 'Invalid amount')
 })
 
 type SendFieldValues = z.infer<typeof validationSchema>
-
-export const DEFAULT_AMOUNT_INPUT_TYPE: AmountInputType = {
-  symbol: 'usd',
-  defaultValue: 0.0,
-  decimals: 3,
-  convertTokens: (amountInUsd: number, usdPerToken: number) =>
-    amountInUsd / usdPerToken,
-  currency: '$'
-}
 
 export const useSendHook = () => {
   const { safe } = useSafe()
@@ -60,26 +41,21 @@ export const useSendHook = () => {
     handleSubmit,
     setValue,
     watch,
-    resetField,
     formState: { errors }
   } = useForm<SendFieldValues>({
     resolver: zodResolver(validationSchema)
   })
-
-  const currentAmount = watch()?.amount
 
   const { data: tokens, isLoading: tokensIsLoading } = useSafeTokens(
     safe?.address,
     safe?.chain.chainId,
     !!safe
   )
-
-  const [amountInputType, setAmountInputType] = useState<AmountInputType>(
-    DEFAULT_AMOUNT_INPUT_TYPE
-  )
-
   const { data: tokenUsdData, isFetching: tokenUsdIsFetching } =
     useTokenUsdValue(selectedToken?.symbol)
+
+  const currentAmount = watch()?.amount ?? '0'
+  const usdAmount = +currentAmount * (tokenUsdData?.usdValue ?? 0)
 
   useEffect(() => {
     if (!tokens || selectedToken) {
@@ -87,41 +63,12 @@ export const useSendHook = () => {
     }
 
     setSelectedToken(tokens[0])
-
-    setAmountInputType({
-      ...DEFAULT_AMOUNT_INPUT_TYPE,
-      reverseSymbol: tokens[0]?.symbol
-    })
   }, [tokens])
 
-  const amounInReverseToken = amountInputType.convertTokens(
-    currentAmount,
-    tokenUsdData?.usdValue ?? 1
-  )
-
   function handleChangeAmountInput(event: ChangeEvent<HTMLInputElement>) {
-    setValue('amount', +event.target.value)
-  }
+    const amount = event.target.value.replace(AMOUNT_REGEX, '')
 
-  function handleToggleAmountInputType() {
-    if (amountInputType.symbol === 'usd') {
-      setAmountInputType({
-        symbol: selectedToken?.symbol ?? 'usd',
-        defaultValue: 0.0,
-        decimals: 2,
-        convertTokens: getTokenAmountInUsd,
-        reverseSymbol: 'usd'
-      })
-
-      setValue('amount', currentAmount)
-    } else {
-      setAmountInputType({
-        ...DEFAULT_AMOUNT_INPUT_TYPE,
-        reverseSymbol: selectedToken?.symbol
-      })
-
-      setValue('amount', currentAmount)
-    }
+    setValue('amount', amount)
   }
 
   function handleChangeToken(symbol: string) {
@@ -134,38 +81,21 @@ export const useSendHook = () => {
     }
 
     setSelectedToken(token)
-    setValue('amount', currentAmount)
-    resetField('to')
-
-    setAmountInputType({
-      ...amountInputType,
-      symbol: token.symbol,
-      decimals: 2,
-      convertTokens: getTokenAmountInUsd,
-      reverseSymbol: 'usd'
-    })
   }
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
-    if (!selectedToken) return
+    if (!selectedToken || !tokenUsdData) return
 
     try {
       const formattedTo = formatWalletAddress({
         walletAddress: data.to
       })
 
-      const amountData =
-        amountInputType.symbol === 'usd'
-          ? {
-              usdAmount: currentAmount.toFixed(2),
-              tokenAmount: amounInReverseToken,
-              formattedTokenAmount: amounInReverseToken.toFixed(3)
-            }
-          : {
-              usdAmount: amounInReverseToken.toFixed(2),
-              tokenAmount: currentAmount,
-              formattedTokenAmount: currentAmount.toFixed(3)
-            }
+      const amountData = {
+        usdAmount: String(+currentAmount * tokenUsdData.usdValue),
+        tokenAmount: +currentAmount,
+        formattedTokenAmount: currentAmount
+      }
 
       setTransaction({
         ...amountData,
@@ -180,18 +110,16 @@ export const useSendHook = () => {
   }
 
   return {
-    tokenUsdIsFetching,
-    amounInReverseToken,
-    register,
-    handleSubmit,
-    onSubmit,
-    errors,
-    handleChangeAmountInput,
-    handleToggleAmountInputType,
     tokens,
+    selectedToken,
     tokensIsLoading,
     handleChangeToken,
-    selectedToken,
-    amountInputType
+    handleChangeAmountInput,
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    tokenUsdIsFetching,
+    usdAmount
   }
 }

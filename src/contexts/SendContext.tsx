@@ -6,13 +6,13 @@ import {
   useContext,
   useState
 } from 'react'
-import { toast } from 'react-toastify'
 import { useConnectWallet } from '@web3-onboard/react'
+import { toast } from 'react-toastify'
 
 import {
-  useSendMutation,
-  SendFunctionOutput
-} from '@hooks/send/mutation/useSendMutation'
+  useSendProposalMutation,
+  SendProposalFunctionOutput
+} from '@hooks/send/mutation/useSendProposalMutation'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import { useSafe } from '@contexts/SafeContext'
 
@@ -43,7 +43,7 @@ type SendContextData = {
   selectedToken: TokenProps | null
   isSendingTx: boolean
   isSendOpen: boolean
-  txData?: SendFunctionOutput
+  txData?: SendProposalFunctionOutput
   setIsSendOpen: Dispatch<SetStateAction<boolean>>
   resetSendMutation: () => void
   setTransaction: (_transaction: TransactionProps | null) => void
@@ -68,7 +68,7 @@ export function SendProvider({ children }: SendProviderProps) {
     isLoading: isSendingTx,
     data: txData,
     reset
-  } = useSendMutation()
+  } = useSendProposalMutation()
 
   async function handleSendTransaction(data: HandleSendTransactionProps) {
     if (!safe || !wallet) return

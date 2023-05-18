@@ -1,5 +1,6 @@
-import { Wallet, ArrowsClockwise } from '@phosphor-icons/react'
+import { Wallet } from '@phosphor-icons/react'
 import { ReactElement } from 'react'
+import Image from 'next/image'
 import Head from 'next/head'
 import clsx from 'clsx'
 
@@ -15,17 +16,16 @@ import { useSendHook } from '@hooks/send/useSendHook'
 const Send = () => {
   const {
     tokens,
+    selectedToken,
     tokensIsLoading,
     handleChangeToken,
+    handleChangeAmountInput,
     register,
     handleSubmit,
     errors,
-    handleChangeAmountInput,
-    handleToggleAmountInputType,
     onSubmit,
-    amountInputType,
-    amounInReverseToken,
-    tokenUsdIsFetching
+    tokenUsdIsFetching,
+    usdAmount
   } = useSendHook()
 
   return (
@@ -68,41 +68,45 @@ const Send = () => {
             </TextInput.Root>
 
             <TextInput.Root htmlFor="amount" error={errors.amount?.message}>
-              <div className="flex items-center gap-3">
-                <TextInput.Label>Amount</TextInput.Label>
-
-                <button
-                  type="button"
-                  onClick={handleToggleAmountInputType}
-                  className="w-6 h-6 flex items-center justify-center text-cyan-500 rounded-md shadow-sm ring-zinc-100 bg-zinc-200 dark:bg-zinc-800 focus:ring-2"
-                  aria-label="Toggle token input"
-                >
-                  <ArrowsClockwise className="w-4 h-w-4" />
-                </button>
-              </div>
+              <TextInput.Label>Amount</TextInput.Label>
 
               <TextInput.Content className="flex-col !items-start gap-2 py-2">
-                <TextInput.Input
-                  {...register('amount', { valueAsNumber: true })}
-                  required
-                  id="amount"
-                  type="number"
-                  defaultValue={amountInputType.defaultValue}
-                  placeholder="0.00"
-                  min={0.0}
-                  step={0.0001}
-                  onChange={handleChangeAmountInput}
-                  className="!text-2xl font-semibold uppercase"
-                />
+                <div className="w-full flex items-center justify-between">
+                  <TextInput.Input
+                    {...register('amount')}
+                    required
+                    id="amount"
+                    defaultValue="1.00"
+                    placeholder="0.00"
+                    onChange={handleChangeAmountInput}
+                    className="max-w-[10rem] !text-3xl font-semibold uppercase"
+                  />
+
+                  <div className="h-10 min-w-[6.5rem] flex items-center gap-2 px-2 rounded-full dark:bg-zinc-800">
+                    {selectedToken && (
+                      <>
+                        <Image
+                          src={selectedToken.icon}
+                          alt="token to send transaction approve"
+                          width={24}
+                          height={24}
+                        />
+
+                        <Text className="uppercase">
+                          {selectedToken.symbol}
+                        </Text>
+                      </>
+                    )}
+                  </div>
+                </div>
 
                 <Text
                   className={clsx(
-                    'text-sm font-semibold text-zinc-700 dark:text-zinc-300 uppercase',
+                    'text-sm font-medium text-zinc-700 dark:text-zinc-300 uppercase',
                     { 'animate-pulse': tokenUsdIsFetching }
                   )}
                 >
-                  {amounInReverseToken.toFixed(amountInputType.decimals) || 0}{' '}
-                  {amountInputType?.reverseSymbol}
+                  USD ${usdAmount?.toFixed(4) ?? 0}
                 </Text>
               </TextInput.Content>
             </TextInput.Root>
