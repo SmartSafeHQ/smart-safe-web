@@ -62,7 +62,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'OKT',
-    networkName: 'OKExChain Testnet',
+    networkName: 'OKEx Chain Testnet',
     icon: '/networks/okt-logo.svg',
     chainId: '0x41',
     hexColor: '#e5e7eb',

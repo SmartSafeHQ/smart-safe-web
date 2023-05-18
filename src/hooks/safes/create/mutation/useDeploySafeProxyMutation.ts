@@ -62,6 +62,7 @@ async function deploySafeProxyFunction(
 
   const deployContractAddress = computedAddress.toString()
   console.log({ deployContractAddress })
+
   const gasPrice = await provider.getGasPrice()
 
   let gasLimit: number | string = 3000000

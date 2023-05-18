@@ -62,7 +62,7 @@ function SelectInputTrigger({
   return (
     <RadixSelect.Trigger
       className={clsx(
-        'w-full gap-3 inline-flex items-center justify-between rounded px-4 text-sm outline-none ring-gray-900 dark:ring-gray-100 focus-within:ring-2 data-[placeholder]:text-gray-400',
+        'w-full gap-3 inline-flex items-center justify-between rounded-md px-4 text-sm outline-none ring-gray-900 dark:ring-gray-100 focus-within:ring-2 data-[placeholder]:text-gray-400',
         className
       )}
       {...props}
