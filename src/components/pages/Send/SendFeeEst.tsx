@@ -4,22 +4,18 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useDeploySmartSafeProxyFee } from '@hooks/safes/create/queries/useDeploySmartSafeProxyFee'
-import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
+import { useChainFee } from '@hooks/chains/queries/useChainFee'
+import { useSend } from '@contexts/SendContext'
 
-export function NetworkFeeEst() {
-  const { ownersFields, safeInfos } = useDeploySafeHook()
+export function SendFeeEst() {
+  const { selectedToken } = useSend()
+
   const {
     data: feeData,
     isLoading: feeIsLoading,
     isFetching: feeIsFetching,
     isPreviousData: feeIsPreviousData
-  } = useDeploySmartSafeProxyFee(
-    safeInfos?.chain.rpcUrl ?? '',
-    safeInfos?.chain.symbol ?? '',
-    [ownersFields[0].address],
-    !!safeInfos
-  )
+  } = useChainFee(selectedToken?.rpcUrl, !!selectedToken)
 
   return (
     <div
@@ -30,7 +26,7 @@ export function NetworkFeeEst() {
         }
       )}
     >
-      {safeInfos && (
+      {selectedToken && (
         <Skeleton
           isLoading={feeIsLoading || feeIsPreviousData}
           className="w-full h-5"
@@ -38,7 +34,7 @@ export function NetworkFeeEst() {
           <Text className="mr-2">Est. network fee:</Text>
 
           <Image
-            src={safeInfos.chain.icon}
+            src={selectedToken.icon}
             alt="chain to deploy safe icon"
             width={20}
             height={20}
@@ -47,7 +43,7 @@ export function NetworkFeeEst() {
 
           {feeData && (
             <Text className="uppercase">
-              {feeData.valueInToken.slice(0, 5)} {safeInfos.chain.symbol}
+              {feeData.valueInToken.slice(0, 5)} {selectedToken.symbol}
             </Text>
           )}
         </Skeleton>
