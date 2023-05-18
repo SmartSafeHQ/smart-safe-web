@@ -61,28 +61,18 @@ async function deploySafeProxyFunction(
   )
 
   const deployContractAddress = computedAddress.toString()
-  console.log({ deployContractAddress })
 
   const gasPrice = await provider.getGasPrice()
 
-  let gasLimit: number | string = 3000000
-
-  try {
-    const estimatedGas = await contract.estimateGas.deploySmartSafeProxy(
-      ownersAdressesList,
-      input.requiredSignaturesCount,
-      { gasLimit, gasPrice }
-    )
-
-    gasLimit = estimatedGas.toString()
-  } catch (err) {
-    console.error(err)
-  }
+  const estimatedGas = await contract.estimateGas.deploySmartSafeProxy(
+    ownersAdressesList,
+    input.requiredSignaturesCount
+  )
 
   await contract.functions.deploySmartSafeProxy(
     ownersAdressesList,
     input.requiredSignaturesCount,
-    { gasLimit, gasPrice }
+    { gasLimit: estimatedGas, gasPrice }
   )
 
   await smartSafeApi.post<DeploySafeApiResponse>('/safe', {
