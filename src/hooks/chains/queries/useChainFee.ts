@@ -2,31 +2,35 @@ import { useQuery } from '@tanstack/react-query'
 import { providers } from 'ethers'
 
 interface FetchChainFeeInput {
-  rpcUrl: string
+  rpcUrl?: string
 }
 
 export interface FetchChainFeeResponse {
-  valueInCoin: string
+  valueInToken: string
   valueInWei: string
 }
 
 async function fetchChainFee({
   rpcUrl
 }: FetchChainFeeInput): Promise<FetchChainFeeResponse> {
+  if (!rpcUrl) {
+    throw new Error('rpcUrl required')
+  }
+
   const provider = new providers.JsonRpcProvider(rpcUrl)
 
   const gasEstimate = await provider.getGasPrice()
 
   const gasCostInWei = gasEstimate.mul(21000)
-  const gasCostInCoin = gasCostInWei.toNumber() / 10 ** 18
+  const gasCostInToken = gasCostInWei.toNumber() / 10 ** 18
 
   return {
     valueInWei: gasCostInWei.toString(),
-    valueInCoin: gasCostInCoin.toString()
+    valueInToken: gasCostInToken.toString()
   }
 }
 
-export function useChainFee(rpcUrl: string, enabled = true) {
+export function useChainFee(rpcUrl?: string, enabled = true) {
   return useQuery({
     queryKey: ['chainFee', rpcUrl],
     queryFn: () => fetchChainFee({ rpcUrl }),

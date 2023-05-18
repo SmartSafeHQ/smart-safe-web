@@ -11,7 +11,7 @@ interface FetchDeploySmartSafeFeeInput {
 }
 
 export interface FetchDeploySmartSafeFeeResponse {
-  valueInCoin: string
+  valueInToken: string
 }
 
 async function fetchDeploySmartSafeProxyFee({
@@ -40,10 +40,10 @@ async function fetchDeploySmartSafeProxyFee({
   )
 
   const gasFee = estimatedGas.mul(gasPrice)
-  const gasCostInCoin = utils.formatUnits(gasFee, 'ether')
+  const gasCostInToken = utils.formatUnits(gasFee, 'ether')
 
   return {
-    valueInCoin: gasCostInCoin.toString()
+    valueInToken: gasCostInToken.toString()
   }
 }
 

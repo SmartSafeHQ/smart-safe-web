@@ -8,8 +8,6 @@ import {
   RefAttributes
 } from 'react'
 
-import { ScrollArea } from '@components/ScrollArea'
-
 interface DialogModalRootProps extends RadixDialog.DialogProps {
   children: ReactNode
 }
@@ -77,7 +75,7 @@ function DialogModalIconClose({ Icon = X }: DialogModalIconCloseProps) {
   return (
     <RadixDialog.Close
       asChild
-      className="flex items-center justify-center p-2 absolute top-6 right-8 text-zinc-900 dark:text-zinc-100 text-2xl bg-transparent rounded-md hover:text-zinc-800 hover:bg-zinc-700/10 hover:dark:text-zinc-50 hover:dark:bg-zinc-800/10 transition-colors"
+      className="flex items-center justify-center p-2 absolute top-4 right-6 text-zinc-900 dark:text-zinc-100 text-2xl bg-transparent rounded-md hover:text-zinc-800 hover:bg-zinc-700/10 hover:dark:text-zinc-50 hover:dark:bg-zinc-500/10 transition-colors"
     >
       <button aria-label="Close">
         <Icon weight="bold" />
@@ -110,21 +108,19 @@ function DialogModalContent({
 }: DialogModalContentProps) {
   return (
     <RadixDialog.Portal className="relative">
-      <RadixDialog.Overlay className="fixed z-10 inset-0 bg-black bg-opacity-40 animate-dialog-open" />
+      <RadixDialog.Overlay className="fixed z-10 inset-0 bg-zinc-900 bg-opacity-50 animate-dialog-open" />
 
-      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-10 p-0 md:p-8">
+      <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-10">
         <RadixDialog.Content
           className={clsx(
-            'w-full h-full max-w-full bg-zinc-100 dark:bg-zinc-950 shadow-lg animate-dialog-open md:rounded-md md:h-max',
+            'w-full h-full max-w-full relative bg-zinc-100 dark:bg-zinc-950 shadow-lg animate-dialog-open md:rounded-lg md:h-max',
             className
           )}
           {...props}
         >
-          <ScrollArea className="w-full h-full p-4">
-            <div className="w-full h-full max-h-screen flex flex-col md:max-h-[90vh] p-2">
-              {children}
-            </div>
-          </ScrollArea>
+          <div className="w-full h-full max-h-screen flex flex-col md:max-h-[90vh]">
+            {children}
+          </div>
         </RadixDialog.Content>
       </div>
     </RadixDialog.Portal>

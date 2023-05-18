@@ -3,7 +3,7 @@ import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { AssetsTable } from '@components/pages/Assets/AssetsTable'
 
-import { useSafeTokens } from '@hooks/assets/queries/useSafeTokens'
+import { useSafeTokens } from '@hooks/chains/queries/useSafeTokens'
 import { useSafe } from '@contexts/SafeContext'
 
 export function AssetsList() {
@@ -27,7 +27,8 @@ export function AssetsList() {
       ) : isLoading ? (
         <LoadingState title="Loading your assets" />
       ) : (
-        assets && (
+        assets &&
+        safe && (
           <>
             <table className="w-full">
               <thead className="bg-zinc-100 dark:bg-zinc-900 border-1 border-zinc-300 dark:border-zinc-700">
@@ -45,11 +46,11 @@ export function AssetsList() {
               <tbody>
                 {assets.map(asset => (
                   <AssetsTable.Tr
-                    key={asset.tokenSymbol}
-                    tokenSymbol={asset.tokenSymbol}
-                    tokenIcon={asset.tokenIcon}
-                    balance={asset.balance}
-                    valueInUsd={asset.valueInUsd}
+                    key={asset.symbol}
+                    safeAddress={safe.address}
+                    symbol={asset.symbol}
+                    rpcUrl={asset.rpcUrl}
+                    icon={asset.icon}
                   />
                 ))}
               </tbody>

@@ -11,7 +11,7 @@ import { z } from 'zod'
 import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useSafe } from '@contexts/SafeContext'
 import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
-import { useDeploySafeProxyMutation } from '@/hooks/safes/create/mutation/useDeploySafeProxyMutation'
+import { useDeploySafeProxyMutation } from '@hooks/safes/create/mutation/useDeploySafeProxyMutation'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const validationSchema = z.object({
@@ -165,7 +165,13 @@ export const useDeploySafeHook = () => {
   }
 
   useEffect(() => {
-    if (!wallet || !formattedOwnerAddress || !safeInfos) push('/')
+    if (!wallet || !formattedOwnerAddress || !safeInfos) {
+      console.log('wallet =>', wallet)
+      console.log('formattedOwnerAddress =>', formattedOwnerAddress)
+      console.log('safeInfos =>', safeInfos)
+
+      push('/')
+    }
   })
 
   return {
