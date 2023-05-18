@@ -14,7 +14,7 @@ export interface SendSuccessProps {
 }
 
 export function SendSuccess({ transactionUrl }: SendSuccessProps) {
-  const { transaction, selectedToken, resetSendMutation } = useSend()
+  const { transaction, selectedToken } = useSend()
 
   if (!transaction || !selectedToken) return <></>
 
@@ -89,9 +89,7 @@ export function SendSuccess({ transactionUrl }: SendSuccessProps) {
 
       <div className="w-full px-4 pb-6 flex justify-center items-center sm:px-8">
         <DialogModal.Trigger>
-          <Button onClick={resetSendMutation} className="w-full">
-            Close
-          </Button>
+          <Button className="w-full">Close</Button>
         </DialogModal.Trigger>
       </div>
     </div>

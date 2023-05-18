@@ -16,13 +16,21 @@ export function SendModal() {
     isSendingTx,
     isSendOpen,
     setIsSendOpen,
+    resetSendMutation,
     handleSendTransaction
   } = useSend()
 
   if (!transaction || !selectedToken) return <></>
 
   return (
-    <DialogModal.Root open={isSendOpen} onOpenChange={setIsSendOpen}>
+    <DialogModal.Root
+      open={isSendOpen}
+      onOpenChange={isOpen => {
+        setIsSendOpen(isOpen)
+
+        if (!isOpen) resetSendMutation()
+      }}
+    >
       <DialogModal.Content
         className="md:max-w-[32rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900"
         onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
@@ -74,7 +82,7 @@ export function SendModal() {
             </>
           ) : (
             <SendSuccess
-              transactionUrl={`${selectedToken.explorerUrl}/tx/{txData.transactionHash}`}
+              transactionUrl={`${selectedToken.explorerUrl}/tx/${txData.transactionHash}`}
             />
           )}
         </div>

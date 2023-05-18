@@ -4,12 +4,11 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useChainFee } from '@hooks/chains/queries/useChainFee'
 import { useSend } from '@contexts/SendContext'
+import { useChainFee } from '@hooks/chains/queries/useChainFee'
 
 export function SendFeeEst() {
   const { selectedToken } = useSend()
-
   const {
     data: feeData,
     isLoading: feeIsLoading,
@@ -43,7 +42,7 @@ export function SendFeeEst() {
 
           {feeData && (
             <Text className="uppercase">
-              {feeData.valueInToken.slice(0, 5)} {selectedToken.symbol}
+              {feeData.valueInToken.slice(0, 7)} {selectedToken.symbol}
             </Text>
           )}
         </Skeleton>
