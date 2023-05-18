@@ -7,6 +7,7 @@ import { SendSelectToken } from '@components/pages/Send/SendSelectToken'
 import { TextInput } from '@components/Inputs/TextInput'
 import { Text } from '@components/Text'
 import { Button } from '@components/Button'
+import { SendModal } from '@components/pages/Send/SendModal'
 
 import { SendProvider } from '@contexts/SendContext'
 import { useSendHook } from '@hooks/send/useSendHook'
@@ -110,6 +111,8 @@ const Send = () => {
               Send
             </Button>
           </form>
+
+          <SendModal />
         </div>
       </div>
     </div>
