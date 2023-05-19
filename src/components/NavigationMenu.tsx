@@ -15,7 +15,7 @@ function NavigationMenuRoot({
   return (
     <RadixNavigationMenu.Root
       className={clsx(
-        'relative flex justify-center z-10 [&>div]:w-full',
+        'relative flex justify-center z-9 [&>div]:w-full',
         className
       )}
       {...props}
