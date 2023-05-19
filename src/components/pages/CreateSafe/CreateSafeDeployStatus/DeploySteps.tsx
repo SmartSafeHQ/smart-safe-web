@@ -29,7 +29,7 @@ export function WaitForSafeSetup({
   }
 }
 
-export function WaitForMetaMaskConfirmation({
+export function WaitForProviderConfirmation({
   deployStatus
 }: WaitForUserConfirmationProps) {
   if (deployStatus.sign.status === 'loading') {
