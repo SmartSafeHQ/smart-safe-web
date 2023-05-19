@@ -21,8 +21,6 @@ function getHashOfSignatureStruct(
     [signatureStructHash, from, to, transactioNonce, value, data]
   )
 
-  console.log({ signatureStructHash, from, to, transactioNonce, value, data })
-
   const hashedEncodedStruct = ethers.keccak256(signatureStructEncoded)
 
   return { hashedEncodedStruct }
@@ -73,13 +71,13 @@ async function signHash({
     )
   )
 
-  console.log({ typedDataHash })
+  console.log(ethers.getBytes(typedDataHash).toString())
 
   const signedTypedDataHash = await signer.signMessage(
     ethers.getBytes(typedDataHash)
   )
 
-  console.log({ signedTypedDataHash })
+  console.log({ typedDataHash, signedTypedDataHash })
 
   return { typedDataHash, signedTypedDataHash }
 }

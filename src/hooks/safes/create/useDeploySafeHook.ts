@@ -130,7 +130,12 @@ export const useDeploySafeHook = () => {
         deploy: { status: 'loading', errorReason: '' }
       })
 
-      await transaction.wait()
+      // XDC addresses starts with `xdc` instead of `0x` e.g: `xdc8E6f42979b5517206Cf9e69A969Fac961D1b36B7`
+      // for this reason, `await transaction.wait()` will throw an error, because it expects XDC network to return
+      // and address starting with `0x`, but the network returns and address stating with `xdc`
+      if (!safeInfos.chain.networkName.startsWith('XDC')) {
+        await transaction.wait()
+      }
 
       mutateSaveSmartSafeProxyData({
         chainId: safeInfos.chain.chainId,
@@ -165,9 +170,14 @@ export const useDeploySafeHook = () => {
           sign: { status: 'error', errorReason: 'User rejected transaction' },
           deploy: { status: 'idle', errorReason: '' }
         })
+      } else if (error?.code === 'BAD_DATA') {
+        setDeployStatus({
+          sign: { status: 'error', errorReason: 'Invalid data' },
+          deploy: { status: 'idle', errorReason: '' }
+        })
       } else {
         setDeployStatus({
-          sign: { status: 'idle', errorReason: '' },
+          sign: { status: 'error', errorReason: '' },
           deploy: { status: 'error', errorReason: 'Unknown error' }
         })
       }

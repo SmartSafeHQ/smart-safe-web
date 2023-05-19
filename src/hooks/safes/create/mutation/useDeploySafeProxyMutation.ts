@@ -52,28 +52,16 @@ async function deploySafeProxyFunction(
     ethers.getAddress(owner.address)
   )
 
-  const computedAddress = await contract.getFunction('computeAddress')(
+  const proxyAddress = await contract.getFunction('computeAddress')(
     ownersAdressesList[0]
   )
 
-  const deployContractAddress = computedAddress.toString()
-
-  const { gasPrice } = await provider.getFeeData()
-
-  const estimatedGas = await contract
-    .getFunction('deploySmartSafeProxy')
-    .estimateGas(ownersAdressesList, input.requiredSignaturesCount)
-
   const transaction = await contract.getFunction('deploySmartSafeProxy')(
     ownersAdressesList,
-    input.requiredSignaturesCount,
-    {
-      gasLimit: estimatedGas,
-      gasPrice
-    }
+    input.requiredSignaturesCount
   )
 
-  return { transaction, safeAddress: deployContractAddress }
+  return { transaction, safeAddress: proxyAddress }
 }
 
 export function useDeploySafeProxyMutation() {
