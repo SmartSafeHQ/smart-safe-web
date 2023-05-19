@@ -6,7 +6,7 @@ import { z } from 'zod'
 import { ethers } from 'ethers'
 
 import { useTokenUsdValue } from '@hooks/chains/queries/useTokenUsdValue'
-import { useSafeTokens } from '@hooks/chains/queries/useSafeTokens'
+import { useSafeTokens } from '@hooks/safes/retrieve/queries/useSafeTokens'
 import { useSend } from '@contexts/SendContext'
 import { formatWalletAddress } from '@utils/web3'
 import { useSafe } from '@contexts/SafeContext'

@@ -3,7 +3,7 @@ import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { AssetsTable } from '@components/pages/Assets/AssetsTable'
 
-import { useSafeTokens } from '@hooks/chains/queries/useSafeTokens'
+import { useSafeTokens } from '@hooks/safes/retrieve/queries/useSafeTokens'
 import { useSafe } from '@contexts/SafeContext'
 
 export function AssetsList() {
@@ -18,14 +18,14 @@ export function AssetsList() {
     <ScrollArea className="w-full max-w-full px-2">
       {error ? (
         <ErrorState
-          title="Unable to load your assets, please try again"
+          title="Unable to load safe assets, please try again"
           description={
             (error as Error)?.message ??
             'An unknown error occurred. Please try again later.'
           }
         />
       ) : isLoading ? (
-        <LoadingState title="Loading your assets" />
+        <LoadingState title="Loading safe assets" />
       ) : (
         assets &&
         safe && (

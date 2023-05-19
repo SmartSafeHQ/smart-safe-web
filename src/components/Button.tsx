@@ -22,6 +22,7 @@ const ButtonComponent: ForwardRefRenderFunction<
   {
     children,
     isLoading = false,
+    disabled,
     asChild,
     className,
     variant = 'primary',
@@ -34,7 +35,7 @@ const ButtonComponent: ForwardRefRenderFunction<
   return (
     <Comp
       ref={ref}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       className={clsx(
         'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed disabled:bg-cyan-600',
         {
