@@ -35,7 +35,7 @@ function PageLayoutHeader({
   ...props
 }: PageLayoutHeaderProps) {
   return (
-    <header className="w-full border-b-1 border-b-zinc-300 dark:border-b-zinc-700">
+    <header className="w-full min-h-[7.5rem] border-b-1 border-b-zinc-300 dark:border-b-zinc-700">
       <div
         className={clsx('w-full flex flex-col relative', className)}
         {...props}

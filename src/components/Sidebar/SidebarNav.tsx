@@ -1,4 +1,9 @@
-import { CirclesThree, House, PaperPlaneTilt } from '@phosphor-icons/react'
+import {
+  ArrowsCounterClockwise,
+  CirclesThree,
+  House,
+  PaperPlaneTilt
+} from '@phosphor-icons/react'
 
 import { NavLink } from './NavLink'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
@@ -16,6 +21,13 @@ const NAV_LINKS = [
     activePath: 'assets',
     icon: CirclesThree,
     title: 'Assets',
+    isDisabled: false
+  },
+  {
+    href: 'transactions/queue',
+    activePath: 'transactions',
+    icon: ArrowsCounterClockwise,
+    title: 'Transactions',
     isDisabled: false
   },
   {
