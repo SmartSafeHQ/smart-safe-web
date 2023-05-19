@@ -2,7 +2,8 @@ import { Contract, providers, utils } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 import { EIP1193Provider } from '@web3-onboard/core'
 
-import { smartSafeApi } from '@lib/axios'
+import type { TransactionResponse } from '@ethersproject/abstract-provider'
+
 import { queryClient } from '@lib/reactQuery'
 import SMART_SAFE_PROXY_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
 import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
@@ -25,10 +26,7 @@ export type DeploySafeFunctionInput = {
 
 interface DeploySafeFunctionOutput {
   safeAddress: string
-}
-
-export interface DeploySafeApiResponse {
-  id: string
+  transaction: TransactionResponse
 }
 
 async function deploySafeProxyFunction(
@@ -69,20 +67,13 @@ async function deploySafeProxyFunction(
     input.requiredSignaturesCount
   )
 
-  await contract.functions.deploySmartSafeProxy(
+  const transaction = await contract.functions.deploySmartSafeProxy(
     ownersAdressesList,
     input.requiredSignaturesCount,
     { gasLimit: estimatedGas, gasPrice }
   )
 
-  await smartSafeApi.post<DeploySafeApiResponse>('/safe', {
-    safeName: input.safeName,
-    safeAddress: deployContractAddress,
-    safeNetwork: input.chain.id,
-    owners: input.owners
-  })
-
-  return { safeAddress: deployContractAddress }
+  return { transaction, safeAddress: deployContractAddress }
 }
 
 export function useDeploySafeProxyMutation() {
@@ -90,7 +81,7 @@ export function useDeploySafeProxyMutation() {
     mutationKey: ['deploySafe'],
     mutationFn: (input: DeploySafeFunctionInput) =>
       deploySafeProxyFunction(input),
-    onSuccess: async (data, variables) => {
+    onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
         queryKey: ['addressSafes', variables.deployWalletAddress]
       })
