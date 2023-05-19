@@ -43,7 +43,7 @@ async function sendProposalFunction(
 
   const txData = '0x'
   const domain = {
-    chainId: parseInt(input.chainId),
+    chainId: parseInt(input.chainId, 16),
     verifyingContract: input.fromSafe
   }
 
