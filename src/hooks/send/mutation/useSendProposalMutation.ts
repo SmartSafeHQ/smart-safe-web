@@ -30,10 +30,9 @@ async function sendProposalFunction(
   })
 
   const signer = provider.getSigner()
-  const contract = new Contract(input.fromSafe, SMART_SAFE_ABI, signer)
-
+  const smartSafeProxy = new Contract(input.fromSafe, SMART_SAFE_ABI, signer)
   const transactionNonce = (
-    await contract.functions.transactionNonce()
+    await smartSafeProxy.functions.transactionNonce()
   ).toString()
 
   const amountInWei = utils.parseEther(String(input.amount))
@@ -59,8 +58,7 @@ async function sendProposalFunction(
       transaction
     })
 
-  const proposal = await contract.functions.createTransactionProposal(
-    input.fromSafe,
+  const proposal = await smartSafeProxy.functions.createTransactionProposal(
     input.to,
     amountInWei.toString(),
     txData,

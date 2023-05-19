@@ -16,8 +16,14 @@ type SafeInfosProps = {
 }
 
 type DeployStatusProps = {
-  isLoading: boolean
-  isDeployed: boolean
+  sign: {
+    status: 'idle' | 'loading' | 'success' | 'error'
+    errorReason: string
+  }
+  deploy: {
+    status: 'idle' | 'loading' | 'success' | 'error'
+    errorReason: string
+  }
   safeAddress?: string
 }
 
@@ -33,8 +39,8 @@ const CreateSafeContext = createContext({} as CreateSafeContextData)
 export function CreateSafeProvider({ children }: CreateSafeProviderProps) {
   const [safeInfos, setSafeInfos] = useState<SafeInfosProps | null>(null)
   const [deployStatus, setDeployStatus] = useState<DeployStatusProps>({
-    isLoading: false,
-    isDeployed: false
+    sign: { errorReason: '', status: 'idle' },
+    deploy: { errorReason: '', status: 'idle' }
   })
 
   return (
