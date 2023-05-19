@@ -35,6 +35,8 @@ export function useChainFee(rpcUrl?: string, enabled = true) {
     queryKey: ['chainFee', rpcUrl],
     queryFn: () => fetchChainFee({ rpcUrl }),
     enabled,
-    staleTime: 1000 * 60 * 1 // 1 minute
+    staleTime: 1000 * 60 * 1, // 1 minute
+    retry: 3,
+    retryDelay: 5000
   })
 }
