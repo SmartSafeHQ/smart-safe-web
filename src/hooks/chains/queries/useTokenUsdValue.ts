@@ -20,6 +20,11 @@ export async function fetchTokenUsdValue({
     throw new Error('Token symbol is required')
   }
 
+  // Binance API doesn't have support for XDC and OKT
+  if (symbol === 'XDC' || symbol === 'OKT') {
+    return { usdValue: 0 }
+  }
+
   const reqUrl = `https://api.binance.us/api/v3/ticker/price?symbol=${symbol.toUpperCase()}USDT`
 
   const response = await axios.get<GetTokenPricesResponse>(reqUrl)
