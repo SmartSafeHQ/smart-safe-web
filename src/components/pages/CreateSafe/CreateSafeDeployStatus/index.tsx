@@ -20,22 +20,22 @@ export function CreateSafeDeployStatus() {
         deployStatus.deploy.status === 'idle'
     },
     signing: {
-      'border-blue-200 dark:border-blue-700':
+      'border-blue-400 dark:border-blue-700 shadow-blue-300':
         deployStatus.sign.status === 'loading' &&
         deployStatus.deploy.status === 'idle'
     },
     deploying: {
-      'border-yellow-200 dark:border-yellow-600':
+      'border-yellow-400 dark:border-yellow-600 shadow-yellow-200':
         deployStatus.sign.status === 'success' &&
         deployStatus.deploy.status === 'loading'
     },
     success: {
-      'border-green-200 dark:border-green-700':
+      'border-green-400 dark:border-green-700 shadow-green-300':
         deployStatus.sign.status === 'success' &&
         deployStatus.deploy.status === 'success'
     },
     error: {
-      'border-zinc-200 dark:border-red-700':
+      'border-zinc-400 dark:border-red-700 shadow-red-300':
         deployStatus.sign.status === 'error' ||
         deployStatus.deploy.status === 'error'
     }
