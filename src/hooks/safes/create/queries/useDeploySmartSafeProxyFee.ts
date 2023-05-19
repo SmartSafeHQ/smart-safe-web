@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Contract, providers, utils } from 'ethers'
+import { ethers } from 'ethers'
 
 import SMART_SAFE_FACTORY_PROXY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
 import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
@@ -24,23 +24,22 @@ async function fetchDeploySmartSafeProxyFee({
 
   if (!smartSafeProxyFactoryAddress) throw new Error('Chain not supported')
 
-  const provider = new providers.JsonRpcProvider(rpcUrl)
+  const provider = new ethers.JsonRpcProvider(rpcUrl)
 
-  const contract = new Contract(
+  const contract = new ethers.Contract(
     smartSafeProxyFactoryAddress,
     SMART_SAFE_FACTORY_PROXY_ABI,
     provider
   )
 
-  const gasPrice = await provider.getGasPrice()
+  const { gasPrice } = await provider.getFeeData()
 
-  const estimatedGas = await contract.estimateGas.deploySmartSafeProxy(
-    owners,
-    1
-  )
+  const estimatedGas = await contract
+    .getFunction('deploySmartSafeProxy')
+    .estimateGas(owners, 1)
 
-  const gasFee = estimatedGas.mul(gasPrice)
-  const gasCostInToken = utils.formatUnits(gasFee, 'ether')
+  const gasFee = estimatedGas * gasPrice!
+  const gasCostInToken = ethers.formatUnits(gasFee, 'ether')
 
   return {
     valueInToken: gasCostInToken.toString()

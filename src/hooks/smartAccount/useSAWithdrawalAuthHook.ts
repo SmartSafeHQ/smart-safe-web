@@ -16,7 +16,7 @@ import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const createWithdrawalValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
-    const isAddressValid = ethers.utils.isAddress(address)
+    const isAddressValid = ethers.isAddress(address)
 
     return isAddressValid
   }, 'Invalid contact address'),

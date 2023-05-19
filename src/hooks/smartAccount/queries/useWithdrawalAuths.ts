@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Contract, providers, utils } from 'ethers'
+import { ethers } from 'ethers'
 
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
@@ -22,17 +22,23 @@ export async function fetchSmartAccountWithdrawalAuths(
     queryFn: () => fetchSmartAccountContacts({ customerId: input.customerId })
   })
 
-  const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
-  const contract = new Contract(input.smartAccountAddress, '{}', provider)
+  const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
+  const contract = new ethers.Contract(
+    input.smartAccountAddress,
+    '{}',
+    provider
+  )
 
-  const totalAuthorizations = await contract.functions.totalAuthorizations()
+  const totalAuthorizations = await contract.getFunction(
+    'totalAuthorizations'
+  )()
 
   const formattedAuthorizationsCount = +totalAuthorizations.toString()
 
   const authorizations: SelectedWithdrawalProps[] = []
 
   for (let i = 0; i < formattedAuthorizationsCount; i++) {
-    const authorization = await contract.functions.authorizations(i)
+    const authorization = await contract.getFunction('authorizations')(i)
 
     const withdrawalCoin = CHAINS_ATTRIBUTES.find(
       coin => coin.rpcUrl === authorization.tokenAddress
@@ -44,7 +50,7 @@ export async function fetchSmartAccountWithdrawalAuths(
       contact => contact.wallet.address === authorization.userAddress
     )
 
-    const formattedAmount = +utils.formatEther(
+    const formattedAmount = +ethers.formatEther(
       authorization.tokenAmount.toString()
     )
 
