@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { providers } from 'ethers'
+import { ethers } from 'ethers'
 
 interface FetchChainFeeInput {
   rpcUrl?: string
@@ -17,12 +17,12 @@ async function fetchChainFee({
     throw new Error('rpcUrl required')
   }
 
-  const provider = new providers.JsonRpcProvider(rpcUrl)
+  const provider = new ethers.JsonRpcProvider(rpcUrl)
 
-  const gasEstimate = await provider.getGasPrice()
+  const { gasPrice } = await provider.getFeeData()
 
-  const gasCostInWei = gasEstimate.mul(21000)
-  const gasCostInToken = gasCostInWei.toNumber() / 10 ** 18
+  const gasCostInWei = gasPrice! * 21000n
+  const gasCostInToken = Number(gasCostInWei.toString()) / 10 ** 18
 
   return {
     valueInWei: gasCostInWei.toString(),

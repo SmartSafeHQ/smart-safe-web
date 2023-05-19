@@ -18,7 +18,7 @@ export const validationSchema = z.object({
     .string()
     .min(1, 'Address required')
     .refine(address => {
-      const isAddressValid = ethers.utils.isAddress(address)
+      const isAddressValid = ethers.isAddress(address)
 
       return isAddressValid
     }, 'Invalid address'),

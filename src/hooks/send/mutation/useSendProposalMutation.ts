@@ -1,4 +1,4 @@
-import { providers, Contract, utils } from 'ethers'
+import { ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 import { EIP1193Provider } from '@web3-onboard/core'
 
@@ -24,18 +24,22 @@ export interface SendProposalFunctionOutput {
 async function sendProposalFunction(
   input: SendProposalFunctionInput
 ): Promise<SendProposalFunctionOutput> {
-  const provider = new providers.Web3Provider(input.provider, {
+  const provider = new ethers.BrowserProvider(input.provider, {
     chainId: parseInt(input.chainId, 16),
     name: input.chainName
   })
 
-  const signer = provider.getSigner()
-  const smartSafeProxy = new Contract(input.fromSafe, SMART_SAFE_ABI, signer)
+  const signer = await provider.getSigner()
+  const smartSafeProxy = new ethers.Contract(
+    input.fromSafe,
+    SMART_SAFE_ABI,
+    signer
+  )
   const transactionNonce = (
-    await smartSafeProxy.functions.transactionNonce()
+    await smartSafeProxy.getFunction('transactionNonce')()
   ).toString()
 
-  const amountInWei = utils.parseEther(String(input.amount))
+  const amountInWei = ethers.parseEther(String(input.amount))
 
   const txData = '0x'
   const domain = {
@@ -48,7 +52,7 @@ async function sendProposalFunction(
     to: input.to,
     transactionNonce: Number(transactionNonce),
     value: amountInWei.toString(),
-    data: utils.keccak256(txData)
+    data: ethers.keccak256(txData)
   }
 
   const { signedTypedDataHash, typedDataHash } =
@@ -58,7 +62,9 @@ async function sendProposalFunction(
       transaction
     })
 
-  const proposal = await smartSafeProxy.functions.createTransactionProposal(
+  const proposal = await smartSafeProxy.getFunction(
+    'createTransactionProposal'
+  )(
     input.to,
     amountInWei.toString(),
     txData,

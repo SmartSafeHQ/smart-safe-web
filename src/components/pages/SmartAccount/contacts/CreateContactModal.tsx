@@ -24,7 +24,7 @@ const validationSchema = z.object({
       'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
     ),
   address: z.string().refine(address => {
-    const isAddressValid = ethers.utils.isAddress(address)
+    const isAddressValid = ethers.isAddress(address)
 
     return isAddressValid
   }, 'Invalid contact address')
