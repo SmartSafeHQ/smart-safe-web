@@ -12,6 +12,7 @@ import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
 import { useSafe } from '@contexts/SafeContext'
 import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
 import { useDeploySafeProxyMutation } from '@hooks/safes/create/mutation/useDeploySafeProxyMutation'
+import { useSaveSmartSafeProxyData } from '@hooks/safes/create/mutation/useSaveSmartSafeProxyData'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const validationSchema = z.object({
@@ -65,6 +66,8 @@ export const useDeploySafeHook = () => {
   const { formattedOwnerAddress } = useSafe()
   const { safeInfos, deployStatus, setDeployStatus } = useCreateSafe()
   const { mutateAsync: mutateDeploySafe } = useDeploySafeProxyMutation()
+  const { mutateAsync: mutateSaveSmartSafeProxyData } =
+    useSaveSmartSafeProxyData()
 
   const formMethods = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
@@ -97,7 +100,10 @@ export const useDeploySafeHook = () => {
     try {
       if (!safeInfos || !wallet) throw new Error('no safe infos available')
 
-      setDeployStatus({ isLoading: true, isDeployed: false })
+      setDeployStatus({
+        deploy: { status: 'idle', errorReason: '' },
+        sign: { status: 'loading', errorReason: '' }
+      })
 
       const docHeight = document.documentElement.scrollHeight
 
@@ -106,7 +112,7 @@ export const useDeploySafeHook = () => {
         behavior: 'smooth'
       })
 
-      const response = await mutateDeploySafe({
+      const { safeAddress, transaction } = await mutateDeploySafe({
         provider: wallet.provider,
         safeName: data.name,
         deployWalletAddress: wallet.accounts[0].address,
@@ -120,24 +126,50 @@ export const useDeploySafeHook = () => {
       })
 
       setDeployStatus({
-        isLoading: false,
-        isDeployed: true,
-        safeAddress: response.safeAddress
+        sign: { status: 'success', errorReason: '' },
+        deploy: { status: 'loading', errorReason: '' }
       })
-    } catch (error) {
+
+      await transaction.wait()
+
+      mutateSaveSmartSafeProxyData({
+        chainId: safeInfos.chain.chainId,
+        deployWalletAddress: wallet.accounts[0].address,
+        owners: data.owners,
+        safeName: data.name,
+        smartSafeProxyAddress: safeAddress
+      })
+
+      setDeployStatus(currentState => ({
+        ...currentState,
+        deploy: { errorReason: '', status: 'success' },
+        safeAddress
+      }))
+    } catch (err) {
+      const error = err as Error & { code?: string }
+
       window.scrollTo({
         top: 0,
         behavior: 'smooth'
       })
-
-      setDeployStatus({ isLoading: false, isDeployed: false })
 
       if (axios.isAxiosError(error) && error.response?.data?.message) {
         console.error(error)
 
         const errorMessage = error.response?.data?.message ?? error.message
         toast.error(errorMessage)
+
         return
+      } else if (error?.code === 'ACTION_REJECTED') {
+        setDeployStatus({
+          sign: { status: 'error', errorReason: 'User rejected transaction' },
+          deploy: { status: 'idle', errorReason: '' }
+        })
+      } else {
+        setDeployStatus({
+          sign: { status: 'idle', errorReason: '' },
+          deploy: { status: 'error', errorReason: 'Unknown error' }
+        })
       }
 
       getWe3ErrorMessageWithToast(error)

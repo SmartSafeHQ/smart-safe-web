@@ -54,7 +54,8 @@ export function CreateSafeDeployContent() {
                 'min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start gap-6 p-6 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
                 {
                   'pointer-events-none brightness-90 dark:brightness-50':
-                    deployStatus.isLoading || deployStatus.isDeployed
+                    deployStatus.sign.status === 'loading' ||
+                    deployStatus.deploy.status === 'loading'
                 }
               )}
             >
@@ -69,7 +70,7 @@ export function CreateSafeDeployContent() {
 
             <CreateSafeDeployStatus />
 
-            {deployStatus.isDeployed && (
+            {deployStatus.deploy.status === 'success' && (
               <SafeDeployedConfettiAnimation className="fixed top-0 left-0" />
             )}
           </main>
