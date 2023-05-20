@@ -18,6 +18,7 @@ import { Heading } from '@components/Heading'
 import { Button } from '@components/Button'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
+import { formatWalletAddress } from '@utils/web3'
 import {
   OwnerApproveStatus,
   TransactionStatus
@@ -110,13 +111,11 @@ TransactionLayoutSendHeader.displayName = 'TransactionLayout.SendHeader'
 
 interface TransactionLayoutInfosProps extends HTMLAttributes<HTMLDivElement> {
   txHash: string
-  formattedTxHash: string
   createdAt: Date
 }
 
 function TransactionLayoutInfos({
   txHash,
-  formattedTxHash,
   createdAt,
   ...props
 }: TransactionLayoutInfosProps) {
@@ -131,7 +130,9 @@ function TransactionLayoutInfos({
         </Text>
 
         <div className="flex items-center gap-2">
-          <Text className="text-sm">{formattedTxHash}</Text>
+          <Text className="text-sm">
+            {formatWalletAddress({ walletAddress: txHash })}
+          </Text>
 
           <button
             onClick={() => handleCopyToClipboard(txHash)}

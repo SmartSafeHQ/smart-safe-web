@@ -2,12 +2,14 @@ import { TransactionLayout } from '@components/pages/Transactions/TransactionLay
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 
+import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
+
 interface PendingTransactionProps {
   nonce: number
   type: 'SEND'
   amount: number
   createdAt: Date
-  signatures: string[]
+  signatures: { status: OwnerApproveStatus; address: string }[]
   toAddress: string
   toFormattedAddress: string
   txHash: string
@@ -70,9 +72,9 @@ export function PendingTransaction({
                 <Collapsible.Content className="w-full flex flex-col items-start justify-start">
                   {signatures.map(owner => (
                     <TransactionLayout.OwnerStatus
-                      key={owner}
+                      key={owner.address}
                       status="approved"
-                      address={owner}
+                      address={owner.address}
                     />
                   ))}
                 </Collapsible.Content>
@@ -89,7 +91,6 @@ export function PendingTransaction({
 
                 <TransactionLayout.Infos
                   txHash={txHash}
-                  formattedTxHash={txHash}
                   createdAt={createdAt}
                 />
               </div>

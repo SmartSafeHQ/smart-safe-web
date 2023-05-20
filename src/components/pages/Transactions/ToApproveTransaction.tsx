@@ -47,7 +47,7 @@ export function ToApproveTransaction({
           }}
         >
           <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
-            Approves {signatures.length}/2
+            Approves {signatures.length}/3
           </Text>
         </TransactionLayout.SendHeader>
 
@@ -89,11 +89,7 @@ export function ToApproveTransaction({
                 amount={amount}
               />
 
-              <TransactionLayout.Infos
-                txHash={txHash}
-                formattedTxHash={txHash}
-                createdAt={createdAt}
-              />
+              <TransactionLayout.Infos txHash={txHash} createdAt={createdAt} />
             </div>
           </div>
 

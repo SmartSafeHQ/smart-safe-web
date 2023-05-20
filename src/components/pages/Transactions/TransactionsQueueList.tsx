@@ -12,6 +12,13 @@ export function TransactionsQueueList() {
 
   return (
     <ScrollArea className="w-full max-w-full px-2">
+      {transactionsQueue && !transactionsQueue.toApprove && (
+        <ErrorState
+          title="You have no transactions on the queue"
+          className="pt-2"
+        />
+      )}
+
       {error ? (
         <ErrorState
           title="Unable to load safe transactions, please try again"
@@ -23,7 +30,7 @@ export function TransactionsQueueList() {
       ) : isLoading ? (
         <LoadingState title="Loading safe transactions queue" />
       ) : (
-        transactionsQueue &&
+        transactionsQueue?.toApprove &&
         safe && (
           <section className="w-full flex flex-col items-stretch justify-start gap-2">
             <Text
@@ -34,51 +41,43 @@ export function TransactionsQueueList() {
             </Text>
 
             <ToApproveTransaction
-              nonce={3}
-              type="SEND"
-              amount={0.002}
-              createdAt={new Date()}
-              signatures={[
-                {
-                  address: '0x45e99255C041b69C8e3771b286Cae2EDA5622fA1',
-                  status: 'approved'
-                },
-                {
-                  address: '0x45e99255C041b69G8e3771b286Cae2EDA5622fA1',
-                  status: 'rejected'
-                }
-              ]}
-              toAddress="0x45e99255C041b69C8e3771b286Cae2EDA5622fA1"
-              toFormattedAddress="0x45e...2fA1"
-              txHash="0x45e...2fA1"
-              token={{
-                symbol: 'matic',
-                icon: '/networks/polygon-logo.svg'
-              }}
+              nonce={transactionsQueue.toApprove.nonce}
+              type={transactionsQueue.toApprove.type}
+              amount={transactionsQueue.toApprove.amount}
+              createdAt={transactionsQueue.toApprove.createdAt}
+              signatures={transactionsQueue.toApprove.signatures}
+              toAddress={transactionsQueue.toApprove.toAddress}
+              toFormattedAddress={
+                transactionsQueue.toApprove.toFormattedAddress
+              }
+              txHash={transactionsQueue.toApprove.txHash}
+              token={transactionsQueue.toApprove.token}
             />
 
             <Text
               asChild
               className="text-sm leading-7 text-zinc-500 font-medium text-start"
             >
-              <strong>Pending Queue (1)</strong>
+              <strong>
+                Pending Queue ({transactionsQueue.pending.length})
+              </strong>
             </Text>
 
             <ul>
-              <PendingTransaction
-                nonce={4}
-                type="SEND"
-                amount={0.002}
-                createdAt={new Date()}
-                signatures={['0x45e99255C041b69C8e3771b286Cae2EDA5622fA1']}
-                toAddress="0x45e99255C041b69C8e3771b286Cae2EDA5622fA1"
-                toFormattedAddress="0x45e...2fA1"
-                txHash="0x45e...2fA1"
-                token={{
-                  symbol: 'matic',
-                  icon: '/networks/polygon-logo.svg'
-                }}
-              />
+              {transactionsQueue.pending.map(transaction => (
+                <PendingTransaction
+                  key={transaction.nonce}
+                  nonce={transaction.nonce}
+                  type={transaction.type}
+                  amount={transaction.amount}
+                  createdAt={transaction.createdAt}
+                  signatures={transaction.signatures}
+                  toAddress={transaction.toAddress}
+                  toFormattedAddress={transaction.toFormattedAddress}
+                  txHash={transaction.txHash}
+                  token={transaction.token}
+                />
+              ))}
             </ul>
           </section>
         )
