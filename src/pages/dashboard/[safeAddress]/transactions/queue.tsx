@@ -6,6 +6,7 @@ import {
 } from '@components/pages/Transactions/TransactionsTabsList'
 import { Tabs } from '@components/Tabs'
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
+import { TransactionsQueueList } from '@components/pages/Transactions/TransactionsQueueList'
 
 const TransactionsQueue = () => {
   return (
@@ -26,7 +27,7 @@ const TransactionsQueue = () => {
               </PageLayout.Header>
 
               <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-6">
-                {/* <AssetsList /> */}
+                <TransactionsQueueList />
               </div>
             </PageLayout.Root>
           </Tabs.Content>

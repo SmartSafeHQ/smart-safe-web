@@ -18,6 +18,7 @@ const Home = () => {
 
   //   contract.functions.threshold().then(console.log)
   // }, [])
+
   return (
     <div className="min-h-screen flex flex-col items-stretch justify-start">
       <Head>

@@ -29,33 +29,31 @@ export function AssetsList() {
       ) : (
         assets &&
         safe && (
-          <>
-            <table className="w-full">
-              <thead className="bg-zinc-100 dark:bg-zinc-900 border-1 border-zinc-300 dark:border-zinc-700">
-                <tr className="uppercase text-zinc-500 dark:text-zinc-400">
-                  <AssetsTable.Th className="w-2/4 pl-2 py-3">
-                    asset
-                  </AssetsTable.Th>
+          <table className="w-full">
+            <thead className="bg-zinc-100 dark:bg-zinc-900 border-1 border-zinc-300 dark:border-zinc-700">
+              <tr className="uppercase text-zinc-500 dark:text-zinc-400">
+                <AssetsTable.Th className="w-2/4 pl-2 py-3">
+                  asset
+                </AssetsTable.Th>
 
-                  <AssetsTable.Th className="py-3">balance</AssetsTable.Th>
+                <AssetsTable.Th className="py-3">balance</AssetsTable.Th>
 
-                  <AssetsTable.Th className="py-3">value</AssetsTable.Th>
-                </tr>
-              </thead>
+                <AssetsTable.Th className="py-3">value</AssetsTable.Th>
+              </tr>
+            </thead>
 
-              <tbody>
-                {assets.map(asset => (
-                  <AssetsTable.Tr
-                    key={asset.symbol}
-                    safeAddress={safe.address}
-                    symbol={asset.symbol}
-                    rpcUrl={asset.rpcUrl}
-                    icon={asset.icon}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </>
+            <tbody>
+              {assets.map(asset => (
+                <AssetsTable.Tr
+                  key={asset.symbol}
+                  safeAddress={safe.address}
+                  symbol={asset.symbol}
+                  rpcUrl={asset.rpcUrl}
+                  icon={asset.icon}
+                />
+              ))}
+            </tbody>
+          </table>
         )
       )}
     </ScrollArea>
