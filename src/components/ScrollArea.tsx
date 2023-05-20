@@ -17,20 +17,20 @@ export function ScrollArea({ children, className, ...props }: ScrollAreaProps) {
       </RadixScrollArea.Viewport>
 
       <RadixScrollArea.Scrollbar
-        className="flex select-none touch-none bg-gray-300 dark:bg-gray-800 dark:brightness-150 rounded-md data-[orientation=vertical]:w-1 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-1"
+        className="flex select-none touch-none bg-zinc-300 dark:bg-zinc-800 dark:brightness-150 rounded-md data-[orientation=vertical]:w-1 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-1"
         orientation="vertical"
       >
-        <RadixScrollArea.Thumb className="flex-1 bg-gray-400 dark:bg-gray-600 dark:brightness-50 rounded-xl relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[2.75rem] before:min-h-[2.75rem]" />
+        <RadixScrollArea.Thumb className="flex-1 bg-zinc-400 dark:bg-zinc-700 rounded-xl relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[2.75rem] before:min-h-[2.75rem]" />
       </RadixScrollArea.Scrollbar>
 
       <RadixScrollArea.Scrollbar
-        className="flex select-none touch-none bg-gray-300 dark:bg-gray-800 dark:brightness-150 rounded-md data-[orientation=vertical]:w-1 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-1"
+        className="flex select-none touch-none bg-zinc-300 dark:bg-zinc-800 dark:brightness-150 rounded-md data-[orientation=vertical]:w-1 data-[orientation=horizontal]:flex-col data-[orientation=horizontal]:h-1"
         orientation="horizontal"
       >
-        <RadixScrollArea.Thumb className="flex-1 bg-gray-400 dark:bg-gray-600 dark:brightness-50 rounded-xl relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[2.75rem] before:min-h-[2.75rem]" />
+        <RadixScrollArea.Thumb className="flex-1 bg-zinc-400 dark:bg-zinc-600 dark:brightness-50 rounded-xl relative before:content-[''] before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:w-full before:h-full before:min-w-[2.75rem] before:min-h-[2.75rem]" />
       </RadixScrollArea.Scrollbar>
 
-      <RadixScrollArea.Corner className="bg-gray-500 dark:bg-gray-800" />
+      <RadixScrollArea.Corner className="bg-zinc-500 dark:bg-zinc-800" />
     </RadixScrollArea.Root>
   )
 }

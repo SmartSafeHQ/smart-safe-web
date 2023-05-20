@@ -4,7 +4,8 @@ import { Text } from '@components/Text'
 
 import {
   OwnerApproveStatus,
-  TransactionType
+  TransactionType,
+  useTransactionsQueue
 } from '@hooks/transactions/useTransactionsQueue'
 
 interface ToApproveTransactionProps {
@@ -33,6 +34,8 @@ export function ToApproveTransaction({
   txHash,
   token
 }: ToApproveTransactionProps) {
+  const { isLoadingApprove, handleApproveTransaction } = useTransactionsQueue()
+
   return (
     <TransactionLayout.Root asChild>
       <main>
@@ -93,7 +96,10 @@ export function ToApproveTransaction({
             </div>
           </div>
 
-          <TransactionLayout.Actions />
+          <TransactionLayout.Actions
+            isLoadingApprove={isLoadingApprove}
+            handleApproveTransaction={handleApproveTransaction}
+          />
         </div>
       </main>
     </TransactionLayout.Root>

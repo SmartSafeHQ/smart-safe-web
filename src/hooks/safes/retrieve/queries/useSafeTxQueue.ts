@@ -66,7 +66,32 @@ export async function fetchSafeTxQueue(
         icon: '/networks/polygon-logo.svg'
       }
     },
-    pending: []
+    pending: [
+      {
+        nonce: 2,
+        type: 'SEND',
+        amount: 0.2,
+        createdAt: new Date(),
+        signatures: [
+          {
+            address: '0x45e99255C041b69C8e3771b286Cae2EDA5622fA1',
+            status: 'approved'
+          },
+          {
+            address: '0x45e99255C041b69G8e3771b286Cae2EDA5622fA1',
+            status: 'approved'
+          }
+        ],
+        toAddress: '0x7f79b85B062a81197196b33EB573D0B98973781A',
+        toFormattedAddress: '0x7f7...781A',
+        txHash:
+          '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d',
+        token: {
+          symbol: 'matic',
+          icon: '/networks/polygon-logo.svg'
+        }
+      }
+    ]
   }
 }
 

@@ -8,6 +8,7 @@ import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { Collapsible } from '@components/Collapsible'
+import { ScrollArea } from '@components/ScrollArea'
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
 
 import { useAddressSafes } from '@hooks/safes/retrieve/queries/useAddressSafes'
@@ -73,37 +74,37 @@ export function WalletCreatedSafes() {
               </div>
             )}
 
-            {!!wallet &&
-              addressSafes &&
-              addressSafes.map(safe => (
-                <div
-                  key={safe.safeId}
-                  className="w-full flex flex-col items-stretch justify-start gap-4"
-                >
-                  <Link
-                    href={`/dashboard/${safe.safeAddress}`}
-                    className="w-full flex items-center justify-start gap-3 p-3 rounded-md shadow-sm border-1 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-black hover:border-zinc-300 hover:dark:border-zinc-600"
-                  >
-                    <Image
-                      src={safe.chain.icon}
-                      alt="Deployed safe chain icon"
-                      width={28}
-                      height={28}
-                      className="w-10 h-10"
-                    />
+            <ScrollArea className="w-full h-[30rem] pr-2">
+              <div className="w-full flex flex-col items-stretch justify-start gap-4">
+                {!!wallet &&
+                  addressSafes &&
+                  addressSafes.map(safe => (
+                    <Link
+                      key={safe.safeId}
+                      href={`/dashboard/${safe.safeAddress}`}
+                      className="w-full flex items-center justify-start gap-3 p-3 rounded-md shadow-sm border-1 border-zinc-200 dark:border-zinc-700 bg-white dark:bg-black hover:border-zinc-300 hover:dark:border-zinc-600"
+                    >
+                      <Image
+                        src={safe.chain.icon}
+                        alt="Deployed safe chain icon"
+                        width={28}
+                        height={28}
+                        className="w-10 h-10"
+                      />
 
-                    <div className="flex flex-1 flex-col items-stretch justify-start gap-1">
-                      <Text asChild>
-                        <strong>{safe.safeName}</strong>
-                      </Text>
+                      <div className="flex flex-1 flex-col items-stretch justify-start gap-1">
+                        <Text asChild>
+                          <strong>{safe.safeName}</strong>
+                        </Text>
 
-                      <Text className="text-xs font-medium text-zinc-800 dark:text-zinc-400">
-                        {safe.safeFormattedAddress}
-                      </Text>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+                        <Text className="text-xs font-medium text-zinc-800 dark:text-zinc-400">
+                          {safe.safeFormattedAddress}
+                        </Text>
+                      </div>
+                    </Link>
+                  ))}
+              </div>
+            </ScrollArea>
           </Skeleton>
         </div>
       </Collapsible.Content>

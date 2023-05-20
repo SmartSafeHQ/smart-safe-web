@@ -4,6 +4,7 @@ import { CaretUpDown } from '@phosphor-icons/react'
 import { NavigationMenu } from '@components/NavigationMenu'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { SafeLinkItem } from '@components/Header/SafeLinkItem'
+import { ScrollArea } from '@components/ScrollArea'
 import { Text } from '@components/Text'
 
 import { useSafe } from '@contexts/SafeContext'
@@ -52,18 +53,20 @@ export function AddressSafesList() {
               </Text>
             </div>
 
-            {addressSafes?.map(safe => {
-              return (
-                <SafeLinkItem
-                  key={safe.safeAddress}
-                  safeAddress={safe.safeAddress}
-                  safeName={safe.safeName}
-                  safeFormattedAddress={safe.safeFormattedAddress}
-                  hexColor={safe.chain.hexColor}
-                  networkName={safe.chain.networkName}
-                />
-              )
-            })}
+            <ScrollArea className="w-full h-80 pr-2">
+              {addressSafes?.map(safe => {
+                return (
+                  <SafeLinkItem
+                    key={safe.safeAddress}
+                    safeAddress={safe.safeAddress}
+                    safeName={safe.safeName}
+                    safeFormattedAddress={safe.safeFormattedAddress}
+                    hexColor={safe.chain.hexColor}
+                    networkName={safe.chain.networkName}
+                  />
+                )
+              })}
+            </ScrollArea>
           </NavigationMenu.Content>
         </NavigationMenu.Item>
       </NavigationMenu.List>

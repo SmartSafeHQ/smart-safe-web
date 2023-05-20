@@ -235,7 +235,7 @@ function TransactionLayoutApproveStatus({
         className={clsx(
           'w-min mb-3 flex items-center justify-center p-2 rounded-full',
           {
-            'bg-yellow-600': status === 'waiting',
+            'bg-yellow-500 dark:bg-yellow-600': status === 'waiting',
             'bg-greee-500': status === 'ready'
           }
         )}
@@ -292,20 +292,31 @@ function TransactionLayoutOwnerStatus({
 
 TransactionLayoutOwnerStatus.displayName = 'TransactionLayout.OwnerStatus'
 
-interface TransactionLayoutActionsProps
-  extends HTMLAttributes<HTMLDivElement> {}
+interface TransactionLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
+  isLoadingApprove: boolean
+  handleApproveTransaction: () => Promise<void>
+}
 
-function TransactionLayoutActions({ ...props }: TransactionLayoutActionsProps) {
+function TransactionLayoutActions({
+  isLoadingApprove,
+  handleApproveTransaction,
+  ...props
+}: TransactionLayoutActionsProps) {
   return (
     <div
       className="w-full flex justify-start items-center gap-2 p-4 bg-zinc-100 dark:bg-zinc-900 border-t-1 border-zinc-200 dark:border-zinc-700"
       {...props}
     >
-      <Button className="w-max" variant="green">
+      <Button
+        onClick={handleApproveTransaction}
+        isLoading={isLoadingApprove}
+        variant="green"
+        className="w-full max-w-[11rem]"
+      >
         Approve transaction
       </Button>
 
-      <Button className="w-max" variant="red">
+      <Button variant="red" disabled className="w-full max-w-[10rem]">
         Reject transaction
       </Button>
     </div>
