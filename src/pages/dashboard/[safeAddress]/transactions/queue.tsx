@@ -26,7 +26,7 @@ const TransactionsQueue = () => {
                 <PageLayout.Title>Transactions Queue</PageLayout.Title>
               </PageLayout.Header>
 
-              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-6">
+              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-4">
                 <TransactionsQueueList />
               </div>
             </PageLayout.Root>

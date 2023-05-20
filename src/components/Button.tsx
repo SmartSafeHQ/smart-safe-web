@@ -12,7 +12,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   isLoading?: boolean
   asChild?: boolean
-  variant?: 'primary' | 'red'
+  variant?: 'primary' | 'red' | 'green'
 }
 
 const ButtonComponent: ForwardRefRenderFunction<
@@ -43,7 +43,9 @@ const ButtonComponent: ForwardRefRenderFunction<
           'bg-cyan-500 hover:bg-cyan-600 disabled:hover:bg-cyan-600':
             variant === 'primary',
           'bg-red-500 text-gray-50 hover:bg-red-400 disabled:bg-red-500':
-            variant === 'red'
+            variant === 'red',
+          'bg-green-500 text-gray-50 hover:bg-green-400 disabled:bg-green-500':
+            variant === 'green'
         },
         className
       )}
