@@ -17,7 +17,7 @@ export function DeleteContactModal() {
 
     try {
       await mutateAsync({
-        contactId: selectedContact.id,
+        contactAddress: selectedContact.contactAddress,
         customerId: 1
       })
 
@@ -46,7 +46,7 @@ export function DeleteContactModal() {
             <DialogModal.Description className="text-lg text-center">
               SmartSafe will delete the contact
               <Text asChild className="ml-1">
-                <strong>{selectedContact?.name}</strong>
+                <strong>{selectedContact?.contactName}</strong>
               </Text>
             </DialogModal.Description>
           </header>

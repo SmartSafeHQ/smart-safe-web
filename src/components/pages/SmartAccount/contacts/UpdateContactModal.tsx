@@ -42,7 +42,7 @@ export function UpdateContactModal() {
   } = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      name: selectedContact?.name
+      name: selectedContact?.contactName
     }
   })
 
@@ -51,7 +51,7 @@ export function UpdateContactModal() {
 
     try {
       await mutateAsync({
-        contactId: selectedContact.id,
+        contactAddress: selectedContact.contactAddress,
         customerId: 1,
         name: data.name
       })
@@ -70,7 +70,7 @@ export function UpdateContactModal() {
   useEffect(() => {
     if (!selectedContact) return
 
-    setValue('name', selectedContact.name)
+    setValue('name', selectedContact.contactName)
   }, [selectedContact])
 
   return (
@@ -91,7 +91,7 @@ export function UpdateContactModal() {
             className="flex flex-col gap-4 items-stretch w-full"
           >
             <Text className="capitalize text-gray-600 dark:text-gray-300">
-              wallet: {selectedContact?.wallet.formattedAddress}
+              wallet: {selectedContact?.formattedAddress}
             </Text>
 
             <TextInput.Root

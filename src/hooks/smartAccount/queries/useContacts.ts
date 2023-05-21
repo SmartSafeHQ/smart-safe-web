@@ -23,14 +23,11 @@ export async function fetchSmartAccountContacts(
   )
 
   const formattedContacts = response.data.map(contact => ({
-    id: contact.id,
-    name: contact.name,
-    wallet: {
-      address: contact.evmAddress,
-      formattedAddress: formatWalletAddress({
-        walletAddress: contact.evmAddress
-      })
-    }
+    contactAddress: contact.evmAddress,
+    contactName: contact.name,
+    formattedAddress: formatWalletAddress({
+      walletAddress: contact.evmAddress
+    })
   }))
 
   return formattedContacts

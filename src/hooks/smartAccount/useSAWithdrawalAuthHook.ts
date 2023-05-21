@@ -81,7 +81,7 @@ export const useSAWithdrawalAuthHook = () => {
     }
 
     const searchResults = contacts?.filter(contact =>
-      contact.wallet.address.startsWith(currentValue)
+      contact.contactAddress.startsWith(currentValue)
     )
 
     setSearchContacts(searchResults)
@@ -98,7 +98,7 @@ export const useSAWithdrawalAuthHook = () => {
       )
 
       const findContactForRecipient = contacts.find(
-        contact => contact.wallet.address === data.contactAddress
+        contact => contact.contactAddress === data.contactAddress
       )
 
       if (!withdrawalCoin) {
@@ -111,7 +111,7 @@ export const useSAWithdrawalAuthHook = () => {
         smartAccountAddress: 'address',
         customerWalletPrivateKey: 'privateKey',
         coin: withdrawalCoin,
-        recipientName: findContactForRecipient?.name
+        recipientName: findContactForRecipient?.contactName
       })
 
       reset()

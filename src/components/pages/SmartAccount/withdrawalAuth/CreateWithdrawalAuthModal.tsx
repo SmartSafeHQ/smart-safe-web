@@ -92,12 +92,12 @@ export function CreateWithdrawalAuthModal() {
                   className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-zinc-100 dark:bg-zinc-900 rounded"
                 >
                   {searchContacts?.map(contact => (
-                    <li key={contact.name} className="min-h-[3rem]">
+                    <li key={contact.contactName} className="min-h-[3rem]">
                       <button
                         type="button"
                         onClick={() => {
-                          setValue('contactAddress', contact.wallet.address)
-                          handleInputChange(contact.wallet.address)
+                          setValue('contactAddress', contact.contactAddress)
+                          handleInputChange(contact.contactAddress)
 
                           document
                             .getElementById('select-contact-id')
@@ -106,11 +106,11 @@ export function CreateWithdrawalAuthModal() {
                         className="w-full flex flex-col items-stretch justify-start gap-1 p-2 outline-none ring-cyan-500 rounded transition-colors hover:bg-cyan-600 focus-within:bg-cyan-600 hover:!text-zinc-50"
                       >
                         <Text asChild className="text-start">
-                          <strong>{contact.name}</strong>
+                          <strong>{contact.contactName}</strong>
                         </Text>
 
                         <Text className="w-min text-sm capitalize ">
-                          {contact.wallet.formattedAddress}
+                          {contact.formattedAddress}
                         </Text>
                       </button>
                     </li>

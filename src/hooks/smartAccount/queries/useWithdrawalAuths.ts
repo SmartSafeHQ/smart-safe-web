@@ -47,7 +47,7 @@ export async function fetchSmartAccountWithdrawalAuths(
     if (!withdrawalCoin) continue
 
     const findContactForRecipient = contacts.find(
-      contact => contact.wallet.address === authorization.userAddress
+      contact => contact.contactAddress === authorization.userAddress
     )
 
     const formattedAmount = +ethers.formatEther(
@@ -58,7 +58,7 @@ export async function fetchSmartAccountWithdrawalAuths(
 
     authorizations.push({
       index: authorization.authorizationIndex,
-      recipientName: findContactForRecipient?.name,
+      recipientName: findContactForRecipient?.contactName,
       coinAmount: formattedAmount,
       dateFrom: formattedDate,
       coin: {
