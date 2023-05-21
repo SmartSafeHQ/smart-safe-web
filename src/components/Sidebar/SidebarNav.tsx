@@ -37,7 +37,7 @@ export function SidebarNav() {
     },
     {
       href: '/dashboard/smart-account/contacts',
-      activePath: 'addressBook',
+      activePath: 'contacts',
       icon: AddressBook,
       title: 'Address Book',
       isDisabled: false
