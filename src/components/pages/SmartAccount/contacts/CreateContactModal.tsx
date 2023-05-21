@@ -1,4 +1,5 @@
 import { ethers } from 'ethers'
+import { useWallets } from '@web3-onboard/react'
 import { User, Wallet } from '@phosphor-icons/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -9,7 +10,7 @@ import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useCreateContactMutation } from '@hooks/smartAccount/mutations/useCreateContactMutation'
+import { useCreateContact } from '@hooks/addressBook/mutations/useCreateContact'
 import {
   CONTACT_NAME_REGEX,
   useSAContactsHook
@@ -33,8 +34,9 @@ const validationSchema = z.object({
 export type FieldValues = z.infer<typeof validationSchema>
 
 export function CreateContactModal() {
+  const [wallets] = useWallets()
   const { isCreateContactOpen, setIsCreateContactOpen } = useSAContactsHook()
-  const { mutateAsync } = useCreateContactMutation()
+  const { mutateAsync: createContactMutation } = useCreateContact()
 
   const {
     register,
@@ -47,7 +49,11 @@ export function CreateContactModal() {
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
-      await mutateAsync({ ...data, customerId: 1 })
+      await createContactMutation({
+        contactAddress: data.address,
+        contactName: data.name,
+        creatorAddress: wallets.accounts[0].address
+      })
 
       reset()
       setIsCreateContactOpen(false)
