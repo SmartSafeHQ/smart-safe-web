@@ -54,7 +54,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
         }
       )}
     >
-      <Link ref={ref} href={`/dashboard/${safe?.address}/${href}`} {...props}>
+      <Link ref={ref} href={href} {...props}>
         <Icon className="w-6 h-6" weight={iconWeight} />
 
         <Text>{children}</Text>
