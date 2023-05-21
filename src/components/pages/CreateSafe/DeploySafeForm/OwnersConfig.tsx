@@ -28,7 +28,7 @@ export function OwnersConfig({
     formState: { errors }
   } = useFormContext<FieldValues>()
   const [wallet] = useWallets()
-  const { data: contactsList } = useListContacts(wallet.accounts[0].address)
+  const { data: contactsList } = useListContacts(wallet?.accounts[0].address)
 
   return (
     <Collapsible.Root

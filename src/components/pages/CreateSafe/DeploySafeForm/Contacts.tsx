@@ -11,7 +11,10 @@ import type { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
 interface Props {
   index: number
   removeOwner: (index: number | number[]) => void
-  contactsList: { contactName: string; contactAddress: string }[] | undefined
+  contactsList:
+    | { contactName: string; contactAddress: string }[]
+    | undefined
+    | null
 }
 
 export function Contacts({ index, removeOwner, contactsList }: Props) {
