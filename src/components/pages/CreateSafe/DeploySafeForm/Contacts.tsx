@@ -11,7 +11,7 @@ import type { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
 interface Props {
   index: number
   removeOwner: (index: number | number[]) => void
-  contactsList: { name: string; address: string }[] | undefined
+  contactsList: { contactName: string; contactAddress: string }[] | undefined
 }
 
 export function Contacts({ index, removeOwner, contactsList }: Props) {
@@ -61,20 +61,22 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
             )}
           >
             {contactsList
-              .filter(({ name }) =>
-                name.toLowerCase().startsWith(contactSearchName.toLowerCase())
+              .filter(({ contactName }) =>
+                contactName
+                  .toLowerCase()
+                  .startsWith(contactSearchName.toLowerCase())
               )
-              .map(({ address, name }) => (
+              .map(({ contactAddress, contactName }) => (
                 <div
-                  key={address}
+                  key={contactAddress}
                   className="flex flex-col p-2 gap-1 cursor-pointer hover:bg-slate-200/[.20] overflow-hidden"
                   onClick={() => {
-                    setValue(`owners.${index}.name`, name)
-                    setValue(`owners.${index}.address`, address)
+                    setValue(`owners.${index}.name`, contactName)
+                    setValue(`owners.${index}.address`, contactAddress)
                   }}
                 >
-                  <Text>{name}</Text>
-                  <Text>{address}</Text>
+                  <Text>{contactName}</Text>
+                  <Text>{contactAddress}</Text>
                 </div>
               ))}
           </div>

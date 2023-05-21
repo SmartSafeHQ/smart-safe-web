@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { smartSafeApi } from '@lib/axios'
+import { formatWalletAddress } from '@/utils/web3'
 
 interface FetchContactsList {
   contacts: { name: string; address: string }[]
@@ -9,7 +10,13 @@ interface ListContactsInput {
   creatorAddress: string
 }
 
-type ListContactsResponse = { name: string; address: string }[]
+type ListContactsResponse =
+  | {
+      contactName: string
+      contactAddress: string
+      formattedAddress: string
+    }[]
+  | null
 
 async function listContacts({
   creatorAddress
@@ -21,11 +28,17 @@ async function listContacts({
     }
   )
 
-  if (!data.contacts) {
-    return []
+  if (!data?.contacts) {
+    return null
   }
 
-  return data.contacts
+  const formattedContactsList = data.contacts.map(({ address, name }) => ({
+    contactName: name,
+    contactAddress: address,
+    formattedAddress: formatWalletAddress({ walletAddress: address })
+  }))
+
+  return formattedContactsList
 }
 
 export function useListContacts(creatorAddress: string) {
