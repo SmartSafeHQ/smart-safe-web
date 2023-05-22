@@ -4,8 +4,8 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
-import { useWallets } from '@web3-onboard/react'
 
+import { useSafe } from '@contexts/SafeContext'
 import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
@@ -47,10 +47,10 @@ export const useSAWithdrawalAuthHook = () => {
     setSelectedWithdrawal,
     handleDeleteWithdrawal
   } = useSAWithdrawalAuth()
-  const [wallet] = useWallets()
 
+  const { safe } = useSafe()
   const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
-    wallet?.accounts[0].address
+    safe?.ownerId!
   )
   const { mutateAsync } = useCreateWithdrawalAuthMutation()
 

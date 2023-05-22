@@ -19,7 +19,7 @@ export async function fetchSmartAccountWithdrawalAuths(
 ): Promise<SelectedWithdrawalProps[]> {
   const contacts = await queryClient.ensureQueryData<ContactProps[] | null>({
     queryKey: ['listContacts'],
-    queryFn: () => listContacts({ creatorAddress: input.smartAccountAddress })
+    queryFn: () => listContacts({ creatorId: String(input.customerId) })
   })
 
   const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
