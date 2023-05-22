@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { FieldArrayWithId, useFormContext } from 'react-hook-form'
 import { ArrowSquareOut, CaretDown, Plus } from '@phosphor-icons/react'
-import { useWallets } from '@web3-onboard/react'
 
 import { Contacts } from './Contacts'
 import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
+import { useSafe } from '@contexts/SafeContext'
 
 import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
 
@@ -24,11 +24,11 @@ export function OwnersConfig({
   addNewOwner,
   removeOwner
 }: OwnersConfigProps) {
+  const { safe } = useSafe()
   const {
     formState: { errors }
   } = useFormContext<FieldValues>()
-  const [wallet] = useWallets()
-  const { data: contactsList } = useListContacts(wallet?.accounts[0].address)
+  const { data: contactsList } = useListContacts(safe?.ownerId!)
 
   return (
     <Collapsible.Root

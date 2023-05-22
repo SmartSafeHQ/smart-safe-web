@@ -7,7 +7,7 @@ interface FetchContactsList {
 }
 
 interface ListContactsInput {
-  creatorAddress: string
+  creatorId: string
 }
 
 type ListContactsResponse =
@@ -20,10 +20,12 @@ type ListContactsResponse =
   | null
 
 export async function listContacts({
-  creatorAddress
+  creatorId
 }: ListContactsInput): Promise<ListContactsResponse> {
+  if (!creatorId) return null
+
   const { data } = await smartSafeApi.get<FetchContactsList>(
-    `addressBook/${creatorAddress}`,
+    `addressBook/${creatorId}`,
     {
       params: { page: 0 }
     }
@@ -43,10 +45,10 @@ export async function listContacts({
   return formattedContactsList
 }
 
-export function useListContacts(creatorAddress: string) {
+export function useListContacts(creatorId: string) {
   return useQuery({
-    queryKey: ['listContacts', creatorAddress],
-    queryFn: () => listContacts({ creatorAddress }),
+    queryKey: ['listContacts', creatorId],
+    queryFn: () => listContacts({ creatorId }),
     staleTime: 1000 * 60 * 1 // 1 minute
   })
 }
