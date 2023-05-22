@@ -50,7 +50,7 @@ export const useSAWithdrawalAuthHook = () => {
   const [wallet] = useWallets()
 
   const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
-    wallet.accounts[0].address
+    wallet?.accounts[0].address
   )
   const { mutateAsync } = useCreateWithdrawalAuthMutation()
 
