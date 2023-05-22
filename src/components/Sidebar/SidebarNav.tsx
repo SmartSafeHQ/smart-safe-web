@@ -3,7 +3,8 @@ import {
   House,
   PaperPlaneTilt,
   AddressBook,
-  UsersThree
+  UsersThree,
+  Gear
 } from '@phosphor-icons/react'
 
 import { useSafe } from '@contexts/SafeContext'
@@ -48,6 +49,13 @@ export function SidebarNav() {
       activePath: 'spending-limits',
       icon: UsersThree,
       title: 'Spending Limits',
+      isDisabled: false
+    },
+    {
+      href: '/dashboard/smart-account/settings',
+      activePath: 'settings',
+      icon: Gear,
+      title: 'Settings',
       isDisabled: false
     }
   ]

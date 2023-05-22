@@ -5,8 +5,6 @@ import { Text } from '@components/Text'
 import { ScrollArea } from '@components/ScrollArea'
 
 export const SMART_ACCOUNT_TABS_VALUES = Object.freeze({
-  CONTACTS: 'contacts',
-  WITHDRAW_AUTH: 'withdrawAuth',
   PAYMENT_SCHEDULE: 'paymentSchedule',
   STREAM_PAYMENTS: 'streamPayments',
   ACCOUNT_RECOVERY: 'accountRecovery'
@@ -20,22 +18,13 @@ export function SmartAccountTabsList() {
         className="w-full min-w-[36rem] text-center text-sm"
       >
         <Tabs.Trigger
-          value={SMART_ACCOUNT_TABS_VALUES.CONTACTS}
-          className="max-w-[8rem]"
+          value={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}
+          className="w-full max-w-[10rem] pointer-events-none"
+          disabled
           asChild
         >
-          <Link href="/dashboard/smart-account/contacts">
-            <Text>Address Book</Text>
-          </Link>
-        </Tabs.Trigger>
-
-        <Tabs.Trigger
-          value={SMART_ACCOUNT_TABS_VALUES.WITHDRAW_AUTH}
-          className="max-w-[11rem]"
-          asChild
-        >
-          <Link href="/dashboard/smart-account/withdraw-authorization">
-            <Text>authorize withdrawal</Text>
+          <Link href="/dashboard/smart-account/account-recovery" aria-disabled>
+            <Text>account recovery</Text>
           </Link>
         </Tabs.Trigger>
 
@@ -64,17 +53,6 @@ export function SmartAccountTabsList() {
             aria-disabled
           >
             <Text>streaming payments</Text>
-          </Link>
-        </Tabs.Trigger>
-
-        <Tabs.Trigger
-          value={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}
-          className="w-full max-w-[10rem] pointer-events-none"
-          disabled
-          asChild
-        >
-          <Link href="/dashboard/smart-account/account-recovery" aria-disabled>
-            <Text>account recovery</Text>
           </Link>
         </Tabs.Trigger>
       </Tabs.List>
