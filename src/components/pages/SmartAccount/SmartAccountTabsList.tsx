@@ -25,7 +25,7 @@ export function SmartAccountTabsList() {
           asChild
         >
           <Link href="/dashboard/smart-account/contacts">
-            <Text>contacts</Text>
+            <Text>Address Book</Text>
           </Link>
         </Tabs.Trigger>
 

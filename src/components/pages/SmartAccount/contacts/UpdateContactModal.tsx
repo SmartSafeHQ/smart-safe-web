@@ -95,7 +95,7 @@ export function UpdateContactModal() {
             className="flex flex-col gap-4 items-stretch w-full"
           >
             <Text className="capitalize text-gray-600 dark:text-gray-300">
-              wallet: {selectedContact?.formattedAddress}
+              Contact address: {selectedContact?.formattedAddress}
             </Text>
 
             <TextInput.Root

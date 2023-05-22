@@ -9,17 +9,20 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
-import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
+import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
 
 dayjs.extend(utc)
 
-interface WithdrawalTableThProps
+interface SpendingLimitsTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode
 }
 
-function WithdrawalTableTh({ children, className }: WithdrawalTableThProps) {
+function SpendingLimitsTableTh({
+  children,
+  className
+}: SpendingLimitsTableThProps) {
   return (
     <th
       className={clsx(
@@ -32,26 +35,28 @@ function WithdrawalTableTh({ children, className }: WithdrawalTableThProps) {
   )
 }
 
-WithdrawalTableTh.displayName = 'WithdrawalTable.Th'
+SpendingLimitsTableTh.displayName = 'SpendingLimitsTable.Th'
 
-interface WithdrawalTableTrProps {
-  withdrawal: SelectedWithdrawalProps
-  handleDeleteWithdrawal: (_withdrawal: SelectedWithdrawalProps) => void
+interface SpendingLimitsTableTrProps {
+  spendingLimits: SelectedSpendingLimitsProps
+  handleDeleteSpendingLimits: (_withdrawal: SelectedSpendingLimitsProps) => void
 }
 
-function WithdrawalTableTr({
-  withdrawal,
-  handleDeleteWithdrawal
-}: WithdrawalTableTrProps) {
-  const formattedDate = dayjs(withdrawal.dateFrom).utc().format('DD/MM/YYYY')
+function SpendingLimitsTableTr({
+  spendingLimits,
+  handleDeleteSpendingLimits
+}: SpendingLimitsTableTrProps) {
+  const formattedDate = dayjs(spendingLimits.dateFrom)
+    .utc()
+    .format('DD/MM/YYYY')
 
   return (
     <tr className="font-medium border-b-1 border-gray-300 dark:border-gray-700">
       <td className="pl-2 py-3 min-w-[8rem]">
         <div className="flex flex-col gap-1">
-          {withdrawal?.recipientName && (
+          {spendingLimits?.recipientName && (
             <Text className="text-sm md:text-base" asChild>
-              <strong>{withdrawal.recipientName}</strong>
+              <strong>{spendingLimits.recipientName}</strong>
             </Text>
           )}
 
@@ -61,9 +66,11 @@ function WithdrawalTableTr({
               className="w-min text-sm capitalize text-gray-500 dark:text-gray-400"
             >
               <button
-                onClick={() => handleCopyToClipboard(withdrawal.wallet.address)}
+                onClick={() =>
+                  handleCopyToClipboard(spendingLimits.wallet.address)
+                }
               >
-                {withdrawal.wallet.formattedAddress}
+                {spendingLimits.wallet.formattedAddress}
               </button>
             </HoverCard.Trigger>
 
@@ -78,12 +85,12 @@ function WithdrawalTableTr({
       <td>
         <div className="flex items-center gap-2">
           <Text className="uppercase text-sm md:text-base">
-            {withdrawal.coinAmount} {withdrawal.coin.symbol}
+            {spendingLimits.coinAmount} {spendingLimits.coin.symbol}
           </Text>
 
           <Image
-            src={withdrawal.coin.avatar}
-            alt={`${withdrawal.coin.symbol} avatar`}
+            src={spendingLimits.coin.avatar}
+            alt={`${spendingLimits.coin.symbol} avatar`}
             width={20}
             height={20}
             className="w-5 h-5"
@@ -102,7 +109,7 @@ function WithdrawalTableTr({
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <button
-                aria-label="Withdrawal authorization management options"
+                aria-label="Spending limit authorization management options"
                 className="p-1 rounded-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
               >
                 <DotsThreeVertical className="w-6 h-6" />
@@ -115,7 +122,7 @@ function WithdrawalTableTr({
               className="min-w-[10rem] p-2"
             >
               <DropdownMenu.Item
-                onSelect={() => handleDeleteWithdrawal(withdrawal)}
+                onSelect={() => handleDeleteSpendingLimits(spendingLimits)}
                 className="px-3 py-2 rounded-md text-sm"
               >
                 <Text className="text-sm text-red-500">delete</Text>
@@ -128,9 +135,9 @@ function WithdrawalTableTr({
   )
 }
 
-WithdrawalTableTr.displayName = 'WithdrawalTable.Tr'
+SpendingLimitsTableTr.displayName = 'SpendingLimitsTableTr.Tr'
 
-export const WithdrawalTable = {
-  Th: WithdrawalTableTh,
-  Tr: WithdrawalTableTr
+export const SpendingLimitsTable = {
+  Th: SpendingLimitsTableTh,
+  Tr: SpendingLimitsTableTr
 }

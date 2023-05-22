@@ -1,17 +1,17 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
+import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
 
 import { queryClient } from '@lib/reactQuery'
 
-interface DeleteWithdrawalAuthFunctionInput {
+interface DeleteSpedingLimitsAuthFunctionInput {
   smartAccountAddress: string
   customerWalletPrivateKey: string
   withdrawalIndex: number
 }
 
-async function deleteWithdrawalAuthFunction(
-  input: DeleteWithdrawalAuthFunctionInput
+async function deleteSpendingLimitsAuthFunction(
+  input: DeleteSpedingLimitsAuthFunctionInput
 ): Promise<void> {
   console.log(input)
 
@@ -25,24 +25,30 @@ async function deleteWithdrawalAuthFunction(
   // await contract.functions.removeAuthorizedUser(input.withdrawalIndex)
 }
 
-export function useDeleteWithdrawalAuthMutation() {
+export function useDeleteSpendingLimitsAuthMutation() {
   return useMutation({
-    mutationKey: ['deleteWithdrawalAuth'],
-    mutationFn: (input: DeleteWithdrawalAuthFunctionInput) =>
-      deleteWithdrawalAuthFunction(input),
+    mutationKey: ['deleteSpendingLimitsAuth'],
+    mutationFn: (input: DeleteSpedingLimitsAuthFunctionInput) =>
+      deleteSpendingLimitsAuthFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
-        queryKey: ['smartAccountWithdrawalAuths', variables.smartAccountAddress]
+        queryKey: [
+          'smartAccountSpendingLimitsAuths',
+          variables.smartAccountAddress
+        ]
       })
 
       const prevAuth = await queryClient.ensureQueryData<
-        SelectedWithdrawalProps[]
+        SelectedSpendingLimitsProps[]
       >({
-        queryKey: ['smartAccountWithdrawalAuths', variables.smartAccountAddress]
+        queryKey: [
+          'smartAccountSpendingLimitsAuths',
+          variables.smartAccountAddress
+        ]
       })
 
-      queryClient.setQueryData<SelectedWithdrawalProps[]>(
-        ['smartAccountWithdrawalAuths', variables.smartAccountAddress],
+      queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
+        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress],
         () => {
           const deletedAuthIndex = prevAuth.findIndex(
             auth => auth.index === variables.withdrawalIndex
@@ -60,7 +66,7 @@ export function useDeleteWithdrawalAuthMutation() {
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(
-        ['smartAccountWithdrawalAuths', variables.smartAccountAddress],
+        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress],
         context
       )
     },
@@ -69,7 +75,7 @@ export function useDeleteWithdrawalAuthMutation() {
         () =>
           queryClient.invalidateQueries({
             queryKey: [
-              'smartAccountWithdrawalAuths',
+              'smartAccountSpendingLimitsAuths',
               variables.smartAccountAddress
             ]
           }),

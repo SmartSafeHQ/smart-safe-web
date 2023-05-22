@@ -6,16 +6,16 @@ import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
+import { useSpendingLimitsAuth } from '@contexts/smart-account/SpendingLimitsAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
 import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
-import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
-import { useCreateWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useCreateWithdrawalAuthMutation'
+import { useSpendingLimitsAuths } from '@hooks/smartAccount/queries/useSpendingLimitsAuths'
+import { useCreateSpendingLimitsAuthMutation } from '@hooks/smartAccount/mutations/useCreateSpendingLimitsAuthMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-const createWithdrawalValidationSchema = z.object({
+const createSpendingLimitsValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
 
@@ -33,28 +33,32 @@ const createWithdrawalValidationSchema = z.object({
     .min(new Date(), 'min date is tomorrow!')
 })
 
-export type CreateWithdrawalFieldValues = z.infer<
-  typeof createWithdrawalValidationSchema
+export type CreateSpendingLimitsFieldValues = z.infer<
+  typeof createSpendingLimitsValidationSchema
 >
 
-export const useSAWithdrawalAuthHook = () => {
+export const useSpendingLimitsAuthHook = () => {
   const {
-    isCreateWithdrawalOpen,
-    setIsCreateWithdrawalOpen,
-    isDeleteWithdrawalOpen,
-    setIsDeleteWithdrawalOpen,
-    selectedWithdrawal,
-    setSelectedWithdrawal,
-    handleDeleteWithdrawal
-  } = useSAWithdrawalAuth()
+    isCreateSpendingLimitsOpen,
+    setIsCreateSpendingLimitsOpen,
+    isDeleteSpendingLimitsOpen,
+    setIsDeleteSpendingLimitsOpen,
+    selectedSpendingLimits,
+    setSelectedSpendingLimits,
+    handleDeleteSpendingLimits
+  } = useSpendingLimitsAuth()
 
   const { safe } = useSafe()
   const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
     safe?.ownerId!
   )
-  const { mutateAsync } = useCreateWithdrawalAuthMutation()
+  const { mutateAsync } = useCreateSpendingLimitsAuthMutation()
 
-  const { data: withdrawals, isLoading, error } = useWithdrawalAuths(1, '1')
+  const {
+    data: spendingLimits,
+    isLoading,
+    error
+  } = useSpendingLimitsAuths(1, '1')
 
   const {
     control,
@@ -63,8 +67,8 @@ export const useSAWithdrawalAuthHook = () => {
     reset,
     setValue,
     formState: { errors, isSubmitting }
-  } = useForm<CreateWithdrawalFieldValues>({
-    resolver: zodResolver(createWithdrawalValidationSchema)
+  } = useForm<CreateSpendingLimitsFieldValues>({
+    resolver: zodResolver(createSpendingLimitsValidationSchema)
   })
 
   const [searchContacts, setSearchContacts] = useState<
@@ -90,22 +94,22 @@ export const useSAWithdrawalAuthHook = () => {
     setSearchContacts(searchResults)
   }
 
-  const onSubmitCreateWithdrawal: SubmitHandler<
-    CreateWithdrawalFieldValues
+  const onSubmitCreateSpendingLimits: SubmitHandler<
+    CreateSpendingLimitsFieldValues
   > = async data => {
     if (!contacts) return
 
     try {
-      const withdrawalCoin = CHAINS_ATTRIBUTES.find(
-        coin => coin.symbol === data.coinSymbol
+      const spendingLimitsToken = CHAINS_ATTRIBUTES.find(
+        token => token.symbol === data.coinSymbol
       )
 
       const findContactForRecipient = contacts.find(
         contact => contact.contactAddress === data.contactAddress
       )
 
-      if (!withdrawalCoin) {
-        toast.error('coin not found')
+      if (!spendingLimitsToken) {
+        toast.error('token not found')
         return
       }
 
@@ -113,20 +117,20 @@ export const useSAWithdrawalAuthHook = () => {
         ...data,
         smartAccountAddress: 'address',
         customerWalletPrivateKey: 'privateKey',
-        coin: withdrawalCoin,
+        coin: spendingLimitsToken,
         recipientName: findContactForRecipient?.contactName
       })
 
       reset()
       setSearchContacts(contacts)
-      setIsCreateWithdrawalOpen(false)
+      setIsCreateSpendingLimitsOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
   return {
-    withdrawals,
+    spendingLimits,
     isLoading,
     error,
     searchContacts,
@@ -141,13 +145,13 @@ export const useSAWithdrawalAuthHook = () => {
     setValue,
     isSubmitting,
     reset,
-    onSubmitCreateWithdrawal,
-    isCreateWithdrawalOpen,
-    setIsCreateWithdrawalOpen,
-    isDeleteWithdrawalOpen,
-    setIsDeleteWithdrawalOpen,
-    selectedWithdrawal,
-    setSelectedWithdrawal,
-    handleDeleteWithdrawal
+    onSubmitCreateSpendingLimits,
+    isCreateSpendingLimitsOpen,
+    setIsCreateSpendingLimitsOpen,
+    isDeleteSpendingLimitsOpen,
+    setIsDeleteSpendingLimitsOpen,
+    selectedSpendingLimits,
+    setSelectedSpendingLimits,
+    handleDeleteSpendingLimits
   }
 }
