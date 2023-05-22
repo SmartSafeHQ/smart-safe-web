@@ -216,16 +216,16 @@ interface TransactionLayoutApproveStatusProps
   extends HTMLAttributes<HTMLDivElement> {
   status: TransactionStatus
   signatures: number
-  requiredSignatures: number
+  threshold: number
 }
 
 function TransactionLayoutApproveStatus({
   status,
   signatures,
-  requiredSignatures,
+  threshold,
   ...props
 }: TransactionLayoutApproveStatusProps) {
-  const pendingSignatures = requiredSignatures - signatures
+  const pendingSignatures = threshold - signatures
 
   const Icon = status === 'waiting' ? ArrowsCounterClockwise : CheckCircle
 
@@ -246,7 +246,7 @@ function TransactionLayoutApproveStatus({
       <div className="flex flex-col items-stretch justify-start">
         <Heading asChild className="text-lg font-medium">
           <h3>
-            Transaction waiting approves ({signatures}/{requiredSignatures})
+            Transaction waiting approves ({signatures}/{threshold})
           </h3>
         </Heading>
 

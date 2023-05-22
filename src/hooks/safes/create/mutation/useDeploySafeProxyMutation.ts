@@ -10,7 +10,7 @@ export type DeploySafeFunctionInput = {
   provider: EIP1193Provider
   safeName: string
   deployWalletAddress: string
-  requiredSignaturesCount: number
+  threshold: number
   chain: {
     id: string
     name: string
@@ -58,7 +58,7 @@ async function deploySafeProxyFunction(
 
   const transaction = await contract.getFunction('deploySmartSafeProxy')(
     ownersAdressesList,
-    input.requiredSignaturesCount
+    input.threshold
   )
 
   return { transaction, safeAddress: proxyAddress }

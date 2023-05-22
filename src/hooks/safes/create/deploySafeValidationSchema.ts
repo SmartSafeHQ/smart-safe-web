@@ -43,7 +43,7 @@ export const validationSchema = z.object({
 
       return !checkSomeOwnerAddressIsRepeated
     }, "Each safe owner's address must be unique."),
-  requiredSignaturesCount: z.string().min(1, 'Signatures count required')
+  threshold: z.string().min(1, 'Signatures count required')
 })
 
 export type FieldValues = z.infer<typeof validationSchema>

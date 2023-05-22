@@ -18,6 +18,7 @@ import {
 import { useSafe } from '@contexts/SafeContext'
 import { useDeploySafeProxyMutation } from '@hooks/safes/create/mutation/useDeploySafeProxyMutation'
 import { useSaveSmartSafeProxyData } from '@hooks/safes/create/mutation/useSaveSmartSafeProxyData'
+import { useAddressSafes } from '@hooks/safes/retrieve/queries/useAddressSafes'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 export const useDeploySafeHook = () => {
@@ -28,6 +29,10 @@ export const useDeploySafeHook = () => {
   const { mutateAsync: mutateDeploySafe } = useDeploySafeProxyMutation()
   const { mutateAsync: mutateSaveSmartSafeProxyData } =
     useSaveSmartSafeProxyData()
+  const { refetch: refetchAddressSafes } = useAddressSafes(
+    wallet?.accounts[0].address,
+    !!wallet?.accounts[0]
+  )
 
   const formMethods = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
@@ -134,7 +139,7 @@ export const useDeploySafeHook = () => {
           name: safeInfos.chain.networkName,
           symbol: safeInfos.chain.symbol
         },
-        requiredSignaturesCount: +data.requiredSignaturesCount,
+        threshold: +data.threshold,
         owners: data.owners
       })
 
@@ -166,6 +171,7 @@ export const useDeploySafeHook = () => {
       })
 
       finishDeploySuccess(safeAddress)
+      refetchAddressSafes()
     } catch (err) {
       const error = err as Error & { code?: string }
 
@@ -201,11 +207,11 @@ export const useDeploySafeHook = () => {
 
   function removeOwner(index: number | number[]) {
     // check if there are more required signatures than owners
-    const requiredSignaturesCount = +getValues('requiredSignaturesCount')
+    const threshold = +getValues('threshold')
     const updattedOwnersCount = ownersFields.length - 1
 
-    if (requiredSignaturesCount > updattedOwnersCount) {
-      setValue('requiredSignaturesCount', String(updattedOwnersCount))
+    if (threshold > updattedOwnersCount) {
+      setValue('threshold', String(updattedOwnersCount))
     }
 
     remove(index)

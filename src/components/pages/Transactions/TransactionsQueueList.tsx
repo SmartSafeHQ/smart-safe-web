@@ -48,6 +48,7 @@ export function TransactionsQueueList() {
               createdAt={transactionsQueue.toApprove.createdAt}
               signatures={transactionsQueue.toApprove.signatures}
               toAddress={transactionsQueue.toApprove.toAddress}
+              threshold={safe.threshold}
               toFormattedAddress={
                 transactionsQueue.toApprove.toFormattedAddress
               }
@@ -71,6 +72,7 @@ export function TransactionsQueueList() {
                   nonce={transaction.nonce}
                   type={transaction.type}
                   amount={transaction.amount}
+                  threshold={safe.threshold}
                   createdAt={transaction.createdAt}
                   signatures={transaction.signatures}
                   toAddress={transaction.toAddress}

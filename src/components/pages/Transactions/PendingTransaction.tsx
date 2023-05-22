@@ -8,6 +8,7 @@ interface PendingTransactionProps {
   nonce: number
   type: 'SEND'
   amount: number
+  threshold: number
   createdAt: Date
   signatures: { status: OwnerApproveStatus; address: string }[]
   toAddress: string
@@ -23,6 +24,7 @@ export function PendingTransaction({
   nonce,
   type,
   amount,
+  threshold,
   createdAt,
   signatures,
   toAddress,
@@ -61,7 +63,7 @@ export function PendingTransaction({
                   <TransactionLayout.ApproveStatus
                     status="waiting"
                     signatures={signatures.length}
-                    requiredSignatures={3}
+                    threshold={threshold}
                   />
 
                   <Collapsible.Trigger className="h-min text-xs text-start text-cyan-500 transition-colors hover:text-cyan-600">

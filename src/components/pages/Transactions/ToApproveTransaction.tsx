@@ -12,6 +12,7 @@ interface ToApproveTransactionProps {
   nonce: number
   type: TransactionType
   amount: number
+  threshold: number
   createdAt: Date
   signatures: { status: OwnerApproveStatus; address: string }[]
   toAddress: string
@@ -27,6 +28,7 @@ export function ToApproveTransaction({
   nonce,
   type,
   amount,
+  threshold,
   createdAt,
   signatures,
   toAddress,
@@ -50,7 +52,7 @@ export function ToApproveTransaction({
           }}
         >
           <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
-            Approves {signatures.length}/3
+            Approves {signatures.length}/{threshold}
           </Text>
         </TransactionLayout.SendHeader>
 
@@ -64,7 +66,7 @@ export function ToApproveTransaction({
                 <TransactionLayout.ApproveStatus
                   status="waiting"
                   signatures={signatures.length}
-                  requiredSignatures={3}
+                  threshold={threshold}
                 />
 
                 <Collapsible.Trigger className="h-min text-xs text-start text-cyan-500 transition-colors hover:text-cyan-600">
