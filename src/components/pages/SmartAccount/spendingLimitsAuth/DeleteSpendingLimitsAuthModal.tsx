@@ -46,11 +46,11 @@ export function DeleteSpendingLimitsAuthModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex flex-col items-stretch gap-5 mb-6">
             <DialogModal.Title className="text-3xl font-bold capitalize text-gray-800 dark:text-gray-50">
-              Delete withdrawal authorization
+              Delete authorization
             </DialogModal.Title>
 
             <DialogModal.Description className="text-gray-600 dark:text-gray-300">
-              SmartSafe will delete the withdrawal authorization
+              SmartSafe will delete the spending limit authorization
             </DialogModal.Description>
           </header>
 

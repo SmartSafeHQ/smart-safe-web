@@ -36,7 +36,9 @@ interface SpendingLimitsAuthContextData {
   >
   setIsCreateSpendingLimitsOpen: Dispatch<SetStateAction<boolean>>
   setIsDeleteSpendingLimitsOpen: Dispatch<SetStateAction<boolean>>
-  handleDeleteSpendingLimits: (_withdrawal: SelectedSpendingLimitsProps) => void
+  handleDeleteSpendingLimits: (
+    _spendingLimit: SelectedSpendingLimitsProps
+  ) => void
 }
 
 const SpedningLimitsAuthContext = createContext(

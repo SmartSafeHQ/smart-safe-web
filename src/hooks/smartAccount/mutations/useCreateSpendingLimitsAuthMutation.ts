@@ -56,7 +56,7 @@ async function createSpendingLimitsAuthFunction(
   return { index: 0 }
 }
 
-export function useCreateWithdrawalAuthMutation() {
+export function useCreateSpendingLimitsAuthMutation() {
   return useMutation({
     mutationKey: ['createSpendingLimitsAuth'],
     mutationFn: (input: CreateSpendingLimitsAuthFunctionInput) =>

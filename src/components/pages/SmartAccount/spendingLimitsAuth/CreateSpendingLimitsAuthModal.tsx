@@ -25,7 +25,7 @@ export function CreateSpendingLimitsAuthModal() {
     setValue,
     isSubmitting,
     reset,
-    onSubmitCreateWithdrawal,
+    onSubmitCreateSpendingLimits,
     isCreateSpendingLimitsOpen,
     setIsCreateSpendingLimitsOpen
   } = useSpendingLimitsAuthHook()
@@ -50,7 +50,7 @@ export function CreateSpendingLimitsAuthModal() {
           </header>
 
           <form
-            onSubmit={handleSubmit(onSubmitCreateWithdrawal)}
+            onSubmit={handleSubmit(onSubmitCreateSpendingLimits)}
             className="flex flex-col gap-6 items-stretch w-full"
           >
             <div className="flex flex-col gap-1 group">

@@ -14,7 +14,7 @@ export function SpendingLimitsList() {
     <ScrollArea className="w-full max-w-full">
       {error ? (
         <ErrorState
-          title="Could not load your withdrawal authorizations. Please try again."
+          title="Could not load your spending limit authorizations. Please try again."
           description={(error as Error)?.message ?? 'Internal server error'}
           className="mt-10"
         />
@@ -23,7 +23,7 @@ export function SpendingLimitsList() {
       ) : spendingLimits && spendingLimits.length === 0 ? (
         <div className="w-full flex flex-col items-center gap-1 pt-8 text-center">
           <Text asChild className="text-lg font-medium">
-            <strong>No withdrawal authorizations added!</strong>
+            <strong>No spending limit authorizations added!</strong>
           </Text>
         </div>
       ) : (
@@ -37,7 +37,7 @@ export function SpendingLimitsList() {
                   </SpendingLimitsTable.Th>
 
                   <SpendingLimitsTable.Th className="py-3 ">
-                    Withdrawal allowed
+                    Spending limit allowed
                   </SpendingLimitsTable.Th>
 
                   <SpendingLimitsTable.Th className="py-3 ">

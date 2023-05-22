@@ -40,11 +40,11 @@ export async function fetchSmartAccountSpendingLimitsAuths(
   for (let i = 0; i < formattedAuthorizationsCount; i++) {
     const authorization = await contract.getFunction('authorizations')(i)
 
-    const withdrawalCoin = CHAINS_ATTRIBUTES.find(
-      coin => coin.rpcUrl === authorization.tokenAddress
+    const spendingLimitsToken = CHAINS_ATTRIBUTES.find(
+      token => token.rpcUrl === authorization.tokenAddress
     )
 
-    if (!withdrawalCoin) continue
+    if (!spendingLimitsToken) continue
 
     const findContactForRecipient = contacts?.find(
       contact => contact.contactAddress === authorization.userAddress
@@ -62,9 +62,9 @@ export async function fetchSmartAccountSpendingLimitsAuths(
       coinAmount: formattedAmount,
       dateFrom: formattedDate,
       coin: {
-        symbol: withdrawalCoin?.symbol,
-        avatar: withdrawalCoin?.icon,
-        address: withdrawalCoin?.scanUrl
+        symbol: spendingLimitsToken?.symbol,
+        avatar: spendingLimitsToken?.icon,
+        address: spendingLimitsToken?.scanUrl
       },
       wallet: {
         address: authorization.userAddress,

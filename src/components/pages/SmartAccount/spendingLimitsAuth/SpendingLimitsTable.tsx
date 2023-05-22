@@ -109,7 +109,7 @@ function SpendingLimitsTableTr({
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <button
-                aria-label="Withdrawal authorization management options"
+                aria-label="Spending limit authorization management options"
                 className="p-1 rounded-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
               >
                 <DotsThreeVertical className="w-6 h-6" />
