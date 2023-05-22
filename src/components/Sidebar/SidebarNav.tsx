@@ -2,7 +2,8 @@ import {
   CirclesThree,
   House,
   PaperPlaneTilt,
-  AddressBook
+  AddressBook,
+  UsersThree
 } from '@phosphor-icons/react'
 
 import { useSafe } from '@contexts/SafeContext'
@@ -40,6 +41,13 @@ export function SidebarNav() {
       activePath: 'contacts',
       icon: AddressBook,
       title: 'Address Book',
+      isDisabled: false
+    },
+    {
+      href: '/dashboard/smart-account/spending-limits',
+      activePath: 'spending-limits',
+      icon: UsersThree,
+      title: 'Spending Limits',
       isDisabled: false
     }
   ]

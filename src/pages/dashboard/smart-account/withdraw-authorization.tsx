@@ -8,15 +8,15 @@ import {
 import { Button } from '@components/Button'
 import { Tabs } from '@components/Tabs'
 import { SmartAccountTab } from '@components/pages/SmartAccount'
-import { WithdrawalList } from '@components/pages/SmartAccount/withdrawalAuth/WithdrawalList'
-import { CreateWithdrawalAuthModal } from '@components/pages/SmartAccount/withdrawalAuth/CreateWithdrawalAuthModal'
-import { DeleteWithdrawalAuthModal } from '@components/pages/SmartAccount/withdrawalAuth/DeleteWithdrawalAuthModal'
+import { SpendingLimitsList } from '@components/pages/SmartAccount/spendingLimitsAuth/SpendingLimitsList'
+import { CreateSpendingLimitsAuthModal } from '@/components/pages/SmartAccount/spendingLimitsAuth/CreateSpendingLimitsAuthModal'
+import { DeleteSpendingLimitsAuthModal } from '@/components/pages/SmartAccount/spendingLimitsAuth/DeleteSpendingLimitsAuthModal'
 
-import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
-import { SAWithdrawalAuthProvider } from '@contexts/SAWithdrawalAuthContext'
+import { useSpendingLimitsAuthHook } from '@/hooks/smartAccount/useSpendingLimitsAuthHook'
+import { SpendingLimitsAuthProvider } from '@contexts/smart-account/SpendingLimitsAuthContext'
 
 const WithdrawalAuthorization = () => {
-  const { setIsCreateWithdrawalOpen } = useSAWithdrawalAuthHook()
+  const { setIsCreateSpendingLimitsOpen } = useSpendingLimitsAuthHook()
 
   return (
     <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
@@ -49,7 +49,7 @@ const WithdrawalAuthorization = () => {
 
                   <Button
                     className="w-max"
-                    onClick={() => setIsCreateWithdrawalOpen(true)}
+                    onClick={() => setIsCreateSpendingLimitsOpen(true)}
                   >
                     Add Authorization
                   </Button>
@@ -57,21 +57,21 @@ const WithdrawalAuthorization = () => {
               </SmartAccountTab.Header>
 
               <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5">
-                <WithdrawalList />
+                <SpendingLimitsList />
               </div>
             </SmartAccountTab.Root>
           </Tabs.Content>
         </Tabs.Root>
 
-        <CreateWithdrawalAuthModal />
-        <DeleteWithdrawalAuthModal />
+        <CreateSpendingLimitsAuthModal />
+        <DeleteSpendingLimitsAuthModal />
       </div>
     </div>
   )
 }
 
 WithdrawalAuthorization.getLayout = function getLayout(page: ReactElement) {
-  return <SAWithdrawalAuthProvider>{page}</SAWithdrawalAuthProvider>
+  return <SpendingLimitsAuthProvider>{page}</SpendingLimitsAuthProvider>
 }
 
 export default WithdrawalAuthorization

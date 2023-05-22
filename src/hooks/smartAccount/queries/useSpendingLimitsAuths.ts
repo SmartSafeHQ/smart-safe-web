@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
+import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
 import { listContacts } from '@hooks/addressBook/queries/useListContacts'
@@ -9,14 +9,14 @@ import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
 
-interface FetchSmartAccountWithdrawalAuthsInput {
+interface FetchSmartAccountSpendingLimitsAuthsInput {
   smartAccountAddress: string
   customerId: number
 }
 
-export async function fetchSmartAccountWithdrawalAuths(
-  input: FetchSmartAccountWithdrawalAuthsInput
-): Promise<SelectedWithdrawalProps[]> {
+export async function fetchSmartAccountSpendingLimitsAuths(
+  input: FetchSmartAccountSpendingLimitsAuthsInput
+): Promise<SelectedSpendingLimitsProps[]> {
   const contacts = await queryClient.ensureQueryData<ContactProps[] | null>({
     queryKey: ['listContacts'],
     queryFn: () => listContacts({ creatorId: String(input.customerId) })
@@ -35,7 +35,7 @@ export async function fetchSmartAccountWithdrawalAuths(
 
   const formattedAuthorizationsCount = +totalAuthorizations.toString()
 
-  const authorizations: SelectedWithdrawalProps[] = []
+  const authorizations: SelectedSpendingLimitsProps[] = []
 
   for (let i = 0; i < formattedAuthorizationsCount; i++) {
     const authorization = await contract.getFunction('authorizations')(i)
@@ -78,15 +78,18 @@ export async function fetchSmartAccountWithdrawalAuths(
   return authorizations
 }
 
-export function useWithdrawalAuths(
+export function useSpendingLimitsAuths(
   id = 0,
   smartAccountAddress: string,
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['smartAccountWithdrawalAuths', smartAccountAddress],
+    queryKey: ['smartAccountSpendingLimitsAuths', smartAccountAddress],
     queryFn: () =>
-      fetchSmartAccountWithdrawalAuths({ customerId: id, smartAccountAddress }),
+      fetchSmartAccountSpendingLimitsAuths({
+        customerId: id,
+        smartAccountAddress
+      }),
     enabled,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes

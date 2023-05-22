@@ -6,40 +6,41 @@ import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useDeleteWithdrawalAuthMutation'
-import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
+import { useDeleteSpendingLimitsAuthMutation } from '@hooks/smartAccount/mutations/useDeleteSpendingLimitsAuthMutation'
+import { useSpendingLimitsAuthHook } from '@/hooks/smartAccount/useSpendingLimitsAuthHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-export function DeleteWithdrawalAuthModal() {
-  const {
-    selectedWithdrawal,
-    isDeleteWithdrawalOpen,
-    setIsDeleteWithdrawalOpen
-  } = useSAWithdrawalAuthHook()
 
-  const { mutateAsync, isLoading } = useDeleteWithdrawalAuthMutation()
+export function DeleteSpendingLimitsAuthModal() {
+  const {
+    selectedSpendingLimits,
+    isDeleteSpendingLimitsOpen,
+    setIsDeleteSpendingLimitsOpen
+  } = useSpendingLimitsAuthHook()
+
+  const { mutateAsync, isLoading } = useDeleteSpendingLimitsAuthMutation()
 
   async function handleConfirmDelete() {
-    if (!selectedWithdrawal) return
+    if (!selectedSpendingLimits) return
 
     try {
       await mutateAsync({
         smartAccountAddress: 'address',
         customerWalletPrivateKey: 'privateKey',
-        withdrawalIndex: selectedWithdrawal.index
+        withdrawalIndex: selectedSpendingLimits.index
       })
 
-      setIsDeleteWithdrawalOpen(false)
+      setIsDeleteSpendingLimitsOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
-  if (!selectedWithdrawal) return <></>
+  if (!selectedSpendingLimits) return <></>
 
   return (
     <DialogModal.Root
-      open={isDeleteWithdrawalOpen}
-      onOpenChange={setIsDeleteWithdrawalOpen}
+      open={isDeleteSpendingLimitsOpen}
+      onOpenChange={setIsDeleteSpendingLimitsOpen}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
@@ -56,11 +57,11 @@ export function DeleteWithdrawalAuthModal() {
           <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-8">
             <div className="flex flex-col items-stretch justify-start gap-1">
               <Text asChild className="text-start">
-                <strong>{selectedWithdrawal.recipientName}</strong>
+                <strong>{selectedSpendingLimits.recipientName}</strong>
               </Text>
 
               <Text className="w-min text-sm capitalize text-gray-500 dark:text-gray-300">
-                {selectedWithdrawal.wallet.formattedAddress}
+                {selectedSpendingLimits.wallet.formattedAddress}
               </Text>
             </div>
 
@@ -71,8 +72,8 @@ export function DeleteWithdrawalAuthModal() {
                 </Heading>
 
                 <Image
-                  src={selectedWithdrawal.coin.avatar}
-                  alt={`${selectedWithdrawal.coin.symbol} coin icon`}
+                  src={selectedSpendingLimits.coin.avatar}
+                  alt={`${selectedSpendingLimits.coin.symbol} coin icon`}
                   width={20}
                   height={20}
                   className="mr-1"
@@ -80,7 +81,8 @@ export function DeleteWithdrawalAuthModal() {
               </div>
 
               <Text className="text-sm">
-                {selectedWithdrawal.coinAmount} {selectedWithdrawal.coin.symbol}
+                {selectedSpendingLimits.coinAmount}{' '}
+                {selectedSpendingLimits.coin.symbol}
               </Text>
             </div>
 
@@ -90,7 +92,7 @@ export function DeleteWithdrawalAuthModal() {
               </Heading>
 
               <Text className="text-sm">
-                {dayjs(selectedWithdrawal.dateFrom).format('DD/MM/YYYY')}
+                {dayjs(selectedSpendingLimits.dateFrom).format('DD/MM/YYYY')}
               </Text>
             </div>
           </div>

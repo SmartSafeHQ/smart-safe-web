@@ -8,10 +8,10 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useSAWithdrawalAuthHook } from '@hooks/smartAccount/useSAWithdrawalAuthHook'
+import { useSpendingLimitsAuthHook } from '@/hooks/smartAccount/useSpendingLimitsAuthHook'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
-export function CreateWithdrawalAuthModal() {
+export function CreateSpendingLimitsAuthModal() {
   const {
     contacts,
     setSearchContacts,
@@ -26,17 +26,17 @@ export function CreateWithdrawalAuthModal() {
     isSubmitting,
     reset,
     onSubmitCreateWithdrawal,
-    isCreateWithdrawalOpen,
-    setIsCreateWithdrawalOpen
-  } = useSAWithdrawalAuthHook()
+    isCreateSpendingLimitsOpen,
+    setIsCreateSpendingLimitsOpen
+  } = useSpendingLimitsAuthHook()
 
   const isoDateNow = new Date().toISOString().slice(0, 10)
 
   return (
     <DialogModal.Root
-      open={isCreateWithdrawalOpen}
+      open={isCreateSpendingLimitsOpen}
       onOpenChange={isOpen => {
-        setIsCreateWithdrawalOpen(isOpen)
+        setIsCreateSpendingLimitsOpen(isOpen)
         reset()
         setSearchContacts(contacts)
       }}
@@ -45,7 +45,7 @@ export function CreateWithdrawalAuthModal() {
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex items-center flex-col gap-3 mb-6">
             <DialogModal.Title className="text-3xl font-bold text-zinc-800 dark:text-zinc-50">
-              Create withdrawal authorization
+              Create authorization
             </DialogModal.Title>
           </header>
 
@@ -130,7 +130,7 @@ export function CreateWithdrawalAuthModal() {
                   value={value}
                   ref={ref}
                   className="w-full"
-                  labelText="Withdrawal currency"
+                  labelText="Token"
                 >
                   <SelectInput.Trigger className="min-h-[3rem] py-1 bg-zinc-50 dark:bg-zinc-900" />
 
@@ -190,7 +190,7 @@ export function CreateWithdrawalAuthModal() {
               variant="secondary"
               error={errors.fromDate?.message}
             >
-              <TextInput.Label>From date</TextInput.Label>
+              <TextInput.Label>Start date</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Input

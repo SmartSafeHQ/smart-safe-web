@@ -6,16 +6,16 @@ import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
+import { useSpendingLimitsAuth } from '@contexts/smart-account/SpendingLimitsAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
 import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
-import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
-import { useCreateWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useCreateWithdrawalAuthMutation'
+import { useSpendingLimitsAuths } from '@hooks/smartAccount/queries/useSpendingLimitsAuths'
+import { useCreateWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useCreateSpendingLimitsAuthMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-const createWithdrawalValidationSchema = z.object({
+const createSpendingLimitsValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
 
@@ -34,19 +34,19 @@ const createWithdrawalValidationSchema = z.object({
 })
 
 export type CreateWithdrawalFieldValues = z.infer<
-  typeof createWithdrawalValidationSchema
+  typeof createSpendingLimitsValidationSchema
 >
 
-export const useSAWithdrawalAuthHook = () => {
+export const useSpendingLimitsAuthHook = () => {
   const {
-    isCreateWithdrawalOpen,
-    setIsCreateWithdrawalOpen,
-    isDeleteWithdrawalOpen,
-    setIsDeleteWithdrawalOpen,
-    selectedWithdrawal,
-    setSelectedWithdrawal,
-    handleDeleteWithdrawal
-  } = useSAWithdrawalAuth()
+    isCreateSpendingLimitsOpen,
+    setIsCreateSpendingLimitsOpen,
+    isDeleteSpendingLimitsOpen,
+    setIsDeleteSpendingLimitsOpen,
+    selectedSpendingLimits,
+    setSelectedSpendingLimits,
+    handleDeleteSpendingLimits
+  } = useSpendingLimitsAuth()
 
   const { safe } = useSafe()
   const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
@@ -54,7 +54,11 @@ export const useSAWithdrawalAuthHook = () => {
   )
   const { mutateAsync } = useCreateWithdrawalAuthMutation()
 
-  const { data: withdrawals, isLoading, error } = useWithdrawalAuths(1, '1')
+  const {
+    data: spendingLimits,
+    isLoading,
+    error
+  } = useSpendingLimitsAuths(1, '1')
 
   const {
     control,
@@ -64,7 +68,7 @@ export const useSAWithdrawalAuthHook = () => {
     setValue,
     formState: { errors, isSubmitting }
   } = useForm<CreateWithdrawalFieldValues>({
-    resolver: zodResolver(createWithdrawalValidationSchema)
+    resolver: zodResolver(createSpendingLimitsValidationSchema)
   })
 
   const [searchContacts, setSearchContacts] = useState<
@@ -119,14 +123,14 @@ export const useSAWithdrawalAuthHook = () => {
 
       reset()
       setSearchContacts(contacts)
-      setIsCreateWithdrawalOpen(false)
+      setIsCreateSpendingLimitsOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
   return {
-    withdrawals,
+    spendingLimits,
     isLoading,
     error,
     searchContacts,
@@ -142,12 +146,12 @@ export const useSAWithdrawalAuthHook = () => {
     isSubmitting,
     reset,
     onSubmitCreateWithdrawal,
-    isCreateWithdrawalOpen,
-    setIsCreateWithdrawalOpen,
-    isDeleteWithdrawalOpen,
-    setIsDeleteWithdrawalOpen,
-    selectedWithdrawal,
-    setSelectedWithdrawal,
-    handleDeleteWithdrawal
+    isCreateSpendingLimitsOpen,
+    setIsCreateSpendingLimitsOpen,
+    isDeleteSpendingLimitsOpen,
+    setIsDeleteSpendingLimitsOpen,
+    selectedSpendingLimits,
+    setSelectedSpendingLimits,
+    handleDeleteSpendingLimits
   }
 }

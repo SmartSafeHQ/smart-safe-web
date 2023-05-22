@@ -1,12 +1,12 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
+import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
 
 import { queryClient } from '@lib/reactQuery'
 import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
 
-interface CreateWithdrawalAuthFunctionInput {
+interface CreateSpendingLimitsAuthFunctionInput {
   smartAccountAddress: string
   customerWalletPrivateKey: string
   contactAddress: string
@@ -16,17 +16,17 @@ interface CreateWithdrawalAuthFunctionInput {
   recipientName?: string
 }
 
-interface CreateWithdrawalAuthFunctionOutput {
+interface CreateSpendingLimitsAuthFunctionOutput {
   index: number
 }
 
-export interface CreateWithdrawalAuthApiResponse {
+export interface CreateSpendingLimitsAuthApiResponse {
   id: number
 }
 
-async function createWithdrawalAuthFunction(
-  input: CreateWithdrawalAuthFunctionInput
-): Promise<CreateWithdrawalAuthFunctionOutput> {
+async function createSpendingLimitsAuthFunction(
+  input: CreateSpendingLimitsAuthFunctionInput
+): Promise<CreateSpendingLimitsAuthFunctionOutput> {
   console.log(input)
   // const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
   // const signer = new Wallet(input.customerWalletPrivateKey, provider)
@@ -58,18 +58,20 @@ async function createWithdrawalAuthFunction(
 
 export function useCreateWithdrawalAuthMutation() {
   return useMutation({
-    mutationKey: ['createWithdrawalAuth'],
-    mutationFn: (input: CreateWithdrawalAuthFunctionInput) =>
-      createWithdrawalAuthFunction(input),
+    mutationKey: ['createSpendingLimitsAuth'],
+    mutationFn: (input: CreateSpendingLimitsAuthFunctionInput) =>
+      createSpendingLimitsAuthFunction(input),
     onSuccess: async (data, variables) => {
       await queryClient.cancelQueries({
-        queryKey: ['smartAccountWithdrawalAuths', variables.smartAccountAddress]
+        queryKey: [
+          'smartAccountSpendingLimitsAuths',
+          variables.smartAccountAddress
+        ]
       })
 
-      const prevAuths = queryClient.getQueryData<SelectedWithdrawalProps[]>([
-        'smartAccountWithdrawalAuths',
-        variables.smartAccountAddress
-      ])
+      const prevAuths = queryClient.getQueryData<SelectedSpendingLimitsProps[]>(
+        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress]
+      )
 
       const createdAuth = {
         index: data.index,
@@ -89,8 +91,8 @@ export function useCreateWithdrawalAuthMutation() {
         }
       }
 
-      queryClient.setQueryData<SelectedWithdrawalProps[]>(
-        ['smartAccountWithdrawalAuths', variables.smartAccountAddress],
+      queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
+        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress],
         () => {
           prevAuths?.push(createdAuth)
 
@@ -102,7 +104,7 @@ export function useCreateWithdrawalAuthMutation() {
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(
-        ['smartAccountWithdrawalAuths', variables.smartAccountAddress],
+        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress],
         context
       )
     },
@@ -111,7 +113,7 @@ export function useCreateWithdrawalAuthMutation() {
         () =>
           queryClient.invalidateQueries({
             queryKey: [
-              'smartAccountWithdrawalAuths',
+              'smartAccountSpendingLimitsAuths',
               variables.smartAccountAddress
             ]
           }),
