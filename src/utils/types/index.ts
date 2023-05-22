@@ -2,7 +2,7 @@ import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
 
-import { errors as etherErrors } from 'ethers'
+import type { ErrorCode } from 'ethers'
 
 export type NextPageWithLayout<P = Record<string, string>, IP = P> = NextPage<
   P,
@@ -16,7 +16,7 @@ export type AppPropsWithLayout = AppProps & {
 }
 
 export class EthereumError extends Error {
-  code: etherErrors = etherErrors.UNKNOWN_ERROR
+  code: ErrorCode = 'UNKNOWN_ERROR'
 }
 
 export interface EthereumErrorProps {

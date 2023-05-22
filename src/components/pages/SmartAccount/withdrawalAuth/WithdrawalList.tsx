@@ -11,7 +11,7 @@ export function WithdrawalList() {
     useSAWithdrawalAuthHook()
 
   return (
-    <ScrollArea className="w-full max-w-full">
+    <ScrollArea>
       {error ? (
         <ErrorState
           title="Could not load your withdrawal authorizations. Please try again."

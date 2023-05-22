@@ -1,4 +1,5 @@
 import {
+  AddressBook,
   ArrowsCounterClockwise,
   CirclesThree,
   House,
@@ -35,6 +36,13 @@ const NAV_LINKS = [
     activePath: 'send',
     icon: PaperPlaneTilt,
     title: 'Send',
+    isDisabled: false
+  },
+  {
+    href: 'smart-account/contacts',
+    activePath: 'contacts',
+    icon: AddressBook,
+    title: 'Address Book',
     isDisabled: false
   }
 ]

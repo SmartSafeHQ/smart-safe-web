@@ -11,7 +11,7 @@ export function ContactsList() {
     useSAContactsHook()
 
   return (
-    <ScrollArea className="w-full max-w-full">
+    <ScrollArea>
       {error ? (
         <ErrorState
           title="Unable to load your contacts, please try again"
@@ -49,7 +49,7 @@ export function ContactsList() {
               <tbody>
                 {contacts.map(contact => (
                   <ContactsTable.Tr
-                    key={contact.id}
+                    key={contact.contactAddress}
                     contact={contact}
                     handleEditContact={handleEditContact}
                     handleDeleteContact={handleDeleteContact}

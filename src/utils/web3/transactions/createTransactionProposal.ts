@@ -1,8 +1,8 @@
-import { providers, utils } from 'ethers'
+import { ethers, type JsonRpcSigner } from 'ethers'
 
 function hashString(data: string) {
-  const stringToBytes = utils.toUtf8Bytes(data)
-  return utils.keccak256(stringToBytes)
+  const stringToBytes = ethers.toUtf8Bytes(data)
+  return ethers.keccak256(stringToBytes)
 }
 
 function getHashOfSignatureStruct(
@@ -16,20 +16,18 @@ function getHashOfSignatureStruct(
     'Signature(address,address,uint64,uint256,bytes)'
   )
 
-  const signatureStructEncoded = new utils.AbiCoder().encode(
+  const signatureStructEncoded = new ethers.AbiCoder().encode(
     ['bytes32', 'address', 'address', 'uint64', 'uint256', 'bytes32'],
     [signatureStructHash, from, to, transactioNonce, value, data]
   )
 
-  console.log({ signatureStructHash, from, to, transactioNonce, value, data })
-
-  const hashedEncodedStruct = utils.keccak256(signatureStructEncoded)
+  const hashedEncodedStruct = ethers.keccak256(signatureStructEncoded)
 
   return { hashedEncodedStruct }
 }
 
 interface SignHashProps {
-  signer: providers.JsonRpcSigner
+  signer: JsonRpcSigner
   domain: {
     chainId: number
     verifyingContract: string
@@ -53,8 +51,8 @@ async function signHash({
     'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
   )
 
-  const domainSeparator = utils.keccak256(
-    new utils.AbiCoder().encode(
+  const domainSeparator = ethers.keccak256(
+    new ethers.AbiCoder().encode(
       ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
       [
         typeHash,
@@ -66,16 +64,20 @@ async function signHash({
     )
   )
 
-  const typedDataHash = utils.keccak256(
-    utils.solidityPack(
+  const typedDataHash = ethers.keccak256(
+    ethers.solidityPacked(
       ['string', 'bytes32', 'bytes32'],
       ['\x19\x01', domainSeparator, hashedEncodedStruct]
     )
   )
 
+  console.log(ethers.getBytes(typedDataHash).toString())
+
   const signedTypedDataHash = await signer.signMessage(
-    utils.arrayify(typedDataHash)
+    ethers.getBytes(typedDataHash)
   )
+
+  console.log({ typedDataHash, signedTypedDataHash })
 
   return { typedDataHash, signedTypedDataHash }
 }

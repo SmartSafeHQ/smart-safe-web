@@ -12,7 +12,7 @@ export function TransactionsQueueList() {
     useTransactionsQueue()
 
   return (
-    <ScrollArea className="w-full max-w-full px-2">
+    <ScrollArea className="px-2">
       {transactionsQueue && !transactionsQueue.toApprove && (
         <ErrorState
           title="You have no transactions on the queue"

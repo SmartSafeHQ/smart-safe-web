@@ -53,7 +53,7 @@ export function AddressSafesList() {
               </Text>
             </div>
 
-            <ScrollArea className="w-full h-80 pr-2">
+            <ScrollArea className="pr-2 max-h-[20rem]">
               {addressSafes?.map(safe => {
                 return (
                   <SafeLinkItem

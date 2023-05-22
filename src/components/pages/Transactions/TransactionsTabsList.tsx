@@ -15,7 +15,7 @@ export function TransactionsTabsList() {
   const { safe } = useSafe()
 
   return (
-    <ScrollArea className="w-full max-w-full">
+    <ScrollArea>
       <Tabs.List
         aria-label="Manage your smart account assets"
         className="w-full min-h-[2.75rem] text-center text-sm"

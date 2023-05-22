@@ -1,8 +1,6 @@
-import { Contract, providers, utils } from 'ethers'
+import { type ContractTransactionResponse, ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 import { EIP1193Provider } from '@web3-onboard/core'
-
-import type { TransactionResponse } from '@ethersproject/abstract-provider'
 
 import { queryClient } from '@lib/reactQuery'
 import SMART_SAFE_PROXY_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
@@ -26,7 +24,7 @@ export type DeploySafeFunctionInput = {
 
 interface DeploySafeFunctionOutput {
   safeAddress: string
-  transaction: TransactionResponse
+  transaction: ContractTransactionResponse
 }
 
 async function deploySafeProxyFunction(
@@ -38,42 +36,32 @@ async function deploySafeProxyFunction(
 
   if (!smartSafeProxyFactoryAddress) throw new Error('Chain not supported')
 
-  const provider = new providers.Web3Provider(input.provider, {
+  const provider = new ethers.BrowserProvider(input.provider, {
     chainId: parseInt(input.chain.id, 16),
     name: input.chain.name
   })
 
-  const signer = provider.getSigner()
-  const contract = new Contract(
+  const signer = await provider.getSigner()
+  const contract = new ethers.Contract(
     smartSafeProxyFactoryAddress,
     SMART_SAFE_PROXY_FACTORY_ABI,
     signer
   )
 
   const ownersAdressesList = input.owners.map(owner =>
-    utils.getAddress(owner.address)
+    ethers.getAddress(owner.address)
   )
 
-  const computedAddress = await contract.functions.computeAddress(
+  const proxyAddress = await contract.getFunction('computeAddress')(
     ownersAdressesList[0]
   )
 
-  const deployContractAddress = computedAddress.toString()
-
-  const gasPrice = await provider.getGasPrice()
-
-  const estimatedGas = await contract.estimateGas.deploySmartSafeProxy(
+  const transaction = await contract.getFunction('deploySmartSafeProxy')(
     ownersAdressesList,
     input.requiredSignaturesCount
   )
 
-  const transaction = await contract.functions.deploySmartSafeProxy(
-    ownersAdressesList,
-    input.requiredSignaturesCount,
-    { gasLimit: estimatedGas, gasPrice }
-  )
-
-  return { transaction, safeAddress: deployContractAddress }
+  return { transaction, safeAddress: proxyAddress }
 }
 
 export function useDeploySafeProxyMutation() {

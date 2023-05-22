@@ -1,10 +1,13 @@
-import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { useWallets } from '@web3-onboard/react'
+
+import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 
 import { useSAContacts } from '@contexts/SAContactsContext'
 
 export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
 export const useSAContactsHook = () => {
+  const [wallets] = useWallets()
   const {
     isCreateContactOpen,
     setIsCreateContactOpen,
@@ -18,7 +21,11 @@ export const useSAContactsHook = () => {
     handleDeleteContact
   } = useSAContacts()
 
-  const { data: contacts, isLoading, error } = useSmartAccountContacts(1)
+  const {
+    data: contacts,
+    isLoading,
+    error
+  } = useListContacts(wallets?.accounts[0].address)
 
   return {
     contacts,

@@ -4,11 +4,12 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
+import { useWallets } from '@web3-onboard/react'
 
 import { useSAWithdrawalAuth } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 import { useWithdrawalAuths } from '@hooks/smartAccount/queries/useWithdrawalAuths'
 import { useCreateWithdrawalAuthMutation } from '@hooks/smartAccount/mutations/useCreateWithdrawalAuthMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
@@ -16,7 +17,7 @@ import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 const createWithdrawalValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
-    const isAddressValid = ethers.utils.isAddress(address)
+    const isAddressValid = ethers.isAddress(address)
 
     return isAddressValid
   }, 'Invalid contact address'),
@@ -46,9 +47,11 @@ export const useSAWithdrawalAuthHook = () => {
     setSelectedWithdrawal,
     handleDeleteWithdrawal
   } = useSAWithdrawalAuth()
+  const [wallet] = useWallets()
 
-  const { data: contacts, isLoading: contactsIsLoading } =
-    useSmartAccountContacts(1)
+  const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
+    wallet?.accounts[0].address
+  )
   const { mutateAsync } = useCreateWithdrawalAuthMutation()
 
   const { data: withdrawals, isLoading, error } = useWithdrawalAuths(1, '1')
@@ -65,7 +68,7 @@ export const useSAWithdrawalAuthHook = () => {
   })
 
   const [searchContacts, setSearchContacts] = useState<
-    ContactProps[] | undefined
+    ContactProps[] | null | undefined
   >(contacts)
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export const useSAWithdrawalAuthHook = () => {
     }
 
     const searchResults = contacts?.filter(contact =>
-      contact.wallet.address.startsWith(currentValue)
+      contact.contactAddress.startsWith(currentValue)
     )
 
     setSearchContacts(searchResults)
@@ -98,7 +101,7 @@ export const useSAWithdrawalAuthHook = () => {
       )
 
       const findContactForRecipient = contacts.find(
-        contact => contact.wallet.address === data.contactAddress
+        contact => contact.contactAddress === data.contactAddress
       )
 
       if (!withdrawalCoin) {
@@ -111,7 +114,7 @@ export const useSAWithdrawalAuthHook = () => {
         smartAccountAddress: 'address',
         customerWalletPrivateKey: 'privateKey',
         coin: withdrawalCoin,
-        recipientName: findContactForRecipient?.name
+        recipientName: findContactForRecipient?.contactName
       })
 
       reset()

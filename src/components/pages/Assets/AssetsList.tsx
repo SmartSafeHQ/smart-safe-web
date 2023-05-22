@@ -15,7 +15,7 @@ export function AssetsList() {
   } = useSafeTokens(safe?.address, safe?.chain.chainId, !!safe)
 
   return (
-    <ScrollArea className="w-full max-w-full px-2">
+    <ScrollArea className="px-2">
       {error ? (
         <ErrorState
           title="Unable to load safe assets, please try again"

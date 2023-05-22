@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-import { Contract, providers, utils } from 'ethers'
+import { ethers } from 'ethers'
 
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { fetchSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { listContacts } from '@hooks/addressBook/queries/useListContacts'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
@@ -17,22 +17,28 @@ interface FetchSmartAccountWithdrawalAuthsInput {
 export async function fetchSmartAccountWithdrawalAuths(
   input: FetchSmartAccountWithdrawalAuthsInput
 ): Promise<SelectedWithdrawalProps[]> {
-  const contacts = await queryClient.ensureQueryData<ContactProps[]>({
-    queryKey: ['smartAccountContacts', input.customerId],
-    queryFn: () => fetchSmartAccountContacts({ customerId: input.customerId })
+  const contacts = await queryClient.ensureQueryData<ContactProps[] | null>({
+    queryKey: ['listContacts'],
+    queryFn: () => listContacts({ creatorAddress: input.smartAccountAddress })
   })
 
-  const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
-  const contract = new Contract(input.smartAccountAddress, '{}', provider)
+  const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
+  const contract = new ethers.Contract(
+    input.smartAccountAddress,
+    '{}',
+    provider
+  )
 
-  const totalAuthorizations = await contract.functions.totalAuthorizations()
+  const totalAuthorizations = await contract.getFunction(
+    'totalAuthorizations'
+  )()
 
   const formattedAuthorizationsCount = +totalAuthorizations.toString()
 
   const authorizations: SelectedWithdrawalProps[] = []
 
   for (let i = 0; i < formattedAuthorizationsCount; i++) {
-    const authorization = await contract.functions.authorizations(i)
+    const authorization = await contract.getFunction('authorizations')(i)
 
     const withdrawalCoin = CHAINS_ATTRIBUTES.find(
       coin => coin.rpcUrl === authorization.tokenAddress
@@ -40,11 +46,11 @@ export async function fetchSmartAccountWithdrawalAuths(
 
     if (!withdrawalCoin) continue
 
-    const findContactForRecipient = contacts.find(
-      contact => contact.wallet.address === authorization.userAddress
+    const findContactForRecipient = contacts?.find(
+      contact => contact.contactAddress === authorization.userAddress
     )
 
-    const formattedAmount = +utils.formatEther(
+    const formattedAmount = +ethers.formatEther(
       authorization.tokenAmount.toString()
     )
 
@@ -52,7 +58,7 @@ export async function fetchSmartAccountWithdrawalAuths(
 
     authorizations.push({
       index: authorization.authorizationIndex,
-      recipientName: findContactForRecipient?.name,
+      recipientName: findContactForRecipient?.contactName,
       coinAmount: formattedAmount,
       dateFrom: formattedDate,
       coin: {

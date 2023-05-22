@@ -4,21 +4,20 @@ import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteContactMutation } from '@hooks/smartAccount/mutations/useDeleteContactMutation'
+import { useDeleteContact } from '@hooks/addressBook/mutations/useDeleteContact'
 import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 
 export function DeleteContactModal() {
   const { selectedContact, isDeleteContactOpen, setIsDeleteContactOpen } =
     useSAContactsHook()
-  const { mutateAsync, isLoading } = useDeleteContactMutation()
+  const { mutateAsync, isLoading } = useDeleteContact()
 
   async function handleConfirmDelete() {
     if (!selectedContact) return
 
     try {
       await mutateAsync({
-        contactId: selectedContact.id,
-        customerId: 1
+        contactId: selectedContact.contactId
       })
 
       setIsDeleteContactOpen(false)
@@ -46,7 +45,7 @@ export function DeleteContactModal() {
             <DialogModal.Description className="text-lg text-center">
               SmartSafe will delete the contact
               <Text asChild className="ml-1">
-                <strong>{selectedContact?.name}</strong>
+                <strong>{selectedContact?.contactName}</strong>
               </Text>
             </DialogModal.Description>
           </header>

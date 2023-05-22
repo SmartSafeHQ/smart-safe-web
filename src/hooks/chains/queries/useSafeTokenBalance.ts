@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { providers, utils } from 'ethers'
+import { ethers } from 'ethers'
 
 import {
   FetchTokenUsdValueResponse,
@@ -25,7 +25,7 @@ export async function fetchSafeTokenBalance(
     throw new Error('wallet address and chain required')
   }
 
-  const provider = new providers.JsonRpcProvider(input.rpcUrl)
+  const provider = new ethers.JsonRpcProvider(input.rpcUrl)
 
   const data = await queryClient.ensureQueryData<FetchTokenUsdValueResponse>({
     queryKey: ['tokenUsdValue', input.symbol],
@@ -33,7 +33,7 @@ export async function fetchSafeTokenBalance(
   })
 
   const balance = await provider.getBalance(input.address)
-  const balanceInTokens = +utils.formatUnits(balance, 18)
+  const balanceInTokens = +ethers.formatUnits(balance, 18)
 
   const usdBalance = balanceInTokens * data.usdValue
 
@@ -54,6 +54,8 @@ export function useSafeTokenBalance(
     queryFn: () => fetchSafeTokenBalance({ address, symbol, rpcUrl }),
     enabled,
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 3 // 3 minutes
+    staleTime: 1000 * 60 * 3, // 3 minutes
+    retry: 3,
+    retryDelay: 5000
   })
 }
