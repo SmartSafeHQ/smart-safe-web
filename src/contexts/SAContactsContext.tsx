@@ -13,6 +13,7 @@ export interface ContactProps {
   contactAddress: string
   formattedAddress: string
   contactName: string
+  contactId: number
 }
 
 interface SAContactsContextData {

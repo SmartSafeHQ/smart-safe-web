@@ -3,7 +3,7 @@ import { smartSafeApi } from '@lib/axios'
 import { formatWalletAddress } from '@/utils/web3'
 
 interface FetchContactsList {
-  contacts: { name: string; address: string }[]
+  contacts: { name: string; address: string; id: number }[]
 }
 
 interface ListContactsInput {
@@ -15,10 +15,11 @@ type ListContactsResponse =
       contactName: string
       contactAddress: string
       formattedAddress: string
+      contactId: number
     }[]
   | null
 
-async function listContacts({
+export async function listContacts({
   creatorAddress
 }: ListContactsInput): Promise<ListContactsResponse> {
   const { data } = await smartSafeApi.get<FetchContactsList>(
@@ -32,7 +33,8 @@ async function listContacts({
     return null
   }
 
-  const formattedContactsList = data.contacts.map(({ address, name }) => ({
+  const formattedContactsList = data.contacts.map(({ address, name, id }) => ({
+    contactId: id,
     contactName: name,
     contactAddress: address,
     formattedAddress: formatWalletAddress({ walletAddress: address })

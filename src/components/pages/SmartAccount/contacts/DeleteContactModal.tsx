@@ -4,21 +4,20 @@ import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteContactMutation } from '@hooks/smartAccount/mutations/useDeleteContactMutation'
+import { useDeleteContact } from '@hooks/addressBook/mutations/useDeleteContact'
 import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 
 export function DeleteContactModal() {
   const { selectedContact, isDeleteContactOpen, setIsDeleteContactOpen } =
     useSAContactsHook()
-  const { mutateAsync, isLoading } = useDeleteContactMutation()
+  const { mutateAsync, isLoading } = useDeleteContact()
 
   async function handleConfirmDelete() {
     if (!selectedContact) return
 
     try {
       await mutateAsync({
-        contactAddress: selectedContact.contactAddress,
-        customerId: 1
+        contactId: selectedContact.contactId
       })
 
       setIsDeleteContactOpen(false)
