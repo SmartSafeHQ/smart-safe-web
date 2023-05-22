@@ -4,61 +4,21 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import { toast } from 'react-toastify'
 import { useEffect } from 'react'
-import { ethers } from 'ethers'
 import axios from 'axios'
-import { z } from 'zod'
 
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
+import {
+  DEFAULT_STEPS,
+  StepProps,
+  useCreateSafe
+} from '@contexts/create-safe/CreateSafeContext'
+import {
+  validationSchema,
+  FieldValues
+} from '@hooks/safes/create/deploySafeValidationSchema'
 import { useSafe } from '@contexts/SafeContext'
-import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
 import { useDeploySafeProxyMutation } from '@hooks/safes/create/mutation/useDeploySafeProxyMutation'
 import { useSaveSmartSafeProxyData } from '@hooks/safes/create/mutation/useSaveSmartSafeProxyData'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-
-const validationSchema = z.object({
-  name: z
-    .string()
-    .min(1, 'name required')
-    .regex(
-      SAFE_NAME_REGEX,
-      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
-    ),
-  owners: z
-    .array(
-      z.object({
-        name: z.string().min(1, 'Owner name required'),
-        address: z
-          .string()
-          .min(1, 'Owner address required')
-          .refine(address => {
-            const isAddressValid = ethers.utils.isAddress(address)
-
-            return isAddressValid
-          }, 'Invalid owner address')
-      })
-    )
-    .min(1, {
-      message: 'At least 1 owner must be assigned.'
-    })
-    .refine(addresses => {
-      // Check that the current address is unique
-      const checkSomeOwnerAddressIsRepeated = addresses.find((owner, index) => {
-        const findSomeOwnerWithSameAddress = addresses.some(
-          (someOwner, someIndex) =>
-            !!owner.address &&
-            someIndex !== index &&
-            someOwner.address === owner.address
-        )
-
-        return findSomeOwnerWithSameAddress
-      })
-
-      return !checkSomeOwnerAddressIsRepeated
-    }, "Each safe owner's address must be unique."),
-  requiredSignaturesCount: z.string().min(1, 'Signatures count required')
-})
-
-export type FieldValues = z.infer<typeof validationSchema>
 
 export const useDeploySafeHook = () => {
   const { push } = useRouter()
@@ -96,14 +56,67 @@ export const useDeploySafeHook = () => {
     name: 'owners'
   })
 
+  function addStatusStep(steps: StepProps[]) {
+    setDeployStatus(prev => {
+      const prevSteps: StepProps[] =
+        prev?.steps.map(step => ({ ...step, status: 'success' })) ?? []
+
+      return {
+        isDeployEnabled: true,
+        steps: [...prevSteps, ...steps]
+      }
+    })
+  }
+
+  function addErrorToLastStatusStep(message: string) {
+    setDeployStatus(prev => {
+      const updattedSteps: StepProps[] = prev?.steps ?? []
+      const stepErrorIndex = updattedSteps.length - 1
+
+      const errorStep: StepProps = {
+        status: 'error',
+        message: updattedSteps[stepErrorIndex].message,
+        error: message
+      }
+
+      updattedSteps[stepErrorIndex] = errorStep
+
+      return {
+        isDeployEnabled: false,
+        steps: updattedSteps
+      }
+    })
+  }
+
+  function resetToDefaultSteps() {
+    setDeployStatus({ steps: DEFAULT_STEPS, isDeployEnabled: true })
+  }
+
+  function finishDeploySuccess(safeAddress: string) {
+    setDeployStatus(prev => {
+      const prevSteps: StepProps[] =
+        prev?.steps.map(step => ({ ...step, status: 'success' })) ?? []
+
+      return {
+        isDeployEnabled: true,
+        safeAddress,
+        steps: prevSteps
+      }
+    })
+  }
+
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
       if (!safeInfos || !wallet) throw new Error('no safe infos available')
 
-      setDeployStatus({
-        deploy: { status: 'idle', errorReason: '' },
-        sign: { status: 'loading', errorReason: '' }
-      })
+      resetToDefaultSteps()
+
+      addStatusStep([
+        {
+          status: 'loading',
+          message: 'Waiting for your confirmation...'
+        }
+      ])
 
       const docHeight = document.documentElement.scrollHeight
 
@@ -125,14 +138,16 @@ export const useDeploySafeHook = () => {
         owners: data.owners
       })
 
-      setDeployStatus({
-        sign: { status: 'success', errorReason: '' },
-        deploy: { status: 'loading', errorReason: '' }
-      })
+      addStatusStep([
+        {
+          status: 'loading',
+          message: 'Processing transaction on the blockchain...'
+        }
+      ])
 
       await transaction.wait()
 
-      mutateSaveSmartSafeProxyData({
+      await mutateSaveSmartSafeProxyData({
         chainId: safeInfos.chain.chainId,
         deployWalletAddress: wallet.accounts[0].address,
         owners: data.owners,
@@ -140,11 +155,7 @@ export const useDeploySafeHook = () => {
         smartSafeProxyAddress: safeAddress
       })
 
-      setDeployStatus(currentState => ({
-        ...currentState,
-        deploy: { errorReason: '', status: 'success' },
-        safeAddress
-      }))
+      finishDeploySuccess(safeAddress)
     } catch (err) {
       const error = err as Error & { code?: string }
 
@@ -153,6 +164,10 @@ export const useDeploySafeHook = () => {
         behavior: 'smooth'
       })
 
+      error?.code === 'ACTION_REJECTED'
+        ? addErrorToLastStatusStep('User rejected transaction')
+        : addErrorToLastStatusStep('Unknown error')
+
       if (axios.isAxiosError(error) && error.response?.data?.message) {
         console.error(error)
 
@@ -160,16 +175,6 @@ export const useDeploySafeHook = () => {
         toast.error(errorMessage)
 
         return
-      } else if (error?.code === 'ACTION_REJECTED') {
-        setDeployStatus({
-          sign: { status: 'error', errorReason: 'User rejected transaction' },
-          deploy: { status: 'idle', errorReason: '' }
-        })
-      } else {
-        setDeployStatus({
-          sign: { status: 'idle', errorReason: '' },
-          deploy: { status: 'error', errorReason: 'Unknown error' }
-        })
       }
 
       getWe3ErrorMessageWithToast(error)
@@ -204,7 +209,7 @@ export const useDeploySafeHook = () => {
 
       push('/')
     }
-  })
+  }, [wallet, formattedOwnerAddress, safeInfos])
 
   return {
     push,

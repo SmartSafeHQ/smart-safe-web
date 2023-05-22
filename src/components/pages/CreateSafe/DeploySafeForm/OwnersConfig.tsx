@@ -6,7 +6,7 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 
-import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
+import { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
@@ -53,7 +53,7 @@ export function OwnersConfig({
                 className="w-full flex items-stretch justify-start gap-5"
               >
                 <TextInput.Root
-                  htmlFor="name"
+                  htmlFor={`ownerName-${index}`}
                   className="flex flex-1"
                   error={fieldNameError?.message}
                 >
@@ -63,7 +63,7 @@ export function OwnersConfig({
                     <TextInput.Input
                       {...register(`owners.${index}.name`)}
                       required
-                      id="name"
+                      id={`ownerName-${index}`}
                       placeholder="Example name"
                     />
                   </TextInput.Content>
@@ -71,7 +71,7 @@ export function OwnersConfig({
 
                 <div className="flex flex-1 items-stretch justify-start gap-3 pr-7 relative">
                   <TextInput.Root
-                    htmlFor="ownerWallet"
+                    htmlFor={`ownerWallet-${index}`}
                     className="flex flex-1"
                     error={fieldAddressError?.message}
                   >
@@ -81,7 +81,7 @@ export function OwnersConfig({
                       <TextInput.Input
                         {...register(`owners.${index}.address`)}
                         required
-                        id="ownerWallet"
+                        id={`ownerWallet-${index}`}
                         placeholder="Enter owner wallet address"
                       />
                     </TextInput.Content>

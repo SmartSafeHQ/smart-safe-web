@@ -41,8 +41,8 @@ const NAV_LINKS = [
 
 export function SidebarNav() {
   return (
-    <div className="flex flex-1 pr-2 overflow-hidden overflow-y-auto bg-zinc-50 dark:bg-zinc-950 md:w-[15rem] md:max-lg:w-[4.5rem] md:max-lg:pr-0 lg:pr-4">
-      <div className="flex flex-1 flex-col items-stretch justify-start md:max-lg:px-1 lg:p-3">
+    <div className="flex flex-1 pr-2 overflow-hidden overflow-y-auto bg-zinc-50 dark:bg-zinc-950 md:max-lg:pr-0 lg:pr-4">
+      <div className="flex flex-1 flex-col items-stretch justify-start md:w-[15rem] md:max-lg:w-[5rem] md:max-lg:px-1 lg:p-3">
         {NAV_LINKS.map(navLink => (
           <DialogDrawer.Close key={navLink.title}>
             <NavLink

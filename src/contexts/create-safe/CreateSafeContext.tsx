@@ -10,21 +10,23 @@ import { ChainSettings } from '@utils/web3/chains/supportedChains'
 
 type CreateSafeProviderProps = PropsWithChildren<Record<string, unknown>>
 
-type SafeInfosProps = {
+interface SafeInfosProps {
   name: string
   chain: ChainSettings
 }
 
-type DeployStatusProps = {
-  sign: {
-    status: 'idle' | 'loading' | 'success' | 'error'
-    errorReason: string
-  }
-  deploy: {
-    status: 'idle' | 'loading' | 'success' | 'error'
-    errorReason: string
-  }
+export type DeployStatus = 'loading' | 'success' | 'error'
+
+export interface StepProps {
+  status: DeployStatus
+  message: string
+  error?: string
+}
+
+interface DeployStatusProps {
+  steps: StepProps[]
   safeAddress?: string
+  isDeployEnabled: boolean
 }
 
 interface CreateSafeContextData {
@@ -34,13 +36,17 @@ interface CreateSafeContextData {
   setDeployStatus: Dispatch<SetStateAction<DeployStatusProps>>
 }
 
+export const DEFAULT_STEPS: StepProps[] = [
+  { status: 'loading', message: 'Waiting for your final touches...' }
+]
+
 const CreateSafeContext = createContext({} as CreateSafeContextData)
 
 export function CreateSafeProvider({ children }: CreateSafeProviderProps) {
   const [safeInfos, setSafeInfos] = useState<SafeInfosProps | null>(null)
   const [deployStatus, setDeployStatus] = useState<DeployStatusProps>({
-    sign: { errorReason: '', status: 'idle' },
-    deploy: { errorReason: '', status: 'idle' }
+    steps: DEFAULT_STEPS,
+    isDeployEnabled: false
   })
 
   return (

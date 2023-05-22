@@ -11,7 +11,7 @@ import { SafeDeployedConfettiAnimation } from './SafeDeployedConfettiAnimation'
 
 import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
-export function CreateSafeDeployContent() {
+export function DeploySafeContent() {
   const { deployStatus } = useDeploySafeHook()
 
   return (
@@ -54,8 +54,7 @@ export function CreateSafeDeployContent() {
                 'min-w-[23.25rem] flex flex-col flex-1 items-stretch justify-start gap-6 p-6 relative rounded-md border-2 border-zinc-200 dark:border-zinc-700 shadow-lg bg-white dark:bg-black lg:p-8',
                 {
                   'pointer-events-none brightness-90 dark:brightness-50':
-                    deployStatus.sign.status === 'loading' ||
-                    deployStatus.deploy.status === 'loading'
+                    deployStatus.isDeployEnabled
                 }
               )}
             >
@@ -70,7 +69,7 @@ export function CreateSafeDeployContent() {
 
             <CreateSafeDeployStatus />
 
-            {deployStatus.deploy.status === 'success' && (
+            {deployStatus?.safeAddress && (
               <SafeDeployedConfettiAnimation className="fixed top-0 left-0" />
             )}
           </main>
