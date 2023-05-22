@@ -6,7 +6,6 @@ import {
 } from '@components/pages/SmartAccount/SmartAccountTabsList'
 import { Tabs } from '@components/Tabs'
 import { SmartAccountTab } from '@components/pages/SmartAccount'
-import { ContactsList } from '@components/pages/SmartAccount/contacts/ContactsList'
 
 const Settings = () => {
   return (
@@ -39,10 +38,6 @@ const Settings = () => {
                   </div>
                 </div>
               </SmartAccountTab.Header>
-
-              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5">
-                <ContactsList />
-              </div>
             </SmartAccountTab.Root>
           </Tabs.Content>
         </Tabs.Root>
