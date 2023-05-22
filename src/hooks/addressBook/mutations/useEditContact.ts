@@ -3,40 +3,37 @@ import { useMutation } from '@tanstack/react-query'
 import { queryClient } from '@lib/reactQuery'
 import { smartSafeApi } from '@lib/axios'
 
-interface CreateContactFunctionInput {
+interface UpdateContactFunctionInput {
   creatorAddress: string
-  contactName: string
-  contactAddress: string
+  contactId: number
+  newData: {
+    contactName: string
+  }
 }
 
-interface CreateContactFunctionOutput {
+export interface UpdateContactResponse {
   id: number
 }
 
-export interface CreateContactApiResponse {
-  id: number
-}
-
-async function createContactFunction(
-  input: CreateContactFunctionInput
-): Promise<CreateContactFunctionOutput> {
-  const response = await smartSafeApi.post<CreateContactApiResponse>(
+async function updateContactFunction(
+  input: UpdateContactFunctionInput
+): Promise<UpdateContactResponse> {
+  const response = await smartSafeApi.patch<UpdateContactResponse>(
     'addressBook',
     {
-      creatorAddress: input.creatorAddress,
-      contactName: input.contactName,
-      contactAddress: input.contactAddress
+      contactId: input.contactId,
+      newData: input.newData
     }
   )
 
   return { id: response.data.id }
 }
 
-export function useCreateContact() {
+export function useEditContact() {
   return useMutation({
-    mutationKey: ['createContact'],
-    mutationFn: (input: CreateContactFunctionInput) =>
-      createContactFunction(input),
+    mutationKey: ['editContact'],
+    mutationFn: (input: UpdateContactFunctionInput) =>
+      updateContactFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
         queryKey: ['listContacts', variables.creatorAddress]

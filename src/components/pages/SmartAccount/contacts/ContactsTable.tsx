@@ -31,6 +31,7 @@ ContactsTableTh.displayName = 'ContactsTable.Th'
 
 interface ContactsTableTrProps {
   contact: {
+    contactId: number
     contactName: string
     contactAddress: string
     formattedAddress: string

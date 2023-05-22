@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import { SelectedWithdrawalProps } from '@contexts/SAWithdrawalAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { fetchSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { listContacts } from '@hooks/addressBook/queries/useListContacts'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
@@ -17,9 +17,9 @@ interface FetchSmartAccountWithdrawalAuthsInput {
 export async function fetchSmartAccountWithdrawalAuths(
   input: FetchSmartAccountWithdrawalAuthsInput
 ): Promise<SelectedWithdrawalProps[]> {
-  const contacts = await queryClient.ensureQueryData<ContactProps[]>({
-    queryKey: ['smartAccountContacts', input.customerId],
-    queryFn: () => fetchSmartAccountContacts({ customerId: input.customerId })
+  const contacts = await queryClient.ensureQueryData<ContactProps[] | null>({
+    queryKey: ['listContacts'],
+    queryFn: () => listContacts({ creatorAddress: input.smartAccountAddress })
   })
 
   const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
@@ -46,7 +46,7 @@ export async function fetchSmartAccountWithdrawalAuths(
 
     if (!withdrawalCoin) continue
 
-    const findContactForRecipient = contacts.find(
+    const findContactForRecipient = contacts?.find(
       contact => contact.contactAddress === authorization.userAddress
     )
 
