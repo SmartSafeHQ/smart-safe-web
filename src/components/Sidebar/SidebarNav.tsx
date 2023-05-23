@@ -4,7 +4,8 @@ import {
   PaperPlaneTilt,
   AddressBook,
   UsersThree,
-  Gear
+  Gear,
+  ArrowClockwise
 } from '@phosphor-icons/react'
 
 import { useSafe } from '@contexts/SafeContext'
@@ -49,6 +50,13 @@ export function SidebarNav() {
       activePath: 'spending-limits',
       icon: UsersThree,
       title: 'Spending Limits',
+      isDisabled: false
+    },
+    {
+      href: '/dashboard/smart-account/recurring-payments',
+      activePath: 'recurring-payments',
+      icon: ArrowClockwise,
+      title: 'Recurring Payments',
       isDisabled: false
     },
     {
