@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
-import { useWallets } from '@web3-onboard/react'
 
+import { useSafe } from '@contexts/SafeContext'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
@@ -30,10 +30,10 @@ const validationSchema = z.object({
 export type FieldValues = z.infer<typeof validationSchema>
 
 export function UpdateContactModal() {
-  const [wallets] = useWallets()
   const { selectedContact, isUpdateContactOpen, setIsUpdateContactOpen } =
     useSAContactsHook()
   const { mutateAsync } = useEditContact()
+  const { safe } = useSafe()
 
   const {
     register,
@@ -53,7 +53,7 @@ export function UpdateContactModal() {
 
     try {
       await mutateAsync({
-        creatorAddress: wallets.accounts[0].address,
+        creatorId: safe?.ownerId!,
         contactId: selectedContact.contactId,
         newData: {
           contactName: data.name
@@ -95,7 +95,7 @@ export function UpdateContactModal() {
             className="flex flex-col gap-4 items-stretch w-full"
           >
             <Text className="capitalize text-gray-600 dark:text-gray-300">
-              wallet: {selectedContact?.formattedAddress}
+              Contact address: {selectedContact?.formattedAddress}
             </Text>
 
             <TextInput.Root

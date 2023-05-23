@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { useWallets } from '@web3-onboard/react'
 import { User, Wallet } from '@phosphor-icons/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -9,6 +8,7 @@ import { z } from 'zod'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
+import { useSafe } from '@contexts/SafeContext'
 
 import { useCreateContact } from '@hooks/addressBook/mutations/useCreateContact'
 import {
@@ -34,9 +34,9 @@ const validationSchema = z.object({
 export type FieldValues = z.infer<typeof validationSchema>
 
 export function CreateContactModal() {
-  const [wallets] = useWallets()
   const { isCreateContactOpen, setIsCreateContactOpen } = useSAContactsHook()
   const { mutateAsync: createContactMutation } = useCreateContact()
+  const { safe } = useSafe()
 
   const {
     register,
@@ -52,7 +52,7 @@ export function CreateContactModal() {
       await createContactMutation({
         contactAddress: data.address,
         contactName: data.name,
-        creatorAddress: wallets.accounts[0].address
+        creatorId: safe?.ownerId!
       })
 
       reset()

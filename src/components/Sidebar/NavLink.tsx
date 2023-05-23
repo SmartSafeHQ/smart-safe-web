@@ -17,6 +17,7 @@ import { useSafe } from '@contexts/SafeContext'
 interface NavLinkProps extends LinkProps {
   Icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
   children: ReactNode
+  basePath: string
   activePath?: string
   isDisabled?: boolean
 }
@@ -25,7 +26,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
   HTMLAnchorElement,
   NavLinkProps
 > = (
-  { Icon, isDisabled = false, href, activePath, children, ...props },
+  { Icon, isDisabled = false, href, basePath, activePath, children, ...props },
   ref
 ) => {
   const { asPath } = useRouter()
@@ -34,9 +35,13 @@ const NavLinkComponent: ForwardRefRenderFunction<
 
   let isActive = false
   let iconWeight: IconWeight = 'regular'
-  const parentRoute = asPath.split('/')[3]
+  const arrayRoute = asPath.split('/')
+  const parentRoute = arrayRoute.slice(3).join('/')
 
-  if (parentRoute === activePath) {
+  if (
+    parentRoute.startsWith(activePath ?? '/') ||
+    asPath.split('/')[3] === activePath
+  ) {
     isActive = true
     iconWeight = 'fill'
   }
@@ -54,7 +59,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
         }
       )}
     >
-      <Link ref={ref} href={`/dashboard/${safe?.address}/${href}`} {...props}>
+      <Link ref={ref} href={`${basePath}/${href}`} {...props}>
         <Icon className="w-6 h-6" weight={iconWeight} />
 
         <Text>{children}</Text>
