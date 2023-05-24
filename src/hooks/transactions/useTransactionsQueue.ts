@@ -1,3 +1,5 @@
+import { useConnectWallet } from '@web3-onboard/react'
+
 import { useSafe } from '@contexts/SafeContext'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import { useSafeTxQueue } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
@@ -9,6 +11,7 @@ export type TransactionType = 'SEND'
 
 export const useTransactionsQueue = () => {
   const { safe } = useSafe()
+  const [{ wallet }] = useConnectWallet()
   const {
     data: transactionsQueue,
     error: transactionsQueueError,
@@ -18,16 +21,29 @@ export const useTransactionsQueue = () => {
   const { mutateAsync: mutateApproveTransaction, isLoading: isLoadingApprove } =
     useApproveTransactionMutation()
 
-  async function handleApproveTransaction() {
+  async function handleApproveTransaction(
+    to: string,
+    from: string,
+    data: string,
+    amount: number
+  ) {
     try {
-      if (!safe) throw new Error('no safe infos available')
+      if (!safe || !wallet) {
+        throw new Error('no safe and wallet infos available')
+      }
 
-      const { transactionHash } = await mutateApproveTransaction({
-        rpcUrl: safe.chain.rpcUrl,
-        safeAddress: safe.address
+      await mutateApproveTransaction({
+        chainId: safe.chain.chainId,
+        fromSafe: safe.address,
+        ownerAddress: wallet.accounts[0].address,
+        provider: wallet.provider,
+        to,
+        from,
+        data,
+        amount
       })
 
-      console.log('transactionHash =>', transactionHash)
+      console.log('approved')
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }

@@ -25,6 +25,7 @@ export interface FetchSafeSendTxProps {
   to: string
   toFormattedAddress: string
   txHash: string
+  data: string
   token: {
     symbol: string
     icon: string
@@ -52,8 +53,10 @@ export async function fetchSafeTxQueue(
   const provider = new JsonRpcProvider(safeChain.rpcUrl)
   const contract = new Contract(input.safeAddress, SMART_SAFE_ABI, provider)
 
-  const transactionNonce = await contract.getFunction('transactionNonce')()
-  const currenTxQueueNonce = Number(transactionNonce) - 1
+  const transactionNonce = await contract.getFunction(
+    'requiredTransactionNonce'
+  )()
+  const currenTxQueueNonce = Number(transactionNonce)
   const transactionsQueue = (await contract.getFunction('getTransactions')(
     0,
     0

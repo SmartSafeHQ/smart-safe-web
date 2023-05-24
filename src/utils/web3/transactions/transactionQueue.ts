@@ -14,6 +14,7 @@ export interface FormatTransactionToQueueListOutput {
     address: string
   }[]
   to: string
+  data: string
   txHash: string
   token: {
     symbol: string
@@ -69,6 +70,7 @@ export function formatTransactionToQueueList(
     createdAt,
     signatures: formattedSignatures,
     to,
+    data,
     txHash:
       '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d',
     token: {

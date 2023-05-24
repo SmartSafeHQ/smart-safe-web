@@ -51,6 +51,7 @@ export function TransactionsQueueList() {
               amount={transactionsQueue.toApprove.amount}
               createdAt={transactionsQueue.toApprove.createdAt}
               signatures={transactionsQueue.toApprove.signatures}
+              txData={transactionsQueue.toApprove.data}
               toAddress={transactionsQueue.toApprove.to}
               threshold={safe.threshold}
               toFormattedAddress={
@@ -69,7 +70,7 @@ export function TransactionsQueueList() {
               </strong>
             </Text>
 
-            <ul>
+            <ul className="flex flex-col items-stretch justify-start gap-4">
               {transactionsQueue.pending.map(transaction => (
                 <PendingTransaction
                   key={transaction.nonce}

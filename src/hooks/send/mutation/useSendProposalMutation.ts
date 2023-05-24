@@ -4,6 +4,7 @@ import { EIP1193Provider } from '@web3-onboard/core'
 
 import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
+import { queryClient } from '@lib/reactQuery'
 
 interface SendProposalFunctionInput {
   provider: EIP1193Provider
@@ -82,6 +83,25 @@ export function useSendProposalMutation() {
   return useMutation({
     mutationKey: ['sendProposal'],
     mutationFn: (input: SendProposalFunctionInput) =>
-      sendProposalFunction(input)
+      sendProposalFunction(input),
+    onSuccess: async (_, variables) => {
+      await queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.fromSafe]
+      })
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(['safeTxQueue', variables.fromSafe], context)
+    },
+    onSettled: (_data, _error, variables) => {
+      const timeout = setTimeout(
+        () =>
+          queryClient.invalidateQueries({
+            queryKey: ['safeTxQueue', variables.fromSafe]
+          }),
+        5000
+      )
+
+      clearTimeout(timeout)
+    }
   })
 }

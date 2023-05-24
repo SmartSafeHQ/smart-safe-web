@@ -22,6 +22,7 @@ interface ToApproveTransactionProps {
   toAddress: string
   toFormattedAddress: string
   txHash: string
+  txData: string
   token: {
     symbol: string
     icon: string
@@ -36,6 +37,7 @@ export function ToApproveTransaction({
   createdAt,
   signatures,
   toAddress,
+  txData,
   toFormattedAddress,
   txHash,
   token
@@ -61,55 +63,67 @@ export function ToApproveTransaction({
           </Text>
         </TransactionLayout.SendHeader>
 
-        <div className="w-full flex flex-col items-stretch justify-start border-t-1 border-zinc-200 dark:border-zinc-700">
-          <div className="w-full flex flex-col items-stretch justify-start">
-            <Collapsible.Root
-              defaultOpen={false}
-              className="w-full flex flex-col px-6 py-3 border-b-1 border-zinc-200 dark:border-zinc-700"
-            >
-              <div className="flex flex-col items-stretch justify-between gap-3 w-full text-left overflow-hidden sm:flex-row">
-                <TransactionLayout.ApproveStatus
-                  status="waiting"
-                  signatures={signatures.length}
-                  threshold={threshold}
+        {safe && (
+          <div className="w-full flex flex-col items-stretch justify-start border-t-1 border-zinc-200 dark:border-zinc-700">
+            <div className="w-full flex flex-col items-stretch justify-start">
+              <Collapsible.Root
+                defaultOpen={false}
+                className="w-full flex flex-col px-6 py-3 border-b-1 border-zinc-200 dark:border-zinc-700"
+              >
+                <div className="flex flex-col items-stretch justify-between gap-3 w-full text-left overflow-hidden sm:flex-row">
+                  <TransactionLayout.ApproveStatus
+                    status="waiting"
+                    signatures={signatures.length}
+                    threshold={threshold}
+                  />
+
+                  <Collapsible.Trigger className="h-min text-xs text-start text-cyan-500 transition-colors hover:text-cyan-600">
+                    Show all owners
+                  </Collapsible.Trigger>
+                </div>
+
+                <Collapsible.Content className="w-full flex flex-col items-start justify-start">
+                  {signatures.map(owner => (
+                    <TransactionLayout.OwnerStatus
+                      key={owner.address}
+                      status={owner.status}
+                      address={owner.address}
+                      formattedAddress={owner.formattedAddress}
+                      explorerLink={`${safe.chain.explorerUrl}/address/${owner.address}`}
+                    />
+                  ))}
+                </Collapsible.Content>
+              </Collapsible.Root>
+
+              <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">
+                <TransactionLayout.SendToInfos
+                  tokenSymbol={token.symbol}
+                  address={toAddress}
+                  explorerLink={`${safe.chain.explorerUrl}/address/${toAddress}`}
+                  formattedAddress={toFormattedAddress}
+                  amount={amount}
                 />
 
-                <Collapsible.Trigger className="h-min text-xs text-start text-cyan-500 transition-colors hover:text-cyan-600">
-                  Show all owners
-                </Collapsible.Trigger>
+                <TransactionLayout.Infos
+                  txHash={txHash}
+                  createdAt={createdAt}
+                />
               </div>
-
-              <Collapsible.Content className="w-full flex flex-col items-start justify-start">
-                {signatures.map(owner => (
-                  <TransactionLayout.OwnerStatus
-                    key={owner.address}
-                    status={owner.status}
-                    address={owner.address}
-                    formattedAddress={owner.formattedAddress}
-                    explorerLink={`${safe?.chain.explorerUrl}/address/${owner.address}`}
-                  />
-                ))}
-              </Collapsible.Content>
-            </Collapsible.Root>
-
-            <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">
-              <TransactionLayout.SendToInfos
-                tokenSymbol={token.symbol}
-                address={toAddress}
-                explorerLink={`${safe?.chain.explorerUrl}/address/${toAddress}`}
-                formattedAddress={toFormattedAddress}
-                amount={amount}
-              />
-
-              <TransactionLayout.Infos txHash={txHash} createdAt={createdAt} />
             </div>
-          </div>
 
-          <TransactionLayout.Actions
-            isLoadingApprove={isLoadingApprove}
-            handleApproveTransaction={handleApproveTransaction}
-          />
-        </div>
+            <TransactionLayout.Actions
+              isLoadingApprove={isLoadingApprove}
+              handleApproveTransaction={() =>
+                handleApproveTransaction(
+                  toAddress,
+                  safe.address,
+                  txData,
+                  amount
+                )
+              }
+            />
+          </div>
+        )}
       </main>
     </TransactionLayout.Root>
   )
