@@ -59,7 +59,7 @@ const NAV_LINKS = [
   },
   {
     href: 'smart-account/recurring-payments',
-    activePath: 'recurring-payments',
+    activePath: 'smart-account/recurring-payments',
     icon: ArrowClockwise,
     title: 'Recurring Payments',
     isDisabled: false

@@ -26,8 +26,7 @@ function getHashOfSignatureStruct(
   return { hashedEncodedStruct }
 }
 
-interface SignHashProps {
-  signer: JsonRpcSigner
+interface GetHashMessageProps {
   domain: {
     chainId: number
     verifyingContract: string
@@ -35,11 +34,10 @@ interface SignHashProps {
   hashedEncodedStruct: string
 }
 
-async function signHash({
+function getHashMessage({
   domain: { chainId, verifyingContract },
-  signer,
   hashedEncodedStruct
-}: SignHashProps) {
+}: GetHashMessageProps) {
   const domain = {
     name: hashString('Smart Safe Signature Manager'),
     version: hashString('1.0.0'),
@@ -71,6 +69,25 @@ async function signHash({
     )
   )
 
+  return typedDataHash
+}
+
+interface SignHashProps {
+  signer: JsonRpcSigner
+  domain: {
+    chainId: number
+    verifyingContract: string
+  }
+  hashedEncodedStruct: string
+}
+
+async function signHash({
+  domain,
+  signer,
+  hashedEncodedStruct
+}: SignHashProps) {
+  const typedDataHash = getHashMessage({ domain, hashedEncodedStruct })
+
   console.log(ethers.getBytes(typedDataHash).toString())
 
   const signedTypedDataHash = await signer.signMessage(
@@ -80,6 +97,40 @@ async function signHash({
   console.log({ typedDataHash, signedTypedDataHash })
 
   return { typedDataHash, signedTypedDataHash }
+}
+
+interface CreateTransactionMessageProps {
+  domain: {
+    chainId: number
+    verifyingContract: string
+  }
+  transaction: {
+    from: string
+    to: string
+    transactionNonce: number
+    value: string
+    data: string
+  }
+}
+
+export function createTransactionMessage({
+  domain,
+  transaction
+}: CreateTransactionMessageProps) {
+  const { hashedEncodedStruct } = getHashOfSignatureStruct(
+    transaction.from,
+    transaction.to,
+    transaction.transactionNonce,
+    transaction.value,
+    transaction.data
+  )
+
+  const typedDataHash = getHashMessage({
+    domain,
+    hashedEncodedStruct
+  })
+
+  return typedDataHash
 }
 
 interface CreateTransactionProposalProps

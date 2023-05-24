@@ -36,7 +36,8 @@ export function ToApproveTransaction({
   txHash,
   token
 }: ToApproveTransactionProps) {
-  const { isLoadingApprove, handleApproveTransaction } = useTransactionsQueue()
+  const { safe, isLoadingApprove, handleApproveTransaction } =
+    useTransactionsQueue()
 
   return (
     <TransactionLayout.Root asChild>
@@ -89,7 +90,7 @@ export function ToApproveTransaction({
               <TransactionLayout.SendToInfos
                 tokenSymbol={token.symbol}
                 address={toAddress}
-                explorerLink={'http'}
+                explorerLink={`${safe?.chain.explorerUrl}/address/${toAddress}`}
                 formattedAddress={toFormattedAddress}
                 amount={amount}
               />

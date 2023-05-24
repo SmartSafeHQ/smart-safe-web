@@ -8,8 +8,12 @@ import { Text } from '@components/Text'
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
 
 export function TransactionsQueueList() {
-  const { safe, transactionsQueue, transactionsQueueError, isLoadingApprove } =
-    useTransactionsQueue()
+  const {
+    safe,
+    transactionsQueue,
+    transactionsQueueError,
+    transactionsQueueIsLoading
+  } = useTransactionsQueue()
 
   return (
     <ScrollArea className="px-2">
@@ -28,7 +32,7 @@ export function TransactionsQueueList() {
             'An unknown error occurred. Please try again later.'
           }
         />
-      ) : isLoadingApprove ? (
+      ) : transactionsQueueIsLoading ? (
         <LoadingState title="Loading safe transactions queue" />
       ) : (
         transactionsQueue?.toApprove &&

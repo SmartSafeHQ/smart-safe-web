@@ -2,7 +2,10 @@ import { TransactionLayout } from '@components/pages/Transactions/TransactionLay
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 
-import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
+import {
+  OwnerApproveStatus,
+  useTransactionsQueue
+} from '@hooks/transactions/useTransactionsQueue'
 
 interface PendingTransactionProps {
   nonce: number
@@ -32,6 +35,8 @@ export function PendingTransaction({
   txHash,
   token
 }: PendingTransactionProps) {
+  const { safe } = useTransactionsQueue()
+
   return (
     <Collapsible.Root defaultOpen={false}>
       <TransactionLayout.Root className="hover:border-zinc-400 hover:dark:border-zinc-500">
@@ -86,7 +91,7 @@ export function PendingTransaction({
                 <TransactionLayout.SendToInfos
                   tokenSymbol={token.symbol}
                   address={toAddress}
-                  explorerLink={'http'}
+                  explorerLink={`${safe?.chain.explorerUrl}/address/${toAddress}`}
                   formattedAddress={toFormattedAddress}
                   amount={amount}
                 />

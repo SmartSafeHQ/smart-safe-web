@@ -9,7 +9,7 @@ const RecurringPayments = () => {
   const { setIsCreateContactOpen } = useSAContactsHook()
 
   return (
-    <div className="flex flex-1 flex-col items-center px-2 pt-2 bg-gray-50 dark:bg-gray-900 md:pt-6">
+    <div className="flex flex-1 flex-col items-center px-2 pt-2 md:pt-6">
       <Head>
         <title>SmartSafe | Smart Account Recurring Payments</title>
         <meta name="description" content="Management of recurring payments" />
