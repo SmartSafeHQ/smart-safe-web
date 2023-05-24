@@ -5,7 +5,8 @@ import {
   AddressBook,
   UsersThree,
   Gear,
-  ArrowsCounterClockwise
+  ArrowsCounterClockwise,
+  ArrowClockwise
 } from '@phosphor-icons/react'
 
 import { NavLink } from './NavLink'
@@ -54,6 +55,13 @@ const NAV_LINKS = [
     activePath: 'smart-account/spending-limits',
     icon: UsersThree,
     title: 'Spending Limits',
+    isDisabled: false
+  },
+  {
+    href: 'smart-account/recurring-payments',
+    activePath: 'recurring-payments',
+    icon: ArrowClockwise,
+    title: 'Recurring Payments',
     isDisabled: false
   },
   {

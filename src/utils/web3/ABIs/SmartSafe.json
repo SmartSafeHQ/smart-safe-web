@@ -46,6 +46,11 @@
     "type": "error"
   },
   {
+    "inputs": [],
+    "name": "TransactionAlreadyProcessed",
+    "type": "error"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes",
@@ -224,6 +229,11 @@
         "type": "address"
       },
       {
+        "internalType": "bool",
+        "name": "_transactionApprovalType",
+        "type": "bool"
+      },
+      {
         "internalType": "bytes32",
         "name": "_hashedTransactionProposal",
         "type": "bytes32"
@@ -322,6 +332,11 @@
         "internalType": "uint32",
         "name": "_page",
         "type": "uint32"
+      },
+      {
+        "internalType": "enum TransactionManager.TransactionStatus",
+        "name": "_transactionStatus",
+        "type": "uint8"
       }
     ],
     "name": "getTransactions",
@@ -339,11 +354,6 @@
             "type": "address"
           },
           {
-            "internalType": "bool",
-            "name": "isActive",
-            "type": "bool"
-          },
-          {
             "internalType": "uint64",
             "name": "transactionNonce",
             "type": "uint64"
@@ -351,6 +361,11 @@
           {
             "internalType": "uint256",
             "name": "value",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "createdAt",
             "type": "uint256"
           },
           {
@@ -435,6 +450,49 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "transactionApprovals",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "name": "transactionApprovalsCount",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "transactionNonce",
     "outputs": [
@@ -442,6 +500,25 @@
         "internalType": "uint64",
         "name": "",
         "type": "uint64"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "",
+        "type": "uint64"
+      }
+    ],
+    "name": "transactionRejectionsCount",
+    "outputs": [
+      {
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
       }
     ],
     "stateMutability": "view",
