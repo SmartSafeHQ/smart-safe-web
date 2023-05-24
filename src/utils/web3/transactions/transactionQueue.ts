@@ -1,18 +1,37 @@
 import { ethers, formatUnits, verifyMessage } from 'ethers'
 
 import { createTransactionMessage } from '@utils/web3/transactions/createTransactionProposal'
+import { formatWalletAddress } from '@utils/web3'
+import { OwnerApproveStatus } from '@/hooks/transactions/useTransactionsQueue'
+
+export interface FormatTransactionToQueueListOutput {
+  nonce: number
+  amount: number
+  createdAt: Date
+  signatures: {
+    status: OwnerApproveStatus
+    formattedAddress: string
+    address: string
+  }[]
+  to: string
+  txHash: string
+  token: {
+    symbol: string
+    icon: string
+  }
+}
 
 export function formatTransactionToQueueList(
   transaction: any,
   chainId: string
-) {
+): FormatTransactionToQueueListOutput {
   const from = transaction[0]
   const to = transaction[1]
   const nonce = Number(transaction[2])
   const value = transaction[3]
   const createdAt = new Date(ethers.toNumber(transaction[4]) * 1000)
   const data = transaction[5]
-  const signatures = transaction[6]
+  const signatures = transaction[6] as string[]
 
   const domain = {
     chainId: parseInt(chainId, 16),
@@ -27,18 +46,22 @@ export function formatTransactionToQueueList(
     data: ethers.keccak256(data)
   }
 
-  console.log(domain)
-  console.log(transactionData)
-
   const txMessage = createTransactionMessage({
     domain,
     transaction: transactionData
   })
 
-  const formattedSignatures = signatures.map((signature: string) => ({
-    address: verifyMessage(txMessage, signature),
-    status: 'approved'
-  }))
+  const formattedSignatures = signatures.map(signature => {
+    const address = verifyMessage(txMessage, signature)
+
+    return {
+      address,
+      formattedAddress: formatWalletAddress({
+        walletAddress: address
+      }),
+      status: 'approved' as OwnerApproveStatus
+    }
+  })
 
   return {
     nonce,

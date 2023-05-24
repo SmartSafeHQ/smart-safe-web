@@ -263,12 +263,16 @@ TransactionLayoutApproveStatus.displayName = 'TransactionLayout.ApproveStatus'
 interface TransactionLayoutOwnerStatusProps
   extends HTMLAttributes<HTMLDivElement> {
   status: OwnerApproveStatus
+  formattedAddress: string
+  explorerLink: string
   address: string
 }
 
 function TransactionLayoutOwnerStatus({
   status,
   address,
+  explorerLink,
+  formattedAddress,
   ...props
 }: TransactionLayoutOwnerStatusProps) {
   const Icon = status === 'approved' ? CheckCircle : XCircle
@@ -283,9 +287,26 @@ function TransactionLayoutOwnerStatus({
         weight="fill"
       />
 
-      <Text className="text-sm text-zinc-600 dark:text-zinc-400">
-        {address}
-      </Text>
+      <div className="flex items-center justify-start gap-3 text-zinc-600 dark:text-zinc-400">
+        <Text className="text-sm">{formattedAddress}</Text>
+
+        <div className="flex items-center justify-start gap-2">
+          <button
+            onClick={() => handleCopyToClipboard(address)}
+            className="transition-colors hover:text-cyan-500"
+          >
+            <Copy className="w-4 h-4 " />
+          </button>
+
+          <Link
+            href={explorerLink}
+            target="_blank"
+            className="transition-colors hover:text-cyan-500"
+          >
+            <ArrowSquareOut className="w-4 h-4 " />
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }

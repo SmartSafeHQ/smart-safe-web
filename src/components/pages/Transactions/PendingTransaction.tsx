@@ -13,7 +13,11 @@ interface PendingTransactionProps {
   amount: number
   threshold: number
   createdAt: Date
-  signatures: { status: OwnerApproveStatus; address: string }[]
+  signatures: {
+    status: OwnerApproveStatus
+    formattedAddress: string
+    address: string
+  }[]
   toAddress: string
   toFormattedAddress: string
   txHash: string
@@ -80,8 +84,10 @@ export function PendingTransaction({
                   {signatures.map(owner => (
                     <TransactionLayout.OwnerStatus
                       key={owner.address}
-                      status="approved"
+                      status={owner.status}
                       address={owner.address}
+                      formattedAddress={owner.formattedAddress}
+                      explorerLink={`${safe?.chain.explorerUrl}/address/${owner.address}`}
                     />
                   ))}
                 </Collapsible.Content>

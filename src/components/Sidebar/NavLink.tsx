@@ -50,7 +50,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
     <Text
       asChild
       className={clsx(
-        'w-full flex items-center h-10 gap-6 px-3 mr-auto text-sm font-normal rounded-lg whitespace-nowrap hover:bg-zinc-500/10 hover:dark:bg-zinc-50/10 md:max-lg:h-auto md:max-lg:flex-col md:max-lg:py-4 md:max-lg:gap-[0.375rem] md:max-lg:text-xs',
+        'w-full flex items-center h-10 gap-6 px-3 mr-auto text-sm font-normal rounded-lg whitespace-nowrap hover:bg-zinc-500/10 hover:dark:bg-zinc-50/10 md:max-lg:h-auto md:max-lg:flex-col md:max-lg:py-4 md:max-lg:gap-[0.375rem] md:max-lg:text-xs md:max-lg:text-center md:max-lg:whitespace-normal',
         {
           'bg-zinc-500/10 dark:bg-zinc-50/10 font-medium hover:bg-zinc-500/20 hover:dark:bg-zinc-50/20':
             isActive,

@@ -130,7 +130,7 @@ export function createTransactionMessage({
     hashedEncodedStruct
   })
 
-  return typedDataHash
+  return ethers.getBytes(typedDataHash)
 }
 
 interface CreateTransactionProposalProps
