@@ -71,13 +71,9 @@ async function signHash({
     )
   )
 
-  console.log(ethers.getBytes(typedDataHash).toString())
-
   const signedTypedDataHash = await signer.signMessage(
     ethers.getBytes(typedDataHash)
   )
-
-  console.log({ typedDataHash, signedTypedDataHash })
 
   return { typedDataHash, signedTypedDataHash }
 }

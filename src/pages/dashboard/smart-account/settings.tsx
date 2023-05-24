@@ -6,6 +6,7 @@ import {
 } from '@components/pages/SmartAccount/SmartAccountTabsList'
 import { Tabs } from '@components/Tabs'
 import { SmartAccountTab } from '@components/pages/SmartAccount'
+import { ManageOwner } from '@components/pages/SmartAccount/settings/ManagerOwners'
 
 const Settings = () => {
   return (
@@ -22,7 +23,10 @@ const Settings = () => {
         <Tabs.Root defaultValue={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}>
           <SmartAccountTabsList />
 
-          <Tabs.Content value={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}>
+          <Tabs.Content
+            value={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}
+            className="flex-col"
+          >
             <SmartAccountTab.Root>
               <SmartAccountTab.Header>
                 <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
@@ -39,6 +43,8 @@ const Settings = () => {
                 </div>
               </SmartAccountTab.Header>
             </SmartAccountTab.Root>
+
+            <ManageOwner />
           </Tabs.Content>
         </Tabs.Root>
       </div>
