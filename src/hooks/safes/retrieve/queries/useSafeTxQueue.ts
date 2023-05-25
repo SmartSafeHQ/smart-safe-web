@@ -12,19 +12,21 @@ interface FetchSafeTxQueueInput {
   chainId?: string
 }
 
-export interface FetchSafeSendTxProps {
+export interface OwnerSignaturesProps {
+  status: OwnerApproveStatus
+  formattedAddress: string
+  address: string
+}
+
+export interface SendTxProps {
   nonce: number
   type: 'SEND'
   amount: number
   createdAt: Date
-  signatures: {
-    status: OwnerApproveStatus
-    formattedAddress: string
-    address: string
-  }[]
+  signatures: OwnerSignaturesProps[]
   to: string
   toFormattedAddress: string
-  txHash: string
+  hash: string
   data: string
   token: {
     symbol: string
@@ -33,8 +35,8 @@ export interface FetchSafeSendTxProps {
 }
 
 export interface FetchSafeTxQueueOutput {
-  toApprove?: FetchSafeSendTxProps
-  pending: FetchSafeSendTxProps[]
+  toApprove?: SendTxProps
+  pending: SendTxProps[]
 }
 
 export async function fetchSafeTxQueue(
@@ -74,7 +76,7 @@ export async function fetchSafeTxQueue(
           safeChain.chainId
         )
 
-        const formattedTransaction: FetchSafeSendTxProps = {
+        const formattedTransaction: SendTxProps = {
           ...transactionData,
           type: 'SEND',
           toFormattedAddress: formatWalletAddress({

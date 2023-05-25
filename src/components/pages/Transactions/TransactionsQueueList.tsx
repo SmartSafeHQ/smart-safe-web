@@ -37,7 +37,7 @@ export function TransactionsQueueList() {
       ) : (
         transactionsQueue?.toApprove &&
         safe && (
-          <section className="w-full flex flex-col items-stretch justify-start gap-2">
+          <section className="w-full flex flex-col items-stretch justify-start gap-2 px-4">
             <Text
               asChild
               className="text-sm leading-7 text-zinc-500 font-medium text-start"
@@ -45,21 +45,7 @@ export function TransactionsQueueList() {
               <strong>To approve</strong>
             </Text>
 
-            <ToApproveTransaction
-              nonce={transactionsQueue.toApprove.nonce}
-              type={transactionsQueue.toApprove.type}
-              amount={transactionsQueue.toApprove.amount}
-              createdAt={transactionsQueue.toApprove.createdAt}
-              signatures={transactionsQueue.toApprove.signatures}
-              txData={transactionsQueue.toApprove.data}
-              toAddress={transactionsQueue.toApprove.to}
-              threshold={safe.threshold}
-              toFormattedAddress={
-                transactionsQueue.toApprove.toFormattedAddress
-              }
-              txHash={transactionsQueue.toApprove.txHash}
-              token={transactionsQueue.toApprove.token}
-            />
+            <ToApproveTransaction transaction={transactionsQueue.toApprove} />
 
             <Text
               asChild
@@ -74,16 +60,7 @@ export function TransactionsQueueList() {
               {transactionsQueue.pending.map(transaction => (
                 <PendingTransaction
                   key={transaction.nonce}
-                  nonce={transaction.nonce}
-                  type={transaction.type}
-                  amount={transaction.amount}
-                  threshold={safe.threshold}
-                  createdAt={transaction.createdAt}
-                  signatures={transaction.signatures}
-                  toAddress={transaction.to}
-                  toFormattedAddress={transaction.toFormattedAddress}
-                  txHash={transaction.txHash}
-                  token={transaction.token}
+                  transaction={transaction}
                 />
               ))}
             </ul>
