@@ -14,7 +14,7 @@ const SpendingLimits = () => {
   const { setIsCreateSpendingLimitsOpen } = useSpendingLimitsAuthHook()
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Head>
         <title>SmartSafe | Smart Account Spending Limits</title>
         <meta name="description" content="Management of spending limits" />

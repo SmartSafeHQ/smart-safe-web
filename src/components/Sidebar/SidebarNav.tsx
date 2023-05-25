@@ -44,29 +44,29 @@ const NAV_LINKS = [
     isDisabled: false
   },
   {
-    href: 'smart-account/contacts',
-    activePath: 'smart-account/contacts',
+    href: 'contacts',
+    activePath: 'contacts',
     icon: AddressBook,
     title: 'Address Book',
     isDisabled: false
   },
   {
-    href: 'smart-account/spending-limits',
-    activePath: 'smart-account/spending-limits',
+    href: 'spending-limits',
+    activePath: 'spending-limits',
     icon: UsersThree,
     title: 'Spending Limits',
     isDisabled: false
   },
   {
-    href: 'smart-account/recurring-payments',
-    activePath: 'smart-account/recurring-payments',
+    href: 'recurring-payments',
+    activePath: 'recurring-payments',
     icon: ArrowClockwise,
     title: 'Recurring Payments',
     isDisabled: false
   },
   {
-    href: 'smart-account/settings',
-    activePath: 'smart-account/settings',
+    href: 'settings',
+    activePath: 'settings',
     icon: Gear,
     title: 'Settings',
     isDisabled: false

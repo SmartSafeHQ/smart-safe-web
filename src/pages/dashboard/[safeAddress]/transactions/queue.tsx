@@ -10,7 +10,7 @@ import { TransactionsQueueList } from '@components/pages/Transactions/Transactio
 
 const TransactionsQueue = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Head>
         <title>SmartSafe | Transactions Queue</title>
         <meta name="description" content="SmartSafe transactions queue" />

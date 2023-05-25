@@ -89,15 +89,9 @@ export function useSendProposalMutation() {
       queryClient.setQueryData(['safeTxQueue', variables.fromSafe], context)
     },
     onSettled: (_data, _error, variables) => {
-      const timeout = setTimeout(
-        () =>
-          queryClient.invalidateQueries({
-            queryKey: ['safeTxQueue', variables.fromSafe]
-          }),
-        5000
-      )
-
-      clearTimeout(timeout)
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxQueue', variables.fromSafe]
+      })
     }
   })
 }

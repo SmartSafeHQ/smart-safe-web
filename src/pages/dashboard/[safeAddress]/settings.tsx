@@ -9,7 +9,7 @@ import { PageLayout } from '@components/pages/Layouts/PageLayout'
 
 const Settings = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Head>
         <title>SmartSafe | Smart Account Contacts</title>
         <meta

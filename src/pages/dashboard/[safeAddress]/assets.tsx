@@ -17,7 +17,7 @@ const Assets = () => {
   const { safe } = useSafe()
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Head>
         <title>SmartSafe | Safe assets</title>
         <meta
@@ -45,7 +45,7 @@ const Assets = () => {
                 </div>
               </PageLayout.Header>
 
-              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-6">
+              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-6 px-2">
                 <AssetsList />
               </div>
             </PageLayout.Root>

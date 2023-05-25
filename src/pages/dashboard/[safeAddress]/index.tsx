@@ -5,7 +5,7 @@ import { TransactionQueue } from '@components/pages/Home/TransactionQueue'
 
 const Home = () => {
   return (
-    <div className="min-h-screen flex flex-col items-stretch justify-start">
+    <div className="flex flex-col items-stretch justify-start">
       <Head>
         <title>SmartSafe | Safe Home</title>
         <meta name="description" content="SmartSafe decentralized home page" />
