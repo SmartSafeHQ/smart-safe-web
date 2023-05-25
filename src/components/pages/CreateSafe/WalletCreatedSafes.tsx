@@ -41,7 +41,7 @@ export function WalletCreatedSafes() {
       open={isCollapsibleOpen}
       onOpenChange={setIsCollapsibleOpen}
       defaultOpen={false}
-      className="flex flex-col flex-1 items-stretch justify-start relative p-6 shadow-none rounded-lg ring-zinc-900 dark:ring-zinc-100 focus-within:ring-1 bg-zinc-100 dark:bg-zinc-900 border-1 border-zinc-200 dark:border-zinc-700 lg:min-w-[20rem] lg:min-h-[34rem] lg:max-w-[27rem]"
+      className="flex flex-col flex-1 items-stretch justify-start relative p-6 shadow-none rounded-lg ring-zinc-900 dark:ring-zinc-100 focus-within:ring-1 bg-zinc-100 dark:bg-zinc-900 border-1 border-zinc-200 dark:border-zinc-700 lg:min-w-[20rem] lg:min-h-[32rem] lg:max-w-[27rem]"
     >
       <Collapsible.Trigger className="relative flex justify-center items-center md:justify-start gap-3 select-none outline-none cursor-pointer md:pointer-events-none">
         <CaretDown className="w-6 h-6 block md:hidden" />
@@ -74,7 +74,7 @@ export function WalletCreatedSafes() {
               </div>
             )}
 
-            <ScrollArea className="h-[30rem] pr-2">
+            <ScrollArea className="h-[24rem] pr-2">
               <div className="w-full flex flex-col items-stretch justify-start gap-4">
                 {!!wallet &&
                   addressSafes &&

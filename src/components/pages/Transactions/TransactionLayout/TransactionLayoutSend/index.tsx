@@ -3,6 +3,7 @@ import { HTMLAttributes, ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import dayjs from 'dayjs'
+import clsx from 'clsx'
 
 import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
@@ -13,7 +14,7 @@ interface TransactionLayoutSendHeaderProps
   extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   txNonce: number
-  createdAt: Date
+  createdAt?: Date
   amount: number
   token: {
     icon: string
@@ -27,11 +28,15 @@ function TransactionLayoutSendHeader({
   amount,
   token,
   children,
+  className,
   ...props
 }: TransactionLayoutSendHeaderProps) {
   return (
     <div
-      className="w-full min-h-[4rem] flex items-stretch justify-between gap-4 py-4 px-6 font-medium capitalize md:items-center"
+      className={clsx(
+        'w-full flex items-stretch justify-between gap-4 font-medium capitalize md:items-center',
+        className
+      )}
       {...props}
     >
       <Text>{txNonce}</Text>
@@ -55,7 +60,9 @@ function TransactionLayoutSendHeader({
           </Text>
         </div>
 
-        <Text className="w-min">{dayjs(createdAt).format('DD/MM/YYYY')}</Text>
+        {createdAt && (
+          <Text className="w-min">{dayjs(createdAt).format('DD/MM/YYYY')}</Text>
+        )}
       </div>
 
       {children}
