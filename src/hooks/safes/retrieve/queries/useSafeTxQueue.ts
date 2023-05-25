@@ -65,6 +65,10 @@ export async function fetchSafeTxQueue(
   const formattedTransactionsQueue =
     transactionsQueue.reduce<FetchSafeTxQueueOutput>(
       (acc, transaction) => {
+        if (!transaction[4]) {
+          return acc
+        }
+
         const transactionData = formatTransactionToQueueList(
           transaction,
           safeChain.chainId
@@ -80,7 +84,6 @@ export async function fetchSafeTxQueue(
 
         if (formattedTransaction.nonce === currenTxQueueNonce) {
           acc.toApprove = formattedTransaction
-
           return acc
         }
 

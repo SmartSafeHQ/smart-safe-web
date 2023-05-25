@@ -42,8 +42,13 @@ export function ToApproveTransaction({
   txHash,
   token
 }: ToApproveTransactionProps) {
-  const { safe, isLoadingApprove, handleApproveTransaction } =
-    useTransactionsQueue()
+  const {
+    safe,
+    isLoadingApprove,
+    handleApproveTransaction,
+    isLoadingReject,
+    handleRejectTransaction
+  } = useTransactionsQueue()
 
   return (
     <TransactionLayout.Root asChild>
@@ -113,13 +118,12 @@ export function ToApproveTransaction({
 
             <TransactionLayout.Actions
               isLoadingApprove={isLoadingApprove}
+              isLoadingReject={isLoadingReject}
               handleApproveTransaction={() =>
-                handleApproveTransaction(
-                  toAddress,
-                  safe.address,
-                  txData,
-                  amount
-                )
+                handleApproveTransaction(toAddress, txData, amount)
+              }
+              handleRejectTransaction={() =>
+                handleRejectTransaction(toAddress, txData, amount)
               }
             />
           </div>

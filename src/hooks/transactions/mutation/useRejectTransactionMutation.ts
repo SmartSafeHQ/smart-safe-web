@@ -12,7 +12,7 @@ import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
 
-export type ApproveTransactionFunctionInput = {
+export type RejectTransactionFunctionInput = {
   provider: Eip1193Provider
   chainId: string
   fromSafe: string
@@ -22,8 +22,8 @@ export type ApproveTransactionFunctionInput = {
   amount: number
 }
 
-async function approveTransactionFunction(
-  input: ApproveTransactionFunctionInput
+async function rejectTransactionFunction(
+  input: RejectTransactionFunctionInput
 ): Promise<void> {
   if (!input.fromSafe || !input.chainId) {
     throw new Error('safe address and chain id required')
@@ -73,17 +73,17 @@ async function approveTransactionFunction(
 
   await contract.getFunction('addTransactionSignature')(
     input.ownerAddress,
-    true,
+    false,
     typedDataHash,
     signedTypedDataHash
   )
 }
 
-export function useApproveTransactionMutation() {
+export function useRejectTransactionMutation() {
   return useMutation({
-    mutationKey: ['approveTransaction'],
-    mutationFn: (input: ApproveTransactionFunctionInput) =>
-      approveTransactionFunction(input),
+    mutationKey: ['rejectTransaction'],
+    mutationFn: (input: RejectTransactionFunctionInput) =>
+      rejectTransactionFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
         queryKey: ['safeTxQueue', variables.fromSafe]

@@ -315,12 +315,16 @@ TransactionLayoutOwnerStatus.displayName = 'TransactionLayout.OwnerStatus'
 
 interface TransactionLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
   isLoadingApprove: boolean
+  isLoadingReject: boolean
   handleApproveTransaction: () => Promise<void>
+  handleRejectTransaction: () => Promise<void>
 }
 
 function TransactionLayoutActions({
   isLoadingApprove,
+  isLoadingReject,
   handleApproveTransaction,
+  handleRejectTransaction,
   ...props
 }: TransactionLayoutActionsProps) {
   return (
@@ -337,7 +341,12 @@ function TransactionLayoutActions({
         Approve transaction
       </Button>
 
-      <Button variant="red" disabled className="w-full max-w-[10rem]">
+      <Button
+        onClick={handleRejectTransaction}
+        isLoading={isLoadingReject}
+        variant="red"
+        className="w-full max-w-[10rem]"
+      >
         Reject transaction
       </Button>
     </div>
