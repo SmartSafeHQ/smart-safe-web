@@ -74,7 +74,7 @@ export function WalletCreatedSafes() {
               </div>
             )}
 
-            <ScrollArea className="h-[24rem] pr-2">
+            <ScrollArea className="h-[25rem] pr-2">
               <div className="w-full flex flex-col items-stretch justify-start gap-4">
                 {!!wallet &&
                   addressSafes &&

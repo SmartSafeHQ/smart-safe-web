@@ -5,11 +5,11 @@ import {
   SmartAccountTabsList
 } from '@components/pages/SmartAccount/SmartAccountTabsList'
 import { Tabs } from '@components/Tabs'
-import { SmartAccountTab } from '@components/pages/SmartAccount'
+import { PageLayout } from '@components/pages/Layouts/PageLayout'
 
 const Settings = () => {
   return (
-    <div className="flex flex-1 flex-col items-center px-2 pt-2 md:pt-6">
+    <div className="min-h-screen flex flex-col items-center justify-center">
       <Head>
         <title>SmartSafe | Smart Account Contacts</title>
         <meta
@@ -23,22 +23,16 @@ const Settings = () => {
           <SmartAccountTabsList />
 
           <Tabs.Content value={SMART_ACCOUNT_TABS_VALUES.ACCOUNT_RECOVERY}>
-            <SmartAccountTab.Root>
-              <SmartAccountTab.Header>
-                <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-                  <div className="flex flex-col relative justify-start items-stretch gap-3">
-                    <SmartAccountTab.Title>
-                      Account recovery
-                    </SmartAccountTab.Title>
+            <PageLayout.Root>
+              <PageLayout.Header className="justify-center items-start gap-3 pb-8 pt-10 px-2">
+                <PageLayout.Title>Account recovery</PageLayout.Title>
 
-                    <SmartAccountTab.Description>
-                      Add further protection to your account by enabling two
-                      factor authentication methods.
-                    </SmartAccountTab.Description>
-                  </div>
-                </div>
-              </SmartAccountTab.Header>
-            </SmartAccountTab.Root>
+                <PageLayout.Description>
+                  Add further protection to your account by enabling two factor
+                  authentication methods.
+                </PageLayout.Description>
+              </PageLayout.Header>
+            </PageLayout.Root>
           </Tabs.Content>
         </Tabs.Root>
       </div>
