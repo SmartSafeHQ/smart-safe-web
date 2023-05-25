@@ -197,8 +197,8 @@ function TxLayoutOwnerStatus({
 interface TxLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
   isLoadingApprove: boolean
   isLoadingReject: boolean
-  handleApproveTransaction: () => Promise<void>
-  handleRejectTransaction: () => Promise<void>
+  handleApproveTransaction: () => void
+  handleRejectTransaction: () => void
 }
 
 function TxLayoutActions({

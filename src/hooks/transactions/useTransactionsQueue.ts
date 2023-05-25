@@ -23,13 +23,9 @@ export const useTransactionsQueue = () => {
   const { mutateAsync: mutateRejectTransaction, isLoading: isLoadingReject } =
     useRejectTransactionMutation()
 
-  async function handleApproveTransaction(
-    to: string,
-    data: string,
-    amount: number
-  ) {
+  async function handleApproveTransaction() {
     try {
-      if (!safe || !wallet) {
+      if (!safe || !wallet || !transactionsQueue?.toApprove) {
         throw new Error('no safe and wallet infos available')
       }
 
@@ -38,22 +34,18 @@ export const useTransactionsQueue = () => {
         fromSafe: safe.address,
         ownerAddress: wallet.accounts[0].address,
         provider: wallet.provider,
-        to,
-        data,
-        amount
+        to: transactionsQueue.toApprove.to,
+        data: transactionsQueue.toApprove.data,
+        amount: transactionsQueue.toApprove.amount
       })
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
-  async function handleRejectTransaction(
-    to: string,
-    data: string,
-    amount: number
-  ) {
+  async function handleRejectTransaction() {
     try {
-      if (!safe || !wallet) {
+      if (!safe || !wallet || !transactionsQueue?.toApprove) {
         throw new Error('no safe and wallet infos available')
       }
 
@@ -62,9 +54,9 @@ export const useTransactionsQueue = () => {
         fromSafe: safe.address,
         ownerAddress: wallet.accounts[0].address,
         provider: wallet.provider,
-        to,
-        data,
-        amount
+        to: transactionsQueue.toApprove.to,
+        data: transactionsQueue.toApprove.data,
+        amount: transactionsQueue.toApprove.amount
       })
     } catch (error) {
       getWe3ErrorMessageWithToast(error)

@@ -37,7 +37,7 @@ export function PendingSendTransaction({
               <TransactionLayout.OwnersStatus
                 signatures={transaction.signatures}
                 threshold={safe.threshold}
-                baseExplorerLink={`${safe.chain.explorerUrl}/address/`}
+                baseExplorerLink={`${safe.chain.explorerUrl}/address`}
               />
 
               <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">

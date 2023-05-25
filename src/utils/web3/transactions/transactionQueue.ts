@@ -1,8 +1,8 @@
 import { ethers, formatUnits, verifyMessage } from 'ethers'
 
 import { createTransactionMessage } from '@utils/web3/transactions/createTransactionProposal'
-import { formatWalletAddress } from '@utils/web3'
 import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
+import { formatWalletAddress } from '@utils/web3'
 
 export function formatTransactionToQueueList(
   transaction: any,
@@ -16,12 +16,8 @@ export function formatTransactionToQueueList(
   const data = transaction[5]
   const signatures = transaction[6] as string[]
 
-  const domain = {
-    chainId: parseInt(chainId, 16),
-    verifyingContract: from
-  }
-
   const transactionData = {
+    chainId: parseInt(chainId, 16),
     from,
     to,
     transactionNonce: nonce,
@@ -30,7 +26,6 @@ export function formatTransactionToQueueList(
   }
 
   const txMessage = createTransactionMessage({
-    domain,
     transaction: transactionData
   })
 

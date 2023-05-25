@@ -43,12 +43,9 @@ async function sendProposalFunction(
   const amountInWei = ethers.parseEther(String(input.amount))
 
   const txData = '0x'
-  const domain = {
-    chainId: parseInt(input.chainId, 16),
-    verifyingContract: input.fromSafe
-  }
 
   const transaction = {
+    chainId: parseInt(input.chainId, 16),
     from: input.fromSafe,
     to: input.to,
     transactionNonce: Number(transactionNonce),
@@ -58,7 +55,6 @@ async function sendProposalFunction(
 
   const { signedTypedDataHash, typedDataHash } =
     await createTransactionProposal({
-      domain,
       signer,
       transaction
     })
