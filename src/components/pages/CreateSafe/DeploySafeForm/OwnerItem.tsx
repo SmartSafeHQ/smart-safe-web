@@ -4,11 +4,11 @@ import { Trash } from '@phosphor-icons/react'
 import { useFormContext } from 'react-hook-form'
 
 import { Text } from '@components/Text'
-import { TextInput } from '@/components/Inputs/TextInput'
+import { TextInput } from '@components/Inputs/TextInput'
 
-import type { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
+import type { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
 
-interface Props {
+interface OwnerItemProps {
   index: number
   removeOwner: (index: number | number[]) => void
   contactsList:
@@ -17,7 +17,11 @@ interface Props {
     | null
 }
 
-export function Contacts({ index, removeOwner, contactsList }: Props) {
+export function OwnerItem({
+  index,
+  removeOwner,
+  contactsList
+}: OwnerItemProps) {
   const [isContactsListOpen, setIsContactsListOpen] = useState(false)
 
   const {
@@ -36,7 +40,7 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
     <div className="flex flex-wrap w-full gap-3">
       <div className="flex w-full flex-col flex-1 items-stretch justify-start gap-3 relative">
         <TextInput.Root
-          htmlFor="name"
+          htmlFor={`ownerName-${index}`}
           className="flex flex-1"
           error={fieldNameError?.message}
         >
@@ -46,7 +50,7 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
             <TextInput.Input
               {...register(`owners.${index}.name`)}
               required
-              id="name"
+              id={`ownerName-${index}`}
               placeholder="Example name"
               onFocus={() => setIsContactsListOpen(true)}
               onBlur={() => {
@@ -56,7 +60,7 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
           </TextInput.Content>
         </TextInput.Root>
 
-        {contactsList && (
+        {contactsList && contactsList?.length > 0 && (
           <div
             className={clsx(
               'py-2 border-1 rounded-lg border-zinc-200 dark:border-zinc-700',
@@ -86,9 +90,9 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
         )}
       </div>
 
-      <div className="flex flex-1 items-stretch justify-start gap-3 relative">
+      <div className="flex flex-1 items-stretch justify-start gap-3 pr-7 relative">
         <TextInput.Root
-          htmlFor="ownerWallet"
+          htmlFor={`ownerWallet-${index}`}
           className="flex flex-1"
           error={fieldAddressError?.message}
         >
@@ -98,7 +102,7 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
             <TextInput.Input
               {...register(`owners.${index}.address`)}
               required
-              id="ownerWallet"
+              id={`ownerWallet-${index}`}
               placeholder="Enter owner wallet address"
             />
           </TextInput.Content>
@@ -109,7 +113,7 @@ export function Contacts({ index, removeOwner, contactsList }: Props) {
             onClick={() => removeOwner(index)}
             className="absolute top-[2.4rem] right-0 text-zinc-600 dark:text-zinc-400 transition-colors hover:!text-red-500"
           >
-            <Trash className="w-5 h-5  " />
+            <Trash className="w-5 h-5" />
           </button>
         )}
       </div>

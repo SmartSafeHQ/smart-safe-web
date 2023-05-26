@@ -61,9 +61,8 @@ export function DeploySafeForm() {
               className="text-lg leading-9 font-semibold text-zinc-800 dark:text-zinc-100"
             >
               <strong>
-                Transaction confirmation (
-                {watch('requiredSignaturesCount', '1')} of {ownersFields.length}
-                )
+                Transaction confirmation ({watch('threshold', '1')} of{' '}
+                {ownersFields.length})
               </strong>
             </Text>
 
@@ -73,7 +72,7 @@ export function DeploySafeForm() {
           </div>
 
           <Controller
-            name="requiredSignaturesCount"
+            name="threshold"
             control={control}
             defaultValue="1"
             render={({ field: { value, onChange, ref, ...props } }) => (

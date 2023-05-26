@@ -1,6 +1,8 @@
 import { HTMLAttributes, ReactNode } from 'react'
 import { clsx } from 'clsx'
 
+import { Text } from '@components/Text'
+
 interface PageLayoutRootProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
 }
@@ -35,7 +37,7 @@ function PageLayoutHeader({
   ...props
 }: PageLayoutHeaderProps) {
   return (
-    <header className="w-full border-b-1 border-b-zinc-300 dark:border-b-zinc-700">
+    <header className="w-full min-h-[7.5rem] border-b-1 border-b-zinc-300 dark:border-b-zinc-700">
       <div
         className={clsx('w-full flex flex-col relative', className)}
         {...props}
@@ -77,15 +79,15 @@ function PageLayoutDescription({
   ...props
 }: PageLayoutDescriptionProps) {
   return (
-    <p
+    <Text
       className={clsx(
-        'text-sm leading-7 text-gray-500 font-medium text-start',
+        'text-sm leading-7 text-gray-500 font-medium text-start break-words',
         className
       )}
       {...props}
     >
       {children}
-    </p>
+    </Text>
   )
 }
 

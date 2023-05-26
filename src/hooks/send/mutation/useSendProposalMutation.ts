@@ -4,6 +4,7 @@ import { EIP1193Provider } from '@web3-onboard/core'
 
 import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
+import { queryClient } from '@lib/reactQuery'
 
 interface SendProposalFunctionInput {
   provider: EIP1193Provider
@@ -42,12 +43,9 @@ async function sendProposalFunction(
   const amountInWei = ethers.parseEther(String(input.amount))
 
   const txData = '0x'
-  const domain = {
-    chainId: parseInt(input.chainId, 16),
-    verifyingContract: input.fromSafe
-  }
 
   const transaction = {
+    chainId: parseInt(input.chainId, 16),
     from: input.fromSafe,
     to: input.to,
     transactionNonce: Number(transactionNonce),
@@ -55,12 +53,10 @@ async function sendProposalFunction(
     data: ethers.keccak256(txData)
   }
 
-  const { signedTypedDataHash, typedDataHash } =
-    await createTransactionProposal({
-      domain,
-      signer,
-      transaction
-    })
+  const { signedTypedDataHash } = await createTransactionProposal({
+    signer,
+    transaction
+  })
 
   const proposal = await smartSafeProxy.getFunction(
     'createTransactionProposal'
@@ -69,9 +65,11 @@ async function sendProposalFunction(
     amountInWei.toString(),
     txData,
     await signer.getAddress(),
-    typedDataHash,
-    signedTypedDataHash
+    signedTypedDataHash,
+    { value: ethers.parseEther('1') }
   )
+
+  await proposal.wait()
 
   return {
     transactionHash: proposal.hash
@@ -82,6 +80,19 @@ export function useSendProposalMutation() {
   return useMutation({
     mutationKey: ['sendProposal'],
     mutationFn: (input: SendProposalFunctionInput) =>
-      sendProposalFunction(input)
+      sendProposalFunction(input),
+    onSuccess: async (_, variables) => {
+      await queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.fromSafe]
+      })
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(['safeTxQueue', variables.fromSafe], context)
+    },
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxQueue', variables.fromSafe]
+      })
+    }
   })
 }

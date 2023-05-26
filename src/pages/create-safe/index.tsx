@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { ReactElement } from 'react'
 
 import { CreateSafeHeader } from '@components/pages/CreateSafe/CreateSafeHeader'
-import { CreateSafeDeployContent } from '@components/pages/CreateSafe/CreateSafeDeployContent'
+import { DeploySafeContent } from '@/components/pages/CreateSafe/DeploySafeContent'
 
 import { CreateSafeProvider } from '@contexts/create-safe/CreateSafeContext'
 
@@ -19,7 +19,7 @@ const DeploySafe = () => {
 
       <CreateSafeHeader />
 
-      <CreateSafeDeployContent />
+      <DeploySafeContent />
     </div>
   )
 }

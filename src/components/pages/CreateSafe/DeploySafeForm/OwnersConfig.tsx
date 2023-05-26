@@ -2,13 +2,13 @@ import Link from 'next/link'
 import { FieldArrayWithId, useFormContext } from 'react-hook-form'
 import { ArrowSquareOut, CaretDown, Plus } from '@phosphor-icons/react'
 
-import { Contacts } from './Contacts'
+import { OwnerItem } from './OwnerItem'
 import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 import { useSafe } from '@contexts/SafeContext'
 
-import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
+import { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
@@ -50,7 +50,7 @@ export function OwnersConfig({
               key={owner.id}
               className="w-full flex items-stretch justify-start gap-5"
             >
-              <Contacts
+              <OwnerItem
                 index={index}
                 removeOwner={removeOwner}
                 contactsList={contactsList}

@@ -8,6 +8,7 @@ import {
 import { useConnectWallet, useSetChain } from '@web3-onboard/react'
 import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
+import { Contract, JsonRpcProvider } from 'ethers'
 
 import {
   fetchAddressSafes,
@@ -15,6 +16,7 @@ import {
 } from '@hooks/safes/retrieve/queries/useAddressSafes'
 import { formatWalletAddress } from '@utils/web3'
 import { ChainSettings } from '@utils/web3/chains/supportedChains'
+import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 import { queryClient } from '@lib/reactQuery'
 
 type SafeProviderProps = PropsWithChildren<Record<string, unknown>>
@@ -26,6 +28,7 @@ interface Safe {
   formattedAddress: string
   ownerId: string
   ownerName: string
+  threshold: number
   chain: ChainSettings
 }
 
@@ -73,7 +76,16 @@ export function SafeProvider({ children }: SafeProviderProps) {
     }, 1000)
   }, [counter])
 
-  useEffect(() => {
+  async function getSafeOnChainInfos(safeAddress: string, rpcUrl: string) {
+    const provider = new JsonRpcProvider(rpcUrl)
+    const contract = new Contract(safeAddress, SMART_SAFE_ABI, provider)
+
+    const threshold = await contract.getFunction('threshold')()
+
+    return { threshold: Number(threshold) }
+  }
+
+  async function getSafeInfos() {
     const safeAddress = query.safeAddress
 
     if (!safeAddress) return
@@ -83,64 +95,75 @@ export function SafeProvider({ children }: SafeProviderProps) {
       return
     }
 
-    queryClient
-      .ensureQueryData<FetchAddressSafesOutput[]>({
+    try {
+      const response = await queryClient.ensureQueryData<
+        FetchAddressSafesOutput[]
+      >({
         queryKey: ['addressSafes', wallet.accounts[0].address],
         queryFn: () =>
           fetchAddressSafes({ address: wallet.accounts[0].address })
       })
-      .then(async response => {
-        const checkSafeExists = response.find(
-          safe => safe.safeAddress === safeAddress
-        )
 
-        if (!checkSafeExists) {
-          push('/')
+      const checkSafeExists = response.find(
+        safe => safe.safeAddress === safeAddress
+      )
+
+      if (!checkSafeExists) {
+        push('/')
+        setSafe(null)
+        return
+      }
+
+      const isWalletOnSafeChain =
+        wallet.chains[0].id === checkSafeExists.chain.chainId
+
+      if (!isWalletOnSafeChain) {
+        const isChangedApproved = await setChain({
+          chainId: checkSafeExists.chain.chainId
+        })
+
+        if (!isChangedApproved) {
+          push('/').then(() =>
+            toast.error(
+              `Please connect to ${checkSafeExists.chain.networkName} to manage ${checkSafeExists.safeName} safe`
+            )
+          )
           setSafe(null)
+
           return
         }
+      }
 
-        const isWalletOnSafeChain =
-          wallet.chains[0].id === checkSafeExists.chain.chainId
+      const onChainInfos = await getSafeOnChainInfos(
+        checkSafeExists.safeAddress,
+        checkSafeExists.chain.rpcUrl
+      )
 
-        if (!isWalletOnSafeChain) {
-          const isChangedApproved = await setChain({
-            chainId: checkSafeExists.chain.chainId
-          })
-
-          if (!isChangedApproved) {
-            push('/').then(() =>
-              toast.error(
-                `Please connect to ${checkSafeExists.chain.networkName} to manage ${checkSafeExists.safeName} safe`
-              )
-            )
-            setSafe(null)
-
-            return
-          }
-        }
-
-        setSafe({
-          id: checkSafeExists.safeId,
-          name: checkSafeExists.safeName,
-          address: checkSafeExists.safeAddress,
-          formattedAddress: checkSafeExists.safeFormattedAddress,
-          ownerId: checkSafeExists.ownerId,
-          ownerName: checkSafeExists.ownerName,
-          chain: checkSafeExists.chain
-        })
+      setSafe({
+        id: checkSafeExists.safeId,
+        name: checkSafeExists.safeName,
+        address: checkSafeExists.safeAddress,
+        formattedAddress: checkSafeExists.safeFormattedAddress,
+        ownerId: checkSafeExists.ownerId,
+        ownerName: checkSafeExists.ownerName,
+        threshold: onChainInfos.threshold,
+        chain: checkSafeExists.chain
       })
-      .catch(error => {
-        console.log(error)
+    } catch (error) {
+      console.log(error)
 
-        push('/').then(() =>
-          toast.error(
-            'An unknown error occurred retrieving your safe information. Please try again.'
-          )
+      push('/').then(() =>
+        toast.error(
+          'An unknown error occurred retrieving your safe information. Please try again.'
         )
+      )
 
-        setSafe(null)
-      })
+      setSafe(null)
+    }
+  }
+
+  useEffect(() => {
+    getSafeInfos()
   }, [query.safeAddress, wallet])
 
   return (

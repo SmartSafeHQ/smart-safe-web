@@ -41,7 +41,7 @@ export function SendModal() {
             <>
               <header className="flex items-center flex-col gap-3 p-8 rounded-lg bg-zinc-50 dark:bg-zinc-950">
                 <DialogModal.Title className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-                  Send ${transaction.usdAmount}
+                  Send ${transaction.usdAmount.slice(0, 8)}
                 </DialogModal.Title>
 
                 <div className="w-full flex items-center justify-center gap-2">

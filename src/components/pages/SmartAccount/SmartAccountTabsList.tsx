@@ -12,7 +12,7 @@ export const SMART_ACCOUNT_TABS_VALUES = Object.freeze({
 
 export function SmartAccountTabsList() {
   return (
-    <ScrollArea className="w-full max-w-full">
+    <ScrollArea>
       <Tabs.List
         aria-label="Manage your smart account"
         className="w-full min-w-[36rem] text-center text-sm"

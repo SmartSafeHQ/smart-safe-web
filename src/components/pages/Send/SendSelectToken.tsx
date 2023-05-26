@@ -6,7 +6,7 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSend } from '@contexts/SendContext'
-import { FetchSafeTokensOutput } from '@hooks/chains/queries/useSafeTokens'
+import { FetchSafeTokensOutput } from '@hooks/safes/retrieve/queries/useSafeTokens'
 import { useSafeTokenBalance } from '@hooks/chains/queries/useSafeTokenBalance'
 import { useSafe } from '@contexts/SafeContext'
 

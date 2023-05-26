@@ -115,7 +115,7 @@ function DialogDrawerContent({ children, ...props }: DialogDrawerContentProps) {
           props.className
         )}
       >
-        <ScrollArea className="w-full h-full">
+        <ScrollArea>
           <div className="w-full h-full min-h-full flex flex-1 flex-col">
             {children}
           </div>

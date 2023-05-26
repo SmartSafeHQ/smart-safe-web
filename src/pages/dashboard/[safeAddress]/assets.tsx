@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import Link from 'next/link'
+import clsx from 'clsx'
 
 import {
   AssetsTabsList,
@@ -9,9 +11,13 @@ import { Tabs } from '@components/Tabs'
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
 import { AssetsList } from '@components/pages/Assets/AssetsList'
 
+import { useSafe } from '@contexts/SafeContext'
+
 const Assets = () => {
+  const { safe } = useSafe()
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center">
       <Head>
         <title>SmartSafe | Safe assets</title>
         <meta
@@ -30,11 +36,16 @@ const Assets = () => {
                 <div className="w-full flex flex-1 flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
                   <PageLayout.Title>Assets</PageLayout.Title>
 
-                  <Button className="w-max">Send</Button>
+                  <Button
+                    asChild
+                    className={clsx('w-max', { 'pointer-events-none': !safe })}
+                  >
+                    <Link href={`/dashboard/${safe?.address}/send`}>Send</Link>
+                  </Button>
                 </div>
               </PageLayout.Header>
 
-              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-6">
+              <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-6 px-2">
                 <AssetsList />
               </div>
             </PageLayout.Root>

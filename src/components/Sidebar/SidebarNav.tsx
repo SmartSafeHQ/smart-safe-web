@@ -5,78 +5,87 @@ import {
   AddressBook,
   UsersThree,
   Gear,
+  ArrowsCounterClockwise,
   ArrowClockwise
 } from '@phosphor-icons/react'
-
-import { useSafe } from '@contexts/SafeContext'
 
 import { NavLink } from './NavLink'
 import { DialogDrawer } from '@components/Dialogs/DialogDrawer'
 
+import { useSafe } from '@contexts/SafeContext'
+
+const NAV_LINKS = [
+  {
+    href: '',
+    activePath: undefined,
+    icon: House,
+    title: 'Home',
+    isDisabled: false
+  },
+  {
+    href: 'assets',
+    activePath: 'assets',
+    icon: CirclesThree,
+    title: 'Assets',
+    isDisabled: false
+  },
+  {
+    href: 'transactions/queue',
+    activePath: 'transactions',
+    icon: ArrowsCounterClockwise,
+    title: 'Transactions',
+    isDisabled: false
+  },
+  {
+    href: 'send',
+    activePath: 'send',
+    icon: PaperPlaneTilt,
+    title: 'Send',
+    isDisabled: false
+  },
+  {
+    href: 'contacts',
+    activePath: 'contacts',
+    icon: AddressBook,
+    title: 'Address Book',
+    isDisabled: false
+  },
+  {
+    href: 'spending-limits',
+    activePath: 'spending-limits',
+    icon: UsersThree,
+    title: 'Spending Limits',
+    isDisabled: false
+  },
+  {
+    href: 'recurring-payments',
+    activePath: 'recurring-payments',
+    icon: ArrowClockwise,
+    title: 'Recurring Payments',
+    isDisabled: false
+  },
+  {
+    href: 'settings',
+    activePath: 'settings',
+    icon: Gear,
+    title: 'Settings',
+    isDisabled: false
+  }
+]
+
 export function SidebarNav() {
   const { safe } = useSafe()
 
-  const NAV_LINKS = [
-    {
-      href: `/dashboard/${safe?.address}/`,
-      activePath: undefined,
-      icon: House,
-      title: 'Home',
-      isDisabled: false
-    },
-    {
-      href: `/dashboard/${safe?.address}/assets`,
-      activePath: 'assets',
-      icon: CirclesThree,
-      title: 'Assets',
-      isDisabled: false
-    },
-    {
-      href: `/dashboard/${safe?.address}/send`,
-      activePath: 'send',
-      icon: PaperPlaneTilt,
-      title: 'Send',
-      isDisabled: false
-    },
-    {
-      href: '/dashboard/smart-account/contacts',
-      activePath: 'contacts',
-      icon: AddressBook,
-      title: 'Address Book',
-      isDisabled: false
-    },
-    {
-      href: '/dashboard/smart-account/spending-limits',
-      activePath: 'spending-limits',
-      icon: UsersThree,
-      title: 'Spending Limits',
-      isDisabled: false
-    },
-    {
-      href: '/dashboard/smart-account/recurring-payments',
-      activePath: 'recurring-payments',
-      icon: ArrowClockwise,
-      title: 'Recurring Payments',
-      isDisabled: false
-    },
-    {
-      href: '/dashboard/smart-account/settings',
-      activePath: 'settings',
-      icon: Gear,
-      title: 'Settings',
-      isDisabled: false
-    }
-  ]
-
   return (
-    <div className="flex flex-1 pr-2 overflow-hidden overflow-y-auto bg-zinc-50 dark:bg-zinc-950 md:w-[15rem] md:max-lg:w-[4.5rem] md:max-lg:pr-0 lg:pr-4">
-      <div className="flex flex-1 flex-col items-stretch justify-start md:max-lg:px-1 lg:p-3">
+    <div className="flex flex-1 pr-2 overflow-hidden overflow-y-auto bg-zinc-50 dark:bg-zinc-950 md:max-lg:pr-0 lg:pr-4">
+      <div className="flex flex-1 flex-col items-stretch justify-start md:w-[14rem] md:max-lg:w-[5rem] md:max-lg:px-1 lg:p-3">
         {NAV_LINKS.map(navLink => (
           <DialogDrawer.Close key={navLink.title}>
             <NavLink
               href={navLink.href}
               Icon={navLink.icon}
               isDisabled={navLink.isDisabled}
+              basePath={`/dashboard/${safe?.address}`}
               activePath={navLink.activePath}
             >
               {navLink.title}

@@ -1,24 +1,33 @@
 import { ethers, type JsonRpcSigner } from 'ethers'
 
+interface TransactionProps {
+  chainId: number
+  from: string
+  to: string
+  transactionNonce: number
+  value: string
+  data: string
+}
+
 function hashString(data: string) {
   const stringToBytes = ethers.toUtf8Bytes(data)
   return ethers.keccak256(stringToBytes)
 }
 
-function getHashOfSignatureStruct(
-  from: string,
-  to: string,
-  transactioNonce: number,
-  value: string,
-  data: string
-) {
+function getHashOfSignatureStruct({
+  from,
+  to,
+  transactionNonce,
+  value,
+  data
+}: TransactionProps) {
   const signatureStructHash = hashString(
     'Signature(address,address,uint64,uint256,bytes)'
   )
 
   const signatureStructEncoded = new ethers.AbiCoder().encode(
     ['bytes32', 'address', 'address', 'uint64', 'uint256', 'bytes32'],
-    [signatureStructHash, from, to, transactioNonce, value, data]
+    [signatureStructHash, from, to, transactionNonce, value, data]
   )
 
   const hashedEncodedStruct = ethers.keccak256(signatureStructEncoded)
@@ -26,26 +35,19 @@ function getHashOfSignatureStruct(
   return { hashedEncodedStruct }
 }
 
-interface SignHashProps {
-  signer: JsonRpcSigner
-  domain: {
-    chainId: number
-    verifyingContract: string
-  }
+interface GetHashMessageProps {
+  chainId: number
+  contractAddress: string
   hashedEncodedStruct: string
 }
 
-async function signHash({
-  domain: { chainId, verifyingContract },
-  signer,
+function getHashMessage({
+  chainId,
+  contractAddress,
   hashedEncodedStruct
-}: SignHashProps) {
-  const domain = {
-    name: hashString('Smart Safe Signature Manager'),
-    version: hashString('1.0.0'),
-    chainId,
-    verifyingContract
-  }
+}: GetHashMessageProps) {
+  const domainName = hashString('Smart Safe Signature Manager')
+  const domainVersion = hashString('1.0.0')
 
   const typeHash = hashString(
     'EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)'
@@ -54,13 +56,7 @@ async function signHash({
   const domainSeparator = ethers.keccak256(
     new ethers.AbiCoder().encode(
       ['bytes32', 'bytes32', 'bytes32', 'uint256', 'address'],
-      [
-        typeHash,
-        domain.name,
-        domain.version,
-        domain.chainId,
-        domain.verifyingContract
-      ]
+      [typeHash, domainName, domainVersion, chainId, contractAddress]
     )
   )
 
@@ -71,6 +67,44 @@ async function signHash({
     )
   )
 
+  return typedDataHash
+}
+
+interface CreateTransactionMessageProps {
+  transaction: TransactionProps
+}
+
+export function createTransactionMessage({
+  transaction
+}: CreateTransactionMessageProps) {
+  const { hashedEncodedStruct } = getHashOfSignatureStruct(transaction)
+
+  const typedDataHash = getHashMessage({
+    chainId: transaction.chainId,
+    contractAddress: transaction.from,
+    hashedEncodedStruct
+  })
+
+  return ethers.getBytes(typedDataHash)
+}
+
+interface CreateTransactionProposalProps {
+  transaction: TransactionProps
+  signer: JsonRpcSigner
+}
+
+export async function createTransactionProposal({
+  transaction,
+  signer
+}: CreateTransactionProposalProps) {
+  const { hashedEncodedStruct } = getHashOfSignatureStruct(transaction)
+
+  const typedDataHash = getHashMessage({
+    chainId: transaction.chainId,
+    contractAddress: transaction.from,
+    hashedEncodedStruct
+  })
+
   console.log(ethers.getBytes(typedDataHash).toString())
 
   const signedTypedDataHash = await signer.signMessage(
@@ -78,39 +112,6 @@ async function signHash({
   )
 
   console.log({ typedDataHash, signedTypedDataHash })
-
-  return { typedDataHash, signedTypedDataHash }
-}
-
-interface CreateTransactionProposalProps
-  extends Omit<SignHashProps, 'hashedEncodedStruct'> {
-  transaction: {
-    from: string
-    to: string
-    transactionNonce: number
-    value: string
-    data: string
-  }
-}
-
-export async function createTransactionProposal({
-  domain,
-  signer,
-  transaction
-}: CreateTransactionProposalProps) {
-  const { hashedEncodedStruct } = getHashOfSignatureStruct(
-    transaction.from,
-    transaction.to,
-    transaction.transactionNonce,
-    transaction.value,
-    transaction.data
-  )
-
-  const { signedTypedDataHash, typedDataHash } = await signHash({
-    domain,
-    signer,
-    hashedEncodedStruct
-  })
 
   return { signedTypedDataHash, typedDataHash }
 }

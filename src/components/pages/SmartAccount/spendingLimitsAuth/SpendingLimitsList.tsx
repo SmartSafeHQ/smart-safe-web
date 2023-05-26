@@ -11,7 +11,7 @@ export function SpendingLimitsList() {
     useSpendingLimitsAuthHook()
 
   return (
-    <ScrollArea className="w-full max-w-full">
+    <ScrollArea>
       {error ? (
         <ErrorState
           title="Could not load your spending limit authorizations. Please try again."

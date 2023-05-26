@@ -8,6 +8,7 @@ import { Button } from '@components/Button'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { useSend } from '@contexts/SendContext'
+import { useSafe } from '@contexts/SafeContext'
 
 export interface SendSuccessProps {
   transactionUrl: string
@@ -15,6 +16,7 @@ export interface SendSuccessProps {
 
 export function SendSuccess({ transactionUrl }: SendSuccessProps) {
   const { transaction, selectedToken } = useSend()
+  const { safe } = useSafe()
 
   if (!transaction || !selectedToken) return <></>
 
@@ -31,7 +33,7 @@ export function SendSuccess({ transactionUrl }: SendSuccessProps) {
             Request sent
           </Heading>
 
-          <Text className="text-sm">1 of 3 approves</Text>
+          <Text className="text-sm">1 of {safe?.threshold} approves</Text>
         </div>
       </header>
 

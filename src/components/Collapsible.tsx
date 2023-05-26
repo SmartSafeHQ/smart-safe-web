@@ -29,18 +29,9 @@ export interface CollapsibleTriggerProps
   children: ReactNode
 }
 
-function CollapsibleTrigger({
-  children,
-  className,
-  ...props
-}: CollapsibleTriggerProps) {
+function CollapsibleTrigger({ children, ...props }: CollapsibleTriggerProps) {
   return (
-    <RadixCollapsible.Trigger
-      className={clsx('data-[state=open]:brightness-90', className)}
-      {...props}
-    >
-      {children}
-    </RadixCollapsible.Trigger>
+    <RadixCollapsible.Trigger {...props}>{children}</RadixCollapsible.Trigger>
   )
 }
 

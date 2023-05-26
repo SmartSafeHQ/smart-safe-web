@@ -6,7 +6,8 @@ import { z } from 'zod'
 import { ethers } from 'ethers'
 
 import { useTokenUsdValue } from '@hooks/chains/queries/useTokenUsdValue'
-import { useSafeTokens } from '@hooks/chains/queries/useSafeTokens'
+import { useSafeTokens } from '@hooks/safes/retrieve/queries/useSafeTokens'
+import { useSafeTokenBalance } from '@hooks/chains/queries/useSafeTokenBalance'
 import { useSend } from '@contexts/SendContext'
 import { formatWalletAddress } from '@utils/web3'
 import { useSafe } from '@contexts/SafeContext'
@@ -40,6 +41,7 @@ export const useSendHook = () => {
     register,
     handleSubmit,
     setValue,
+    setError,
     watch,
     formState: { errors }
   } = useForm<SendFieldValues>({
@@ -53,6 +55,13 @@ export const useSendHook = () => {
   )
   const { data: tokenUsdData, isFetching: tokenUsdIsFetching } =
     useTokenUsdValue(selectedToken?.symbol)
+
+  const { data: tokenBalanceData } = useSafeTokenBalance(
+    safe?.address,
+    selectedToken?.symbol,
+    selectedToken?.rpcUrl,
+    !!safe && !!selectedToken
+  )
 
   const currentAmount = watch()?.amount ?? '0'
   const usdAmount = +currentAmount * (tokenUsdData?.usdValue ?? 0)
@@ -84,7 +93,21 @@ export const useSendHook = () => {
   }
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
-    if (!selectedToken || !tokenUsdData) return
+    if (
+      !selectedToken ||
+      !tokenUsdData ||
+      !tokenBalanceData ||
+      +data.amount <= 0
+    ) {
+      return
+    }
+
+    if (+data.amount > tokenBalanceData.balance) {
+      setError('amount', {
+        message: 'Insufficient funds in the safe for the transaction'
+      })
+      return
+    }
 
     try {
       const formattedTo = formatWalletAddress({
