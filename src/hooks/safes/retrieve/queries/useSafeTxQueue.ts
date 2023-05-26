@@ -64,6 +64,8 @@ export async function fetchSafeTxQueue(
     0
   )) as []
 
+  console.log(transactionsQueue)
+
   const formattedTransactionsQueue =
     transactionsQueue.reduce<FetchSafeTxQueueOutput>(
       (acc, transaction) => {

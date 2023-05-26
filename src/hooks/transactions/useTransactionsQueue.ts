@@ -9,6 +9,12 @@ import { useRejectTransactionMutation } from '@hooks/transactions/mutation/useRe
 export type OwnerApproveStatus = 'approved' | 'rejected'
 export type TransactionType = 'SEND'
 
+export enum TransactionApprovalStatus {
+  AWAITING,
+  APPROVED,
+  REJECTED
+}
+
 export const useTransactionsQueue = () => {
   const { safe } = useSafe()
   const [{ wallet }] = useConnectWallet()

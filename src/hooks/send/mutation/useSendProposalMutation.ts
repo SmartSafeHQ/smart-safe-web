@@ -53,11 +53,10 @@ async function sendProposalFunction(
     data: ethers.keccak256(txData)
   }
 
-  const { signedTypedDataHash, typedDataHash } =
-    await createTransactionProposal({
-      signer,
-      transaction
-    })
+  const { signedTypedDataHash } = await createTransactionProposal({
+    signer,
+    transaction
+  })
 
   const proposal = await smartSafeProxy.getFunction(
     'createTransactionProposal'
@@ -66,9 +65,11 @@ async function sendProposalFunction(
     amountInWei.toString(),
     txData,
     await signer.getAddress(),
-    typedDataHash,
-    signedTypedDataHash
+    signedTypedDataHash,
+    { value: ethers.parseEther('1') }
   )
+
+  await proposal.wait()
 
   return {
     transactionHash: proposal.hash

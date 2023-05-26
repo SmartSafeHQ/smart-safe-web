@@ -113,7 +113,7 @@ export function OwnerItem({
             onClick={() => removeOwner(index)}
             className="absolute top-[2.4rem] right-0 text-zinc-600 dark:text-zinc-400 transition-colors hover:!text-red-500"
           >
-            <Trash className="w-5 h-5  " />
+            <Trash className="w-5 h-5" />
           </button>
         )}
       </div>

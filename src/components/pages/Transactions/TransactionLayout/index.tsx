@@ -7,6 +7,7 @@ import {
 } from '@phosphor-icons/react'
 import { HTMLAttributes, ReactNode } from 'react'
 import { Slot } from '@radix-ui/react-slot'
+import { useConnectWallet } from '@web3-onboard/react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import dayjs from 'dayjs'
@@ -197,6 +198,7 @@ function TxLayoutOwnerStatus({
 interface TxLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
   isLoadingApprove: boolean
   isLoadingReject: boolean
+  signatures: OwnerSignaturesProps[]
   handleApproveTransaction: () => void
   handleRejectTransaction: () => void
 }
@@ -204,10 +206,17 @@ interface TxLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
 function TxLayoutActions({
   isLoadingApprove,
   isLoadingReject,
+  signatures,
   handleApproveTransaction,
   handleRejectTransaction,
   ...props
 }: TxLayoutActionsProps) {
+  const [{ wallet }] = useConnectWallet()
+
+  const checkOwnerAlreadySigned = signatures.find(
+    signature => signature.address.toLowerCase() === wallet?.accounts[0].address
+  )
+
   return (
     <div
       className="w-full flex justify-start items-center gap-2 p-4 bg-zinc-100 dark:bg-zinc-900 border-t-1 border-zinc-200 dark:border-zinc-700"
@@ -216,6 +225,7 @@ function TxLayoutActions({
       <Button
         onClick={handleApproveTransaction}
         isLoading={isLoadingApprove}
+        disabled={!!checkOwnerAlreadySigned || isLoadingReject}
         variant="green"
         className="w-full max-w-[11rem]"
       >
@@ -225,6 +235,7 @@ function TxLayoutActions({
       <Button
         onClick={handleRejectTransaction}
         isLoading={isLoadingReject}
+        disabled={!!checkOwnerAlreadySigned || isLoadingApprove}
         variant="red"
         className="w-full max-w-[10rem]"
       >

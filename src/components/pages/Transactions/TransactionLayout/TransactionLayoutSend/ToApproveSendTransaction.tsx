@@ -14,6 +14,7 @@ export function ToApproveSendTransaction({
 }: ToApproveSendTransactionProps) {
   const {
     safe,
+    transactionsQueue,
     isLoadingApprove,
     handleApproveTransaction,
     isLoadingReject,
@@ -62,6 +63,7 @@ export function ToApproveSendTransaction({
           <TransactionLayout.Actions
             isLoadingApprove={isLoadingApprove}
             isLoadingReject={isLoadingReject}
+            signatures={transactionsQueue?.toApprove?.signatures ?? []}
             handleApproveTransaction={handleApproveTransaction}
             handleRejectTransaction={handleRejectTransaction}
           />

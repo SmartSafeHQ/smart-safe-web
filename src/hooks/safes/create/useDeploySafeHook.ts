@@ -223,7 +223,11 @@ export const useDeploySafeHook = () => {
       console.log('formattedOwnerAddress =>', formattedOwnerAddress)
       console.log('safeInfos =>', safeInfos)
 
-      push('/')
+      push('/').then(() =>
+        toast.error(
+          'An unknown error occurred retrieving safe information. Please try again.'
+        )
+      )
     }
   }, [wallet, formattedOwnerAddress, safeInfos])
 

@@ -11,6 +11,7 @@ import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
+import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 
 export type RejectTransactionFunctionInput = {
   provider: Eip1193Provider
@@ -60,18 +61,16 @@ async function rejectTransactionFunction(
     data: keccak256(input.data)
   }
 
-  const { signedTypedDataHash, typedDataHash } =
-    await createTransactionProposal({
-      signer,
-      transaction
-    })
+  const { signedTypedDataHash } = await createTransactionProposal({
+    signer,
+    transaction
+  })
 
-  await contract.getFunction('addTransactionSignature')(
-    input.ownerAddress,
-    false,
-    typedDataHash,
-    signedTypedDataHash
-  )
+  const transactionSignature = await contract.getFunction(
+    'addTransactionSignature'
+  )(input.ownerAddress, TransactionApprovalStatus.REJECTED, signedTypedDataHash)
+
+  await transactionSignature.wait()
 }
 
 export function useRejectTransactionMutation() {
