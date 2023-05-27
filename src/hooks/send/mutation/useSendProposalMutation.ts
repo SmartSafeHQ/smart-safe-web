@@ -66,7 +66,7 @@ async function sendProposalFunction(
     txData,
     await signer.getAddress(),
     signedTypedDataHash,
-    { value: ethers.parseEther('1') }
+    { value: amountInWei.toString() }
   )
 
   await proposal.wait()

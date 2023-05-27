@@ -27,7 +27,7 @@ export function TransactionQueue() {
       <div className="w-full flex flex-col items-center justify-center gap-5">
         {transactionsQueue && !transactionsQueue.toApprove && (
           <ErrorState
-            title="You have no transactions on the queue"
+            title="You have no pending transactions"
             className="pt-2"
           />
         )}
