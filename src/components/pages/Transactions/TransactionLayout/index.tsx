@@ -121,7 +121,7 @@ function TxLayoutOwnersStatus({
           <div className="flex flex-col items-stretch justify-start">
             <Heading asChild className="text-lg font-medium">
               <h3>
-                Transaction waiting approves ({signatures.length}/{threshold})
+                Transaction waiting approvals ({signatures.length}/{threshold})
               </h3>
             </Heading>
 
