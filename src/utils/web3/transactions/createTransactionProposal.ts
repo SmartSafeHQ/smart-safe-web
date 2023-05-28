@@ -105,13 +105,9 @@ export async function createTransactionProposal({
     hashedEncodedStruct
   })
 
-  console.log(ethers.getBytes(typedDataHash).toString())
-
   const signedTypedDataHash = await signer.signMessage(
     ethers.getBytes(typedDataHash)
   )
-
-  console.log({ typedDataHash, signedTypedDataHash })
 
   return { signedTypedDataHash, typedDataHash }
 }

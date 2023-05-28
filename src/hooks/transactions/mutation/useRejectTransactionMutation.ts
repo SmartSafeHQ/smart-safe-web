@@ -30,8 +30,6 @@ async function rejectTransactionFunction(
     throw new Error('safe address and chain id required')
   }
 
-  console.log(input)
-
   const safeChain = CHAINS_ATTRIBUTES.find(
     chain => chain.chainId === input.chainId
   )
