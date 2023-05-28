@@ -7,11 +7,27 @@ import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useChangeThreshold } from '@hooks/transactions/mutation/useChangeThreshold'
+import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
+import { useAddNewOwner } from '@hooks/transactions/mutation/useAddNewOwner'
 import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
 
 interface ChangeThrehsold {
   safeAddress: string
   newThreshold: number
+  transactionNonce: number
+}
+
+interface AddNewOwner {
+  safeAddress: string
+  ownerAddress: string
+  newThreshold: number
+  transactionNonce: number
+}
+
+interface RemoveOwner {
+  safeAddress: string
+  prevOwnerAddress: string
+  removeOwnerAddress: string
   transactionNonce: number
 }
 
@@ -31,6 +47,8 @@ export function useAccountManagementHook() {
   const { data: safeOwners } = useGetOwners({
     safeAddress: safe?.address || ''
   })
+  const { mutateAsync: addNewOwnerMutation } = useAddNewOwner()
+  const { mutateAsync: removeOwnersMutation } = useRemoveOwner()
   const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
 
   const richOwnersData = useMemo(() => {
@@ -51,7 +69,7 @@ export function useAccountManagementHook() {
       )
 
       return {
-        address: ownerData?.contactAddress || '',
+        address: ownerData?.contactAddress || ownerAddress,
         name: ownerData?.contactName || ''
       }
     })
@@ -73,6 +91,22 @@ export function useAccountManagementHook() {
     }
   }
 
+  async function addNewOwner(input: AddNewOwner) {
+    try {
+      await addNewOwnerMutation(input)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async function removeOwner(input: RemoveOwner) {
+    try {
+      await removeOwnersMutation(input)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   const isCurrentConnectWalletAnOwner = useMemo(() => {
     if (!wallets?.accounts?.[0]?.address || !safeOwners) {
       return false
@@ -88,6 +122,8 @@ export function useAccountManagementHook() {
   return {
     safe,
     ownersCount,
+    addNewOwner,
+    removeOwner,
     safeThreshold,
     richOwnersData,
     changeThreshold,
