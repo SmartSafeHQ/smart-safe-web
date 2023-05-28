@@ -8,9 +8,13 @@ import { Text } from '@components/Text'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 import { useSafe } from '@contexts/SafeContext'
+import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 
 export function MainSafeInfos() {
   const { safe } = useSafe()
+  const { data: ownersCount } = useGetOwnersCount({
+    safeAddress: safe?.address || ''
+  })
 
   return (
     <main className="max-h-[16rem] min-w-[20rem] flex flex-col flex-1 items-stretch justify-start gap-3 relative p-6 rounded-lg border-1 border-zinc-200 dark:border-zinc-700 shadow-md bg-white dark:bg-black sm:min-w-[37rem]">
@@ -91,7 +95,7 @@ export function MainSafeInfos() {
               <strong>Owners</strong>
             </Text>
 
-            <Text className="text-3xl">1</Text>
+            <Text className="text-3xl">{ownersCount}</Text>
           </div>
         </Skeleton>
       </div>
