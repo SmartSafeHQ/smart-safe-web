@@ -9,7 +9,7 @@ interface GetOwnersCountInput {
 
 async function getOwnersCount({ safeAddress }: GetOwnersCountInput) {
   if (!safeAddress) {
-    return
+    throw new Error('safe addres required')
   }
 
   const provider = new ethers.BrowserProvider(window.ethereum)
