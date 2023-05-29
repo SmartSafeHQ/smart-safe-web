@@ -87,7 +87,7 @@ export function ChangeThresholdModal({
               <span className="font-bold">{ownersCount}</span>.
             </p>
 
-            <p className="p-4 dark:border-zinc-700 border-1 rounded-md bg-zinc-800/[.6] text-center">
+            <p className="p-4 dark:border-zinc-700 border-1 rounded-md bg-zinc-200 dark:bg-zinc-800/[.6] text-center">
               You&apos;ll be asked to sign a message and then confirm the
               transaction.
             </p>
@@ -96,7 +96,7 @@ export function ChangeThresholdModal({
           <div className="flex justify-between p-8">
             <Button
               disabled={isLoading}
-              className="bg-transparent hover:dark:bg-zinc-800 min-w-[100px]"
+              className="bg-transparent hover:bg-zinc-200 hover:dark:bg-zinc-800 min-w-[100px]"
             >
               Cancel
             </Button>
