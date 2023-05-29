@@ -7,16 +7,9 @@ import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
-import { useAddNewOwner } from '@hooks/transactions/mutation/useAddNewOwner'
+import { useAddNewOwnerHook } from '@hooks/smartAccount/settings/useAddNewOwnerHook'
 import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
 import { useChangeThresholdHook } from '@hooks/smartAccount/settings/useChangeThresholdHook'
-
-interface AddNewOwner {
-  safeAddress: string
-  ownerAddress: string
-  newThreshold: number
-  transactionNonce: number
-}
 
 interface RemoveOwner {
   safeAddress: string
@@ -34,6 +27,12 @@ export function useAccountManagementHook() {
     isChangeThresholdModalOpen,
     changeThresholdMutationIsLoading
   } = useChangeThresholdHook()
+  const {
+    addNewOwner,
+    addNewOwnerMutationIsLoading,
+    isAddNewOwnerModalOpen,
+    setAddNewOwnerOpen
+  } = useAddNewOwnerHook()
   const { data: contactList } = useListContacts(safe?.ownerId || '')
   const { data: transactionNonce } = useGetTransactionNonce({
     safeAddress: safe?.address || '',
@@ -51,7 +50,6 @@ export function useAccountManagementHook() {
     safeAddress: safe?.address || '',
     enabled: !!safe?.address
   })
-  const { mutateAsync: addNewOwnerMutation } = useAddNewOwner()
   const { mutateAsync: removeOwnersMutation } = useRemoveOwner()
 
   const richOwnersData = useMemo(() => {
@@ -77,14 +75,6 @@ export function useAccountManagementHook() {
       }
     })
   }, [contactList, safeOwners, wallets])
-
-  async function addNewOwner(input: AddNewOwner) {
-    try {
-      await addNewOwnerMutation(input)
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   async function removeOwner(input: RemoveOwner) {
     try {
@@ -115,8 +105,11 @@ export function useAccountManagementHook() {
     richOwnersData,
     changeThreshold,
     transactionNonce,
+    setAddNewOwnerOpen,
+    isAddNewOwnerModalOpen,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
+    addNewOwnerMutationIsLoading,
     isCurrentConnectWalletAnOwner,
     changeThresholdMutationIsLoading
   }
