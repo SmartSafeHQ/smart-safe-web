@@ -10,8 +10,9 @@ import { createTransactionMessage } from '@utils/web3/transactions/createTransac
 import {
   ChangeOwnersTxProps,
   DefaultTxProps,
-  SendTxProps
-} from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+  SendTxProps,
+  TransacitonTypes
+} from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
 
 export function formatTransactionToQueueList(
@@ -91,3 +92,16 @@ export function formatAddOwnerTxToQueue(
     })
   }
 }
+
+type TxFormatFunction = (
+  transaction: DefaultTxProps,
+  parsedTransaction: TransactionDescription
+) => TransacitonTypes
+
+export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
+  [
+    'addNewOwner',
+    (transaction: DefaultTxProps, parsedTransaction: TransactionDescription) =>
+      formatAddOwnerTxToQueue(transaction, parsedTransaction)
+  ]
+])

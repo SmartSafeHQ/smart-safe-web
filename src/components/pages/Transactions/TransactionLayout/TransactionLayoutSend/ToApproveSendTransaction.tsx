@@ -3,7 +3,7 @@ import { TransactionLayoutSend } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
 interface ToApproveSendTransactionProps {
   transaction: SendTxProps

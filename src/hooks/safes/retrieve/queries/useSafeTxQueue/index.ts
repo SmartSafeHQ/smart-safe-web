@@ -3,54 +3,16 @@ import { useQuery } from '@tanstack/react-query'
 
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
-import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
 import {
-  formatAddOwnerTxToQueue,
+  FORMAT_TRANSACTION_FUCTIONS,
   formatSendTxToQueue,
   formatTransactionToQueueList
 } from '@utils/web3/transactions/transactionQueue'
-
-interface FetchSafeTxQueueInput {
-  safeAddress?: string
-  chainId?: string
-}
-
-export interface OwnerSignaturesProps {
-  status: OwnerApproveStatus
-  formattedAddress: string
-  address: string
-}
-
-export interface DefaultTxProps {
-  nonce: number
-  amount: number
-  createdAt: Date
-  signatures: OwnerSignaturesProps[]
-  to: string
-  formattedAddress: string
-  hash: string
-  data: string
-}
-
-export interface SendTxProps extends DefaultTxProps {
-  type: 'SEND'
-  token: {
-    symbol: string
-    icon: string
-  }
-}
-
-export interface ChangeOwnersTxProps extends DefaultTxProps {
-  type: 'ADD_OWNER'
-  ownerAddress: string
-}
-
-export type TransacitonTypes = SendTxProps | ChangeOwnersTxProps
-
-export interface FetchSafeTxQueueOutput {
-  toApprove?: TransacitonTypes
-  pending: TransacitonTypes[]
-}
+import {
+  FetchSafeTxQueueInput,
+  FetchSafeTxQueueOutput,
+  TransacitonTypes
+} from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
 export async function fetchSafeTxQueue(
   input: FetchSafeTxQueueInput
@@ -87,8 +49,6 @@ export async function fetchSafeTxQueue(
           data: transaction[5]
         })
 
-        console.log(parsedTransaction)
-
         const transactionData = formatTransactionToQueueList(
           transaction,
           safeChain.chainId
@@ -96,15 +56,21 @@ export async function fetchSafeTxQueue(
 
         let formattedTransaction: TransacitonTypes
 
-        if (!parsedTransaction) {
-          formattedTransaction = formatSendTxToQueue(transactionData)
-        } else if (parsedTransaction.name === 'addNewOwner') {
-          formattedTransaction = formatAddOwnerTxToQueue(
+        if (parsedTransaction) {
+          const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
+            parsedTransaction.name
+          )
+
+          if (!formatTransactionFunction) {
+            throw new Error('transaction type not supported')
+          }
+
+          formattedTransaction = formatTransactionFunction(
             transactionData,
             parsedTransaction
           )
         } else {
-          throw new Error('transaction type not supported')
+          formattedTransaction = formatSendTxToQueue(transactionData)
         }
 
         if (formattedTransaction.nonce === currenTxQueueNonce) {

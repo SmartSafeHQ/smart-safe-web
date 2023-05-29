@@ -1,7 +1,7 @@
 import { TransactionLayout } from './TransactionLayout'
 import { Collapsible } from '@components/Collapsible'
 
-import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 import { PendingSendTransaction } from './TransactionLayout/TransactionLayoutSend/PendingSendTransaction'
 import { PendingAddOwnerTransaction } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutAddOwner/PendingAddOwnerTransaction'
 

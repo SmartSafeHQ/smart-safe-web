@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { TransactionSendItem } from '@components/pages/Home/TransactionQueue/TransactionItemTypes/TransactionSendItem'
 import { TransactionAddOwnerItem } from '@components/pages/Home/TransactionQueue/TransactionItemTypes/TransactionAddOwnerItem'
 import { TransactionLayout } from '@components/pages/Transactions/TransactionLayout'
-import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
 import { useSafe } from '@contexts/SafeContext'
 

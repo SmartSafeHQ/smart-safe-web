@@ -4,7 +4,7 @@ import { Text } from '@components/Text'
 import { Collapsible } from '@components/Collapsible'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { ChangeOwnersTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { ChangeOwnersTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 
 interface PendingAddOwnerTransactionProps {

@@ -1,6 +1,6 @@
 import { TransactionLayout } from './TransactionLayout'
 
-import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 import { ToApproveSendTransaction } from './TransactionLayout/TransactionLayoutSend/ToApproveSendTransaction'
 import { ToApproveAddOwnerTransaction } from './TransactionLayout/TransactionLayoutAddOwner/ToApproveAddOwnerTransaction'
 
