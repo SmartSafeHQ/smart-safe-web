@@ -38,9 +38,7 @@ export function useAccountManagementHook() {
   const { data: transactionNonce } = useGetTransactionNonce({
     safeAddress: safe?.address || ''
   })
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || ''
-  })
+  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
   const { data: safeThreshold } = useGetThreshold({
     safeAddress: safe?.address || ''
   })
