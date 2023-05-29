@@ -11,56 +11,6 @@ export interface ChainSettings {
 
 const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
-    symbol: 'CELO',
-    networkName: 'Celo Testnet',
-    icon: '/networks/celo-logo.svg',
-    chainId: '0xaef3',
-    hexColor: '#fcff52',
-    rpcUrl: 'https://alfajores-forno.celo-testnet.org/',
-    explorerUrl: 'https://alfajores-blockscout.celo-testnet.org',
-    scanUrl: 'https://explorer.celo.org/alfajores/api'
-  },
-  {
-    symbol: 'AVAX',
-    networkName: 'Avalanche Testnet',
-    icon: '/networks/avalanche-logo.svg',
-    chainId: '0xa869',
-    hexColor: '#e84142',
-    rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
-    explorerUrl: 'https://testnet.snowtrace.io',
-    scanUrl: `https://api-testnet.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'MATIC',
-    networkName: 'Polygon Testnet',
-    icon: '/networks/polygon-logo.svg',
-    chainId: '0x13881',
-    hexColor: '#8247e5',
-    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
-    explorerUrl: 'https://mumbai.polygonscan.com',
-    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'BNB',
-    networkName: 'BNB Smart Chain Testnet',
-    icon: '/networks/bnb-logo.svg',
-    chainId: '0x61',
-    hexColor: '#fbdc45',
-    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
-    explorerUrl: 'https://testnet.bscscan.com',
-    scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'XDC',
-    networkName: 'XDC Testnet',
-    icon: '/networks/xdc-logo.svg',
-    chainId: '0x33',
-    hexColor: '#9ff3ff',
-    rpcUrl: 'https://rpc.apothem.network/',
-    explorerUrl: 'https://explorer.apothem.network',
-    scanUrl: ''
-  },
-  {
     symbol: 'OKT',
     networkName: 'OKT Chain Testnet',
     icon: '/networks/okt-logo.svg',
@@ -83,56 +33,6 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
 ]
 
 const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
-  {
-    symbol: 'MATIC',
-    networkName: 'Polygon',
-    icon: '/networks/polygon-logo.svg',
-    chainId: '0x89',
-    hexColor: '#8247e5',
-    rpcUrl: 'https://polygon-rpc.com/',
-    explorerUrl: 'https://polygonscan.com',
-    scanUrl: `https://api.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'BNB',
-    networkName: 'BNB Smart Chain',
-    icon: '/networks/bnb-logo.svg',
-    chainId: '0x38',
-    hexColor: '#fbdc45',
-    rpcUrl: 'https://bsc-dataseed.binance.org/',
-    explorerUrl: 'https://bscscan.com',
-    scanUrl: `https://api.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'CELO',
-    networkName: 'Celo',
-    icon: '/networks/celo-logo.svg',
-    chainId: '0xa4ec',
-    hexColor: '#fcff52',
-    rpcUrl: 'https://forno.celo.org/',
-    explorerUrl: 'https://explorer.celo.org',
-    scanUrl: 'https://explorer.celo.org/mainnet/api'
-  },
-  {
-    symbol: 'AVAX',
-    networkName: 'Avalanche',
-    icon: '/networks/avalanche-logo.svg',
-    chainId: '0xa86a',
-    hexColor: '#e84142',
-    rpcUrl: 'https://api.avax.network/ext/bc/C/rpc',
-    explorerUrl: 'https://snowtrace.io',
-    scanUrl: `https://api.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'XDC',
-    networkName: 'XDC',
-    icon: '/networks/xdc-logo.svg',
-    chainId: '0x32',
-    hexColor: '#9ff3ff',
-    rpcUrl: 'https://rpc.xinfin.network',
-    explorerUrl: 'https://explorer.xinfin.network',
-    scanUrl: ''
-  },
   {
     symbol: 'OKT',
     networkName: 'OKT Chain',
