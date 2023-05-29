@@ -49,7 +49,7 @@ export function ToApproveSendTransaction({
                 tokenSymbol={transaction.token.symbol}
                 address={transaction.to}
                 explorerLink={`${safe.chain.explorerUrl}/address/${transaction.to}`}
-                formattedAddress={transaction.toFormattedAddress}
+                formattedAddress={transaction.formattedAddress}
                 amount={transaction.amount}
               />
 

@@ -14,12 +14,12 @@ interface TransactionLayoutSendHeaderProps
   extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   txNonce: number
-  createdAt?: Date
   amount: number
   token: {
     icon: string
     symbol: string
   }
+  createdAt?: Date
 }
 
 function TransactionLayoutSendHeader({
