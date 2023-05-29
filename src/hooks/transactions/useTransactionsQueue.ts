@@ -6,9 +6,6 @@ import { useSafeTxQueue } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
 import { useApproveTransactionMutation } from '@hooks/transactions/mutation/useApproveTransactionMutation'
 import { useRejectTransactionMutation } from '@hooks/transactions/mutation/useRejectTransactionMutation'
 
-export type OwnerApproveStatus = 'approved' | 'rejected'
-export type TransactionType = 'SEND'
-
 export enum TransactionApprovalStatus {
   AWAITING,
   APPROVED,

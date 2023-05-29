@@ -86,7 +86,7 @@ function TransactionLayoutAddOwnerInfos({
 }: TransactionLayoutAddOwnerInfosProps) {
   return (
     <div className="w-full flex flex-col gap-2" {...props}>
-      <Heading className="text-xl font-medium">Add owner</Heading>
+      <Heading className="text-xl font-medium">Add owner:</Heading>
 
       <div className="flex items-center justify-start gap-2">
         <div className="flex items-stretch justify-start gap-2">

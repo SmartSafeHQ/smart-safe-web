@@ -1,4 +1,5 @@
-import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
+export type OwnerApproveStatus = 'approved' | 'rejected'
+export type TransactionType = 'SEND' | 'ADD_OWNER'
 
 export interface FetchSafeTxQueueInput {
   safeAddress?: string

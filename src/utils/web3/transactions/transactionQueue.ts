@@ -10,10 +10,10 @@ import { createTransactionMessage } from '@utils/web3/transactions/createTransac
 import {
   ChangeOwnersTxProps,
   DefaultTxProps,
+  OwnerApproveStatus,
   SendTxProps,
   TransacitonTypes
 } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
-import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
 
 export function formatTransactionToQueueList(
   transaction: any,

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { smartSafeApi } from '@lib/axios'
-import { formatWalletAddress } from '@/utils/web3'
+import { formatWalletAddress } from '@utils/web3'
 
 interface FetchContactsList {
   contacts: { name: string; address: string; id: number }[]

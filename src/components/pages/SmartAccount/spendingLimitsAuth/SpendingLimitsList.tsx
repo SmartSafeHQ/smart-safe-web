@@ -4,7 +4,7 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { SpendingLimitsTable } from '@components/pages/SmartAccount/spendingLimitsAuth/SpendingLimitsTable'
 import { Text } from '@components/Text'
 
-import { useSpendingLimitsAuthHook } from '@/hooks/smartAccount/useSpendingLimitsAuthHook'
+import { useSpendingLimitsAuthHook } from '@hooks/smartAccount/useSpendingLimitsAuthHook'
 
 export function SpendingLimitsList() {
   const { spendingLimits, isLoading, error, handleDeleteSpendingLimits } =

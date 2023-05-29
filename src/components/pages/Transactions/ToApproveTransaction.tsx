@@ -1,8 +1,7 @@
 import { TransactionLayout } from './TransactionLayout'
+import { transactionComponents } from '@components/pages/Transactions/TransactionLayout/TransactionTypes'
 
 import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
-import { ToApproveSendTransaction } from './TransactionLayout/TransactionLayoutSend/ToApproveSendTransaction'
-import { ToApproveAddOwnerTransaction } from './TransactionLayout/TransactionLayoutAddOwner/ToApproveAddOwnerTransaction'
 
 interface ToApproveTransactionProps {
   transaction: TransacitonTypes
@@ -11,16 +10,14 @@ interface ToApproveTransactionProps {
 export function ToApproveTransaction({
   transaction
 }: ToApproveTransactionProps) {
+  const TxComponent = transactionComponents[transaction.type]
+
+  if (!TxComponent) return null
+
   return (
     <TransactionLayout.Root asChild>
       <main>
-        {transaction.type === 'SEND' && (
-          <ToApproveSendTransaction transaction={transaction} />
-        )}
-
-        {transaction.type === 'ADD_OWNER' && (
-          <ToApproveAddOwnerTransaction transaction={transaction} />
-        )}
+        <TxComponent.ToApprove transaction={transaction} />
       </main>
     </TransactionLayout.Root>
   )
