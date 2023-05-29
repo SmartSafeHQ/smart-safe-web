@@ -1,34 +1,36 @@
 import { TransactionLayout } from '..'
-import { TransactionLayoutSend } from '.'
+import { TransactionLayoutAddOwner } from '.'
 import { Text } from '@components/Text'
 import { Collapsible } from '@components/Collapsible'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { ChangeOwnersTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 
-interface PendingSendTransactionProps {
-  transaction: SendTxProps
+interface PendingAddOwnerTransactionProps {
+  transaction: ChangeOwnersTxProps
 }
 
-export function PendingSendTransaction({
+export function PendingAddOwnerTransaction({
   transaction
-}: PendingSendTransactionProps) {
+}: PendingAddOwnerTransactionProps) {
   const { safe } = useTransactionsQueue()
+  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
 
   return (
     <>
       <Collapsible.Trigger>
-        <TransactionLayoutSend.Header
+        <TransactionLayoutAddOwner.Header
           txNonce={transaction.nonce}
+          currentOwnersCount={ownersCount}
+          newOwnersCount={(ownersCount ?? 0) + 1}
           createdAt={transaction.createdAt}
-          amount={transaction.amount}
-          token={transaction.token}
           className="min-h-[4rem] py-4 px-6"
         >
           <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
             pending
           </Text>
-        </TransactionLayoutSend.Header>
+        </TransactionLayoutAddOwner.Header>
       </Collapsible.Trigger>
 
       <Collapsible.Content>
@@ -42,12 +44,10 @@ export function PendingSendTransaction({
               />
 
               <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">
-                <TransactionLayoutSend.Infos
-                  tokenSymbol={transaction.token.symbol}
-                  address={transaction.to}
-                  explorerLink={`${safe.chain.explorerUrl}/address/${transaction.to}`}
-                  formattedAddress={transaction.formattedAddress}
-                  amount={transaction.amount}
+                <TransactionLayoutAddOwner.Infos
+                  ownerAddress={transaction.ownerAddress}
+                  explorerLink={`${safe.chain.explorerUrl}/address/${transaction.ownerAddress}`}
+                  ownerFormattedAddress={transaction.formattedAddress}
                 />
 
                 <TransactionLayout.TxInfos

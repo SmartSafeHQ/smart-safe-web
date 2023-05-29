@@ -1,10 +1,9 @@
 import { ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 
-import { createTransactionProposal } from '@/utils/web3/transactions/createTransactionProposal'
-
+import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
-import { queryClient } from '@/lib/reactQuery'
+import { queryClient } from '@lib/reactQuery'
 
 export type AddNewOwnerInput = {
   safeAddress: string

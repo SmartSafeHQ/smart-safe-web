@@ -3,7 +3,7 @@ import { FieldArrayWithId, useFormContext } from 'react-hook-form'
 import { ArrowSquareOut, CaretDown, Plus } from '@phosphor-icons/react'
 
 import { OwnerItem } from './OwnerItem'
-import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
+import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 import { useSafe } from '@contexts/SafeContext'

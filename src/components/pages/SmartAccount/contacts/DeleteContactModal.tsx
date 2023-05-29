@@ -4,7 +4,7 @@ import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteContact } from '@hooks/addressBook/mutations/useDeleteContact'
+import { useDeleteContact } from '@/hooks/contacts/mutations/useDeleteContact'
 import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 
 export function DeleteContactModal() {

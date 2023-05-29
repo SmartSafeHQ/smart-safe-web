@@ -1,8 +1,19 @@
-import { ethers, formatUnits, verifyMessage } from 'ethers'
+import {
+  TransactionDescription,
+  ethers,
+  formatUnits,
+  verifyMessage
+} from 'ethers'
+import { formatWalletAddress } from '@utils/web3'
 
 import { createTransactionMessage } from '@utils/web3/transactions/createTransactionProposal'
-import { OwnerApproveStatus } from '@hooks/transactions/useTransactionsQueue'
-import { formatWalletAddress } from '@utils/web3'
+import {
+  ChangeOwnersTxProps,
+  DefaultTxProps,
+  OwnerApproveStatus,
+  SendTxProps,
+  TransacitonTypes
+} from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
 export function formatTransactionToQueueList(
   transaction: any,
@@ -47,11 +58,50 @@ export function formatTransactionToQueueList(
     createdAt,
     signatures: formattedSignatures,
     to,
+    formattedAddress: formatWalletAddress({
+      walletAddress: transactionData.to
+    }),
     data,
-    hash: '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d',
+    hash: '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d'
+  }
+}
+
+export function formatSendTxToQueue(transaction: DefaultTxProps): SendTxProps {
+  return {
+    ...transaction,
+    type: 'SEND',
     token: {
       symbol: 'matic',
       icon: '/networks/polygon-logo.svg'
     }
   }
 }
+
+export function formatAddOwnerTxToQueue(
+  transaction: DefaultTxProps,
+  parsedTransaction: TransactionDescription
+): ChangeOwnersTxProps {
+  const ownerAddress = parsedTransaction.args[0]
+
+  return {
+    ...transaction,
+    type: 'ADD_OWNER',
+    ownerAddress,
+    formattedAddress: formatWalletAddress({
+      walletAddress: ownerAddress
+    })
+  }
+}
+
+type TxFormatFunction = (
+  transaction: DefaultTxProps,
+  parsedTransaction: TransactionDescription
+) => TransacitonTypes
+
+export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
+  [
+    'addNewOwner',
+    (transaction: DefaultTxProps, parsedTransaction: TransactionDescription) =>
+      formatAddOwnerTxToQueue(transaction, parsedTransaction)
+  ]
+])

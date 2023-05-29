@@ -7,7 +7,7 @@ import { Heading } from '@components/Heading'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { useDeleteSpendingLimitsAuthMutation } from '@hooks/smartAccount/mutations/useDeleteSpendingLimitsAuthMutation'
-import { useSpendingLimitsAuthHook } from '@/hooks/smartAccount/useSpendingLimitsAuthHook'
+import { useSpendingLimitsAuthHook } from '@hooks/smartAccount/useSpendingLimitsAuthHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 export function DeleteSpendingLimitsAuthModal() {

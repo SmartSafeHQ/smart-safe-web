@@ -1,36 +1,38 @@
-import { ArrowDownRight, ArrowSquareOut, Copy } from '@phosphor-icons/react'
+import {
+  ArrowSquareOut,
+  Copy,
+  PlusCircle,
+  UsersThree
+} from '@phosphor-icons/react'
 import { HTMLAttributes, ReactNode } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import dayjs from 'dayjs'
 import clsx from 'clsx'
 
 import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 
-interface TransactionLayoutSendHeaderProps
+interface TransactionLayoutAddOwnerHeaderProps
   extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   txNonce: number
-  amount: number
-  token: {
-    icon: string
-    symbol: string
-  }
+  currentOwnersCount?: number
+  newOwnersCount: number
   createdAt?: Date
 }
 
-function TransactionLayoutSendHeader({
+function TransactionLayoutAddOwnerHeader({
   txNonce,
   createdAt,
-  amount,
-  token,
+  currentOwnersCount,
+  newOwnersCount,
   children,
   className,
   ...props
-}: TransactionLayoutSendHeaderProps) {
+}: TransactionLayoutAddOwnerHeaderProps) {
   return (
     <div
       className={clsx(
@@ -43,21 +45,20 @@ function TransactionLayoutSendHeader({
 
       <div className="max-w-5xl flex flex-1 flex-col items-stretch justify-between gap-2 md:items-center md:flex-row">
         <div className="flex items-center gap-2 lowercase">
-          <ArrowDownRight className="w-4 h-4 text-red-500" />
-          <Text>send</Text>
+          <PlusCircle className="w-4 h-4 text-green-500" />
+          <Text>Add Owner</Text>
         </div>
 
         <div className="flex items-center gap-2">
-          <Image
-            src={token.icon}
-            alt="chain to run safe transaction icon"
-            width={24}
-            height={24}
-          />
+          <UsersThree className="w-5 h-5 text-zinc-500" />
 
-          <Text className="uppercase">
-            -{amount} {token.symbol}
-          </Text>
+          <Skeleton isLoading={!currentOwnersCount} className="w-20 h-6">
+            {currentOwnersCount && (
+              <Text className="lowercase">
+                {currentOwnersCount} to {newOwnersCount}
+              </Text>
+            )}
+          </Skeleton>
         </div>
 
         {createdAt && (
@@ -70,36 +71,30 @@ function TransactionLayoutSendHeader({
   )
 }
 
-interface TransactionLayoutSendInfosProps
+interface TransactionLayoutAddOwnerInfosProps
   extends HTMLAttributes<HTMLDivElement> {
-  tokenSymbol: string
-  address: string
+  ownerAddress: string
   explorerLink: string
-  formattedAddress: string
-  amount: number
+  ownerFormattedAddress: string
 }
 
-function TransactionLayoutSendInfos({
-  tokenSymbol,
-  address,
-  formattedAddress,
+function TransactionLayoutAddOwnerInfos({
+  ownerAddress,
+  ownerFormattedAddress,
   explorerLink,
-  amount,
   ...props
-}: TransactionLayoutSendInfosProps) {
+}: TransactionLayoutAddOwnerInfosProps) {
   return (
     <div className="w-full flex flex-col gap-2" {...props}>
-      <Heading className="text-xl font-medium">
-        Send {amount} {tokenSymbol} to:
-      </Heading>
+      <Heading className="text-xl font-medium">Add owner:</Heading>
 
       <div className="flex items-center justify-start gap-2">
         <div className="flex items-stretch justify-start gap-2">
-          <Text>{formattedAddress}</Text>
+          <Text>{ownerFormattedAddress}</Text>
 
           <div className="flex items-center justify-start gap-2">
             <button
-              onClick={() => handleCopyToClipboard(address)}
+              onClick={() => handleCopyToClipboard(ownerAddress)}
               className="transition-colors hover:text-cyan-500"
             >
               <Copy className="w-4 h-4 " />
@@ -119,7 +114,7 @@ function TransactionLayoutSendInfos({
   )
 }
 
-export const TransactionLayoutSend = {
-  Header: TransactionLayoutSendHeader,
-  Infos: TransactionLayoutSendInfos
+export const TransactionLayoutAddOwner = {
+  Header: TransactionLayoutAddOwnerHeader,
+  Infos: TransactionLayoutAddOwnerInfos
 }

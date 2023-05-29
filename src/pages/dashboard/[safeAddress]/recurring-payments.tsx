@@ -2,11 +2,8 @@ import Head from 'next/head'
 
 import { Button } from '@components/Button'
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
-import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
 
 const RecurringPayments = () => {
-  const { setIsCreateContactOpen } = useSAContactsHook()
-
   return (
     <div className="flex flex-col items-center justify-center">
       <Head>
@@ -25,12 +22,7 @@ const RecurringPayments = () => {
           </PageLayout.Header>
 
           <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-4">
-            <Button
-              className="w-max"
-              onClick={() => setIsCreateContactOpen(true)}
-            >
-              Add recurrence
-            </Button>
+            <Button className="w-max">Add recurrence</Button>
           </div>
         </PageLayout.Root>
       </div>

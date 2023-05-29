@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 
 interface GetOwnersCountInput {
-  safeAddress: string
+  safeAddress?: string
 }
 
 async function getOwnersCount({ safeAddress }: GetOwnersCountInput) {

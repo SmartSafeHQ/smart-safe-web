@@ -9,7 +9,7 @@ import { useSafe } from '@contexts/SafeContext'
 import { useSpendingLimitsAuth } from '@contexts/smart-account/SpendingLimitsAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
+import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 import { useSpendingLimitsAuths } from '@hooks/smartAccount/queries/useSpendingLimitsAuths'
 import { useCreateSpendingLimitsAuthMutation } from '@hooks/smartAccount/mutations/useCreateSpendingLimitsAuthMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'

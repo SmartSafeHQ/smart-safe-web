@@ -19,7 +19,7 @@ import { Collapsible } from '@components/Collapsible'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 import { formatWalletAddress } from '@utils/web3'
-import { OwnerSignaturesProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { OwnerSignaturesProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
 interface TxLayoutRootProps extends HTMLAttributes<HTMLLIElement> {
   children: ReactNode

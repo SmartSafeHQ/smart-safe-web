@@ -8,7 +8,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useSpendingLimitsAuthHook } from '@/hooks/smartAccount/useSpendingLimitsAuthHook'
+import { useSpendingLimitsAuthHook } from '@hooks/smartAccount/useSpendingLimitsAuthHook'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 export function CreateSpendingLimitsAuthModal() {
