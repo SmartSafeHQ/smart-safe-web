@@ -10,7 +10,7 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { useSafe } from '@contexts/SafeContext'
 
-import { useCreateContact } from '@hooks/addressBook/mutations/useCreateContact'
+import { useCreateContact } from '@/hooks/contacts/mutations/useCreateContact'
 import {
   CONTACT_NAME_REGEX,
   useSAContactsHook

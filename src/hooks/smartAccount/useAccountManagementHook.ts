@@ -3,7 +3,7 @@ import { useWallets } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
 import { useGetOwners } from '@hooks/transactions/queries/useGetOwners'
-import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
+import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useChangeThreshold } from '@hooks/transactions/mutation/useChangeThreshold'
@@ -38,9 +38,7 @@ export function useAccountManagementHook() {
   const { data: transactionNonce } = useGetTransactionNonce({
     safeAddress: safe?.address || ''
   })
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || ''
-  })
+  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
   const { data: safeThreshold } = useGetThreshold({
     safeAddress: safe?.address || ''
   })

@@ -1,5 +1,5 @@
 import { useSafe } from '@contexts/SafeContext'
-import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
+import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 
 import { useSAContacts } from '@contexts/SAContactsContext'
 

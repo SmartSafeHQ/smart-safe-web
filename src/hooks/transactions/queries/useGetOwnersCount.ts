@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 
 interface GetOwnersCountInput {
-  safeAddress: string
+  safeAddress?: string
 }
 
 async function getOwnersCount({ safeAddress }: GetOwnersCountInput) {
@@ -20,14 +20,12 @@ async function getOwnersCount({ safeAddress }: GetOwnersCountInput) {
   return Number(ownersCount)
 }
 
-interface UseGetOwnersCountProps {
-  safeAddress: string
-}
-
-export function useGetOwnersCount({ safeAddress }: UseGetOwnersCountProps) {
+export function useGetOwnersCount(safeAddress?: string, enabled = true) {
   return useQuery({
-    queryFn: () => getOwnersCount({ safeAddress }),
     queryKey: ['useGetOwnersCount', safeAddress],
+    queryFn: () => getOwnersCount({ safeAddress }),
+    enabled,
+    keepPreviousData: true,
     staleTime: 60 * 2000 // 2 minutes
   })
 }

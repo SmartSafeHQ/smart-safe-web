@@ -28,7 +28,7 @@ const Contacts = () => {
         <PageLayout.Root>
           <PageLayout.Header className="justify-center items-start gap-3 pb-8 pt-10 px-3">
             <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-              <PageLayout.Title>Address Book</PageLayout.Title>
+              <PageLayout.Title>Contacts</PageLayout.Title>
 
               <Button
                 className="w-max"
@@ -47,37 +47,6 @@ const Contacts = () => {
             <ContactsList />
           </div>
         </PageLayout.Root>
-
-        {/* <Tabs.Root defaultValue={SMART_ACCOUNT_TABS_VALUES.CONTACTS}> */}
-        {/* <SmartAccountTabsList /> */}
-
-        {/* <Tabs.Content value={SMART_ACCOUNT_TABS_VALUES.CONTACTS}> */}
-        {/* <PageLayout.Root> */}
-        {/* <PageLayout.Header>
-          <div className="w-full flex flex-col items-stretch justify-between gap-4 sm:flex-row sm:items-center">
-            <div className="flex flex-col relative justify-start items-stretch gap-3">
-              <PageLayout.Title>Address Book</PageLayout.Title>
-
-              <PageLayout.Description>
-                Manage your network contacts
-              </PageLayout.Description>
-            </div>
-
-            <Button
-              className="w-max"
-              onClick={() => setIsCreateContactOpen(true)}
-            >
-              Add contact
-            </Button>
-          </div>
-        </PageLayout.Header>
-
-        <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5">
-          <ContactsList />
-        </div> */}
-        {/* </PageLayout.Root> */}
-        {/* </Tabs.Content> */}
-        {/* </Tabs.Root> */}
 
         <CreateContactModal />
         <UpdateContactModal />

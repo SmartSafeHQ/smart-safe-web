@@ -5,7 +5,7 @@ import { Button } from '@components/Button'
 import { Heading } from '@components/Heading'
 
 import { useAccountManagementHook } from '@hooks/smartAccount/useAccountManagementHook'
-import { formatWalletAddress } from '@/utils/web3'
+import { formatWalletAddress } from '@utils/web3'
 
 export function AccountManagement() {
   const {

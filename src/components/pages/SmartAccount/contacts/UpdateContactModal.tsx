@@ -11,7 +11,7 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Text } from '@components/Text'
 
-import { useEditContact } from '@hooks/addressBook/mutations/useEditContact'
+import { useEditContact } from '@/hooks/contacts/mutations/useEditContact'
 import {
   CONTACT_NAME_REGEX,
   useSAContactsHook

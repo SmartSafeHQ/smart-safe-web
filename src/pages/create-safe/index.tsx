@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { ReactElement } from 'react'
 
 import { CreateSafeHeader } from '@components/pages/CreateSafe/CreateSafeHeader'
-import { DeploySafeContent } from '@/components/pages/CreateSafe/DeploySafeContent'
+import { DeploySafeContent } from '@components/pages/CreateSafe/DeploySafeContent'
 
 import { CreateSafeProvider } from '@contexts/create-safe/CreateSafeContext'
 

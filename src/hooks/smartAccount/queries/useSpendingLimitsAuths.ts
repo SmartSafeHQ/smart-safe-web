@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
 import { ContactProps } from '@contexts/SAContactsContext'
 
-import { listContacts } from '@hooks/addressBook/queries/useListContacts'
+import { listContacts } from '@hooks/contacts/queries/useListContacts'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'

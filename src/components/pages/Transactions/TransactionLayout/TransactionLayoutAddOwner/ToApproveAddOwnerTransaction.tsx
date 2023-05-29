@@ -1,17 +1,18 @@
-import { TransactionLayout } from '../'
-import { TransactionLayoutSend } from '.'
+import { TransactionLayout } from '..'
+import { TransactionLayoutAddOwner } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { ChangeOwnersTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 
-interface ToApproveSendTransactionProps {
-  transaction: SendTxProps
+interface ToApproveAddOwnerTransactionProps {
+  transaction: ChangeOwnersTxProps
 }
 
-export function ToApproveSendTransaction({
+export function ToApproveAddOwnerTransaction({
   transaction
-}: ToApproveSendTransactionProps) {
+}: ToApproveAddOwnerTransactionProps) {
   const {
     safe,
     transactionsQueue,
@@ -20,20 +21,21 @@ export function ToApproveSendTransaction({
     isLoadingReject,
     handleRejectTransaction
   } = useTransactionsQueue()
+  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
 
   return (
     <>
-      <TransactionLayoutSend.Header
+      <TransactionLayoutAddOwner.Header
         txNonce={transaction.nonce}
+        currentOwnersCount={ownersCount}
+        newOwnersCount={(ownersCount ?? 0) + 1}
         createdAt={transaction.createdAt}
-        amount={transaction.amount}
-        token={transaction.token}
         className="min-h-[4rem] py-4 px-6"
       >
         <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
           Approves {transaction.signatures.length}/{safe?.threshold}
         </Text>
-      </TransactionLayoutSend.Header>
+      </TransactionLayoutAddOwner.Header>
 
       {safe && (
         <div className="w-full flex flex-col items-stretch justify-start border-t-1 border-zinc-200 dark:border-zinc-700">
@@ -45,12 +47,10 @@ export function ToApproveSendTransaction({
             />
 
             <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">
-              <TransactionLayoutSend.Infos
-                tokenSymbol={transaction.token.symbol}
-                address={transaction.to}
-                explorerLink={`${safe.chain.explorerUrl}/address/${transaction.to}`}
-                formattedAddress={transaction.formattedAddress}
-                amount={transaction.amount}
+              <TransactionLayoutAddOwner.Infos
+                ownerAddress={transaction.ownerAddress}
+                explorerLink={`${safe.chain.explorerUrl}/address/${transaction.ownerAddress}`}
+                ownerFormattedAddress={transaction.formattedAddress}
               />
 
               <TransactionLayout.TxInfos
