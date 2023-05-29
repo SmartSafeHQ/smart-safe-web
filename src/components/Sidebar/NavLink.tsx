@@ -8,6 +8,7 @@ import {
 import Link, { LinkProps } from 'next/link'
 import { IconProps, IconWeight } from '@phosphor-icons/react'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import clsx from 'clsx'
 
 import { Text } from '@components/Text'
@@ -20,13 +21,23 @@ interface NavLinkProps extends LinkProps {
   basePath: string
   activePath?: string
   isDisabled?: boolean
+  isExchange?: boolean
 }
 
 const NavLinkComponent: ForwardRefRenderFunction<
   HTMLAnchorElement,
   NavLinkProps
 > = (
-  { Icon, isDisabled = false, href, basePath, activePath, children, ...props },
+  {
+    Icon,
+    isDisabled = false,
+    isExchange = false,
+    href,
+    basePath,
+    activePath,
+    children,
+    ...props
+  },
   ref
 ) => {
   const { asPath } = useRouter()
@@ -60,7 +71,17 @@ const NavLinkComponent: ForwardRefRenderFunction<
       )}
     >
       <Link ref={ref} href={`${basePath}/${href}`} {...props}>
-        <Icon className="w-6 h-6" weight={iconWeight} />
+        {isExchange ? (
+          <Image
+            src="/networks/okt-logo.svg"
+            alt="okt chain logo"
+            width={20}
+            height={20}
+            className="mr-2"
+          />
+        ) : (
+          <Icon className="w-6 h-6" weight={iconWeight} />
+        )}
 
         <Text>{children}</Text>
       </Link>
