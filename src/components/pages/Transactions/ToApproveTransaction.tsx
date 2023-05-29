@@ -1,10 +1,11 @@
 import { TransactionLayout } from './TransactionLayout'
 
-import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
 import { ToApproveSendTransaction } from './TransactionLayout/TransactionLayoutSend/ToApproveSendTransaction'
+import { ToApproveAddOwnerTransaction } from './TransactionLayout/TransactionLayoutAddOwner/ToApproveAddOwnerTransaction'
 
 interface ToApproveTransactionProps {
-  transaction: SendTxProps
+  transaction: TransacitonTypes
 }
 
 export function ToApproveTransaction({
@@ -13,7 +14,13 @@ export function ToApproveTransaction({
   return (
     <TransactionLayout.Root asChild>
       <main>
-        <ToApproveSendTransaction transaction={transaction} />
+        {transaction.type === 'SEND' && (
+          <ToApproveSendTransaction transaction={transaction} />
+        )}
+
+        {transaction.type === 'ADD_OWNER' && (
+          <ToApproveAddOwnerTransaction transaction={transaction} />
+        )}
       </main>
     </TransactionLayout.Root>
   )
