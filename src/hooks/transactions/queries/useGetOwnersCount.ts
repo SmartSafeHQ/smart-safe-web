@@ -22,12 +22,17 @@ async function getOwnersCount({ safeAddress }: GetOwnersCountInput) {
 
 interface UseGetOwnersCountProps {
   safeAddress: string
+  enabled: boolean
 }
 
-export function useGetOwnersCount({ safeAddress }: UseGetOwnersCountProps) {
+export function useGetOwnersCount({
+  safeAddress,
+  enabled = true
+}: UseGetOwnersCountProps) {
   return useQuery({
     queryFn: () => getOwnersCount({ safeAddress }),
     queryKey: ['useGetOwnersCount', safeAddress],
+    enabled,
     staleTime: 60 * 2000 // 2 minutes
   })
 }

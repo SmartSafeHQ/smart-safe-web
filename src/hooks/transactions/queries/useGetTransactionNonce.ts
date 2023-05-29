@@ -24,14 +24,17 @@ async function getTransactionNonce({ safeAddress }: GetTransactionNonceInput) {
 
 interface UseGetTransactionNonceProps {
   safeAddress: string
+  enabled: boolean
 }
 
 export function useGetTransactionNonce({
-  safeAddress
+  safeAddress,
+  enabled = true
 }: UseGetTransactionNonceProps) {
   return useQuery({
     queryFn: () => getTransactionNonce({ safeAddress }),
     queryKey: ['useGetTransactionNonce', safeAddress],
-    staleTime: 60 * 2000 // 2 minutes
+    staleTime: 60 * 2000, // 2 minutes
+    enabled
   })
 }

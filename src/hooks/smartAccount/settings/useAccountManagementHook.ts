@@ -6,16 +6,10 @@ import { useGetOwners } from '@hooks/transactions/queries/useGetOwners'
 import { useListContacts } from '@hooks/addressBook/queries/useListContacts'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
-import { useChangeThreshold } from '@hooks/transactions/mutation/useChangeThreshold'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
 import { useAddNewOwner } from '@hooks/transactions/mutation/useAddNewOwner'
 import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
-
-interface ChangeThrehsold {
-  safeAddress: string
-  newThreshold: number
-  transactionNonce: number
-}
+import { useChangeThresholdHook } from '@hooks/smartAccount/settings/useChangeThresholdHook'
 
 interface AddNewOwner {
   safeAddress: string
@@ -34,22 +28,31 @@ interface RemoveOwner {
 export function useAccountManagementHook() {
   const { safe } = useSafe()
   const [wallets] = useWallets()
+  const {
+    changeThreshold,
+    setIsChangeThresholdOpen,
+    isChangeThresholdModalOpen,
+    changeThresholdMutationIsLoading
+  } = useChangeThresholdHook()
   const { data: contactList } = useListContacts(safe?.ownerId || '')
   const { data: transactionNonce } = useGetTransactionNonce({
-    safeAddress: safe?.address || ''
+    safeAddress: safe?.address || '',
+    enabled: !!safe?.address
   })
   const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || ''
+    safeAddress: safe?.address || '',
+    enabled: !!safe?.address
   })
   const { data: safeThreshold } = useGetThreshold({
-    safeAddress: safe?.address || ''
+    safeAddress: safe?.address || '',
+    enabled: !!safe?.address
   })
   const { data: safeOwners } = useGetOwners({
-    safeAddress: safe?.address || ''
+    safeAddress: safe?.address || '',
+    enabled: !!safe?.address
   })
   const { mutateAsync: addNewOwnerMutation } = useAddNewOwner()
   const { mutateAsync: removeOwnersMutation } = useRemoveOwner()
-  const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
 
   const richOwnersData = useMemo(() => {
     if (!contactList || !safeOwners || !wallets) {
@@ -74,22 +77,6 @@ export function useAccountManagementHook() {
       }
     })
   }, [contactList, safeOwners, wallets])
-
-  async function changeThreshold({
-    newThreshold,
-    safeAddress,
-    transactionNonce
-  }: ChangeThrehsold) {
-    try {
-      await changeThresholdMutation({
-        newThreshold,
-        safeAddress,
-        transactionNonce
-      })
-    } catch (err) {
-      console.log(err)
-    }
-  }
 
   async function addNewOwner(input: AddNewOwner) {
     try {
@@ -128,6 +115,9 @@ export function useAccountManagementHook() {
     richOwnersData,
     changeThreshold,
     transactionNonce,
-    isCurrentConnectWalletAnOwner
+    setIsChangeThresholdOpen,
+    isChangeThresholdModalOpen,
+    isCurrentConnectWalletAnOwner,
+    changeThresholdMutationIsLoading
   }
 }

@@ -64,9 +64,13 @@ export function useAddNewOwner() {
   return useMutation({
     mutationKey: ['useAddNewOwner'],
     mutationFn: (input: AddNewOwnerInput) => addNewOwner(input),
-    onSuccess: async (data, variables) => {
+    onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: ['useGetOwners', variables.safeAddress]
+        queryKey: [
+          ['useGetOwners', variables.safeAddress],
+          ['useGetOwnersCount', variables.safeAddress],
+          ['safeTxQueue', variables.safeAddress]
+        ]
       })
     }
   })

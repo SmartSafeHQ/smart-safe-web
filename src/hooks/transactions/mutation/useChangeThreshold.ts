@@ -65,9 +65,8 @@ export function useChangeThreshold() {
     onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
         queryKey: [
-          'useGetTransactionNonce',
-          'useGetThreshold',
-          variables.safeAddress
+          ['useGetTransactionNonce', variables.safeAddress],
+          ['useGetThreshold', variables.safeAddress]
         ]
       })
     }
