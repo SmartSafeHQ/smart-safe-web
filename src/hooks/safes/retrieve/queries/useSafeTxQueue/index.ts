@@ -36,8 +36,6 @@ export async function fetchSafeTxQueue(
   const currenTxQueueNonce = Number(transactionNonce)
   const transactionsQueue = await contract.getFunction('getTransactions')(0, 0)
 
-  console.log(transactionsQueue)
-
   const formattedTransactionsQueue =
     transactionsQueue.reduce<FetchSafeTxQueueOutput>(
       (acc, transaction) => {
@@ -70,7 +68,10 @@ export async function fetchSafeTxQueue(
             parsedTransaction
           )
         } else {
-          formattedTransaction = formatSendTxToQueue(transactionData)
+          formattedTransaction = formatSendTxToQueue(
+            transactionData,
+            safeChain.chainId
+          )
         }
 
         if (formattedTransaction.nonce === currenTxQueueNonce) {
