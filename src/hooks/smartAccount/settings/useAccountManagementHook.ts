@@ -8,8 +8,9 @@ import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
 import { useAddNewOwnerHook } from '@hooks/smartAccount/settings/useAddNewOwnerHook'
-import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
 import { useChangeThresholdHook } from '@hooks/smartAccount/settings/useChangeThresholdHook'
+import { useGetTransactionNonce } from '@/hooks/transactions/queries/useGetTransactionNonce'
+import { useGetRequiredTransactionNonce } from '@/hooks/transactions/queries/useGetRequiredTransactionNonce'
 
 interface RemoveOwner {
   safeAddress: string
@@ -30,7 +31,7 @@ export function useAccountManagementHook() {
     setAddNewOwnerOpen
   } = useAddNewOwnerHook()
   const { data: contactList } = useListContacts(safe?.ownerId || '')
-  const { data: transactionNonce } = useGetTransactionNonce({
+  const { data: requiredTransactionNonce } = useGetRequiredTransactionNonce({
     safeAddress: safe?.address || '',
     enabled: !!safe?.address
   })
@@ -43,6 +44,10 @@ export function useAccountManagementHook() {
     enabled: !!safe?.address
   })
   const { data: safeOwners } = useGetOwners({
+    safeAddress: safe?.address || '',
+    enabled: !!safe?.address
+  })
+  const { data: transactionNonce } = useGetTransactionNonce({
     safeAddress: safe?.address || '',
     enabled: !!safe?.address
   })
@@ -102,6 +107,7 @@ export function useAccountManagementHook() {
     setAddNewOwnerOpen,
     addNewOwnerMutation,
     isAddNewOwnerModalOpen,
+    requiredTransactionNonce,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
     addNewOwnerMutationIsLoading,
