@@ -48,6 +48,14 @@ async function rejectTransactionFunction(
     'requiredTransactionNonce'
   )()
 
+  const threshold = await contract.getFunction('threshold')()
+
+  if (Number(threshold) <= 1) {
+    const removeRransaction = await contract.getFunction('removeTransaction')()
+    await removeRransaction.wait()
+    return
+  }
+
   const amountInWei = parseEther(String(input.amount))
 
   const transaction = {
