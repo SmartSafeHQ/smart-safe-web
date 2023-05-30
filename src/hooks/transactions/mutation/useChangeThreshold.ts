@@ -16,7 +16,7 @@ async function changeThrehold({
   safeAddress,
   newThreshold,
   transactionNonce
-}: ChangeThresholdInput): Promise<void> {
+}: ChangeThresholdInput) {
   if (!safeAddress) {
     throw new Error('safe address required')
   }
@@ -47,7 +47,7 @@ async function changeThrehold({
     transaction: signaturePayload
   })
 
-  const response = await contract.getFunction('createTransactionProposal')(
+  const transaction = await contract.getFunction('createTransactionProposal')(
     safeAddress,
     '0',
     changeThresholdCallEncoded,
@@ -55,7 +55,7 @@ async function changeThrehold({
     signedTypedDataHash
   )
 
-  console.log({ response })
+  return transaction
 }
 
 export function useChangeThreshold() {
@@ -63,12 +63,36 @@ export function useChangeThreshold() {
     mutationKey: ['useChangeThreshold'],
     mutationFn: (input: ChangeThresholdInput) => changeThrehold(input),
     onSuccess: async (_, variables) => {
-      await queryClient.invalidateQueries({
-        queryKey: [
-          'useGetTransactionNonce',
-          'useGetThreshold',
-          variables.safeAddress
-        ]
+      await queryClient.cancelQueries({
+        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+      })
+      await queryClient.cancelQueries({
+        queryKey: ['useGetThreshold', variables.safeAddress]
+      })
+      await queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(
+        ['useGetTransactionNonce', variables.safeAddress],
+        context
+      )
+      queryClient.setQueryData(
+        ['useGetThreshold', variables.safeAddress],
+        context
+      )
+      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+    },
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['useGetThreshold', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
       })
     }
   })

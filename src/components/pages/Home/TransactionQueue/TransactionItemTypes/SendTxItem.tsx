@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { TransactionLayoutSend } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutSend'
+import { SendTx } from '@components/pages/Transactions/TransactionsLayout/SendTx'
 
 export interface HomeSendTxItemProps {
   nonce: number
@@ -11,23 +11,20 @@ export interface HomeSendTxItemProps {
   }
 }
 
-interface TransactionSendItemProps {
+interface SendTxItemProps {
   transaction: HomeSendTxItemProps
   children?: ReactNode
 }
 
-export function TransactionSendItem({
-  transaction,
-  children
-}: TransactionSendItemProps) {
+export function SendTxItem({ transaction, children }: SendTxItemProps) {
   return (
-    <TransactionLayoutSend.Header
+    <SendTx.Header
       txNonce={transaction.nonce}
       amount={transaction.amount}
       token={transaction.token}
       className="min-h-[2rem] py-2 px-3"
     >
       {children}
-    </TransactionLayoutSend.Header>
+    </SendTx.Header>
   )
 }

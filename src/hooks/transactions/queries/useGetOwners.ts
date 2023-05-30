@@ -22,12 +22,17 @@ async function getOwners({ safeAddress }: GetOwnersInput): Promise<string[]> {
 
 interface UseGetOwnersProps {
   safeAddress: string
+  enabled: boolean
 }
 
-export function useGetOwners({ safeAddress }: UseGetOwnersProps) {
+export function useGetOwners({
+  safeAddress,
+  enabled = true
+}: UseGetOwnersProps) {
   return useQuery({
     queryFn: () => getOwners({ safeAddress }),
     queryKey: ['useGetOwners', safeAddress],
-    staleTime: 60 * 2000 // 2 minutes
+    staleTime: 60 * 2000, // 2 minutes
+    enabled
   })
 }

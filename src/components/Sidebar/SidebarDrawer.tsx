@@ -7,7 +7,7 @@ import { SidebarNav } from './SidebarNav'
 
 export function SidebarDrawer() {
   return (
-    <DialogDrawer.Content className="max-w-[15rem]">
+    <DialogDrawer.Content className="max-w-[15rem] overflow-hidden">
       <div className="w-full flex items-center gap-4 pl-6">
         <DialogDrawer.Trigger>
           <button aria-label="Sidebar menu mobile">

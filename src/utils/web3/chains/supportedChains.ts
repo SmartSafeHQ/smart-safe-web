@@ -21,6 +21,16 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
   },
   {
+    symbol: 'MATIC',
+    networkName: 'Polygon Testnet',
+    icon: '/networks/polygon-logo.svg',
+    chainId: '0x13881',
+    hexColor: '#8247e5',
+    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
+    explorerUrl: 'https://mumbai.polygonscan.com',
+    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
+  },
+  {
     symbol: 'ETH',
     networkName: 'Ethereum Sepolia Testnet',
     icon: '/networks/eth-logo.svg',

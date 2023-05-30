@@ -20,12 +20,19 @@ async function getOwnersCount({ safeAddress }: GetOwnersCountInput) {
   return Number(ownersCount)
 }
 
-export function useGetOwnersCount(safeAddress?: string, enabled = true) {
+interface UseGetOwnersCountProps {
+  safeAddress: string
+  enabled: boolean
+}
+
+export function useGetOwnersCount({
+  safeAddress,
+  enabled = true
+}: UseGetOwnersCountProps) {
   return useQuery({
-    queryKey: ['useGetOwnersCount', safeAddress],
     queryFn: () => getOwnersCount({ safeAddress }),
+    queryKey: ['useGetOwnersCount', safeAddress],
     enabled,
-    keepPreviousData: true,
     staleTime: 60 * 2000 // 2 minutes
   })
 }
