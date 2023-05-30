@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { TransactionLayoutAddOwner } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutAddOwner'
+import { AddOwnerTx } from '@/components/pages/Transactions/TransactionsLayout/AddOwnerTx'
 
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useSafe } from '@contexts/SafeContext'
@@ -9,15 +9,12 @@ export interface HomeAddOwnerTxItemProps {
   nonce: number
 }
 
-interface TransactionAddOwnerItemProps {
+interface AddOwnerTxItemProps {
   transaction: HomeAddOwnerTxItemProps
   children?: ReactNode
 }
 
-export function TransactionAddOwnerItem({
-  transaction,
-  children
-}: TransactionAddOwnerItemProps) {
+export function AddOwnerTxItem({ transaction, children }: AddOwnerTxItemProps) {
   const { safe } = useSafe()
   const { data: ownersCount } = useGetOwnersCount({
     safeAddress: safe?.address || '',
@@ -25,13 +22,13 @@ export function TransactionAddOwnerItem({
   })
 
   return (
-    <TransactionLayoutAddOwner.Header
+    <AddOwnerTx.Header
       txNonce={transaction.nonce}
       currentOwnersCount={ownersCount}
       newOwnersCount={(ownersCount ?? 0) + 1}
       className="min-h-[2rem] py-2 px-3"
     >
       {children}
-    </TransactionLayoutAddOwner.Header>
+    </AddOwnerTx.Header>
   )
 }

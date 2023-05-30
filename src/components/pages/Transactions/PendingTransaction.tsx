@@ -1,6 +1,6 @@
-import { TransactionLayout } from './TransactionLayout'
+import { Transaction } from './TransactionsLayout'
 import { Collapsible } from '@components/Collapsible'
-import { transactionComponents } from '@components/pages/Transactions/TransactionLayout/TransactionTypes'
+import { transactionComponents } from '@components/pages/Transactions/TransactionsLayout/TransactionTypes'
 
 import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
@@ -15,9 +15,9 @@ export function PendingTransaction({ transaction }: PendingTransactionProps) {
 
   return (
     <Collapsible.Root defaultOpen={false}>
-      <TransactionLayout.Root className="hover:border-zinc-400 hover:dark:border-zinc-500">
+      <Transaction.Root className="hover:border-zinc-400 hover:dark:border-zinc-500">
         <TxComponent.Pending transaction={transaction} />
-      </TransactionLayout.Root>
+      </Transaction.Root>
     </Collapsible.Root>
   )
 }

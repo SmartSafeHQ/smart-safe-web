@@ -15,8 +15,7 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 
-interface TransactionLayoutAddOwnerHeaderProps
-  extends HTMLAttributes<HTMLDivElement> {
+interface AddOwnerTxHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   txNonce: number
   currentOwnersCount?: number
@@ -24,7 +23,7 @@ interface TransactionLayoutAddOwnerHeaderProps
   createdAt?: Date
 }
 
-function TransactionLayoutAddOwnerHeader({
+function AddOwnerTxHeader({
   txNonce,
   createdAt,
   currentOwnersCount,
@@ -32,7 +31,7 @@ function TransactionLayoutAddOwnerHeader({
   children,
   className,
   ...props
-}: TransactionLayoutAddOwnerHeaderProps) {
+}: AddOwnerTxHeaderProps) {
   return (
     <div
       className={clsx(
@@ -71,19 +70,18 @@ function TransactionLayoutAddOwnerHeader({
   )
 }
 
-interface TransactionLayoutAddOwnerInfosProps
-  extends HTMLAttributes<HTMLDivElement> {
+interface AddOwnerTxInfosProps extends HTMLAttributes<HTMLDivElement> {
   ownerAddress: string
   explorerLink: string
   ownerFormattedAddress: string
 }
 
-function TransactionLayoutAddOwnerInfos({
+function AddOwnerTxInfos({
   ownerAddress,
   ownerFormattedAddress,
   explorerLink,
   ...props
-}: TransactionLayoutAddOwnerInfosProps) {
+}: AddOwnerTxInfosProps) {
   return (
     <div className="w-full flex flex-col gap-2" {...props}>
       <Heading className="text-xl font-medium">Add owner:</Heading>
@@ -114,7 +112,7 @@ function TransactionLayoutAddOwnerInfos({
   )
 }
 
-export const TransactionLayoutAddOwner = {
-  Header: TransactionLayoutAddOwnerHeader,
-  Infos: TransactionLayoutAddOwnerInfos
+export const AddOwnerTx = {
+  Header: AddOwnerTxHeader,
+  Infos: AddOwnerTxInfos
 }

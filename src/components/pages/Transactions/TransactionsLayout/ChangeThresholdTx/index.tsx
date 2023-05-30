@@ -7,8 +7,7 @@ import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-interface TransactionLayoutChangeThresholdHeaderProps
-  extends HTMLAttributes<HTMLDivElement> {
+interface ChangeThresholdTxHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   txNonce: number
   currentThreshold?: number
@@ -16,7 +15,7 @@ interface TransactionLayoutChangeThresholdHeaderProps
   createdAt?: Date
 }
 
-function TransactionLayoutChangeThresholdHeader({
+function ChangeThresholdTxHeader({
   txNonce,
   createdAt,
   currentThreshold,
@@ -24,7 +23,7 @@ function TransactionLayoutChangeThresholdHeader({
   children,
   className,
   ...props
-}: TransactionLayoutChangeThresholdHeaderProps) {
+}: ChangeThresholdTxHeaderProps) {
   return (
     <div
       className={clsx(
@@ -63,17 +62,16 @@ function TransactionLayoutChangeThresholdHeader({
   )
 }
 
-interface TransactionLayoutChangeThresholdInfosProps
-  extends HTMLAttributes<HTMLDivElement> {
+interface ChangeThresholdTxInfosProps extends HTMLAttributes<HTMLDivElement> {
   currentThreshold?: number
   newThreshold: number
 }
 
-function TransactionLayoutChangeThresholdInfos({
+function ChangeThresholdTxInfos({
   currentThreshold,
   newThreshold,
   ...props
-}: TransactionLayoutChangeThresholdInfosProps) {
+}: ChangeThresholdTxInfosProps) {
   return (
     <div className="w-full flex flex-col gap-2" {...props}>
       <Heading className="text-xl font-medium">
@@ -92,7 +90,7 @@ function TransactionLayoutChangeThresholdInfos({
   )
 }
 
-export const TransactionLayoutChangeThreshold = {
-  Header: TransactionLayoutChangeThresholdHeader,
-  Infos: TransactionLayoutChangeThresholdInfos
+export const ChangeThresholdTx = {
+  Header: ChangeThresholdTxHeader,
+  Infos: ChangeThresholdTxInfos
 }

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { TransactionLayoutChangeThreshold } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutChangeThreshold'
+import { ChangeThresholdTx } from '@/components/pages/Transactions/TransactionsLayout/ChangeThresholdTx'
 
 import { useSafe } from '@contexts/SafeContext'
 
@@ -9,25 +9,25 @@ export interface HomeChangeThresholdTxItemProps {
   newThreshold: number
 }
 
-interface TransactionChangeThresholdItemProps {
+interface ChangeThresholdTxItemProps {
   transaction: HomeChangeThresholdTxItemProps
   children?: ReactNode
 }
 
-export function TransactionChangeThresholdItem({
+export function ChangeThresholdTxItem({
   transaction,
   children
-}: TransactionChangeThresholdItemProps) {
+}: ChangeThresholdTxItemProps) {
   const { safe } = useSafe()
 
   return (
-    <TransactionLayoutChangeThreshold.Header
+    <ChangeThresholdTx.Header
       txNonce={transaction.nonce}
       currentThreshold={safe?.threshold}
       newThreshold={transaction.newThreshold}
       className="min-h-[2rem] py-2 px-3"
     >
       {children}
-    </TransactionLayoutChangeThreshold.Header>
+    </ChangeThresholdTx.Header>
   )
 }

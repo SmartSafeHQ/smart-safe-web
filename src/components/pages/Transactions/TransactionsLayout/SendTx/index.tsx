@@ -10,8 +10,7 @@ import { Heading } from '@components/Heading'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 
-interface TransactionLayoutSendHeaderProps
-  extends HTMLAttributes<HTMLDivElement> {
+interface SendTxHeaderProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode
   txNonce: number
   amount: number
@@ -22,7 +21,7 @@ interface TransactionLayoutSendHeaderProps
   createdAt?: Date
 }
 
-function TransactionLayoutSendHeader({
+function SendTxHeader({
   txNonce,
   createdAt,
   amount,
@@ -30,7 +29,7 @@ function TransactionLayoutSendHeader({
   children,
   className,
   ...props
-}: TransactionLayoutSendHeaderProps) {
+}: SendTxHeaderProps) {
   return (
     <div
       className={clsx(
@@ -70,8 +69,7 @@ function TransactionLayoutSendHeader({
   )
 }
 
-interface TransactionLayoutSendInfosProps
-  extends HTMLAttributes<HTMLDivElement> {
+interface SendTxInfosProps extends HTMLAttributes<HTMLDivElement> {
   tokenSymbol: string
   address: string
   explorerLink: string
@@ -79,14 +77,14 @@ interface TransactionLayoutSendInfosProps
   amount: number
 }
 
-function TransactionLayoutSendInfos({
+function SendTxInfos({
   tokenSymbol,
   address,
   formattedAddress,
   explorerLink,
   amount,
   ...props
-}: TransactionLayoutSendInfosProps) {
+}: SendTxInfosProps) {
   return (
     <div className="w-full flex flex-col gap-2" {...props}>
       <Heading className="text-xl font-medium">
@@ -119,7 +117,7 @@ function TransactionLayoutSendInfos({
   )
 }
 
-export const TransactionLayoutSend = {
-  Header: TransactionLayoutSendHeader,
-  Infos: TransactionLayoutSendInfos
+export const SendTx = {
+  Header: SendTxHeader,
+  Infos: SendTxInfos
 }

@@ -21,17 +21,17 @@ import { handleCopyToClipboard } from '@utils/clipboard'
 import { formatWalletAddress } from '@utils/web3'
 import { OwnerSignaturesProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
-interface TxLayoutRootProps extends HTMLAttributes<HTMLLIElement> {
+interface TransactionRootProps extends HTMLAttributes<HTMLLIElement> {
   children: ReactNode
   asChild?: boolean
 }
 
-function TxLayoutRoot({
+function TransactionRoot({
   children,
   asChild,
   className,
   ...props
-}: TxLayoutRootProps) {
+}: TransactionRootProps) {
   const Comp = asChild ? Slot : 'li'
 
   return (
@@ -47,12 +47,16 @@ function TxLayoutRoot({
   )
 }
 
-interface TxLayoutInfosProps extends HTMLAttributes<HTMLDivElement> {
+interface TransactionInfosProps extends HTMLAttributes<HTMLDivElement> {
   txHash: string
   createdAt: Date
 }
 
-function TxLayoutTxInfos({ txHash, createdAt, ...props }: TxLayoutInfosProps) {
+function TransactionTxInfos({
+  txHash,
+  createdAt,
+  ...props
+}: TransactionInfosProps) {
   return (
     <div className="flex flex-col items-stretch justify-start gap-2" {...props}>
       <div className="w-full flex items-start justify-between gap-1">
@@ -93,18 +97,18 @@ function TxLayoutTxInfos({ txHash, createdAt, ...props }: TxLayoutInfosProps) {
   )
 }
 
-interface TxLayoutOwnersStatusProps extends HTMLAttributes<HTMLDivElement> {
+interface TransactionOwnersStatusProps extends HTMLAttributes<HTMLDivElement> {
   signatures: OwnerSignaturesProps[]
   baseExplorerLink: string
   threshold: number
 }
 
-function TxLayoutOwnersStatus({
+function TransactionOwnersStatus({
   signatures,
   baseExplorerLink,
   threshold,
   ...props
-}: TxLayoutOwnersStatusProps) {
+}: TransactionOwnersStatusProps) {
   const pendingSignatures = threshold - signatures.length
 
   return (
@@ -138,7 +142,7 @@ function TxLayoutOwnersStatus({
 
       <Collapsible.Content className="w-full flex flex-col items-start justify-start">
         {signatures.map(signature => (
-          <TxLayoutOwnerStatus
+          <TransactionOwnerStatus
             key={signature.address}
             signature={signature}
             explorerLink={`${baseExplorerLink}/${signature.address}`}
@@ -149,16 +153,16 @@ function TxLayoutOwnersStatus({
   )
 }
 
-interface TxLayoutOwnerStatusProps {
+interface TransactionOwnerStatusProps {
   signature: OwnerSignaturesProps
   explorerLink: string
 }
 
-function TxLayoutOwnerStatus({
+function TransactionOwnerStatus({
   signature,
   explorerLink,
   ...props
-}: TxLayoutOwnerStatusProps) {
+}: TransactionOwnerStatusProps) {
   const Icon = signature.status === 'approved' ? CheckCircle : XCircle
 
   return (
@@ -195,7 +199,7 @@ function TxLayoutOwnerStatus({
   )
 }
 
-interface TxLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
+interface TransactionActionsProps extends HTMLAttributes<HTMLDivElement> {
   isLoadingApprove: boolean
   isLoadingReject: boolean
   signatures: OwnerSignaturesProps[]
@@ -203,14 +207,14 @@ interface TxLayoutActionsProps extends HTMLAttributes<HTMLDivElement> {
   handleRejectTransaction: () => void
 }
 
-function TxLayoutActions({
+function TransactionActions({
   isLoadingApprove,
   isLoadingReject,
   signatures,
   handleApproveTransaction,
   handleRejectTransaction,
   ...props
-}: TxLayoutActionsProps) {
+}: TransactionActionsProps) {
   const [{ wallet }] = useConnectWallet()
 
   const checkOwnerAlreadySigned = signatures.find(
@@ -245,9 +249,9 @@ function TxLayoutActions({
   )
 }
 
-export const TransactionLayout = {
-  Root: TxLayoutRoot,
-  OwnersStatus: TxLayoutOwnersStatus,
-  TxInfos: TxLayoutTxInfos,
-  Actions: TxLayoutActions
+export const Transaction = {
+  Root: TransactionRoot,
+  OwnersStatus: TransactionOwnersStatus,
+  TxInfos: TransactionTxInfos,
+  Actions: TransactionActions
 }
