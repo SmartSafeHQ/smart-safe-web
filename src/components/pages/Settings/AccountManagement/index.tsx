@@ -34,8 +34,7 @@ export function AccountManagement() {
   const isAddNewOwnerModalReady =
     safe?.address !== undefined &&
     transactionNonce !== undefined &&
-    ownersCount !== undefined &&
-    safeThreshold !== undefined
+    ownersCount !== undefined
 
   return (
     <div className="flex flex-col gap-4 p-2">
@@ -123,7 +122,6 @@ export function AccountManagement() {
           owners={richOwnersData}
           ownersCount={ownersCount}
           safeAddress={safe.address}
-          safeThreshold={safeThreshold}
           isOpen={isAddNewOwnerModalOpen}
           onOpenChange={setAddNewOwnerOpen}
           currentSafeOwnerId={safe.ownerId}
