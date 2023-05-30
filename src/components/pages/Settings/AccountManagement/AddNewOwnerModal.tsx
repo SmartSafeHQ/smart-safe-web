@@ -21,7 +21,6 @@ interface Props {
   isLoading: boolean
   ownersCount: number
   safeAddress: string
-  safeThreshold: number
   transactionNonce: number
   currentSafeOwnerId: string
   owners: { name: string; address: string }[]
@@ -58,7 +57,6 @@ export function AddNewOwnerModal({
   ownersCount,
   safeAddress,
   onOpenChange,
-  safeThreshold,
   transactionNonce,
   currentSafeOwnerId,
   addNewOwnerMutation
@@ -178,7 +176,6 @@ export function AddNewOwnerModal({
                     count => (
                       <option
                         key={count}
-                        disabled={count === safeThreshold}
                         value={count}
                         className="dark:bg-zinc-800 dark:text-white"
                       >
