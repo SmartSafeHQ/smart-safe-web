@@ -15,14 +15,12 @@ async function getTransactionNonce({ safeAddress }: GetTransactionNonceInput) {
   const provider = new ethers.BrowserProvider(window.ethereum)
   const contract = new ethers.Contract(safeAddress, SMART_SAFE_ABI, provider)
 
-  const transactionNonce = await contract.getFunction(
-    'requiredTransactionNonce'
-  )()
+  const transactionNonce = await contract.getFunction('transactionNonce')()
 
   return Number(transactionNonce)
 }
 
-interface UseGetTransactionNonceProps {
+interface UseGetTransactionNonce {
   safeAddress: string
   enabled: boolean
 }
@@ -30,7 +28,7 @@ interface UseGetTransactionNonceProps {
 export function useGetTransactionNonce({
   safeAddress,
   enabled = true
-}: UseGetTransactionNonceProps) {
+}: UseGetTransactionNonce) {
   return useQuery({
     queryFn: () => getTransactionNonce({ safeAddress }),
     queryKey: ['useGetTransactionNonce', safeAddress],

@@ -6,7 +6,6 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 
 import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
 
-import { Text } from '@components/Text'
 import { Button } from '@/components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
@@ -22,7 +21,6 @@ interface Props {
   isLoading: boolean
   ownersCount: number
   safeAddress: string
-  safeThreshold: number
   transactionNonce: number
   currentSafeOwnerId: string
   owners: { name: string; address: string }[]
@@ -59,7 +57,6 @@ export function AddNewOwnerModal({
   ownersCount,
   safeAddress,
   onOpenChange,
-  safeThreshold,
   transactionNonce,
   currentSafeOwnerId,
   addNewOwnerMutation
@@ -108,6 +105,7 @@ export function AddNewOwnerModal({
       setIsWaitingTransaction(false)
       toast.success('Proposal created! View it on transactions tab.')
     } catch (error) {
+      setIsWaitingTransaction(false)
       getWe3ErrorMessageWithToast(error)
     }
   }
@@ -178,11 +176,10 @@ export function AddNewOwnerModal({
                     count => (
                       <option
                         key={count}
-                        disabled={count === safeThreshold}
                         value={count}
                         className="dark:bg-zinc-800 dark:text-white"
                       >
-                        <Text>{count}</Text>
+                        {count}
                       </option>
                     )
                   )}
