@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import { useAddNewOwner } from '@/hooks/transactions/mutation/useAddNewOwner'
 
 export interface AddNewOwner {
@@ -18,26 +17,8 @@ export function useAddNewOwnerHook() {
     isLoading: addNewOwnerMutationIsLoading
   } = useAddNewOwner()
 
-  async function addNewOwner({
-    newThreshold,
-    safeAddress,
-    transactionNonce,
-    ownerAddress
-  }: AddNewOwner) {
-    try {
-      await addNewOwnerMutation({
-        newThreshold,
-        safeAddress,
-        transactionNonce,
-        ownerAddress
-      })
-    } catch (err) {
-      getWe3ErrorMessageWithToast(err)
-    }
-  }
-
   return {
-    addNewOwner,
+    addNewOwnerMutation,
     setAddNewOwnerOpen,
     isAddNewOwnerModalOpen,
     addNewOwnerMutationIsLoading

@@ -1,15 +1,21 @@
 import { z } from 'zod'
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
+import { type SubmitHandler, useForm } from 'react-hook-form'
 
-import { TextInput } from '@components/Inputs/TextInput'
-import { SelectInput } from '@components/Inputs/SelectInput'
-import { DialogModal } from '@components/Dialogs/DialogModal'
+import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
 
+import { Text } from '@components/Text'
 import { Button } from '@/components/Button'
+import { TextInput } from '@components/Inputs/TextInput'
+import { DialogModal } from '@components/Dialogs/DialogModal'
+import { getWe3ErrorMessageWithToast } from '@/utils/web3/errors'
 
 import type { Dispatch, SetStateAction } from 'react'
-import type { AddNewOwner } from '@/hooks/smartAccount/settings/useAddNewOwnerHook'
+import type { ContractTransactionResponse } from 'ethers'
+import type { UseMutateAsyncFunction } from '@tanstack/react-query'
+import type { AddNewOwnerInput } from '@/hooks/transactions/mutation/useAddNewOwner'
 
 interface Props {
   isOpen: boolean
@@ -18,9 +24,15 @@ interface Props {
   safeAddress: string
   safeThreshold: number
   transactionNonce: number
+  currentSafeOwnerId: string
   owners: { name: string; address: string }[]
   onOpenChange: Dispatch<SetStateAction<boolean>>
-  addNewOwner: (input: AddNewOwner) => Promise<void>
+  addNewOwnerMutation: UseMutateAsyncFunction<
+    ContractTransactionResponse,
+    unknown,
+    AddNewOwnerInput,
+    unknown
+  >
 }
 
 export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
@@ -46,17 +58,23 @@ export function AddNewOwnerModal({
   isLoading,
   ownersCount,
   safeAddress,
-  addNewOwner,
   onOpenChange,
   safeThreshold,
-  transactionNonce
+  transactionNonce,
+  currentSafeOwnerId,
+  addNewOwnerMutation
 }: Props) {
+  const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
+
   const {
-    control,
     register,
     handleSubmit,
+    setError,
     formState: { errors }
-  } = useForm<FieldValues>({ resolver: zodResolver(validationSchema) })
+  } = useForm<FieldValues>({
+    resolver: zodResolver(validationSchema)
+  })
+  const { mutateAsync: createContactMutation } = useCreateContact()
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
     try {
@@ -65,17 +83,32 @@ export function AddNewOwnerModal({
       )
 
       if (isRepeatedOwnerAddress) {
+        setError('ownerAddress', { message: 'Address already is an owner.' })
+
         return
       }
 
-      await addNewOwner({
+      setIsWaitingTransaction(true)
+
+      const transaction = await addNewOwnerMutation({
         transactionNonce,
         safeAddress,
         ownerAddress: data.ownerAddress,
         newThreshold: data.threshold
       })
+
+      await transaction.wait()
+
+      await createContactMutation({
+        contactAddress: data.ownerAddress,
+        contactName: data.ownerName,
+        creatorId: currentSafeOwnerId
+      })
+
+      setIsWaitingTransaction(false)
+      toast.success('Proposal created! View it on transactions tab.')
     } catch (error) {
-      console.log(error)
+      getWe3ErrorMessageWithToast(error)
     }
   }
 
@@ -137,47 +170,39 @@ export function AddNewOwnerModal({
               </TextInput.Root>
 
               <div className="flex gap-4 items-center w-full justify-start">
-                <Controller
-                  name="threshold"
-                  control={control}
-                  render={({ field: { value, onChange, ref, ...props } }) => (
-                    <SelectInput.Root
-                      className="w-[100px]"
-                      {...props}
-                      ref={ref}
-                      value={String(value)}
-                      onValueChange={onChange}
-                      defaultValue={String(safeThreshold)}
-                    >
-                      <SelectInput.Trigger className="min-h-[3rem] bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
-
-                      <SelectInput.Content className="border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
-                        <SelectInput.Group>
-                          {Array.from({ length: ownersCount }, (_, i) => i).map(
-                            (count, index) => (
-                              <SelectInput.Item
-                                key={index}
-                                value={String(index)}
-                                className="w-full h-9 px-2 text-left overflow-hidden rounded-md capitalize pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800"
-                              >
-                                {count}
-                              </SelectInput.Item>
-                            )
-                          )}
-                        </SelectInput.Group>
-                      </SelectInput.Content>
-                    </SelectInput.Root>
+                <select
+                  {...register('threshold', { valueAsNumber: true })}
+                  className="p-4 rounded-md bg-transparent border-1 dark:border-zinc-800"
+                >
+                  {Array.from({ length: ownersCount + 1 }, (_, i) => i + 1).map(
+                    count => (
+                      <option
+                        key={count}
+                        disabled={count === safeThreshold}
+                        value={count}
+                        className="dark:bg-zinc-800 dark:text-white"
+                      >
+                        <Text>{count}</Text>
+                      </option>
+                    )
                   )}
-                />
+                </select>
 
-                <p>out of {ownersCount} owner(s).</p>
+                <p>out of {ownersCount + 1} owner(s).</p>
               </div>
             </div>
+
+            <p className="p-4 dark:border-zinc-700 border-1 rounded-md bg-zinc-200 dark:bg-zinc-800/[.6] text-center">
+              You&apos;ll be asked to sign a message and then confirm the
+              transaction.
+            </p>
           </div>
 
           <div className="flex justify-between p-8">
             <Button
-              disabled={isLoading}
+              type="button"
+              disabled={isWaitingTransaction}
+              onClick={() => onOpenChange(false)}
               className="bg-transparent hover:bg-zinc-200 hover:dark:bg-zinc-800 min-w-[100px]"
             >
               Cancel
@@ -185,8 +210,8 @@ export function AddNewOwnerModal({
 
             <Button
               type="submit"
-              isLoading={isLoading}
               className="min-w-[100px]"
+              isLoading={isWaitingTransaction}
             >
               Submit
             </Button>

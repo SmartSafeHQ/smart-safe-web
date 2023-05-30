@@ -15,7 +15,10 @@ export function PendingAddOwnerTransaction({
   transaction
 }: PendingAddOwnerTransactionProps) {
   const { safe } = useTransactionsQueue()
-  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useGetOwnersCount({
+    safeAddress: safe?.address || '',
+    enabled: !!safe
+  })
 
   return (
     <>

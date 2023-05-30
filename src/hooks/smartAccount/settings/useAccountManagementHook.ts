@@ -21,14 +21,10 @@ interface RemoveOwner {
 export function useAccountManagementHook() {
   const { safe } = useSafe()
   const [wallets] = useWallets()
+  const { setIsChangeThresholdOpen, isChangeThresholdModalOpen } =
+    useChangeThresholdHook()
   const {
-    changeThreshold,
-    setIsChangeThresholdOpen,
-    isChangeThresholdModalOpen,
-    changeThresholdMutationIsLoading
-  } = useChangeThresholdHook()
-  const {
-    addNewOwner,
+    addNewOwnerMutation,
     addNewOwnerMutationIsLoading,
     isAddNewOwnerModalOpen,
     setAddNewOwnerOpen
@@ -99,18 +95,16 @@ export function useAccountManagementHook() {
   return {
     safe,
     ownersCount,
-    addNewOwner,
     removeOwner,
     safeThreshold,
     richOwnersData,
-    changeThreshold,
     transactionNonce,
     setAddNewOwnerOpen,
+    addNewOwnerMutation,
     isAddNewOwnerModalOpen,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
     addNewOwnerMutationIsLoading,
-    isCurrentConnectWalletAnOwner,
-    changeThresholdMutationIsLoading
+    isCurrentConnectWalletAnOwner
   }
 }

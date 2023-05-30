@@ -16,7 +16,7 @@ async function changeThrehold({
   safeAddress,
   newThreshold,
   transactionNonce
-}: ChangeThresholdInput): Promise<void> {
+}: ChangeThresholdInput) {
   if (!safeAddress) {
     throw new Error('safe address required')
   }
@@ -47,7 +47,7 @@ async function changeThrehold({
     transaction: signaturePayload
   })
 
-  const response = await contract.getFunction('createTransactionProposal')(
+  const transaction = await contract.getFunction('createTransactionProposal')(
     safeAddress,
     '0',
     changeThresholdCallEncoded,
@@ -55,7 +55,7 @@ async function changeThrehold({
     signedTypedDataHash
   )
 
-  console.log({ response })
+  return transaction
 }
 
 export function useChangeThreshold() {

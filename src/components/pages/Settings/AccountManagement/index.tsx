@@ -13,18 +13,16 @@ export function AccountManagement() {
   const {
     safe,
     ownersCount,
-    addNewOwner,
     safeThreshold,
     richOwnersData,
-    changeThreshold,
     transactionNonce,
     setAddNewOwnerOpen,
+    addNewOwnerMutation,
     isAddNewOwnerModalOpen,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
     addNewOwnerMutationIsLoading,
-    isCurrentConnectWalletAnOwner,
-    changeThresholdMutationIsLoading
+    isCurrentConnectWalletAnOwner
   } = useAccountManagementHook()
 
   const isChangeThresholdModalReady =
@@ -57,7 +55,7 @@ export function AccountManagement() {
                 {richOwnersData.map(({ address, name }) => (
                   <div
                     key={address}
-                    className="flex flex-col hover:bg-cyan-200/[.2] hover:dark:bg-cyan-800/[.5] p-2 border-t-1 last:rounded-b-md dark:border-zinc-600"
+                    className="flex flex-col hover:bg-cyan-200/[.2] hover:dark:bg-cyan-800/[.4] p-2 border-t-1 last:rounded-b-md dark:border-zinc-600"
                   >
                     <Heading>{name}</Heading>
 
@@ -114,25 +112,24 @@ export function AccountManagement() {
           ownersCount={ownersCount}
           safeAddress={safe.address}
           safeThreshold={safeThreshold}
-          changeThreshold={changeThreshold}
           transactionNonce={transactionNonce}
           isOpen={isChangeThresholdModalOpen}
           onOpenChange={setIsChangeThresholdOpen}
-          isLoading={changeThresholdMutationIsLoading}
         />
       )}
 
       {isAddNewOwnerModalReady && (
         <AddNewOwnerModal
           owners={richOwnersData}
-          addNewOwner={addNewOwner}
           ownersCount={ownersCount}
           safeAddress={safe.address}
           safeThreshold={safeThreshold}
           isOpen={isAddNewOwnerModalOpen}
           onOpenChange={setAddNewOwnerOpen}
+          currentSafeOwnerId={safe.ownerId}
           transactionNonce={transactionNonce}
           isLoading={addNewOwnerMutationIsLoading}
+          addNewOwnerMutation={addNewOwnerMutation}
         />
       )}
     </div>

@@ -1,41 +1,63 @@
 import { useState } from 'react'
+import { toast } from 'react-toastify'
 
-import { SelectInput } from '@components/Inputs/SelectInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
 import { Button } from '@/components/Button'
 
+import { getWe3ErrorMessageWithToast } from '@/utils/web3/errors'
+import { useChangeThreshold } from '@/hooks/transactions/mutation/useChangeThreshold'
+
 import type { Dispatch, SetStateAction } from 'react'
-import type { ChangeThrehsold } from '@/hooks/smartAccount/settings/useChangeThresholdHook'
 
 interface Props {
   isOpen: boolean
-  isLoading: boolean
   safeAddress: string
   ownersCount: number
   safeThreshold: number
   transactionNonce: number
   onOpenChange: Dispatch<SetStateAction<boolean>>
-  changeThreshold: (input: ChangeThrehsold) => Promise<void>
 }
 
 export function ChangeThresholdModal({
   isOpen,
-  isLoading,
   safeAddress,
   ownersCount,
   onOpenChange,
   safeThreshold,
-  changeThreshold,
   transactionNonce
 }: Props) {
   const [newThreshold, setNewThreshold] = useState('1')
+  const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
+
+  const {
+    mutateAsync: changeThresholdMutation,
+    isLoading: changeThresholdMutationIsLoading
+  } = useChangeThreshold()
+
+  async function handleChangeThreshold() {
+    try {
+      setIsWaitingTransaction(true)
+      const transaction = await changeThresholdMutation({
+        safeAddress,
+        transactionNonce,
+        newThreshold: Number(newThreshold)
+      })
+
+      await transaction.wait()
+
+      setIsWaitingTransaction(false)
+      toast.success('Proposal created! View it on transactions tab.')
+    } catch (err) {
+      getWe3ErrorMessageWithToast(err)
+    }
+  }
 
   return (
     <DialogModal.Root
       open={isOpen}
       onOpenChange={isOpen => {
-        if (isLoading) return
+        if (changeThresholdMutationIsLoading) return
 
         onOpenChange(isOpen)
       }}
@@ -54,29 +76,24 @@ export function ChangeThresholdModal({
             <p>Any transaction will require the confirmation of: </p>
 
             <div className="flex gap-4 items-center">
-              <SelectInput.Root
-                className="w-[100px]"
-                onValueChange={newThreshold => setNewThreshold(newThreshold)}
-                defaultValue={String(safeThreshold)}
+              <select
+                value={newThreshold}
+                onChange={({ target: { value } }) => setNewThreshold(value)}
+                className="p-4 rounded-md bg-transparent border-1 dark:border-zinc-800"
               >
-                <SelectInput.Trigger className="min-h-[3rem] bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
-
-                <SelectInput.Content className="border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
-                  <SelectInput.Group>
-                    {Array.from({ length: ownersCount }, (_, i) => i).map(
-                      (count, index) => (
-                        <SelectInput.Item
-                          key={index}
-                          value={String(index)}
-                          className="w-full h-9 px-2 text-left overflow-hidden rounded-md capitalize pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800"
-                        >
-                          {count}
-                        </SelectInput.Item>
-                      )
-                    )}
-                  </SelectInput.Group>
-                </SelectInput.Content>
-              </SelectInput.Root>
+                {Array.from({ length: ownersCount }, (_, i) => i + 1).map(
+                  count => (
+                    <option
+                      key={count}
+                      value={count}
+                      disabled={safeThreshold === count}
+                      className="dark:bg-zinc-800 dark:text-white"
+                    >
+                      {count}
+                    </option>
+                  )
+                )}
+              </select>
 
               <p>out of {ownersCount} owner(s).</p>
             </div>
@@ -95,7 +112,8 @@ export function ChangeThresholdModal({
 
           <div className="flex justify-between p-8">
             <Button
-              disabled={isLoading}
+              onClick={() => onOpenChange(false)}
+              disabled={isWaitingTransaction}
               className="bg-transparent hover:bg-zinc-200 hover:dark:bg-zinc-800 min-w-[100px]"
             >
               Cancel
@@ -103,14 +121,8 @@ export function ChangeThresholdModal({
 
             <Button
               className="min-w-[100px]"
-              isLoading={isLoading}
-              onClick={() =>
-                changeThreshold({
-                  safeAddress,
-                  transactionNonce,
-                  newThreshold: Number(newThreshold)
-                })
-              }
+              onClick={handleChangeThreshold}
+              isLoading={isWaitingTransaction}
             >
               Submit
             </Button>
