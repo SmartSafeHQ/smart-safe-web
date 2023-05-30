@@ -63,11 +63,36 @@ export function useChangeThreshold() {
     mutationKey: ['useChangeThreshold'],
     mutationFn: (input: ChangeThresholdInput) => changeThrehold(input),
     onSuccess: async (_, variables) => {
-      await queryClient.invalidateQueries({
-        queryKey: [
-          ['useGetTransactionNonce', variables.safeAddress],
-          ['useGetThreshold', variables.safeAddress]
-        ]
+      await queryClient.cancelQueries({
+        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+      })
+      await queryClient.cancelQueries({
+        queryKey: ['useGetThreshold', variables.safeAddress]
+      })
+      await queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+    },
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(
+        ['useGetTransactionNonce', variables.safeAddress],
+        context
+      )
+      queryClient.setQueryData(
+        ['useGetThreshold', variables.safeAddress],
+        context
+      )
+      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+    },
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['useGetThreshold', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
       })
     }
   })
