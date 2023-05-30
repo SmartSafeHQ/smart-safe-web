@@ -7,7 +7,7 @@ import { AddNewOwnerModal } from './AddNewOwnerModal'
 import { ChangeThresholdModal } from './ChangeThresholdModal'
 
 import { useAccountManagementHook } from '@hooks/smartAccount/settings/useAccountManagementHook'
-import { formatWalletAddress } from '@/utils/web3'
+import { formatWalletAddress } from '@utils/web3'
 
 export function AccountManagement() {
   const {

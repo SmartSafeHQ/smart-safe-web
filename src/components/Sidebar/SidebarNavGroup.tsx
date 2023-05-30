@@ -39,7 +39,10 @@ function SidebarNavGroupTitle({
 }: SidebarNavGroupTitleProps) {
   return (
     <Text
-      className={clsx('px-3 pt-1 pb-3 font-normal text-sm', className)}
+      className={clsx(
+        'px-3 pt-1 pb-3 text-start font-normal text-sm md:max-lg:text-center',
+        className
+      )}
       {...props}
     >
       <strong>{children}</strong>

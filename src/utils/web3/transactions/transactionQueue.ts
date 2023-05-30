@@ -12,6 +12,7 @@ import {
   DefaultTxProps,
   OwnerApproveStatus,
   SendTxProps,
+  ThresholdTxProps,
   TransacitonTypes
 } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
@@ -93,6 +94,19 @@ export function formatAddOwnerTxToQueue(
   }
 }
 
+export function formatThresholdTxToQueue(
+  transaction: DefaultTxProps,
+  parsedTransaction: TransactionDescription
+): ThresholdTxProps {
+  const newThreshold = Number(parsedTransaction.args[0])
+
+  return {
+    ...transaction,
+    type: 'THRESHOLD',
+    newThreshold
+  }
+}
+
 type TxFormatFunction = (
   transaction: DefaultTxProps,
   parsedTransaction: TransactionDescription
@@ -103,5 +117,10 @@ export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
     'addNewOwner',
     (transaction: DefaultTxProps, parsedTransaction: TransactionDescription) =>
       formatAddOwnerTxToQueue(transaction, parsedTransaction)
+  ],
+  [
+    'changeThreshold',
+    (transaction: DefaultTxProps, parsedTransaction: TransactionDescription) =>
+      formatThresholdTxToQueue(transaction, parsedTransaction)
   ]
 ])

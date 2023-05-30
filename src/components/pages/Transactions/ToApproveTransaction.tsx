@@ -1,5 +1,5 @@
-import { TransactionLayout } from './TransactionLayout'
-import { transactionComponents } from '@components/pages/Transactions/TransactionLayout/TransactionTypes'
+import { Transaction } from './TransactionsLayout'
+import { transactionComponents } from '@components/pages/Transactions/TransactionsLayout/TransactionTypes'
 
 import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
@@ -15,10 +15,10 @@ export function ToApproveTransaction({
   if (!TxComponent) return null
 
   return (
-    <TransactionLayout.Root asChild>
+    <Transaction.Root asChild>
       <main>
         <TxComponent.ToApprove transaction={transaction} />
       </main>
-    </TransactionLayout.Root>
+    </Transaction.Root>
   )
 }

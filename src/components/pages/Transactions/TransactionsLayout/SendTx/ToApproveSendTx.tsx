@@ -1,17 +1,15 @@
-import { TransactionLayout } from '../'
-import { TransactionLayoutSend } from '.'
+import { Transaction } from '..'
+import { SendTx } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
 import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
-interface ToApproveSendTransactionProps {
+interface ToApproveSendTxProps {
   transaction: SendTxProps
 }
 
-export function ToApproveSendTransaction({
-  transaction
-}: ToApproveSendTransactionProps) {
+export function ToApproveSendTx({ transaction }: ToApproveSendTxProps) {
   const {
     safe,
     transactionsQueue,
@@ -23,7 +21,7 @@ export function ToApproveSendTransaction({
 
   return (
     <>
-      <TransactionLayoutSend.Header
+      <SendTx.Header
         txNonce={transaction.nonce}
         createdAt={transaction.createdAt}
         amount={transaction.amount}
@@ -33,19 +31,19 @@ export function ToApproveSendTransaction({
         <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
           Approves {transaction.signatures.length}/{safe?.threshold}
         </Text>
-      </TransactionLayoutSend.Header>
+      </SendTx.Header>
 
       {safe && (
         <div className="w-full flex flex-col items-stretch justify-start border-t-1 border-zinc-200 dark:border-zinc-700">
           <div className="w-full flex flex-col items-stretch justify-start">
-            <TransactionLayout.OwnersStatus
+            <Transaction.OwnersStatus
               signatures={transaction.signatures}
               threshold={safe.threshold}
               baseExplorerLink={`${safe.chain.explorerUrl}/address`}
             />
 
             <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">
-              <TransactionLayoutSend.Infos
+              <SendTx.Infos
                 tokenSymbol={transaction.token.symbol}
                 address={transaction.to}
                 explorerLink={`${safe.chain.explorerUrl}/address/${transaction.to}`}
@@ -53,14 +51,14 @@ export function ToApproveSendTransaction({
                 amount={transaction.amount}
               />
 
-              <TransactionLayout.TxInfos
+              <Transaction.TxInfos
                 txHash={transaction.hash}
                 createdAt={transaction.createdAt}
               />
             </div>
           </div>
 
-          <TransactionLayout.Actions
+          <Transaction.Actions
             isLoadingApprove={isLoadingApprove}
             isLoadingReject={isLoadingReject}
             signatures={transactionsQueue?.toApprove?.signatures ?? []}

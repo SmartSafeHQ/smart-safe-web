@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
 
-import { TransactionLayout } from '@components/pages/Transactions/TransactionLayout'
-import { transactionComponents } from '@components/pages/Transactions/TransactionLayout/TransactionTypes'
+import { Transaction } from '@components/pages/Transactions/TransactionsLayout'
+import { transactionComponents } from '@components/pages/Transactions/TransactionsLayout/TransactionTypes'
 
 import { useSafe } from '@contexts/SafeContext'
 import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
@@ -24,11 +24,11 @@ export function HomeTransactionItem({
 
   return (
     <Link href={`/dashboard/${safe?.address}/transactions/queue`}>
-      <TransactionLayout.Root className="hover:border-zinc-400 hover:dark:border-zinc-500">
+      <Transaction.Root className="hover:border-zinc-400 hover:dark:border-zinc-500">
         <TxComponent.HomeItem transaction={transaction}>
           {children}
         </TxComponent.HomeItem>
-      </TransactionLayout.Root>
+      </Transaction.Root>
     </Link>
   )
 }
