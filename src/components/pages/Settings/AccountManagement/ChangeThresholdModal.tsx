@@ -49,6 +49,7 @@ export function ChangeThresholdModal({
       setIsWaitingTransaction(false)
       toast.success('Proposal created! View it on transactions tab.')
     } catch (err) {
+      setIsWaitingTransaction(false)
       getWe3ErrorMessageWithToast(err)
     }
   }
