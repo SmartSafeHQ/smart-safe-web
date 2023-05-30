@@ -1,5 +1,5 @@
 export type OwnerApproveStatus = 'approved' | 'rejected'
-export type TransactionType = 'SEND' | 'ADD_OWNER'
+export type TransactionType = 'SEND' | 'ADD_OWNER' | 'THRESHOLD'
 
 export interface FetchSafeTxQueueInput {
   safeAddress?: string
@@ -36,7 +36,15 @@ export interface ChangeOwnersTxProps extends DefaultTxProps {
   ownerAddress: string
 }
 
-export type TransacitonTypes = SendTxProps | ChangeOwnersTxProps
+export interface ThresholdTxProps extends DefaultTxProps {
+  type: 'THRESHOLD'
+  newThreshold: number
+}
+
+export type TransacitonTypes =
+  | SendTxProps
+  | ChangeOwnersTxProps
+  | ThresholdTxProps
 
 export interface FetchSafeTxQueueOutput {
   toApprove?: TransacitonTypes

@@ -7,6 +7,9 @@ import { PendingAddOwnerTransaction } from '@components/pages/Transactions/Trans
 import { ToApproveAddOwnerTransaction } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutAddOwner/ToApproveAddOwnerTransaction'
 import { PendingSendTransaction } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutSend/PendingSendTransaction'
 import { ToApproveSendTransaction } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutSend/ToApproveSendTransaction'
+import { PendingChangeThresholdTransaction } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutChangeThreshold/PendingChangeThresholdTransaction'
+import { ToApproveChangeThresholdTransaction } from '@components/pages/Transactions/TransactionLayout/TransactionLayoutChangeThreshold/ToApproveChangeThresholdTransaction'
+import { TransactionChangeThresholdItem } from '@components/pages/Home/TransactionQueue/TransactionItemTypes/TransactionChangeThresholdItem'
 
 import { TransactionType } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
 
@@ -32,5 +35,10 @@ export const transactionComponents: Record<
     ToApprove: ToApproveAddOwnerTransaction,
     Pending: PendingAddOwnerTransaction,
     HomeItem: TransactionAddOwnerItem
+  },
+  THRESHOLD: {
+    ToApprove: ToApproveChangeThresholdTransaction,
+    Pending: PendingChangeThresholdTransaction,
+    HomeItem: TransactionChangeThresholdItem
   }
 }
