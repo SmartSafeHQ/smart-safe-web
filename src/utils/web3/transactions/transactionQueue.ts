@@ -15,6 +15,7 @@ import {
   ThresholdTxProps,
   TransacitonTypes
 } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 export function formatTransactionToQueueList(
   transaction: any,
@@ -67,13 +68,18 @@ export function formatTransactionToQueueList(
   }
 }
 
-export function formatSendTxToQueue(transaction: DefaultTxProps): SendTxProps {
+export function formatSendTxToQueue(
+  transaction: DefaultTxProps,
+  chainId: string
+): SendTxProps {
+  const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
+
   return {
     ...transaction,
     type: 'SEND',
     token: {
-      symbol: 'matic',
-      icon: '/networks/polygon-logo.svg'
+      symbol: safeChain?.symbol ?? 'matic',
+      icon: safeChain?.icon ?? '/networks/polygon-logo.svg'
     }
   }
 }
