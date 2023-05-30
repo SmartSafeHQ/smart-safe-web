@@ -22,12 +22,17 @@ async function getThreshold({ safeAddress }: GetThresholdInput) {
 
 interface UseGetThresholdProps {
   safeAddress: string
+  enabled: boolean
 }
 
-export function useGetThreshold({ safeAddress }: UseGetThresholdProps) {
+export function useGetThreshold({
+  safeAddress,
+  enabled = true
+}: UseGetThresholdProps) {
   return useQuery({
     queryFn: () => getThreshold({ safeAddress }),
     queryKey: ['useGetThreshold', safeAddress],
-    staleTime: 60 * 2000 // 2 minutes
+    staleTime: 60 * 2000, // 2 minutes
+    enabled
   })
 }

@@ -19,7 +19,10 @@ export function TransactionAddOwnerItem({
   children
 }: TransactionAddOwnerItemProps) {
   const { safe } = useSafe()
-  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useGetOwnersCount({
+    safeAddress: safe?.address || '',
+    enabled: !!safe
+  })
 
   return (
     <TransactionLayoutAddOwner.Header

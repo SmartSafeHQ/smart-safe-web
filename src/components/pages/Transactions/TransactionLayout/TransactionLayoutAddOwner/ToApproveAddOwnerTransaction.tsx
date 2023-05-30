@@ -21,7 +21,10 @@ export function ToApproveAddOwnerTransaction({
     isLoadingReject,
     handleRejectTransaction
   } = useTransactionsQueue()
-  const { data: ownersCount } = useGetOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useGetOwnersCount({
+    safeAddress: safe?.address || '',
+    enabled: !!safe
+  })
 
   return (
     <>

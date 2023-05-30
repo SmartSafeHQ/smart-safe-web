@@ -17,7 +17,7 @@ async function addNewOwner({
   ownerAddress,
   newThreshold,
   transactionNonce
-}: AddNewOwnerInput): Promise<void> {
+}: AddNewOwnerInput) {
   if (!safeAddress) {
     throw new Error('safe address required')
   }
@@ -48,7 +48,7 @@ async function addNewOwner({
     transaction: signaturePayload
   })
 
-  const response = await contract.getFunction('createTransactionProposal')(
+  const transaction = await contract.getFunction('createTransactionProposal')(
     safeAddress,
     '0',
     addNewOwnerCallEncoded,
@@ -56,16 +56,20 @@ async function addNewOwner({
     signedTypedDataHash
   )
 
-  console.log({ response })
+  return transaction
 }
 
 export function useAddNewOwner() {
   return useMutation({
     mutationKey: ['useAddNewOwner'],
     mutationFn: (input: AddNewOwnerInput) => addNewOwner(input),
-    onSuccess: async (data, variables) => {
+    onSuccess: async (_, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: ['useGetOwners', variables.safeAddress]
+        queryKey: [
+          ['useGetOwners', variables.safeAddress],
+          ['useGetOwnersCount', variables.safeAddress],
+          ['safeTxQueue', variables.safeAddress]
+        ]
       })
     }
   })
