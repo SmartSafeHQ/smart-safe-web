@@ -1,24 +1,21 @@
-import {
-  TransactionDescription,
-  ethers,
-  formatUnits,
-  verifyMessage
-} from 'ethers'
+import { TransactionDescription, ethers, formatUnits } from 'ethers'
 import { formatWalletAddress } from '@utils/web3'
 
-import { createTransactionMessage } from '@utils/web3/transactions/createTransactionProposal'
+import { SmartSafe } from '@utils/web3/typings/SmartSafe'
 import {
   ChangeOwnersTxProps,
   DefaultTxProps,
-  OwnerApproveStatus,
+  OwnerSignaturesProps,
   SendTxProps,
   ThresholdTxProps,
   TransacitonTypes
 } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
-export function formatTransactionToQueueList(
+export async function formatTransactionToQueueList(
   transaction: any,
+  contract: SmartSafe,
   chainId: string
 ) {
   const from = transaction[0]
@@ -27,7 +24,6 @@ export function formatTransactionToQueueList(
   const value = transaction[3]
   const createdAt = new Date(ethers.toNumber(transaction[4]) * 1000)
   const data = transaction[5]
-  const signatures = transaction[6] as string[]
 
   const transactionData = {
     chainId: parseInt(chainId, 16),
@@ -38,27 +34,33 @@ export function formatTransactionToQueueList(
     data: ethers.keccak256(data)
   }
 
-  const txMessage = createTransactionMessage({
-    transaction: transactionData
-  })
+  const approvals = await contract.getFunction('getTransactionApprovals')(nonce)
 
-  const formattedSignatures = signatures.map(signature => {
-    const address = verifyMessage(txMessage, signature)
+  const ownersSignatures: OwnerSignaturesProps[] = []
 
-    return {
-      address,
+  approvals.forEach(approval => {
+    const signatureAddress = approval[0]
+    const signatureVote = Number(approval[1])
+
+    if (typeof signatureAddress !== 'string') return
+
+    ownersSignatures.push({
+      address: signatureAddress,
       formattedAddress: formatWalletAddress({
-        walletAddress: address
+        walletAddress: signatureAddress
       }),
-      status: 'approved' as OwnerApproveStatus
-    }
+      status:
+        signatureVote === TransactionApprovalStatus.APPROVED
+          ? 'approved'
+          : 'rejected'
+    })
   })
 
   return {
     nonce,
     amount: Number(formatUnits(value, 'ether')),
     createdAt,
-    signatures: formattedSignatures,
+    signatures: ownersSignatures,
     to,
     formattedAddress: formatWalletAddress({
       walletAddress: transactionData.to

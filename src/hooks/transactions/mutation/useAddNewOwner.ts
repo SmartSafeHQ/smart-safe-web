@@ -84,6 +84,10 @@ export function useAddNewOwner() {
         context
       )
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+      queryClient.setQueryData(
+        ['useGetTransactionNonce', variables.safeAddress],
+        context
+      )
     },
     onSettled: async (_data, _error, variables) => {
       await queryClient.invalidateQueries({

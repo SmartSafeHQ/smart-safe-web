@@ -36,60 +36,66 @@ export async function fetchSafeTxQueue(
   const currenTxQueueNonce = Number(transactionNonce)
   const transactionsQueue = await contract.getFunction('getTransactions')(0, 0)
 
-  const formattedTransactionsQueue =
-    transactionsQueue.reduce<FetchSafeTxQueueOutput>(
-      (acc, transaction) => {
-        if (!transaction[4]) {
-          return acc
-        }
+  console.log(transactionsQueue)
 
-        const parsedTransaction = contract.interface.parseTransaction({
-          data: transaction[5]
-        })
+  let toApprove: TransacitonTypes | undefined
 
-        const transactionData = formatTransactionToQueueList(
-          transaction,
-          safeChain.chainId
-        )
+  const txQueuePromise = transactionsQueue.map(async transaction => {
+    if (!transaction[4]) {
+      return
+    }
 
-        let formattedTransaction: TransacitonTypes
+    const parsedTransaction = contract.interface.parseTransaction({
+      data: transaction[5]
+    })
 
-        if (parsedTransaction) {
-          const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
-            parsedTransaction.name
-          )
-
-          if (!formatTransactionFunction) {
-            throw new Error('transaction type not supported')
-          }
-
-          formattedTransaction = formatTransactionFunction(
-            transactionData,
-            parsedTransaction
-          )
-        } else {
-          formattedTransaction = formatSendTxToQueue(
-            transactionData,
-            safeChain.chainId
-          )
-        }
-
-        if (formattedTransaction.nonce === currenTxQueueNonce) {
-          acc.toApprove = formattedTransaction
-          return acc
-        }
-
-        acc.pending.push(formattedTransaction)
-
-        return acc
-      },
-      {
-        toApprove: undefined,
-        pending: []
-      }
+    const transactionData = await formatTransactionToQueueList(
+      transaction,
+      contract,
+      safeChain.chainId
     )
 
-  return formattedTransactionsQueue
+    let formattedTransaction: TransacitonTypes
+
+    if (parsedTransaction) {
+      const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
+        parsedTransaction.name
+      )
+
+      if (!formatTransactionFunction) {
+        throw new Error('transaction type not supported')
+      }
+
+      formattedTransaction = formatTransactionFunction(
+        transactionData,
+        parsedTransaction
+      )
+    } else {
+      formattedTransaction = formatSendTxToQueue(
+        transactionData,
+        safeChain.chainId
+      )
+    }
+
+    if (formattedTransaction.nonce === currenTxQueueNonce) {
+      toApprove = formattedTransaction
+      return
+    }
+
+    return formattedTransaction
+  })
+
+  const resolvedTxQueue = await Promise.all(txQueuePromise)
+  const formattedTxQueue = resolvedTxQueue.filter(
+    (tx: TransacitonTypes | undefined): tx is TransacitonTypes => {
+      return tx !== undefined
+    }
+  )
+
+  return {
+    toApprove,
+    pending: formattedTxQueue
+  }
 }
 
 export function useSafeTxQueue(
@@ -102,6 +108,7 @@ export function useSafeTxQueue(
     queryFn: () => fetchSafeTxQueue({ safeAddress, chainId }),
     enabled,
     keepPreviousData: true,
+    retry: false,
     staleTime: 1000 * 60 * 5 // 5 minutes
   })
 }

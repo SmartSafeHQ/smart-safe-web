@@ -62,6 +62,11 @@
   },
   {
     "inputs": [],
+    "name": "OwnersLengthOutOfBounds",
+    "type": "error"
+  },
+  {
+    "inputs": [],
     "name": "SignaturesAlreadyCollected",
     "type": "error"
   },
@@ -321,6 +326,37 @@
         "internalType": "address[]",
         "name": "",
         "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint64",
+        "name": "_transactionNonce",
+        "type": "uint64"
+      }
+    ],
+    "name": "getTransactionApprovals",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "ownerAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "enum TransactionManager.TransactionApproval",
+            "name": "approvalStatus",
+            "type": "uint8"
+          }
+        ],
+        "internalType": "struct TransactionManager.TransactionApprovals[]",
+        "name": "",
+        "type": "tuple[]"
       }
     ],
     "stateMutability": "view",
