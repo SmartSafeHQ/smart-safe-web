@@ -104,16 +104,6 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   },
   {
-    symbol: 'OKT',
-    networkName: 'OKT Chain',
-    icon: '/networks/okt-logo.svg',
-    chainId: '0x42',
-    hexColor: '#e5e7eb',
-    rpcUrl: 'https://exchainrpc.okex.org/',
-    explorerUrl: 'https://www.oklink.com/okexchain',
-    scanUrl: 'https://www.oklink.com/api/v5/explorer/'
-  },
-  {
     symbol: 'ETH',
     networkName: 'Ethereum',
     icon: '/networks/eth-logo.svg',
