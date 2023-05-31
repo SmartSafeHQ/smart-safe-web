@@ -47,29 +47,31 @@ export async function fetchAddressSafes(
     `/safe/${input.address}`
   )
 
-  const formattedSafes = response.data.safes.map(owner => {
-    const deployedChain = CHAINS_ATTRIBUTES.find(
-      chain => owner.safe.network === chain.chainId
-    )
-
-    if (!deployedChain) {
-      throw new Error(
-        `chain id ${owner.safe.network} not found in supported chains`
+  const formattedSafes = response.data.safes
+    .filter(owner => owner.safe.network === '0x41')
+    .map(owner => {
+      const deployedChain = CHAINS_ATTRIBUTES.find(
+        chain => owner.safe.network === chain.chainId
       )
-    }
 
-    return {
-      ownerId: owner.id,
-      ownerName: owner.name,
-      safeId: owner.safe.id,
-      safeName: owner.safe.name,
-      safeAddress: owner.safe.address,
-      safeFormattedAddress: formatWalletAddress({
-        walletAddress: owner.safe.address
-      }),
-      chain: deployedChain
-    }
-  })
+      if (!deployedChain) {
+        throw new Error(
+          `chain id ${owner.safe.network} not found in supported chains`
+        )
+      }
+
+      return {
+        ownerId: owner.id,
+        ownerName: owner.name,
+        safeId: owner.safe.id,
+        safeName: owner.safe.name,
+        safeAddress: owner.safe.address,
+        safeFormattedAddress: formatWalletAddress({
+          walletAddress: owner.safe.address
+        }),
+        chain: deployedChain
+      }
+    })
 
   return formattedSafes
 }

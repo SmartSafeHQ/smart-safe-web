@@ -114,60 +114,59 @@ export function SidebarNav() {
               </DialogDrawer.Close>
             ))}
           </SidebarNavGroup.Root>
-
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
-            <SidebarNavGroup.Title>OKX Swap bridge</SidebarNavGroup.Title>
-
-            {NAV_LINKS_SUB_OKX.map(navLink => (
-              <DialogDrawer.Close key={navLink.title}>
-                <NavLink
-                  href={navLink.href}
-                  Icon={navLink.icon}
-                  isDisabled={navLink.isDisabled}
-                  isExchange
-                  basePath={`/dashboard/${safe?.address}`}
-                  activePath={navLink.activePath}
-                >
-                  {navLink.title}
-                </NavLink>
-              </DialogDrawer.Close>
-            ))}
-          </SidebarNavGroup.Root>
-
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
-            <SidebarNavGroup.Title>Manage funds</SidebarNavGroup.Title>
-
-            {NAV_LINKS_SUB_MANAGE.map(navLink => (
-              <DialogDrawer.Close key={navLink.title}>
-                <NavLink
-                  href={navLink.href}
-                  Icon={navLink.icon}
-                  isDisabled={navLink.isDisabled}
-                  basePath={`/dashboard/${safe?.address}`}
-                  activePath={navLink.activePath}
-                >
-                  {navLink.title}
-                </NavLink>
-              </DialogDrawer.Close>
-            ))}
-          </SidebarNavGroup.Root>
-
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
-            {NAV_LINKS_SUB_SETTINGS.map(navLink => (
-              <DialogDrawer.Close key={navLink.title}>
-                <NavLink
-                  href={navLink.href}
-                  Icon={navLink.icon}
-                  isDisabled={navLink.isDisabled}
-                  basePath={`/dashboard/${safe?.address}`}
-                  activePath={navLink.activePath}
-                >
-                  {navLink.title}
-                </NavLink>
-              </DialogDrawer.Close>
-            ))}
-          </SidebarNavGroup.Root>
         </ScrollArea>
+
+        <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+          <SidebarNavGroup.Title>OKX Swap bridge</SidebarNavGroup.Title>
+
+          {NAV_LINKS_SUB_OKX.map(navLink => (
+            <DialogDrawer.Close key={navLink.title}>
+              <NavLink
+                href={navLink.href}
+                Icon={navLink.icon}
+                isDisabled={navLink.isDisabled}
+                isExchange
+                basePath={`/dashboard/${safe?.address}`}
+                activePath={navLink.activePath}
+              >
+                {navLink.title}
+              </NavLink>
+            </DialogDrawer.Close>
+          ))}
+        </SidebarNavGroup.Root>
+
+        <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+          <SidebarNavGroup.Title>Manage funds</SidebarNavGroup.Title>
+
+          {NAV_LINKS_SUB_MANAGE.map(navLink => (
+            <DialogDrawer.Close key={navLink.title}>
+              <NavLink
+                href={navLink.href}
+                Icon={navLink.icon}
+                isDisabled={navLink.isDisabled}
+                basePath={`/dashboard/${safe?.address}`}
+                activePath={navLink.activePath}
+              >
+                {navLink.title}
+              </NavLink>
+            </DialogDrawer.Close>
+          ))}
+        </SidebarNavGroup.Root>
+        <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+          {NAV_LINKS_SUB_SETTINGS.map(navLink => (
+            <DialogDrawer.Close key={navLink.title}>
+              <NavLink
+                href={navLink.href}
+                Icon={navLink.icon}
+                isDisabled={navLink.isDisabled}
+                basePath={`/dashboard/${safe?.address}`}
+                activePath={navLink.activePath}
+              >
+                {navLink.title}
+              </NavLink>
+            </DialogDrawer.Close>
+          ))}
+        </SidebarNavGroup.Root>
       </div>
     </div>
   )
