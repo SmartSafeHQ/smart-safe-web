@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useDeploySmartSafeFee } from '@hooks/safes/create/queries/useDeploySmartSafeFee'
+import { useDeploySmartSafeProxyFee } from '@hooks/safes/create/queries/useDeploySmartSafeProxyFee'
 import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
 export function NetworkFeeEst() {
@@ -14,8 +14,9 @@ export function NetworkFeeEst() {
     isLoading: feeIsLoading,
     isFetching: feeIsFetching,
     isPreviousData: feeIsPreviousData
-  } = useDeploySmartSafeFee(
+  } = useDeploySmartSafeProxyFee(
     safeInfos?.chain.rpcUrl ?? '',
+    safeInfos?.chain.symbol ?? '',
     [ownersFields[0].address],
     !!safeInfos
   )
@@ -30,7 +31,10 @@ export function NetworkFeeEst() {
       )}
     >
       {safeInfos && (
-        <Skeleton isLoading={feeIsLoading || feeIsPreviousData} className="h-5">
+        <Skeleton
+          isLoading={feeIsLoading || feeIsPreviousData}
+          className="w-full h-5"
+        >
           <Text className="mr-2">Est. network fee:</Text>
 
           <Image
@@ -42,8 +46,8 @@ export function NetworkFeeEst() {
           />
 
           {feeData && (
-            <Text>
-              {feeData.valueInCoin.slice(0, 5)} {safeInfos.chain.symbol}
+            <Text className="uppercase">
+              {feeData.valueInToken.slice(0, 5)} {safeInfos.chain.symbol}
             </Text>
           )}
         </Skeleton>

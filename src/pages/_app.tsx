@@ -15,7 +15,8 @@ import { amplifyConfig } from '@lib/amplify'
 
 const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-inter'
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700']
 })
 
 Amplify.configure(amplifyConfig)
@@ -32,7 +33,7 @@ export default function App({
 
   const getLayout = Component.getLayout ?? (page => page)
 
-  return getLayout(
+  return (
     <AppProvider>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -45,7 +46,7 @@ export default function App({
         )}
       >
         <LayoutComponent>
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </LayoutComponent>
       </div>
     </AppProvider>

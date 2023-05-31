@@ -1,4 +1,4 @@
-import { Keyhole } from 'phosphor-react'
+import { Keyhole } from '@phosphor-icons/react'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { Button } from '@components/Button'

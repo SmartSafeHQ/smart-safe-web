@@ -12,7 +12,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   isLoading?: boolean
   asChild?: boolean
-  variant?: 'primary' | 'red'
+  variant?: 'primary' | 'red' | 'green'
 }
 
 const ButtonComponent: ForwardRefRenderFunction<
@@ -22,6 +22,7 @@ const ButtonComponent: ForwardRefRenderFunction<
   {
     children,
     isLoading = false,
+    disabled,
     asChild,
     className,
     variant = 'primary',
@@ -34,15 +35,16 @@ const ButtonComponent: ForwardRefRenderFunction<
   return (
     <Comp
       ref={ref}
-      disabled={isLoading}
+      disabled={isLoading || disabled}
       className={clsx(
-        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed disabled:bg-cyan-600',
+        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed disabled:brightness-75',
         {
-          'cursor-not-allowed brightness-75': isLoading,
-          'bg-cyan-500 hover:bg-cyan-600 disabled:hover:bg-cyan-600':
+          'bg-cyan-500 hover:bg-cyan-600 disabled:bg-cyan-600':
             variant === 'primary',
-          'bg-red-500 text-gray-50 hover:bg-red-400 disabled:bg-red-500':
-            variant === 'red'
+          'bg-red-500 text-gray-50 hover:bg-red-600 disabled:bg-red-600':
+            variant === 'red',
+          'bg-green-500 text-gray-50 hover:bg-green-600 disabled:bg-green-600':
+            variant === 'green'
         },
         className
       )}

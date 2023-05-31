@@ -6,10 +6,12 @@ interface SkeletonProps {
   children: ReactNode | ReactNode[]
   totalOfLines?: number
   className?: string
+  variant?: 'default' | 'avatar'
 }
 
 export function Skeleton({
   isLoading,
+  variant = 'default',
   totalOfLines = 1,
   className,
   children
@@ -17,13 +19,16 @@ export function Skeleton({
   return (
     <>
       {isLoading ? (
-        <div className="flex flex-1 flex-col gap-3">
+        <div className={clsx('flex flex-col gap-3', className)}>
           {[...Array(totalOfLines).keys()].map(item => (
             <div
               key={item}
               className={clsx(
-                'rounded-md animate-pulse bg-zinc-300 dark:bg-zinc-700',
-                className
+                'flex flex-1 animate-pulse bg-zinc-300 dark:bg-zinc-700',
+                {
+                  'rounded-md': variant === 'default',
+                  'rounded-full': variant === 'avatar'
+                }
               )}
             />
           ))}

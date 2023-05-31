@@ -6,46 +6,61 @@ import {
   RefAttributes
 } from 'react'
 import Link, { LinkProps } from 'next/link'
-import { IconProps } from 'phosphor-react'
+import { IconProps, IconWeight } from '@phosphor-icons/react'
 import { useRouter } from 'next/router'
 import clsx from 'clsx'
 
 import { Text } from '@components/Text'
 
+import { useSafe } from '@contexts/SafeContext'
+
 interface NavLinkProps extends LinkProps {
   Icon: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
-  isDisabled?: boolean
   children: ReactNode
+  basePath: string
+  activePath?: string
+  isDisabled?: boolean
 }
 
 const NavLinkComponent: ForwardRefRenderFunction<
   HTMLAnchorElement,
   NavLinkProps
-> = ({ Icon, isDisabled = false, children, ...props }, ref) => {
+> = (
+  { Icon, isDisabled = false, href, basePath, activePath, children, ...props },
+  ref
+) => {
   const { asPath } = useRouter()
 
+  const { safe } = useSafe()
+
   let isActive = false
+  let iconWeight: IconWeight = 'regular'
+  const arrayRoute = asPath.split('/')
+  const parentRoute = arrayRoute.slice(3).join('/')
 
   if (
-    asPath.startsWith(String(props.href)) ||
-    asPath.startsWith(String(props.as))
+    parentRoute.startsWith(activePath ?? '/') ||
+    asPath.split('/')[3] === activePath
   ) {
     isActive = true
+    iconWeight = 'fill'
   }
 
   return (
     <Text
       asChild
       className={clsx(
-        'w-full flex flex-row items-center gap-5 text-lg capitalize font-medium transition-all hover:brightness-110 hover:dark:brightness-75 md:flex-col md:gap-1 md:text-xs lg:flex-row lg:gap-5 lg:text-base text-center',
+        'w-full flex items-center h-10 gap-6 px-3 mr-auto text-sm font-normal rounded-lg whitespace-nowrap hover:bg-zinc-500/10 hover:dark:bg-zinc-50/10 md:max-lg:h-auto md:max-lg:flex-col md:max-lg:py-4 md:max-lg:gap-[0.375rem] md:max-lg:text-xs md:max-lg:text-center md:max-lg:whitespace-normal',
         {
-          'text-cyan-500': isActive,
-          'pointer-events-none text-gray-400 dark:brightness-50': isDisabled
+          'bg-zinc-500/10 dark:bg-zinc-50/10 font-medium hover:bg-zinc-500/20 hover:dark:bg-zinc-50/20':
+            isActive,
+          'pointer-events-none text-gray-400 dark:brightness-50':
+            isDisabled || !safe?.id
         }
       )}
     >
-      <Link ref={ref} {...props}>
-        <Icon className="w-6 h-6" weight="bold" />
+      <Link ref={ref} href={`${basePath}/${href}`} {...props}>
+        <Icon className="w-6 h-6" weight={iconWeight} />
 
         <Text>{children}</Text>
       </Link>

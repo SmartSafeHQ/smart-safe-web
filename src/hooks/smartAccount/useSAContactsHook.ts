@@ -1,4 +1,5 @@
-import { useSmartAccountContacts } from '@hooks/smartAccount/queries/useContacts'
+import { useSafe } from '@contexts/SafeContext'
+import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 
 import { useSAContacts } from '@contexts/SAContactsContext'
 
@@ -18,7 +19,8 @@ export const useSAContactsHook = () => {
     handleDeleteContact
   } = useSAContacts()
 
-  const { data: contacts, isLoading, error } = useSmartAccountContacts(1)
+  const { safe } = useSafe()
+  const { data: contacts, isLoading, error } = useListContacts(safe?.ownerId!)
 
   return {
     contacts,

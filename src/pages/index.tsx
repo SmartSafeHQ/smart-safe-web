@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { ReactElement } from 'react'
+import { type ReactElement } from 'react'
 
 import { CreateSafeHeader } from '@components/pages/CreateSafe/CreateSafeHeader'
 import { CreateSafeWelcomeContent } from '@components/pages/CreateSafe/CreateSafeWelcomeContent'

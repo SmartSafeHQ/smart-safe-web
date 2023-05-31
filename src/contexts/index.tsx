@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes'
 import { ToastContainer } from 'react-toastify'
 import { Web3OnboardProvider } from '@web3-onboard/react'
 
-import { WalletProvider } from '@contexts/WalletContext'
+import { SafeProvider } from '@contexts/SafeContext'
 
 import { queryClient } from '@lib/reactQuery'
 import web3Onboard from '@utils/web3/web3Onboard'
@@ -23,7 +23,7 @@ export function AppProvider({ children }: AppProviderProps) {
           enableColorScheme
           defaultTheme="dark"
         >
-          <WalletProvider>{children}</WalletProvider>
+          <SafeProvider>{children}</SafeProvider>
         </ThemeProvider>
       </Web3OnboardProvider>
 

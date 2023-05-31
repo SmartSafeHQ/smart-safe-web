@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import Link from 'next/link'
 import { ReactNode, ThHTMLAttributes } from 'react'
-import { ArrowSquareOut, Copy, DotsThreeVertical } from 'phosphor-react'
+import { ArrowSquareOut, Copy, DotsThreeVertical } from '@phosphor-icons/react'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
@@ -30,7 +30,12 @@ function ContactsTableTh({ children, className }: ContactsTableThProps) {
 ContactsTableTh.displayName = 'ContactsTable.Th'
 
 interface ContactsTableTrProps {
-  contact: ContactProps
+  contact: {
+    contactId: number
+    contactName: string
+    contactAddress: string
+    formattedAddress: string
+  }
   handleEditContact: (_contact: ContactProps) => void
   handleDeleteContact: (_contact: ContactProps) => void
 }
@@ -43,18 +48,18 @@ function ContactsTableTr({
   return (
     <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-gray-300 dark:border-gray-700">
       <td className="pl-2 py-3">
-        <Text className="font-medium md:text-base">{contact.name}</Text>
+        <Text className="font-medium md:text-base">{contact.contactName}</Text>
       </td>
 
       <td>
         <div className="flex items-center gap-6 text-gray-600 dark:text-gray-400">
-          <Text>{contact.wallet.formattedAddress}</Text>
+          <Text>{contact.formattedAddress}</Text>
 
           <div className="flex items-center gap-2">
             <HoverCard.Root>
               <HoverCard.Trigger asChild>
                 <button
-                  onClick={() => handleCopyToClipboard(contact.wallet.address)}
+                  onClick={() => handleCopyToClipboard(contact.contactAddress)}
                 >
                   <Copy className="w-5 h-5" />
                 </button>
@@ -69,7 +74,7 @@ function ContactsTableTr({
             <HoverCard.Root>
               <HoverCard.Trigger asChild>
                 <Link
-                  href={`https://etherscan.io/address/${contact.wallet.address}`}
+                  href={`https://etherscan.io/address/${contact.contactAddress}`}
                   target="_blank"
                 >
                   <ArrowSquareOut className="w-5 h-5" />

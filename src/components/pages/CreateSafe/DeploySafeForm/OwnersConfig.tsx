@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import { FieldArrayWithId, useFormContext } from 'react-hook-form'
-import { ArrowSquareOut, CaretDown, Plus, Trash } from 'phosphor-react'
+import { ArrowSquareOut, CaretDown, Plus } from '@phosphor-icons/react'
 
-import { TextInput } from '@components/Inputs/TextInput'
+import { OwnerItem } from './OwnerItem'
+import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
+import { useSafe } from '@contexts/SafeContext'
 
-import { FieldValues } from '@hooks/safes/create/useDeploySafeHook'
+import { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
@@ -22,10 +24,11 @@ export function OwnersConfig({
   addNewOwner,
   removeOwner
 }: OwnersConfigProps) {
+  const { safe } = useSafe()
   const {
-    register,
     formState: { errors }
   } = useFormContext<FieldValues>()
+  const { data: contactsList } = useListContacts(safe?.ownerId!)
 
   return (
     <Collapsible.Root
@@ -42,63 +45,18 @@ export function OwnersConfig({
 
       <Collapsible.Content className="w-full flex flex-col items-stretch justify-start">
         <div className="flex flex-col items-stretch justify-start gap-4 pt-6">
-          {ownersFields.map((owner, index) => {
-            const fieldNameError = errors?.owners && errors.owners[index]?.name
-            const fieldAddressError =
-              errors?.owners && errors.owners[index]?.address
-
-            return (
-              <div
-                key={owner.id}
-                className="w-full flex items-stretch justify-start gap-5"
-              >
-                <TextInput.Root
-                  htmlFor="name"
-                  className="flex flex-1"
-                  error={fieldNameError?.message}
-                >
-                  <TextInput.Label>Owner name</TextInput.Label>
-
-                  <TextInput.Content>
-                    <TextInput.Input
-                      {...register(`owners.${index}.name`)}
-                      required
-                      id="name"
-                      placeholder="Example name"
-                    />
-                  </TextInput.Content>
-                </TextInput.Root>
-
-                <div className="flex flex-1 items-stretch justify-start gap-3 pr-7 relative">
-                  <TextInput.Root
-                    htmlFor="ownerWallet"
-                    className="flex flex-1"
-                    error={fieldAddressError?.message}
-                  >
-                    <TextInput.Label>Owner address</TextInput.Label>
-
-                    <TextInput.Content>
-                      <TextInput.Input
-                        {...register(`owners.${index}.address`)}
-                        required
-                        id="ownerWallet"
-                        placeholder="Enter owner wallet address"
-                      />
-                    </TextInput.Content>
-                  </TextInput.Root>
-
-                  {index > 0 && (
-                    <button
-                      onClick={() => removeOwner(index)}
-                      className="absolute top-[2.4rem] right-0 text-zinc-600 dark:text-zinc-400 transition-colors hover:!text-red-500"
-                    >
-                      <Trash className="w-5 h-5  " />
-                    </button>
-                  )}
-                </div>
-              </div>
-            )
-          })}
+          {ownersFields.map((owner, index) => (
+            <div
+              key={owner.id}
+              className="w-full flex items-stretch justify-start gap-5"
+            >
+              <OwnerItem
+                index={index}
+                removeOwner={removeOwner}
+                contactsList={contactsList}
+              />
+            </div>
+          ))}
 
           {errors.owners?.message && (
             <Text className="text-sm text-red-500">

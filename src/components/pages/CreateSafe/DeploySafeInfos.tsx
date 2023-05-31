@@ -5,7 +5,7 @@ import { Text } from '@components/Text'
 import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
 
 export function DeploySafeInfos() {
-  const { wallet, formattedAddress, safeInfos } = useDeploySafeHook()
+  const { wallet, formattedOwnerAddress, safeInfos } = useDeploySafeHook()
 
   return (
     <aside className="w-full flex flex-col items-stretch justify-start lg:w-72">
@@ -19,7 +19,7 @@ export function DeploySafeInfos() {
             className="w-6 h-6"
           />
 
-          <Text className="text-sm font-medium">{formattedAddress}</Text>
+          <Text className="text-sm font-medium">{formattedOwnerAddress}</Text>
         </div>
       )}
 

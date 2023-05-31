@@ -15,7 +15,7 @@ function NavigationMenuRoot({
   return (
     <RadixNavigationMenu.Root
       className={clsx(
-        'relative flex justify-center z-10 [&>div]:w-full',
+        'relative flex justify-center z-9 [&>div]:w-full',
         className
       )}
       {...props}
@@ -23,7 +23,7 @@ function NavigationMenuRoot({
       {children}
 
       <div className="w-full h-full absolute top-full left-0 flex justify-center">
-        <RadixNavigationMenu.Viewport className="w-full relative mt-[10px] bg-white dark:bg-black shadow-sm" />
+        <RadixNavigationMenu.Viewport className="w-full relative mt-[10px] shadow-sm" />
       </div>
     </RadixNavigationMenu.Root>
   )
@@ -44,7 +44,7 @@ function NavigationMenuList({
   return (
     <RadixNavigationMenu.List
       className={clsx(
-        'flex justify-center bg-white dark:bg-black rounded-md list-none shadow-sm',
+        'flex justify-center rounded-md list-none shadow-sm',
         className
       )}
       {...props}
@@ -74,7 +74,7 @@ NavigationMenuItem.displayName = 'NavigationMenu.Item'
 function NavigationMenuIndicator() {
   return (
     <RadixNavigationMenu.Indicator className="h-[10px] top-full flex items-end justify-center overflow-hidden z-10">
-      <div className="relative w-[10px] h-[10px] top-[70%] bg-white dark:bg-black rotate-[135deg] rounded-t-md" />
+      <div className="relative w-[10px] h-[10px] top-[70%] rotate-[135deg] rounded-t-md" />
     </RadixNavigationMenu.Indicator>
   )
 }
@@ -112,11 +112,15 @@ export interface NavigationMenuContentProps
 
 function NavigationMenuContent({
   children,
+  className,
   ...props
 }: NavigationMenuContentProps) {
   return (
     <RadixNavigationMenu.Content
-      className="w-full absolute top-0 left-0 bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 rounded-md animate-dialog-open"
+      className={clsx(
+        'bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 rounded-md animate-dialog-open',
+        className
+      )}
       onPointerEnter={event => event.preventDefault()}
       onPointerLeave={event => event.preventDefault()}
       {...props}

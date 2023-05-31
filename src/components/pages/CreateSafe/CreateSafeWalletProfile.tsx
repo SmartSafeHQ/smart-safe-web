@@ -1,16 +1,16 @@
 import Image from 'next/image'
-import { CaretDown } from 'phosphor-react'
+import { CaretDown } from '@phosphor-icons/react'
 
 import { Text } from '@components/Text'
 
 type CreateSafeWalletProfileProps = {
   icon: string
-  formattedAddress: string
+  formattedOwnerAddress: string
 }
 
 export function CreateSafeWalletProfile({
   icon,
-  formattedAddress
+  formattedOwnerAddress
 }: CreateSafeWalletProfileProps) {
   return (
     <div className="w-full h-9 flex items-center justify-between px-4 text-left overflow-hidden rounded-md pointer">
@@ -23,7 +23,7 @@ export function CreateSafeWalletProfile({
           className="w-5 h-5"
         />
 
-        <Text className="text-sm">{formattedAddress}</Text>
+        <Text className="text-sm">{formattedOwnerAddress}</Text>
       </div>
 
       <CaretDown className="w-4 h-4 text-zinc-400" />

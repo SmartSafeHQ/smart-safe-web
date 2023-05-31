@@ -1,16 +1,17 @@
 import { useEffect } from 'react'
-import { User } from 'phosphor-react'
+import { User } from '@phosphor-icons/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
+import { useSafe } from '@contexts/SafeContext'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Text } from '@components/Text'
 
-import { useUpdateContactMutation } from '@hooks/smartAccount/mutations/useUpdateContactMutation'
+import { useEditContact } from '@/hooks/contacts/mutations/useEditContact'
 import {
   CONTACT_NAME_REGEX,
   useSAContactsHook
@@ -31,7 +32,8 @@ export type FieldValues = z.infer<typeof validationSchema>
 export function UpdateContactModal() {
   const { selectedContact, isUpdateContactOpen, setIsUpdateContactOpen } =
     useSAContactsHook()
-  const { mutateAsync } = useUpdateContactMutation()
+  const { mutateAsync } = useEditContact()
+  const { safe } = useSafe()
 
   const {
     register,
@@ -42,7 +44,7 @@ export function UpdateContactModal() {
   } = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      name: selectedContact?.name
+      name: selectedContact?.contactName
     }
   })
 
@@ -51,9 +53,11 @@ export function UpdateContactModal() {
 
     try {
       await mutateAsync({
-        contactId: selectedContact.id,
-        customerId: 1,
-        name: data.name
+        creatorId: safe?.ownerId!,
+        contactId: selectedContact.contactId,
+        newData: {
+          contactName: data.name
+        }
       })
 
       reset()
@@ -70,7 +74,7 @@ export function UpdateContactModal() {
   useEffect(() => {
     if (!selectedContact) return
 
-    setValue('name', selectedContact.name)
+    setValue('name', selectedContact.contactName)
   }, [selectedContact])
 
   return (
@@ -91,7 +95,7 @@ export function UpdateContactModal() {
             className="flex flex-col gap-4 items-stretch w-full"
           >
             <Text className="capitalize text-gray-600 dark:text-gray-300">
-              wallet: {selectedContact?.wallet.formattedAddress}
+              Contact address: {selectedContact?.formattedAddress}
             </Text>
 
             <TextInput.Root
