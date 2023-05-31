@@ -35,23 +35,23 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
 const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
     symbol: 'OKT',
-    networkName: 'OKT Chain',
+    networkName: 'OKT Chain Testnet',
     icon: '/networks/okt-logo.svg',
-    chainId: '0x42',
+    chainId: '0x41',
     hexColor: '#e5e7eb',
-    rpcUrl: 'https://exchainrpc.okex.org/',
-    explorerUrl: 'https://www.oklink.com/okexchain',
+    rpcUrl: 'https://exchaintestrpc.okex.org/',
+    explorerUrl: 'https://www.oklink.com/okexchain-test',
     scanUrl: 'https://www.oklink.com/api/v5/explorer/'
   },
   {
     symbol: 'ETH',
-    networkName: 'Ethereum',
+    networkName: 'Ethereum Sepolia Testnet',
     icon: '/networks/eth-logo.svg',
-    chainId: '0x1',
+    chainId: '0xaa36a7',
     hexColor: '#464a76',
-    rpcUrl: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_ETH_RPC_API_KEY}`,
-    explorerUrl: 'https://etherscan.io',
-    scanUrl: `https://api.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+    rpcUrl: 'https://rpc2.sepolia.org',
+    explorerUrl: 'https://sepolia.etherscan.io',
+    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   }
 ]
 
