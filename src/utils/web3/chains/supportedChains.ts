@@ -85,33 +85,33 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
 const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
     symbol: 'MATIC',
-    networkName: 'Polygon',
+    networkName: 'Polygon Testnet',
     icon: '/networks/polygon-logo.svg',
-    chainId: '0x89',
+    chainId: '0x13881',
     hexColor: '#8247e5',
-    rpcUrl: 'https://polygon-rpc.com/',
-    explorerUrl: 'https://polygonscan.com',
-    scanUrl: `https://api.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
+    rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
+    explorerUrl: 'https://mumbai.polygonscan.com',
+    scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
     symbol: 'BNB',
-    networkName: 'BNB Smart Chain',
+    networkName: 'BNB Smart Chain Testnet',
     icon: '/networks/bnb-logo.svg',
-    chainId: '0x38',
+    chainId: '0x61',
     hexColor: '#fbdc45',
-    rpcUrl: 'https://bsc-dataseed.binance.org/',
-    explorerUrl: 'https://bscscan.com',
-    scanUrl: `https://api.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
+    rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
+    explorerUrl: 'https://testnet.bscscan.com',
+    scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   },
   {
     symbol: 'ETH',
-    networkName: 'Ethereum',
+    networkName: 'Ethereum Sepolia Testnet',
     icon: '/networks/eth-logo.svg',
-    chainId: '0x1',
+    chainId: '0xaa36a7',
     hexColor: '#464a76',
-    rpcUrl: `https://mainnet.infura.io/v3/${process.env.NEXT_PUBLIC_ETH_RPC_API_KEY}`,
-    explorerUrl: 'https://etherscan.io',
-    scanUrl: `https://api.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+    rpcUrl: 'https://rpc2.sepolia.org',
+    explorerUrl: 'https://sepolia.etherscan.io',
+    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   }
 ]
 
