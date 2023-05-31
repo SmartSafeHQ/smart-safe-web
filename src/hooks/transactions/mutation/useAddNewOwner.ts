@@ -73,6 +73,9 @@ export function useAddNewOwner() {
       await queryClient.cancelQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
+      await queryClient.cancelQueries({
+        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+      })
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(['useGetOwners', variables.safeAddress], context)
@@ -82,15 +85,18 @@ export function useAddNewOwner() {
       )
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
     },
-    onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({
+    onSettled: async (_data, _error, variables) => {
+      await queryClient.invalidateQueries({
         queryKey: ['useGetOwners', variables.safeAddress]
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['useGetOwnersCount', variables.safeAddress]
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      await queryClient.invalidateQueries({
+        queryKey: ['useGetTransactionNonce', variables.safeAddress]
       })
     }
   })
