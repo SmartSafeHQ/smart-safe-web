@@ -69,7 +69,7 @@ function AssetsTableTr({
                 'animate-pulse': isFetching
               })}
             >
-              {data.balance.toFixed(3)} {symbol}
+              {data.balance.toFixed(4)} {symbol}
             </Text>
           )}
         </Skeleton>

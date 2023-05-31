@@ -54,8 +54,8 @@ export function useSafeTokenBalance(
     queryFn: () => fetchSafeTokenBalance({ address, symbol, rpcUrl }),
     enabled,
     keepPreviousData: true,
-    staleTime: 1000 * 60 * 3, // 3 minutes
+    staleTime: 1000 * 3, // 3 seconds
     retry: 3,
-    retryDelay: 5000
+    retryDelay: 1000 * 3 // 3 seconds
   })
 }

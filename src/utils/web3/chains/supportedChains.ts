@@ -104,46 +104,6 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     scanUrl: `https://api.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
   },
   {
-    symbol: 'CELO',
-    networkName: 'Celo',
-    icon: '/networks/celo-logo.svg',
-    chainId: '0xa4ec',
-    hexColor: '#fcff52',
-    rpcUrl: 'https://forno.celo.org/',
-    explorerUrl: 'https://explorer.celo.org',
-    scanUrl: 'https://explorer.celo.org/mainnet/api'
-  },
-  {
-    symbol: 'AVAX',
-    networkName: 'Avalanche',
-    icon: '/networks/avalanche-logo.svg',
-    chainId: '0xa86a',
-    hexColor: '#e84142',
-    rpcUrl: 'https://api.avax.network/ext/bc/C/rpc',
-    explorerUrl: 'https://snowtrace.io',
-    scanUrl: `https://api.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'XDC',
-    networkName: 'XDC',
-    icon: '/networks/xdc-logo.svg',
-    chainId: '0x32',
-    hexColor: '#9ff3ff',
-    rpcUrl: 'https://rpc.xinfin.network',
-    explorerUrl: 'https://explorer.xinfin.network',
-    scanUrl: ''
-  },
-  {
-    symbol: 'OKT',
-    networkName: 'OKT Chain',
-    icon: '/networks/okt-logo.svg',
-    chainId: '0x42',
-    hexColor: '#e5e7eb',
-    rpcUrl: 'https://exchainrpc.okex.org/',
-    explorerUrl: 'https://www.oklink.com/okexchain',
-    scanUrl: 'https://www.oklink.com/api/v5/explorer/'
-  },
-  {
     symbol: 'ETH',
     networkName: 'Ethereum',
     icon: '/networks/eth-logo.svg',
