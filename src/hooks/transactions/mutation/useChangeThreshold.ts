@@ -73,25 +73,28 @@ export function useChangeThreshold() {
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
     },
-    onError: (_, variables, context) => {
-      queryClient.setQueryData(
+    onError: async (_, variables, context) => {
+      await queryClient.setQueryData(
         ['useGetTransactionNonce', variables.safeAddress],
         context
       )
-      queryClient.setQueryData(
+      await queryClient.setQueryData(
         ['useGetThreshold', variables.safeAddress],
         context
       )
-      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+      await queryClient.setQueryData(
+        ['safeTxQueue', variables.safeAddress],
+        context
+      )
     },
-    onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({
+    onSettled: async (_data, _error, variables) => {
+      await queryClient.invalidateQueries({
         queryKey: ['useGetTransactionNonce', variables.safeAddress]
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['useGetThreshold', variables.safeAddress]
       })
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
     }
