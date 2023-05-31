@@ -48,7 +48,10 @@ export async function fetchAddressSafes(
   )
 
   const formattedSafes = response.data.safes
-    .filter(owner => owner.safe.network === '0x41')
+    .filter(
+      owner =>
+        owner.safe.network === '0x41' || owner.safe.network === '0xaa36a7'
+    )
     .map(owner => {
       const deployedChain = CHAINS_ATTRIBUTES.find(
         chain => owner.safe.network === chain.chainId
