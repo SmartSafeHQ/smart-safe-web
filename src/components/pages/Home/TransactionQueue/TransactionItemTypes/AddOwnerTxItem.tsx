@@ -16,7 +16,11 @@ interface AddOwnerTxItemProps {
 
 export function AddOwnerTxItem({ transaction, children }: AddOwnerTxItemProps) {
   const { safe } = useSafe()
-  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useSafeOwnersCount(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
 
   return (
     <AddOwnerTx.Header

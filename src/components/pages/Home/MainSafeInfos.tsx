@@ -12,7 +12,11 @@ import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
 
 export function MainSafeInfos() {
   const { safe } = useSafe()
-  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useSafeOwnersCount(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
 
   return (
     <main className="max-h-[16rem] min-w-[20rem] flex flex-col flex-1 items-stretch justify-start gap-3 relative p-6 rounded-lg border-1 border-zinc-200 dark:border-zinc-700 shadow-md bg-white dark:bg-black sm:min-w-[37rem]">

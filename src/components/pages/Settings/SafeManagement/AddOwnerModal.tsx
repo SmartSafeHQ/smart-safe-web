@@ -3,13 +3,15 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type SubmitHandler, useForm } from 'react-hook-form'
-
-import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
+
+import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
+import { useSafe } from '@contexts/SafeContext'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { ContractTransactionResponse } from 'ethers'
@@ -20,7 +22,6 @@ interface AddOwnerModalProps {
   isOpen: boolean
   isLoading: boolean
   ownersCount: number
-  safeAddress: string
   transactionNonce: number
   currentSafeOwnerId: string
   owners: { name: string; address: string }[]
@@ -55,13 +56,14 @@ export function AddOwnerModal({
   owners,
   isLoading,
   ownersCount,
-  safeAddress,
   onOpenChange,
   transactionNonce,
   currentSafeOwnerId,
   addOwnerMutation
 }: AddOwnerModalProps) {
   const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
+  const [{ wallet }] = useConnectWallet()
+  const { safe } = useSafe()
 
   const {
     register,
@@ -74,6 +76,8 @@ export function AddOwnerModal({
   const { mutateAsync: createContactMutation } = useCreateContact()
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
+    if (!safe || !wallet) return
+
     try {
       const isRepeatedOwnerAddress = owners.find(
         ({ address }) => address === data.ownerAddress
@@ -88,8 +92,9 @@ export function AddOwnerModal({
       setIsWaitingTransaction(true)
 
       const transaction = await addOwnerMutation({
+        provider: wallet.provider,
         transactionNonce,
-        safeAddress,
+        safeAddress: safe.address,
         ownerAddress: data.ownerAddress,
         newThreshold: data.threshold
       })

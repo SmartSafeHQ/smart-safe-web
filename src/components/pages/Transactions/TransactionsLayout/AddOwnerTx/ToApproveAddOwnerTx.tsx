@@ -19,7 +19,11 @@ export function ToApproveAddOwnerTx({ transaction }: ToApproveAddOwnerTxProps) {
     isLoadingReject,
     handleRejectTransaction
   } = useTransactionsQueue()
-  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useSafeOwnersCount(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
 
   return (
     <>

@@ -121,7 +121,6 @@ export function SafeManagement() {
         <AddOwnerModal
           owners={richOwnersData}
           ownersCount={ownersCount}
-          safeAddress={safe.address}
           isOpen={isAddOwnerModalOpen}
           onOpenChange={setAddOwnerOpen}
           currentSafeOwnerId={safe.ownerId}

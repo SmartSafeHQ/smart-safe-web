@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { DialogModal } from '@components/Dialogs/DialogModal'
-
 import { Button } from '@components/Button'
 
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
@@ -29,6 +29,7 @@ export function ChangeThresholdModal({
 }: Props) {
   const [newThreshold, setNewThreshold] = useState('1')
   const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
+  const [{ wallet }] = useConnectWallet()
 
   const {
     mutateAsync: changeThresholdMutation,
@@ -36,9 +37,12 @@ export function ChangeThresholdModal({
   } = useChangeThreshold()
 
   async function handleChangeThreshold() {
+    if (!wallet) return
+
     try {
       setIsWaitingTransaction(true)
       const transaction = await changeThresholdMutation({
+        provider: wallet.provider,
         safeAddress,
         transactionNonce,
         newThreshold: Number(newThreshold)
@@ -47,6 +51,7 @@ export function ChangeThresholdModal({
       await transaction.wait()
 
       setIsWaitingTransaction(false)
+
       toast.success('Proposal created! View it on transactions tab.')
     } catch (err) {
       setIsWaitingTransaction(false)

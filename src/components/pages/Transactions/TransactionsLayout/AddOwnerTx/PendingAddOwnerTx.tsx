@@ -13,7 +13,11 @@ interface PendingAddOwnerTxProps {
 
 export function PendingAddOwnerTx({ transaction }: PendingAddOwnerTxProps) {
   const { safe } = useTransactionsQueue()
-  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
+  const { data: ownersCount } = useSafeOwnersCount(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
 
   return (
     <>

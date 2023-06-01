@@ -6,18 +6,14 @@ import { useSafeOwners } from '@hooks/safe/queries/useSafeOwners'
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useSafeThreshold } from '@hooks/safe/queries/useSafeThreshold'
 import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
-import { useRemoveOwner } from '@hooks/safe/mutation/useRemoveOwner'
+import {
+  RemoveOwnerFunctionInput,
+  useRemoveOwner
+} from '@hooks/safe/mutation/useRemoveOwner'
 import { useAddOwnerHook } from '@hooks/settings/useSafeManagement/useAddOwnerHook'
 import { useChangeThresholdHook } from '@hooks/settings/useSafeManagement/useChangeThresholdHook'
 import { useSafeTxNonce } from '@hooks/safe/queries/useSafeTxNonce'
 import { useSafeRequiredTxNonce } from '@hooks/safe/queries/useSafeRequiredTxNonce'
-
-interface RemoveOwner {
-  safeAddress: string
-  prevOwnerAddress: string
-  removeOwnerAddress: string
-  transactionNonce: number
-}
 
 export function useSafeManagement() {
   const { safe } = useSafe()
@@ -33,12 +29,29 @@ export function useSafeManagement() {
   const { data: contactList } = useContactsQuery(safe?.ownerId, !!safe)
   const { data: requiredTransactionNonce } = useSafeRequiredTxNonce(
     safe?.address,
+    safe?.chain.rpcUrl,
     !!safe
   )
-  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
-  const { data: safeThreshold } = useSafeThreshold(safe?.address, !!safe)
-  const { data: safeOwners } = useSafeOwners(safe?.address, !!safe)
-  const { data: transactionNonce } = useSafeTxNonce(safe?.address, !!safe)
+  const { data: ownersCount } = useSafeOwnersCount(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
+  const { data: safeThreshold } = useSafeThreshold(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
+  const { data: safeOwners } = useSafeOwners(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
+  const { data: transactionNonce } = useSafeTxNonce(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
   const { mutateAsync: removeOwnersMutation } = useRemoveOwner()
 
   const richOwnersData = useMemo(() => {
@@ -65,7 +78,7 @@ export function useSafeManagement() {
     })
   }, [contactList, safeOwners, wallets])
 
-  async function removeOwner(input: RemoveOwner) {
+  async function removeOwner(input: RemoveOwnerFunctionInput) {
     try {
       await removeOwnersMutation(input)
     } catch (err) {
