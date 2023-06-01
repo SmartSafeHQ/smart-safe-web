@@ -19,7 +19,7 @@ import { Collapsible } from '@components/Collapsible'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 import { formatWalletAddress } from '@utils/web3'
-import { OwnerSignaturesProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { OwnerSignaturesProps } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 
 interface TransactionRootProps extends HTMLAttributes<HTMLLIElement> {
   children: ReactNode

@@ -6,7 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { Text } from '@components/Text'
 import { TextInput } from '@components/Inputs/TextInput'
 
-import type { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
+import type { FieldValues } from '@hooks/safe/create/deploySafeValidationSchema'
 
 interface OwnerItemProps {
   index: number

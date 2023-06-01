@@ -2,7 +2,7 @@ import { Transaction } from './TransactionsLayout'
 import { Collapsible } from '@components/Collapsible'
 import { transactionComponents } from '@components/pages/Transactions/TransactionsLayout/TransactionTypes'
 
-import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { TransacitonTypes } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 
 interface PendingTransactionProps {
   transaction: TransacitonTypes

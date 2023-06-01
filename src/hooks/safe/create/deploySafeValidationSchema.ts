@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import { z } from 'zod'
 
-import { SAFE_NAME_REGEX } from '@hooks/safes/create/useCreateSafeHook'
+import { SAFE_NAME_REGEX } from '@hooks/safe/create/useCreateSafeHook'
 
 export const validationSchema = z.object({
   name: z

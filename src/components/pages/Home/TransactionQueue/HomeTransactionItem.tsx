@@ -5,7 +5,7 @@ import { Transaction } from '@components/pages/Transactions/TransactionsLayout'
 import { transactionComponents } from '@components/pages/Transactions/TransactionsLayout/TransactionTypes'
 
 import { useSafe } from '@contexts/SafeContext'
-import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { TransacitonTypes } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 
 interface HomeTransactionItemProps {
   transaction: TransacitonTypes

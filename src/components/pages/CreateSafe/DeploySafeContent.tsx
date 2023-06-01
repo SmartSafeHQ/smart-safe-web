@@ -9,7 +9,7 @@ import { DeploySafeForm } from '@components/pages/CreateSafe/DeploySafeForm'
 import { CreateSafeDeployStatus } from '@components/pages/CreateSafe/CreateSafeDeployStatus'
 import { SafeDeployedConfettiAnimation } from './SafeDeployedConfettiAnimation'
 
-import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/safe/create/useDeploySafeHook'
 
 export function DeploySafeContent() {
   const { deployStatus } = useDeploySafeHook()

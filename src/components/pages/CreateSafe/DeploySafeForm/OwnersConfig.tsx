@@ -8,7 +8,7 @@ import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 import { useSafe } from '@contexts/SafeContext'
 
-import { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
+import { FieldValues } from '@hooks/safe/create/deploySafeValidationSchema'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]

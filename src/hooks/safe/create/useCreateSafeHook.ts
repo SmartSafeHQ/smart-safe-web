@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import { z } from 'zod'
 
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { useCreateSafe } from '@contexts/create-safe/CreateSafeContext'
+import { useCreateSafe } from '@contexts/CreateSafeContext'
 
 export const SAFE_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
@@ -64,7 +64,7 @@ export const useCreateSafeHook = () => {
         chain: findSelectedChainInSupportedList
       })
 
-      push('/create-safe')
+      push('/createSafe')
     } catch (error) {
       console.log(error)
 

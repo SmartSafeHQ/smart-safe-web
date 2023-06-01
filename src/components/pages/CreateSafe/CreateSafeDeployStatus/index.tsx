@@ -7,7 +7,7 @@ import { CheckCircle } from '@phosphor-icons/react'
 import { Button } from '@components/Button'
 import { DeployStep } from './DeployStepStatus'
 
-import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/safe/create/useDeploySafeHook'
 
 export function CreateSafeDeployStatus() {
   const { deployStatus } = useDeploySafeHook()

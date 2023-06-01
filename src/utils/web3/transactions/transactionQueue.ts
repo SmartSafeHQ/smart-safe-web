@@ -9,7 +9,7 @@ import {
   SendTxProps,
   ThresholdTxProps,
   TransacitonTypes
-} from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+} from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 

@@ -8,7 +8,7 @@ import { ScrollArea } from '@components/ScrollArea'
 import { Text } from '@components/Text'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useAddressSafes } from '@hooks/safes/retrieve/queries/useAddressSafes'
+import { useAddressSafes } from '@hooks/safe/queries/useAddressSafes'
 
 export function AddressSafesList() {
   const [{ wallet }] = useConnectWallet()

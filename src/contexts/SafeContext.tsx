@@ -13,7 +13,7 @@ import { Contract, JsonRpcProvider } from 'ethers'
 import {
   fetchAddressSafes,
   FetchAddressSafesOutput
-} from '@hooks/safes/retrieve/queries/useAddressSafes'
+} from '@hooks/safe/queries/useAddressSafes'
 import { formatWalletAddress } from '@utils/web3'
 import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'

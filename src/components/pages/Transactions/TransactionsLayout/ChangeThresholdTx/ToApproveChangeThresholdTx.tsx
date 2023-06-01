@@ -3,7 +3,7 @@ import { ChangeThresholdTx } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { ThresholdTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { ThresholdTxProps } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 
 interface ToApproveChangeThresholdTxProps {
   transaction: ThresholdTxProps

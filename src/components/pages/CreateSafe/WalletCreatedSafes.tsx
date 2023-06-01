@@ -11,7 +11,7 @@ import { Collapsible } from '@components/Collapsible'
 import { ScrollArea } from '@components/ScrollArea'
 import { SmartSafeIconLogo } from '@components/Logos/SmartSafeIconLogo'
 
-import { useAddressSafes } from '@hooks/safes/retrieve/queries/useAddressSafes'
+import { useAddressSafes } from '@hooks/safe/queries/useAddressSafes'
 
 export function WalletCreatedSafes() {
   const [isCollapsibleOpen, setIsCollapsibleOpen] = useState(false)

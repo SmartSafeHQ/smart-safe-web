@@ -12,7 +12,7 @@ import {
   FetchSafeTxQueueInput,
   FetchSafeTxQueueOutput,
   TransacitonTypes
-} from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+} from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 
 export async function fetchSafeTxQueue(
   input: FetchSafeTxQueueInput

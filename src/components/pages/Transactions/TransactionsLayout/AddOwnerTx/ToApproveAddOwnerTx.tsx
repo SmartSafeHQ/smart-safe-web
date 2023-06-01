@@ -3,7 +3,7 @@ import { AddOwnerTx } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { ChangeOwnersTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { ChangeOwnersTxProps } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 
 interface ToApproveAddOwnerTxProps {

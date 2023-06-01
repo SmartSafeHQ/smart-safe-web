@@ -10,15 +10,15 @@ import {
   DEFAULT_STEPS,
   StepProps,
   useCreateSafe
-} from '@contexts/create-safe/CreateSafeContext'
+} from '@contexts/CreateSafeContext'
 import {
   validationSchema,
   FieldValues
-} from '@hooks/safes/create/deploySafeValidationSchema'
+} from '@hooks/safe/create/deploySafeValidationSchema'
 import { useSafe } from '@contexts/SafeContext'
-import { useDeploySafeProxyMutation } from '@hooks/safes/create/mutation/useDeploySafeProxyMutation'
-import { useSaveSmartSafeProxyData } from '@hooks/safes/create/mutation/useSaveSmartSafeProxyData'
-import { useAddressSafes } from '@hooks/safes/retrieve/queries/useAddressSafes'
+import { useDeploySafeProxyMutation } from '@hooks/safe/create/mutation/useDeploySafeProxyMutation'
+import { useSaveSmartSafeProxyData } from '@hooks/safe/create/mutation/useSaveSmartSafeProxyData'
+import { useAddressSafes } from '@hooks/safe/queries/useAddressSafes'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 export const useDeploySafeHook = () => {

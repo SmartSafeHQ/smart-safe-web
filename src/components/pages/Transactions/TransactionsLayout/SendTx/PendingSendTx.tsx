@@ -4,7 +4,7 @@ import { Text } from '@components/Text'
 import { Collapsible } from '@components/Collapsible'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { SendTxProps } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
 
 interface PendingSendTxProps {
   transaction: SendTxProps
