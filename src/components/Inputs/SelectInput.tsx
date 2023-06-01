@@ -62,7 +62,7 @@ function SelectInputTrigger({
   return (
     <RadixSelect.Trigger
       className={clsx(
-        'w-full gap-3 inline-flex items-center justify-between rounded-md px-4 text-sm outline-none ring-gray-900 dark:ring-gray-100 focus-within:ring-2 data-[placeholder]:text-gray-400',
+        'w-full gap-3 inline-flex items-center justify-between rounded-md px-4 text-sm outline-none ring-zinc-900 dark:ring-zinc-100 focus-within:ring-2 data-[placeholder]:text-zinc-400',
         className
       )}
       {...props}
@@ -133,7 +133,7 @@ function SelectInputGroup({
   return (
     <RadixSelect.Group {...props}>
       {labelText && (
-        <RadixSelect.Label className="px-7 text-sm font-semibold leading-7 text-gray-500 dark:text-gray-400">
+        <RadixSelect.Label className="px-7 text-sm font-semibold leading-7 text-zinc-500 dark:text-zinc-400">
           {labelText}
         </RadixSelect.Label>
       )}
@@ -154,7 +154,7 @@ const SelectInputItem: ForwardRefRenderFunction<
       ref={ref}
       className={clsx(
         className,
-        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none group'
+        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-zinc-800 dark:text-zinc-300 rounded data-[disabled]:text-zinc-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none group'
       )}
       {...props}
     >

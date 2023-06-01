@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { AddOwnerTx } from '@/components/pages/Transactions/TransactionsLayout/AddOwnerTx'
+import { AddOwnerTx } from '@components/pages/Transactions/TransactionsLayout/AddOwnerTx'
 
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useSafe } from '@contexts/SafeContext'

@@ -6,15 +6,15 @@ import { type SubmitHandler, useForm } from 'react-hook-form'
 
 import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
 
-import { Button } from '@/components/Button'
+import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
-import { getWe3ErrorMessageWithToast } from '@/utils/web3/errors'
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 import type { Dispatch, SetStateAction } from 'react'
 import type { ContractTransactionResponse } from 'ethers'
 import type { UseMutateAsyncFunction } from '@tanstack/react-query'
-import type { AddNewOwnerInput } from '@/hooks/transactions/mutation/useAddNewOwner'
+import type { AddNewOwnerInput } from '@hooks/transactions/mutation/useAddNewOwner'
 
 interface Props {
   isOpen: boolean
@@ -123,7 +123,7 @@ export function AddNewOwnerModal({
         <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
           <div className="w-full flex flex-col justify-center border-b-2 dark:border-zinc-800">
             <header className="w-full flex flex-col gap-3 py-8 px-8">
-              <DialogModal.Title className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-50">
+              <DialogModal.Title className="text-2xl md:text-3xl font-bold text-zinc-800 dark:text-zinc-50">
                 Add new owner
               </DialogModal.Title>
             </header>

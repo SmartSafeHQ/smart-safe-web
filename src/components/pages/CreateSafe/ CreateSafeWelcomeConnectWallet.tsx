@@ -12,7 +12,7 @@ export function CreateSafeWelcomeConnectWallet() {
       <div className="max-w-full flex flex-1 flex-col items-center justify-start gap-6 relative">
         <Text
           asChild
-          className="my-2 text-sm leading-6 text-center tracking-tighter text-gray-800 dark:text-gray-400"
+          className="my-2 text-sm leading-6 text-center tracking-tighter text-zinc-800 dark:text-zinc-400"
         >
           <p>
             Connect your wallet with a web3 provider to create you safe on

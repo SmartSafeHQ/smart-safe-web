@@ -3,10 +3,10 @@ import { toast } from 'react-toastify'
 
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { Button } from '@/components/Button'
+import { Button } from '@components/Button'
 
-import { getWe3ErrorMessageWithToast } from '@/utils/web3/errors'
-import { useChangeThreshold } from '@/hooks/transactions/mutation/useChangeThreshold'
+import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
+import { useChangeThreshold } from '@hooks/transactions/mutation/useChangeThreshold'
 
 import type { Dispatch, SetStateAction } from 'react'
 
@@ -67,7 +67,7 @@ export function ChangeThresholdModal({
         <div className="flex flex-col">
           <div className="w-full flex flex-col justify-center border-b-2 dark:border-zinc-800">
             <header className="w-full flex flex-col gap-3 py-8 px-8">
-              <DialogModal.Title className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-gray-50">
+              <DialogModal.Title className="text-2xl md:text-3xl font-bold text-zinc-800 dark:text-zinc-50">
                 Change threshold
               </DialogModal.Title>
             </header>

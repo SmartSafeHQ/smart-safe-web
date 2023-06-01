@@ -39,7 +39,7 @@ export function ErrorState({
         </Text>
 
         {description && (
-          <Text asChild className="text-md font-medium text-gray-500">
+          <Text asChild className="text-md font-medium text-zinc-500">
             {description}
           </Text>
         )}
