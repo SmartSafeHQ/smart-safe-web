@@ -12,6 +12,7 @@ import { ContactProps } from '@contexts/ContactsContext'
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useSpendingLimitsQuery } from '@hooks/spendingLimits/queries/useSpendingLimitsQuery'
 import { useCreateSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useCreateSpendingLimitsMutation'
+import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
@@ -49,8 +50,14 @@ export const useSpendingLimitsHook = () => {
   } = useSpendingLimits()
 
   const { safe } = useSafe()
+  const { data: safeTokensData } = useSafeTokens(
+    safe?.address,
+    safe?.chain.chainId,
+    !!safe
+  )
   const { data: contacts, isLoading: contactsIsLoading } = useContactsQuery(
-    safe?.ownerId!
+    safe?.ownerId,
+    !!safe
   )
   const { mutateAsync } = useCreateSpendingLimitsMutation()
 
@@ -134,6 +141,7 @@ export const useSpendingLimitsHook = () => {
     isLoading,
     error,
     searchContacts,
+    safeTokensData,
     setSearchContacts,
     handleInputChange,
     contacts,

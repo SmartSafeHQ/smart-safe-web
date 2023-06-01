@@ -6,17 +6,17 @@ import { createTransactionProposal } from '@utils/web3/transactions/createTransa
 
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 
-export type ChangeThresholdInput = {
+export type ChangeThreholdFunctionInput = {
   safeAddress: string
   newThreshold: number
   transactionNonce: number
 }
 
-async function changeThrehold({
+async function changeThreholdFunction({
   safeAddress,
   newThreshold,
   transactionNonce
-}: ChangeThresholdInput) {
+}: ChangeThreholdFunctionInput) {
   if (!safeAddress) {
     throw new Error('safe address required')
   }
@@ -60,14 +60,15 @@ async function changeThrehold({
 
 export function useChangeThreshold() {
   return useMutation({
-    mutationKey: ['useChangeThreshold'],
-    mutationFn: (input: ChangeThresholdInput) => changeThrehold(input),
+    mutationKey: ['changeThreshold'],
+    mutationFn: (input: ChangeThreholdFunctionInput) =>
+      changeThreholdFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
-        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+        queryKey: ['safeTxNonce', variables.safeAddress]
       })
       await queryClient.cancelQueries({
-        queryKey: ['useGetThreshold', variables.safeAddress]
+        queryKey: ['safeThreshold', variables.safeAddress]
       })
       await queryClient.cancelQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
@@ -75,11 +76,11 @@ export function useChangeThreshold() {
     },
     onError: async (_, variables, context) => {
       await queryClient.setQueryData(
-        ['useGetTransactionNonce', variables.safeAddress],
+        ['safeTxNonce', variables.safeAddress],
         context
       )
       await queryClient.setQueryData(
-        ['useGetThreshold', variables.safeAddress],
+        ['safeThreshold', variables.safeAddress],
         context
       )
       await queryClient.setQueryData(
@@ -89,10 +90,10 @@ export function useChangeThreshold() {
     },
     onSettled: async (_data, _error, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+        queryKey: ['safeTxNonce', variables.safeAddress]
       })
       await queryClient.invalidateQueries({
-        queryKey: ['useGetThreshold', variables.safeAddress]
+        queryKey: ['safeThreshold', variables.safeAddress]
       })
       await queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]

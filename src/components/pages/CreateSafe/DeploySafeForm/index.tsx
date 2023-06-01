@@ -20,7 +20,7 @@ export function DeploySafeForm() {
     ownersFields,
     register,
     removeOwner,
-    addNewOwner,
+    addOwner,
     watch,
     control,
     isSubmitting
@@ -50,7 +50,7 @@ export function DeploySafeForm() {
 
         <OwnersConfig
           ownersFields={ownersFields}
-          addNewOwner={addNewOwner}
+          addOwner={addOwner}
           removeOwner={removeOwner}
         />
 

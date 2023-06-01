@@ -4,7 +4,7 @@ import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
 import { ChangeOwnersTxProps } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
-import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
+import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
 
 interface ToApproveAddOwnerTxProps {
   transaction: ChangeOwnersTxProps
@@ -19,10 +19,7 @@ export function ToApproveAddOwnerTx({ transaction }: ToApproveAddOwnerTxProps) {
     isLoadingReject,
     handleRejectTransaction
   } = useTransactionsQueue()
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || '',
-    enabled: !!safe
-  })
+  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
 
   return (
     <>

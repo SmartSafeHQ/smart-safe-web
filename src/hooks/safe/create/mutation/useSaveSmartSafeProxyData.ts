@@ -22,7 +22,7 @@ export interface DeploySafeApiResponse {
   id: string
 }
 
-async function saveSmartSafeProxyData(
+async function saveSmartSafeProxyDataFunction(
   input: DeploySafeFunctionInput
 ): Promise<DeploySafeFunctionOutput> {
   await smartSafeApi.post<DeploySafeApiResponse>('/safe', {
@@ -39,7 +39,7 @@ export function useSaveSmartSafeProxyData() {
   return useMutation({
     mutationKey: ['saveSmartSafeProxyData'],
     mutationFn: (input: DeploySafeFunctionInput) =>
-      saveSmartSafeProxyData(input),
+      saveSmartSafeProxyDataFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
         queryKey: ['addressSafes', variables.deployWalletAddress]

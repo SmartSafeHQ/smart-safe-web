@@ -20,7 +20,11 @@ export const useContactsHook = () => {
   } = useContacts()
 
   const { safe } = useSafe()
-  const { data: contacts, isLoading, error } = useContactsQuery(safe?.ownerId!)
+  const {
+    data: contacts,
+    isLoading,
+    error
+  } = useContactsQuery(safe?.ownerId, !!safe)
 
   return {
     contacts,

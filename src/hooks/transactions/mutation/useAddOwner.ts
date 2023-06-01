@@ -5,19 +5,19 @@ import { createTransactionProposal } from '@utils/web3/transactions/createTransa
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import { queryClient } from '@lib/reactQuery'
 
-export type AddNewOwnerInput = {
+export type AddOwnerFunctionInput = {
   safeAddress: string
   ownerAddress: string
   newThreshold: number
   transactionNonce: number
 }
 
-async function addNewOwner({
+async function addOwnerFunction({
   safeAddress,
   ownerAddress,
   newThreshold,
   transactionNonce
-}: AddNewOwnerInput) {
+}: AddOwnerFunctionInput) {
   if (!safeAddress) {
     throw new Error('safe address required')
   }
@@ -26,7 +26,7 @@ async function addNewOwner({
   const signer = await provider.getSigner()
   const contract = SmartSafe.connect(safeAddress, signer)
 
-  const addNewOwnerCallEncoded = contract.interface.encodeFunctionData(
+  const addOwnerCallEncoded = contract.interface.encodeFunctionData(
     'addNewOwner',
     [ownerAddress, newThreshold]
   )
@@ -39,7 +39,7 @@ async function addNewOwner({
     from: safeAddress,
     to: safeAddress,
     value: '0',
-    data: ethers.keccak256(addNewOwnerCallEncoded),
+    data: ethers.keccak256(addOwnerCallEncoded),
     signer: signer.address
   }
 
@@ -51,7 +51,7 @@ async function addNewOwner({
   const transaction = await contract.getFunction('createTransactionProposal')(
     safeAddress,
     '0',
-    addNewOwnerCallEncoded,
+    addOwnerCallEncoded,
     signer.address,
     signedTypedDataHash
   )
@@ -59,48 +59,45 @@ async function addNewOwner({
   return transaction
 }
 
-export function useAddNewOwner() {
+export function useAddOwner() {
   return useMutation({
-    mutationKey: ['useAddNewOwner'],
-    mutationFn: (input: AddNewOwnerInput) => addNewOwner(input),
+    mutationKey: ['addOwner'],
+    mutationFn: (input: AddOwnerFunctionInput) => addOwnerFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
-        queryKey: ['useGetOwners', variables.safeAddress]
+        queryKey: ['safeOwners', variables.safeAddress]
       })
       await queryClient.cancelQueries({
-        queryKey: ['useGetOwnersCount', variables.safeAddress]
+        queryKey: ['safeOwnersCount', variables.safeAddress]
       })
       await queryClient.cancelQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
       await queryClient.cancelQueries({
-        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+        queryKey: ['safeTxNonce', variables.safeAddress]
       })
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['useGetOwners', variables.safeAddress], context)
+      queryClient.setQueryData(['safeOwners', variables.safeAddress], context)
       queryClient.setQueryData(
-        ['useGetOwnersCount', variables.safeAddress],
+        ['safeOwnersCount', variables.safeAddress],
         context
       )
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
-      queryClient.setQueryData(
-        ['useGetTransactionNonce', variables.safeAddress],
-        context
-      )
+      queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
     },
     onSettled: async (_data, _error, variables) => {
       await queryClient.invalidateQueries({
-        queryKey: ['useGetOwners', variables.safeAddress]
+        queryKey: ['safeOwners', variables.safeAddress]
       })
       await queryClient.invalidateQueries({
-        queryKey: ['useGetOwnersCount', variables.safeAddress]
+        queryKey: ['safeOwnersCount', variables.safeAddress]
       })
       await queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
       await queryClient.invalidateQueries({
-        queryKey: ['useGetTransactionNonce', variables.safeAddress]
+        queryKey: ['safeTxNonce', variables.safeAddress]
       })
     }
   })

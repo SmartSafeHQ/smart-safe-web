@@ -7,32 +7,30 @@ interface FetchContactsApiResponse {
 }
 
 interface FetchContactsInput {
-  creatorId: string
+  creatorId?: string
 }
 
-type FetchContactsResponse =
-  | {
-      contactName: string
-      contactAddress: string
-      formattedAddress: string
-      contactId: number
-    }[]
-  | null
+export interface FetchContactsResponse {
+  contactName: string
+  contactAddress: string
+  formattedAddress: string
+  contactId: number
+}
 
 export async function fetchContacts({
   creatorId
-}: FetchContactsInput): Promise<FetchContactsResponse> {
-  if (!creatorId) return null
+}: FetchContactsInput): Promise<FetchContactsResponse[]> {
+  if (!creatorId) throw new Error('creator id required')
 
-  const { data } = await smartSafeApi.get<FetchContactsApiResponse>(
+  const { data } = await smartSafeApi.get<FetchContactsApiResponse | null>(
     `addressBook/${creatorId}`,
     {
       params: { page: 0 }
     }
   )
 
-  if (!data?.contacts) {
-    return null
+  if (!data) {
+    return []
   }
 
   const formattedContactsList = data.contacts.map(({ address, name, id }) => ({
@@ -45,10 +43,11 @@ export async function fetchContacts({
   return formattedContactsList
 }
 
-export function useContactsQuery(creatorId: string) {
+export function useContactsQuery(creatorId?: string, enabled = true) {
   return useQuery({
     queryKey: ['contacts', creatorId],
     queryFn: () => fetchContacts({ creatorId }),
-    staleTime: 1000 * 60 * 1 // 1 minute
+    staleTime: 1000 * 60 * 1, // 1 minute
+    enabled
   })
 }

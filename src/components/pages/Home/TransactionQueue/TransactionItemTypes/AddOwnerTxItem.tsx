@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 import { AddOwnerTx } from '@components/pages/Transactions/TransactionsLayout/AddOwnerTx'
 
-import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
+import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
 import { useSafe } from '@contexts/SafeContext'
 
 export interface HomeAddOwnerTxItemProps {
@@ -16,10 +16,7 @@ interface AddOwnerTxItemProps {
 
 export function AddOwnerTxItem({ transaction, children }: AddOwnerTxItemProps) {
   const { safe } = useSafe()
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || '',
-    enabled: !!safe
-  })
+  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
 
   return (
     <AddOwnerTx.Header

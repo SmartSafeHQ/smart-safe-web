@@ -3,7 +3,7 @@ import { isMobile } from 'react-device-detect'
 
 import { Button } from '@components/Button'
 import { Heading } from '@components/Heading'
-import { AddNewOwnerModal } from './AddNewOwnerModal'
+import { AddOwnerModal } from './AddOwnerModal'
 import { ChangeThresholdModal } from './ChangeThresholdModal'
 
 import { useSafeManagement } from '@hooks/settings/useSafeManagement'
@@ -16,12 +16,12 @@ export function SafeManagement() {
     safeThreshold,
     richOwnersData,
     transactionNonce,
-    setAddNewOwnerOpen,
-    addNewOwnerMutation,
-    isAddNewOwnerModalOpen,
+    setAddOwnerOpen,
+    addOwnerMutation,
+    isAddOwnerModalOpen,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
-    addNewOwnerMutationIsLoading,
+    addOwnerMutationIsLoading,
     isCurrentConnectWalletAnOwner
   } = useSafeManagement()
 
@@ -31,7 +31,7 @@ export function SafeManagement() {
     safe?.address !== undefined &&
     transactionNonce !== undefined
 
-  const isAddNewOwnerModalReady =
+  const isAddOwnerModalReady =
     safe?.address !== undefined &&
     transactionNonce !== undefined &&
     ownersCount !== undefined
@@ -75,7 +75,7 @@ export function SafeManagement() {
 
               <Button
                 className="w-max text-white"
-                onClick={() => setAddNewOwnerOpen(true)}
+                onClick={() => setAddOwnerOpen(true)}
                 disabled={!isCurrentConnectWalletAnOwner}
               >
                 + Add owner
@@ -117,17 +117,17 @@ export function SafeManagement() {
         />
       )}
 
-      {isAddNewOwnerModalReady && (
-        <AddNewOwnerModal
+      {isAddOwnerModalReady && (
+        <AddOwnerModal
           owners={richOwnersData}
           ownersCount={ownersCount}
           safeAddress={safe.address}
-          isOpen={isAddNewOwnerModalOpen}
-          onOpenChange={setAddNewOwnerOpen}
+          isOpen={isAddOwnerModalOpen}
+          onOpenChange={setAddOwnerOpen}
           currentSafeOwnerId={safe.ownerId}
           transactionNonce={transactionNonce}
-          isLoading={addNewOwnerMutationIsLoading}
-          addNewOwnerMutation={addNewOwnerMutation}
+          isLoading={addOwnerMutationIsLoading}
+          addOwnerMutation={addOwnerMutation}
         />
       )}
     </div>

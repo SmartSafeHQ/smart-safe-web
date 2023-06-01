@@ -2,15 +2,15 @@ import { useMemo } from 'react'
 import { useWallets } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useGetOwners } from '@hooks/transactions/queries/useGetOwners'
+import { useSafeOwners } from '@hooks/transactions/queries/useSafeOwners'
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
-import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
-import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
+import { useSafeThreshold } from '@hooks/transactions/queries/useSafeThreshold'
+import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
-import { useAddNewOwnerHook } from '@hooks/settings/useSafeManagement/useAddNewOwnerHook'
+import { useAddOwnerHook } from '@hooks/settings/useSafeManagement/useAddOwnerHook'
 import { useChangeThresholdHook } from '@hooks/settings/useSafeManagement/useChangeThresholdHook'
-import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
-import { useGetRequiredTransactionNonce } from '@hooks/transactions/queries/useGetRequiredTransactionNonce'
+import { useSafeTxNonce } from '@hooks/transactions/queries/useSafeTxNonce'
+import { useSafeRequiredTxNonce } from '@hooks/transactions/queries/useSafeRequiredTxNonce'
 
 interface RemoveOwner {
   safeAddress: string
@@ -25,32 +25,20 @@ export function useSafeManagement() {
   const { setIsChangeThresholdOpen, isChangeThresholdModalOpen } =
     useChangeThresholdHook()
   const {
-    addNewOwnerMutation,
-    addNewOwnerMutationIsLoading,
-    isAddNewOwnerModalOpen,
-    setAddNewOwnerOpen
-  } = useAddNewOwnerHook()
-  const { data: contactList } = useContactsQuery(safe?.ownerId || '')
-  const { data: requiredTransactionNonce } = useGetRequiredTransactionNonce({
-    safeAddress: safe?.address || '',
-    enabled: !!safe?.address
-  })
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || '',
-    enabled: !!safe?.address
-  })
-  const { data: safeThreshold } = useGetThreshold({
-    safeAddress: safe?.address || '',
-    enabled: !!safe?.address
-  })
-  const { data: safeOwners } = useGetOwners({
-    safeAddress: safe?.address || '',
-    enabled: !!safe?.address
-  })
-  const { data: transactionNonce } = useGetTransactionNonce({
-    safeAddress: safe?.address || '',
-    enabled: !!safe?.address
-  })
+    addOwnerMutation,
+    addOwnerMutationIsLoading,
+    isAddOwnerModalOpen,
+    setAddOwnerOpen
+  } = useAddOwnerHook()
+  const { data: contactList } = useContactsQuery(safe?.ownerId, !!safe)
+  const { data: requiredTransactionNonce } = useSafeRequiredTxNonce(
+    safe?.address,
+    !!safe
+  )
+  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
+  const { data: safeThreshold } = useSafeThreshold(safe?.address, !!safe)
+  const { data: safeOwners } = useSafeOwners(safe?.address, !!safe)
+  const { data: transactionNonce } = useSafeTxNonce(safe?.address, !!safe)
   const { mutateAsync: removeOwnersMutation } = useRemoveOwner()
 
   const richOwnersData = useMemo(() => {
@@ -104,13 +92,13 @@ export function useSafeManagement() {
     safeThreshold,
     richOwnersData,
     transactionNonce,
-    setAddNewOwnerOpen,
-    addNewOwnerMutation,
-    isAddNewOwnerModalOpen,
+    setAddOwnerOpen,
+    addOwnerMutation,
+    isAddOwnerModalOpen,
     requiredTransactionNonce,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
-    addNewOwnerMutationIsLoading,
+    addOwnerMutationIsLoading,
     isCurrentConnectWalletAnOwner
   }
 }

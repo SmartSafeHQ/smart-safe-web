@@ -9,7 +9,6 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
-import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 export function CreateSpendingLimitsModal() {
   const {
@@ -18,6 +17,7 @@ export function CreateSpendingLimitsModal() {
     contactsIsLoading,
     control,
     searchContacts,
+    safeTokensData,
     handleInputChange,
     register,
     handleSubmit,
@@ -119,49 +119,51 @@ export function CreateSpendingLimitsModal() {
               </div>
             </div>
 
-            <Controller
-              name="coinSymbol"
-              control={control}
-              defaultValue={CHAINS_ATTRIBUTES[0].symbol}
-              render={({ field: { onChange, value, ref, ...props } }) => (
-                <SelectInput.Root
-                  {...props}
-                  onValueChange={onChange}
-                  value={value}
-                  ref={ref}
-                  className="w-full"
-                  labelText="Token"
-                >
-                  <SelectInput.Trigger className="min-h-[3rem] py-1 bg-zinc-50 dark:bg-zinc-900" />
+            {!!safeTokensData && (
+              <Controller
+                name="coinSymbol"
+                control={control}
+                defaultValue={safeTokensData[0].symbol}
+                render={({ field: { onChange, value, ref, ...props } }) => (
+                  <SelectInput.Root
+                    {...props}
+                    onValueChange={onChange}
+                    value={value}
+                    ref={ref}
+                    className="w-full"
+                    labelText="Token"
+                  >
+                    <SelectInput.Trigger className="min-h-[3rem] py-1 bg-zinc-50 dark:bg-zinc-900" />
 
-                  <SelectInput.Content className="bg-zinc-50 dark:bg-zinc-900">
-                    <SelectInput.Group>
-                      {CHAINS_ATTRIBUTES.map(coin => (
-                        <SelectInput.Item
-                          key={coin.symbol}
-                          value={coin.symbol}
-                          className="min-h-[3rem] py-1"
-                        >
-                          <div className="w-full flex items-center justify-start gap-2">
-                            <Image
-                              src={coin.icon}
-                              alt={`${coin.symbol} coin`}
-                              width={28}
-                              height={28}
-                              className="w-7 h-7"
-                            />
+                    <SelectInput.Content className="bg-zinc-50 dark:bg-zinc-900">
+                      <SelectInput.Group>
+                        {safeTokensData.map(token => (
+                          <SelectInput.Item
+                            key={token.symbol}
+                            value={token.symbol}
+                            className="min-h-[3rem] py-1"
+                          >
+                            <div className="w-full flex items-center justify-start gap-2">
+                              <Image
+                                src={token.icon}
+                                alt={`${token.symbol} coin`}
+                                width={28}
+                                height={28}
+                                className="w-7 h-7"
+                              />
 
-                            <Text className="text-xl font-bold dark:text-zinc-50 uppercase">
-                              {coin.symbol}
-                            </Text>
-                          </div>
-                        </SelectInput.Item>
-                      ))}
-                    </SelectInput.Group>
-                  </SelectInput.Content>
-                </SelectInput.Root>
-              )}
-            />
+                              <Text className="text-xl font-bold dark:text-zinc-50 uppercase">
+                                {token.symbol}
+                              </Text>
+                            </div>
+                          </SelectInput.Item>
+                        ))}
+                      </SelectInput.Group>
+                    </SelectInput.Content>
+                  </SelectInput.Root>
+                )}
+              />
+            )}
 
             <TextInput.Root
               htmlFor="amount"

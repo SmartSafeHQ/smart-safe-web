@@ -192,7 +192,7 @@ export const useDeploySafeHook = () => {
     }
   }
 
-  async function addNewOwner() {
+  async function addOwner() {
     const checkLastOwnerFieldsIdValid = await trigger('owners')
 
     if (!checkLastOwnerFieldsIdValid) return
@@ -239,7 +239,7 @@ export const useDeploySafeHook = () => {
     register,
     remove,
     watch,
-    addNewOwner,
+    addOwner,
     removeOwner,
     control,
     isSubmitting,

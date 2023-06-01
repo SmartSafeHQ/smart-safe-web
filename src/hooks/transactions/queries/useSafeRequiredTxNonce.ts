@@ -3,16 +3,14 @@ import { useQuery } from '@tanstack/react-query'
 
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 
-interface GetRequiredTransactionNonceInput {
-  safeAddress: string
+interface FetchSafeRequiredTxNonceInput {
+  safeAddress?: string
 }
 
-async function getRequiredTransactionNonce({
+async function fetchSafeRequiredTxNonce({
   safeAddress
-}: GetRequiredTransactionNonceInput) {
-  if (!safeAddress) {
-    return
-  }
+}: FetchSafeRequiredTxNonceInput) {
+  if (!safeAddress) throw new Error('safe addres required')
 
   const provider = new ethers.BrowserProvider(window.ethereum)
   const contract = new ethers.Contract(safeAddress, SMART_SAFE_ABI, provider)
@@ -24,18 +22,10 @@ async function getRequiredTransactionNonce({
   return Number(requiredTransactionNonce)
 }
 
-interface UseGetRequiredTransactionNonce {
-  safeAddress: string
-  enabled: boolean
-}
-
-export function useGetRequiredTransactionNonce({
-  safeAddress,
-  enabled = true
-}: UseGetRequiredTransactionNonce) {
+export function useSafeRequiredTxNonce(safeAddress?: string, enabled = true) {
   return useQuery({
-    queryFn: () => getRequiredTransactionNonce({ safeAddress }),
-    queryKey: ['useGetRequiredTransactionNonce', safeAddress],
+    queryFn: () => fetchSafeRequiredTxNonce({ safeAddress }),
+    queryKey: ['safeRequiredTxNonce', safeAddress],
     staleTime: 60 * 2000, // 2 minutes
     enabled
   })

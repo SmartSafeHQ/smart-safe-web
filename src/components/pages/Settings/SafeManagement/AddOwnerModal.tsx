@@ -14,9 +14,9 @@ import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import type { Dispatch, SetStateAction } from 'react'
 import type { ContractTransactionResponse } from 'ethers'
 import type { UseMutateAsyncFunction } from '@tanstack/react-query'
-import type { AddNewOwnerInput } from '@hooks/transactions/mutation/useAddNewOwner'
+import type { AddOwnerFunctionInput } from '@hooks/transactions/mutation/useAddOwner'
 
-interface Props {
+interface AddOwnerModalProps {
   isOpen: boolean
   isLoading: boolean
   ownersCount: number
@@ -25,10 +25,10 @@ interface Props {
   currentSafeOwnerId: string
   owners: { name: string; address: string }[]
   onOpenChange: Dispatch<SetStateAction<boolean>>
-  addNewOwnerMutation: UseMutateAsyncFunction<
+  addOwnerMutation: UseMutateAsyncFunction<
     ContractTransactionResponse,
     unknown,
-    AddNewOwnerInput,
+    AddOwnerFunctionInput,
     unknown
   >
 }
@@ -50,7 +50,7 @@ const validationSchema = z.object({
 
 type FieldValues = z.infer<typeof validationSchema>
 
-export function AddNewOwnerModal({
+export function AddOwnerModal({
   isOpen,
   owners,
   isLoading,
@@ -59,8 +59,8 @@ export function AddNewOwnerModal({
   onOpenChange,
   transactionNonce,
   currentSafeOwnerId,
-  addNewOwnerMutation
-}: Props) {
+  addOwnerMutation
+}: AddOwnerModalProps) {
   const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
 
   const {
@@ -87,7 +87,7 @@ export function AddNewOwnerModal({
 
       setIsWaitingTransaction(true)
 
-      const transaction = await addNewOwnerMutation({
+      const transaction = await addOwnerMutation({
         transactionNonce,
         safeAddress,
         ownerAddress: data.ownerAddress,
@@ -124,7 +124,7 @@ export function AddNewOwnerModal({
           <div className="w-full flex flex-col justify-center border-b-2 dark:border-zinc-800">
             <header className="w-full flex flex-col gap-3 py-8 px-8">
               <DialogModal.Title className="text-2xl md:text-3xl font-bold text-zinc-800 dark:text-zinc-50">
-                Add new owner
+                Add owner
               </DialogModal.Title>
             </header>
           </div>

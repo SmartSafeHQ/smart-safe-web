@@ -5,17 +5,17 @@ import { createTransactionProposal } from '@utils/web3/transactions/createTransa
 
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 
-export type RemoveOwnerInput = {
+export type RemoveOwnerFunctionInput = {
   safeAddress: string
   removeOwnerAddress: string
   transactionNonce: number
 }
 
-async function removeOwner({
+async function removeOwnerFunction({
   safeAddress,
   removeOwnerAddress,
   transactionNonce
-}: RemoveOwnerInput): Promise<void> {
+}: RemoveOwnerFunctionInput): Promise<void> {
   if (!safeAddress) {
     throw new Error('safe address required')
   }
@@ -59,7 +59,7 @@ async function removeOwner({
 
 export function useRemoveOwner() {
   return useMutation({
-    mutationKey: ['useRemoveOwner'],
-    mutationFn: (input: RemoveOwnerInput) => removeOwner(input)
+    mutationKey: ['removeOwner'],
+    mutationFn: (input: RemoveOwnerFunctionInput) => removeOwnerFunction(input)
   })
 }

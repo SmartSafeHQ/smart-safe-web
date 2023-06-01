@@ -5,7 +5,7 @@ import { Collapsible } from '@components/Collapsible'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
 import { ChangeOwnersTxProps } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
-import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
+import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
 
 interface PendingAddOwnerTxProps {
   transaction: ChangeOwnersTxProps
@@ -13,10 +13,7 @@ interface PendingAddOwnerTxProps {
 
 export function PendingAddOwnerTx({ transaction }: PendingAddOwnerTxProps) {
   const { safe } = useTransactionsQueue()
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || '',
-    enabled: !!safe
-  })
+  const { data: ownersCount } = useSafeOwnersCount(safe?.address, !!safe)
 
   return (
     <>
