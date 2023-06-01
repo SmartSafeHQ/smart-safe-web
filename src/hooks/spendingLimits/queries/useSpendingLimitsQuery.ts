@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { ContactProps } from '@contexts/ContactsContext'
 
-import { listContacts } from '@hooks/contacts/queries/useListContacts'
+import { fetchContacts } from '@hooks/contacts/queries/useContactsQuery'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
@@ -18,8 +18,8 @@ export async function fetchSpendingLimits(
   input: FetchSpendingLimitsInput
 ): Promise<SelectedSpendingLimitsProps[]> {
   const contacts = await queryClient.ensureQueryData<ContactProps[] | null>({
-    queryKey: ['listContacts'],
-    queryFn: () => listContacts({ creatorId: String(input.customerId) })
+    queryKey: ['contacts'],
+    queryFn: () => fetchContacts({ creatorId: String(input.customerId) })
   })
 
   const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)

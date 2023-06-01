@@ -27,7 +27,7 @@ export function ContactsList() {
           </Text>
 
           <Text asChild className="font-medium text-zinc-400">
-            Create a contact to facilitate your navigation on the network.
+            Create a contact to facilitate your navigation on the safe.
           </Text>
         </div>
       ) : (

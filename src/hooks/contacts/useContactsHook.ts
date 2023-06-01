@@ -1,5 +1,5 @@
 import { useSafe } from '@contexts/SafeContext'
-import { useListContacts } from '@hooks/contacts/queries/useListContacts'
+import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 
 import { useContacts } from '@contexts/ContactsContext'
 
@@ -20,7 +20,7 @@ export const useContactsHook = () => {
   } = useContacts()
 
   const { safe } = useSafe()
-  const { data: contacts, isLoading, error } = useListContacts(safe?.ownerId!)
+  const { data: contacts, isLoading, error } = useContactsQuery(safe?.ownerId!)
 
   return {
     contacts,

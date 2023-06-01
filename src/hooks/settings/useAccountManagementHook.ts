@@ -3,7 +3,7 @@ import { useWallets } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
 import { useGetOwners } from '@hooks/transactions/queries/useGetOwners'
-import { useListContacts } from '@hooks/contacts/queries/useListContacts'
+import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
@@ -30,7 +30,7 @@ export function useAccountManagementHook() {
     isAddNewOwnerModalOpen,
     setAddNewOwnerOpen
   } = useAddNewOwnerHook()
-  const { data: contactList } = useListContacts(safe?.ownerId || '')
+  const { data: contactList } = useContactsQuery(safe?.ownerId || '')
   const { data: requiredTransactionNonce } = useGetRequiredTransactionNonce({
     safeAddress: safe?.address || '',
     enabled: !!safe?.address

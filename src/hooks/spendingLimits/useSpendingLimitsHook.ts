@@ -9,7 +9,7 @@ import { useSafe } from '@contexts/SafeContext'
 import { useSpendingLimits } from '@contexts/SpendingLimitsContext'
 import { ContactProps } from '@contexts/ContactsContext'
 
-import { useListContacts } from '@hooks/contacts/queries/useListContacts'
+import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useSpendingLimitsQuery } from '@hooks/spendingLimits/queries/useSpendingLimitsQuery'
 import { useCreateSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useCreateSpendingLimitsMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
@@ -49,7 +49,7 @@ export const useSpendingLimitsHook = () => {
   } = useSpendingLimits()
 
   const { safe } = useSafe()
-  const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
+  const { data: contacts, isLoading: contactsIsLoading } = useContactsQuery(
     safe?.ownerId!
   )
   const { mutateAsync } = useCreateSpendingLimitsMutation()

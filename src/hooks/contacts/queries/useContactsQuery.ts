@@ -2,15 +2,15 @@ import { useQuery } from '@tanstack/react-query'
 import { smartSafeApi } from '@lib/axios'
 import { formatWalletAddress } from '@utils/web3'
 
-interface FetchContactsList {
+interface FetchContactsApiResponse {
   contacts: { name: string; address: string; id: number }[]
 }
 
-interface ListContactsInput {
+interface FetchContactsInput {
   creatorId: string
 }
 
-type ListContactsResponse =
+type FetchContactsResponse =
   | {
       contactName: string
       contactAddress: string
@@ -19,12 +19,12 @@ type ListContactsResponse =
     }[]
   | null
 
-export async function listContacts({
+export async function fetchContacts({
   creatorId
-}: ListContactsInput): Promise<ListContactsResponse> {
+}: FetchContactsInput): Promise<FetchContactsResponse> {
   if (!creatorId) return null
 
-  const { data } = await smartSafeApi.get<FetchContactsList>(
+  const { data } = await smartSafeApi.get<FetchContactsApiResponse>(
     `addressBook/${creatorId}`,
     {
       params: { page: 0 }
@@ -45,10 +45,10 @@ export async function listContacts({
   return formattedContactsList
 }
 
-export function useListContacts(creatorId: string) {
+export function useContactsQuery(creatorId: string) {
   return useQuery({
-    queryKey: ['listContacts', creatorId],
-    queryFn: () => listContacts({ creatorId }),
+    queryKey: ['contacts', creatorId],
+    queryFn: () => fetchContacts({ creatorId }),
     staleTime: 1000 * 60 * 1 // 1 minute
   })
 }
