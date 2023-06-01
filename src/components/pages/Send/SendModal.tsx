@@ -26,16 +26,14 @@ export function SendModal() {
     <DialogModal.Root
       open={isSendOpen}
       onOpenChange={isOpen => {
+        if (isSendingTx) return
+
         setIsSendOpen(isOpen)
 
         if (!isOpen) resetSendMutation()
       }}
     >
-      <DialogModal.Content
-        className="md:max-w-[32rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900"
-        onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
-        onInteractOutside={e => isSendingTx && e.preventDefault()}
-      >
+      <DialogModal.Content className="md:max-w-[32rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900">
         <div className="w-full h-full flex flex-col justify-start overflow-x-hidden">
           {!txData ? (
             <>
@@ -87,7 +85,7 @@ export function SendModal() {
           )}
         </div>
 
-        {!isSendingTx && <DialogModal.IconClose />}
+        <DialogModal.IconClose />
       </DialogModal.Content>
     </DialogModal.Root>
   )

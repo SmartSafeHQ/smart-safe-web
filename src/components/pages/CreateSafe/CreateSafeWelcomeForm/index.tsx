@@ -48,15 +48,15 @@ export function CreateSafeWelcomeForm() {
               ref={ref}
               className="w-full flex flex-1"
             >
-              <SelectInput.Trigger className="w-full h-10 px-3 text-left overflow-hidden rounded-md bg-white dark:bg-black capitalize border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
+              <SelectInput.Trigger className="h-10" />
 
-              <SelectInput.Content className="w-full border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
+              <SelectInput.Content className="w-full">
                 <SelectInput.Group className="w-full">
                   {CHAINS_ATTRIBUTES.map(chain => (
                     <SelectInput.Item
                       key={chain.chainId}
                       value={chain.chainId}
-                      className="w-full h-9 px-2 text-left overflow-hidden rounded-md capitalize pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800"
+                      className="w-full h-9 px-2 text-left"
                     >
                       <div className="flex items-center gap-3">
                         <span

@@ -1,3 +1,8 @@
+import type { Dispatch, SetStateAction } from 'react'
+import type { ContractTransactionResponse } from 'ethers'
+import type { UseMutateAsyncFunction } from '@tanstack/react-query'
+import type { AddOwnerFunctionInput } from '@hooks/safe/mutation/useAddOwner'
+
 import { z } from 'zod'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
@@ -8,20 +13,18 @@ import { useConnectWallet } from '@web3-onboard/react'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
+import { SelectInput } from '@components/Inputs/SelectInput'
+import { Text } from '@components/Text'
 
 import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import { useSafe } from '@contexts/SafeContext'
 
-import type { Dispatch, SetStateAction } from 'react'
-import type { ContractTransactionResponse } from 'ethers'
-import type { UseMutateAsyncFunction } from '@tanstack/react-query'
-import type { AddOwnerFunctionInput } from '@hooks/safe/mutation/useAddOwner'
-
 interface AddOwnerModalProps {
   isOpen: boolean
   isLoading: boolean
   ownersCount: number
+  threshold: number
   transactionNonce: number
   currentSafeOwnerId: string
   owners: { name: string; address: string }[]
@@ -45,7 +48,7 @@ const validationSchema = z.object({
       CONTACT_NAME_REGEX,
       'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
     ),
-  ownerAddress: z.string().regex(ADDRESS_REGEX, 'Invali address.'),
+  ownerAddress: z.string().regex(ADDRESS_REGEX, 'Invalid address.'),
   threshold: z.number().min(1)
 })
 
@@ -55,6 +58,7 @@ export function AddOwnerModal({
   isOpen,
   owners,
   isLoading,
+  threshold,
   ownersCount,
   onOpenChange,
   transactionNonce,
@@ -107,11 +111,11 @@ export function AddOwnerModal({
         creatorId: currentSafeOwnerId
       })
 
-      setIsWaitingTransaction(false)
       toast.success('Proposal created! View it on transactions tab.')
     } catch (error) {
-      setIsWaitingTransaction(false)
       getWe3ErrorMessageWithToast(error)
+    } finally {
+      setIsWaitingTransaction(false)
     }
   }
 
@@ -124,20 +128,23 @@ export function AddOwnerModal({
         onOpenChange(isOpen)
       }}
     >
-      <DialogModal.Content className="md:max-w-[36rem]">
-        <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-          <div className="w-full flex flex-col justify-center border-b-2 dark:border-zinc-800">
-            <header className="w-full flex flex-col gap-3 py-8 px-8">
-              <DialogModal.Title className="text-2xl md:text-3xl font-bold text-zinc-800 dark:text-zinc-50">
-                Add owner
-              </DialogModal.Title>
-            </header>
-          </div>
+      <DialogModal.Content className="md:max-w-[36rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900">
+        <header className="flex items-center flex-col gap-3 p-8 rounded-lg bg-zinc-50 dark:bg-zinc-950">
+          <DialogModal.Title className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+            Add owner
+          </DialogModal.Title>
 
-          <div className="p-8 flex flex-col gap-4 border-b-2 dark:border-zinc-800">
-            <p>Add a new owner to this vault.</p>
+          <DialogModal.Description className=" text-zinc-700 dark:text-zinc-300">
+            You&apos;ll be asked to sign a message and confirm the transaction.
+          </DialogModal.Description>
+        </header>
 
-            <div className="flex flex-col gap-4 items-center">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full h-full flex flex-col justify-start overflow-x-hidden"
+        >
+          <div className="w-full flex flex-col gap-4 py-8 px-4 border-t-1 border-zinc-200 dark:border-zinc-700 sm:px-8">
+            <div className="w-full flex flex-col items-stretch gap-4">
               <TextInput.Root
                 className="w-full"
                 htmlFor="owner-name"
@@ -157,7 +164,7 @@ export function AddOwnerModal({
 
               <TextInput.Root
                 className="w-full"
-                htmlFor="owner-address"
+                htmlFor="ownerAddress"
                 error={errors.ownerAddress?.message}
               >
                 <TextInput.Label>Owner address</TextInput.Label>
@@ -166,56 +173,58 @@ export function AddOwnerModal({
                   <TextInput.Input
                     required
                     {...register('ownerAddress')}
-                    id="owner-address"
+                    id="ownerAddress"
                     placeholder="Owner address"
                   />
                 </TextInput.Content>
               </TextInput.Root>
 
-              <div className="flex gap-4 items-center w-full justify-start">
-                <select
+              <div className="flex flex-1 gap-6 items-center justify-start">
+                <SelectInput.Root
                   {...register('threshold', { valueAsNumber: true })}
-                  className="p-4 rounded-md bg-transparent border-1 dark:border-zinc-800"
+                  className="w-full max-w-[5rem]"
+                  defaultValue={String(threshold)}
                 >
-                  {Array.from({ length: ownersCount + 1 }, (_, i) => i + 1).map(
-                    count => (
-                      <option
-                        key={count}
-                        value={count}
-                        className="dark:bg-zinc-800 dark:text-white"
-                      >
-                        {count}
-                      </option>
-                    )
-                  )}
-                </select>
+                  <SelectInput.Trigger className="h-10" />
 
-                <p>out of {ownersCount + 1} owner(s).</p>
+                  <SelectInput.Content>
+                    <SelectInput.Group>
+                      {Array.from(
+                        { length: ownersCount + 1 },
+                        (_, i) => i + 1
+                      ).map(count => (
+                        <SelectInput.Item
+                          key={count}
+                          value={String(count)}
+                          className="h-8"
+                        >
+                          <div className="w-full flex items-streach justify-start">
+                            {count}
+                          </div>
+                        </SelectInput.Item>
+                      ))}
+                    </SelectInput.Group>
+                  </SelectInput.Content>
+                </SelectInput.Root>
+
+                <Text>out of {ownersCount + 1} owner(s).</Text>
               </div>
             </div>
-
-            <p className="p-4 dark:border-zinc-700 border-1 rounded-md bg-zinc-200 dark:bg-zinc-800/[.6] text-center">
-              You&apos;ll be asked to sign a message and then confirm the
-              transaction.
-            </p>
           </div>
 
-          <div className="flex justify-between p-8">
-            <Button
-              type="button"
-              disabled={isWaitingTransaction}
-              onClick={() => onOpenChange(false)}
-              className="bg-transparent hover:bg-zinc-200 hover:dark:bg-zinc-800 min-w-[100px]"
-            >
-              Cancel
-            </Button>
+          <div className="w-full p-4 flex justify-between items-center border-t-1 border-zinc-200 dark:border-zinc-700">
+            <DialogModal.Close>
+              <Button type="button" variant="ghost">
+                Cancel
+              </Button>
+            </DialogModal.Close>
 
             <Button
               type="submit"
-              className="min-w-[100px]"
+              className="min-w-[6.5rem]"
               isLoading={isWaitingTransaction}
             >
-              Submit
+              Add owner
             </Button>
           </div>
         </form>

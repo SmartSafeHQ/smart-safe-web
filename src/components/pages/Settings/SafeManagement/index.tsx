@@ -131,6 +131,7 @@ export function SafeManagement() {
       {isAddOwnerModalReady && (
         <AddOwnerModal
           owners={ownersData}
+          threshold={safeThreshold ?? 1}
           ownersCount={ownersCount}
           isOpen={isAddOwnerModalOpen}
           onOpenChange={setAddOwnerOpen}

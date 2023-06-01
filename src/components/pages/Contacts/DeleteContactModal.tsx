@@ -51,11 +51,11 @@ export function DeleteContactModal() {
           </header>
 
           <div className="w-full flex items-center justify-center gap-4 mt-1">
-            <DialogModal.Trigger>
-              <Button className="w-full capitalize bg-transparent text-zinc-800 dark:text-zinc-50 border-2 border-zinc-500 hover:bg-zinc-300 dark:hover:bg-zinc-500">
-                cancel
+            <DialogModal.Close>
+              <Button className="w-full" variant="ghost">
+                Cancel
               </Button>
-            </DialogModal.Trigger>
+            </DialogModal.Close>
 
             <Button
               onClick={handleConfirmDelete}
