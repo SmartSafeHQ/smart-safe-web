@@ -6,12 +6,12 @@ import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useSpendingLimitsAuth } from '@contexts/smart-account/SpendingLimitsAuthContext'
-import { ContactProps } from '@contexts/SAContactsContext'
+import { useSpendingLimits } from '@contexts/SpendingLimitsContext'
+import { ContactProps } from '@contexts/ContactsContext'
 
 import { useListContacts } from '@hooks/contacts/queries/useListContacts'
-import { useSpendingLimitsAuths } from '@hooks/smartAccount/queries/useSpendingLimitsAuths'
-import { useCreateSpendingLimitsAuthMutation } from '@hooks/smartAccount/mutations/useCreateSpendingLimitsAuthMutation'
+import { useSpendingLimitsQuery } from '@hooks/spendingLimits/queries/useSpendingLimitsQuery'
+import { useCreateSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useCreateSpendingLimitsMutation'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
@@ -37,7 +37,7 @@ export type CreateSpendingLimitsFieldValues = z.infer<
   typeof createSpendingLimitsValidationSchema
 >
 
-export const useSpendingLimitsAuthHook = () => {
+export const useSpendingLimitsHook = () => {
   const {
     isCreateSpendingLimitsOpen,
     setIsCreateSpendingLimitsOpen,
@@ -46,19 +46,19 @@ export const useSpendingLimitsAuthHook = () => {
     selectedSpendingLimits,
     setSelectedSpendingLimits,
     handleDeleteSpendingLimits
-  } = useSpendingLimitsAuth()
+  } = useSpendingLimits()
 
   const { safe } = useSafe()
   const { data: contacts, isLoading: contactsIsLoading } = useListContacts(
     safe?.ownerId!
   )
-  const { mutateAsync } = useCreateSpendingLimitsAuthMutation()
+  const { mutateAsync } = useCreateSpendingLimitsMutation()
 
   const {
     data: spendingLimits,
     isLoading,
     error
-  } = useSpendingLimitsAuths(1, '1')
+  } = useSpendingLimitsQuery(1, '1')
 
   const {
     control,
@@ -115,7 +115,7 @@ export const useSpendingLimitsAuthHook = () => {
 
       await mutateAsync({
         ...data,
-        smartAccountAddress: 'address',
+        address: 'address',
         customerWalletPrivateKey: 'privateKey',
         coin: spendingLimitsToken,
         recipientName: findContactForRecipient?.contactName

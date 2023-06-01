@@ -9,7 +9,7 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
-import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
+import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
 
 dayjs.extend(utc)
@@ -51,7 +51,7 @@ function SpendingLimitsTableTr({
     .format('DD/MM/YYYY')
 
   return (
-    <tr className="font-medium border-b-1 border-gray-300 dark:border-gray-700">
+    <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3 min-w-[8rem]">
         <div className="flex flex-col gap-1">
           {spendingLimits?.recipientName && (
@@ -63,7 +63,7 @@ function SpendingLimitsTableTr({
           <HoverCard.Root>
             <HoverCard.Trigger
               asChild
-              className="w-min text-sm capitalize text-gray-500 dark:text-gray-400"
+              className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-400"
             >
               <button
                 onClick={() =>
@@ -99,7 +99,7 @@ function SpendingLimitsTableTr({
       </td>
 
       <td>
-        <Text className="text-sm text-gray-500 dark:text-gray-400 md:text-base">
+        <Text className="text-sm text-zinc-500 dark:text-zinc-400 md:text-base">
           {formattedDate}
         </Text>
       </td>
@@ -109,8 +109,8 @@ function SpendingLimitsTableTr({
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <button
-                aria-label="Spending limit authorization management options"
-                className="p-1 rounded-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
+                aria-label="Spending limits management options"
+                className="p-1 rounded-sm transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
               >
                 <DotsThreeVertical className="w-6 h-6" />
               </button>

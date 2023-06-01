@@ -8,10 +8,10 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useSpendingLimitsAuthHook } from '@hooks/smartAccount/useSpendingLimitsAuthHook'
+import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
-export function CreateSpendingLimitsAuthModal() {
+export function CreateSpendingLimitsModal() {
   const {
     contacts,
     setSearchContacts,
@@ -28,7 +28,7 @@ export function CreateSpendingLimitsAuthModal() {
     onSubmitCreateSpendingLimits,
     isCreateSpendingLimitsOpen,
     setIsCreateSpendingLimitsOpen
-  } = useSpendingLimitsAuthHook()
+  } = useSpendingLimitsHook()
 
   const isoDateNow = new Date().toISOString().slice(0, 10)
 
@@ -202,7 +202,7 @@ export function CreateSpendingLimitsAuthModal() {
                   type="date"
                   min={isoDateNow}
                   defaultValue={isoDateNow}
-                  placeholder="Enter the authorization date"
+                  placeholder="Enter the date"
                 />
               </TextInput.Content>
             </TextInput.Root>

@@ -7,9 +7,7 @@ import {
   useState
 } from 'react'
 
-type SpendingLimitsAuthProviderProps = PropsWithChildren<
-  Record<string, unknown>
->
+type SpendingLimitsProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface SelectedSpendingLimitsProps {
   index: number
@@ -27,7 +25,7 @@ export interface SelectedSpendingLimitsProps {
   }
 }
 
-interface SpendingLimitsAuthContextData {
+interface SpendingLimitsContextData {
   selectedSpendingLimits: SelectedSpendingLimitsProps | null
   isCreateSpendingLimitsOpen: boolean
   isDeleteSpendingLimitsOpen: boolean
@@ -41,13 +39,11 @@ interface SpendingLimitsAuthContextData {
   ) => void
 }
 
-const SpedningLimitsAuthContext = createContext(
-  {} as SpendingLimitsAuthContextData
-)
+const SpendingLimitsContext = createContext({} as SpendingLimitsContextData)
 
-export function SpendingLimitsAuthProvider({
+export function SpendingLimitsProvider({
   children
-}: SpendingLimitsAuthProviderProps) {
+}: SpendingLimitsProviderProps) {
   const [isCreateSpendingLimitsOpen, setIsCreateSpendingLimitsOpen] =
     useState(false)
   const [isDeleteSpendingLimitsOpen, setIsDeleteSpendingLimitsOpen] =
@@ -64,7 +60,7 @@ export function SpendingLimitsAuthProvider({
   }
 
   return (
-    <SpedningLimitsAuthContext.Provider
+    <SpendingLimitsContext.Provider
       value={{
         isCreateSpendingLimitsOpen,
         setIsCreateSpendingLimitsOpen,
@@ -76,8 +72,8 @@ export function SpendingLimitsAuthProvider({
       }}
     >
       {children}
-    </SpedningLimitsAuthContext.Provider>
+    </SpendingLimitsContext.Provider>
   )
 }
 
-export const useSpendingLimitsAuth = () => useContext(SpedningLimitsAuthContext)
+export const useSpendingLimits = () => useContext(SpendingLimitsContext)

@@ -1,21 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
-import { ContactProps } from '@contexts/SAContactsContext'
+import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
+import { ContactProps } from '@contexts/ContactsContext'
 
 import { listContacts } from '@hooks/contacts/queries/useListContacts'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
 
-interface FetchSmartAccountSpendingLimitsAuthsInput {
-  smartAccountAddress: string
+interface FetchSpendingLimitsInput {
+  address: string
   customerId: number
 }
 
-export async function fetchSmartAccountSpendingLimitsAuths(
-  input: FetchSmartAccountSpendingLimitsAuthsInput
+export async function fetchSpendingLimits(
+  input: FetchSpendingLimitsInput
 ): Promise<SelectedSpendingLimitsProps[]> {
   const contacts = await queryClient.ensureQueryData<ContactProps[] | null>({
     queryKey: ['listContacts'],
@@ -23,11 +23,7 @@ export async function fetchSmartAccountSpendingLimitsAuths(
   })
 
   const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
-  const contract = new ethers.Contract(
-    input.smartAccountAddress,
-    '{}',
-    provider
-  )
+  const contract = new ethers.Contract(input.address, '{}', provider)
 
   const totalAuthorizations = await contract.getFunction(
     'totalAuthorizations'
@@ -78,17 +74,17 @@ export async function fetchSmartAccountSpendingLimitsAuths(
   return authorizations
 }
 
-export function useSpendingLimitsAuths(
+export function useSpendingLimitsQuery(
   id = 0,
-  smartAccountAddress: string,
+  address: string,
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['smartAccountSpendingLimitsAuths', smartAccountAddress],
+    queryKey: ['spendingLimits', address],
     queryFn: () =>
-      fetchSmartAccountSpendingLimitsAuths({
+      fetchSpendingLimits({
         customerId: id,
-        smartAccountAddress
+        address
       }),
     enabled,
     keepPreviousData: true,

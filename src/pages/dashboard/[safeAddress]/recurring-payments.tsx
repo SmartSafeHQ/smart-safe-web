@@ -13,16 +13,20 @@ const RecurringPayments = () => {
 
       <div className="w-full flex flex-1 flex-col items-stretch">
         <PageLayout.Root>
-          <PageLayout.Header className="justify-center items-start gap-3 pb-8 pt-10 px-3">
-            <PageLayout.Title>Recurring Payments</PageLayout.Title>
+          <PageLayout.Header className="flex-col justify-between items-stretch gap-3 pb-8 pt-4 px-3 sm:flex-row sm:items-center">
+            <div className="flex flex-1 flex-col items-stretch justify-between gap-4">
+              <PageLayout.Title>Recurring Payments</PageLayout.Title>
 
-            <PageLayout.Description>
-              Manage the recurring payments you&apos;ve created
-            </PageLayout.Description>
+              <PageLayout.Description>
+                Manage the recurring payments you&apos;ve created
+              </PageLayout.Description>
+            </div>
+
+            <Button className="w-max">Add recurrence</Button>
           </PageLayout.Header>
 
           <div className="w-full pb-3 flex flex-col relative justify-start items-stretch gap-5 mt-4">
-            <Button className="w-max">Add recurrence</Button>
+            Under development
           </div>
         </PageLayout.Root>
       </div>

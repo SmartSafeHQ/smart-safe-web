@@ -6,25 +6,25 @@ import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteSpendingLimitsAuthMutation } from '@hooks/smartAccount/mutations/useDeleteSpendingLimitsAuthMutation'
-import { useSpendingLimitsAuthHook } from '@hooks/smartAccount/useSpendingLimitsAuthHook'
+import { useDeleteSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useDeleteSpendingLimitsMutation'
+import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-export function DeleteSpendingLimitsAuthModal() {
+export function DeleteSpendingLimitsModal() {
   const {
     selectedSpendingLimits,
     isDeleteSpendingLimitsOpen,
     setIsDeleteSpendingLimitsOpen
-  } = useSpendingLimitsAuthHook()
+  } = useSpendingLimitsHook()
 
-  const { mutateAsync, isLoading } = useDeleteSpendingLimitsAuthMutation()
+  const { mutateAsync, isLoading } = useDeleteSpendingLimitsMutation()
 
   async function handleConfirmDelete() {
     if (!selectedSpendingLimits) return
 
     try {
       await mutateAsync({
-        smartAccountAddress: 'address',
+        address: 'address',
         customerWalletPrivateKey: 'privateKey',
         withdrawalIndex: selectedSpendingLimits.index
       })
@@ -45,12 +45,12 @@ export function DeleteSpendingLimitsAuthModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
           <header className="w-full flex flex-col items-stretch gap-5 mb-6">
-            <DialogModal.Title className="text-3xl font-bold capitalize text-gray-800 dark:text-gray-50">
+            <DialogModal.Title className="text-3xl font-bold capitalize text-zinc-800 dark:text-zinc-50">
               Delete authorization
             </DialogModal.Title>
 
-            <DialogModal.Description className="text-gray-600 dark:text-gray-300">
-              SmartSafe will delete the spending limit authorization
+            <DialogModal.Description className="text-zinc-600 dark:text-zinc-300">
+              SmartSafe will delete the spending limit
             </DialogModal.Description>
           </header>
 
@@ -60,7 +60,7 @@ export function DeleteSpendingLimitsAuthModal() {
                 <strong>{selectedSpendingLimits.recipientName}</strong>
               </Text>
 
-              <Text className="w-min text-sm capitalize text-gray-500 dark:text-gray-300">
+              <Text className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-300">
                 {selectedSpendingLimits.wallet.formattedAddress}
               </Text>
             </div>
@@ -99,7 +99,7 @@ export function DeleteSpendingLimitsAuthModal() {
 
           <div className="w-full flex items-center justify-center gap-4">
             <DialogModal.Trigger>
-              <Button className="w-full capitalize bg-transparent text-gray-800 dark:text-gray-50 border-2 border-gray-500 hover:bg-gray-300 dark:hover:bg-gray-500">
+              <Button className="w-full capitalize bg-transparent text-zinc-800 dark:text-zinc-50 border-2 border-zinc-500 hover:bg-zinc-300 dark:hover:bg-zinc-500">
                 cancel
               </Button>
             </DialogModal.Trigger>

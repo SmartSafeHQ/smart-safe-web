@@ -1,13 +1,13 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { SelectedSpendingLimitsProps } from '@contexts/smart-account/SpendingLimitsAuthContext'
+import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 
 import { queryClient } from '@lib/reactQuery'
 import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
 
-interface CreateSpendingLimitsAuthFunctionInput {
-  smartAccountAddress: string
+interface CreateSpendingLimitsFunctionInput {
+  address: string
   customerWalletPrivateKey: string
   contactAddress: string
   coin: ChainSettings
@@ -16,23 +16,23 @@ interface CreateSpendingLimitsAuthFunctionInput {
   recipientName?: string
 }
 
-interface CreateSpendingLimitsAuthFunctionOutput {
+interface CreateSpendingLimitsFunctionOutput {
   index: number
 }
 
-export interface CreateSpendingLimitsAuthApiResponse {
+export interface CreateSpendingLimitsApiResponse {
   id: number
 }
 
-async function createSpendingLimitsAuthFunction(
-  input: CreateSpendingLimitsAuthFunctionInput
-): Promise<CreateSpendingLimitsAuthFunctionOutput> {
+async function createSpendingLimitsFunction(
+  input: CreateSpendingLimitsFunctionInput
+): Promise<CreateSpendingLimitsFunctionOutput> {
   console.log(input)
   // const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
   // const signer = new Wallet(input.customerWalletPrivateKey, provider)
 
   // const contract = new Contract(
-  //   input.smartAccountAddress,
+  //   input.address,
   //   ACCOUNT_ABSTRACTION_ABI,
   //   signer
   // )
@@ -56,24 +56,22 @@ async function createSpendingLimitsAuthFunction(
   return { index: 0 }
 }
 
-export function useCreateSpendingLimitsAuthMutation() {
+export function useCreateSpendingLimitsMutation() {
   return useMutation({
-    mutationKey: ['createSpendingLimitsAuth'],
-    mutationFn: (input: CreateSpendingLimitsAuthFunctionInput) =>
-      createSpendingLimitsAuthFunction(input),
+    mutationKey: ['createSpendingLimits'],
+    mutationFn: (input: CreateSpendingLimitsFunctionInput) =>
+      createSpendingLimitsFunction(input),
     onSuccess: async (data, variables) => {
       await queryClient.cancelQueries({
-        queryKey: [
-          'smartAccountSpendingLimitsAuths',
-          variables.smartAccountAddress
-        ]
+        queryKey: ['spendingLimits', variables.address]
       })
 
-      const prevAuths = queryClient.getQueryData<SelectedSpendingLimitsProps[]>(
-        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress]
-      )
+      const prev = queryClient.getQueryData<SelectedSpendingLimitsProps[]>([
+        'spendingLimits',
+        variables.address
+      ])
 
-      const createdAuth = {
+      const created = {
         index: data.index,
         recipientName: variables.recipientName,
         coinAmount: variables.amount,
@@ -92,30 +90,24 @@ export function useCreateSpendingLimitsAuthMutation() {
       }
 
       queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
-        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress],
+        ['spendingLimits', variables.address],
         () => {
-          prevAuths?.push(createdAuth)
+          prev?.push(created)
 
-          return prevAuths
+          return prev
         }
       )
 
-      return prevAuths
+      return prev
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(
-        ['smartAccountSpendingLimitsAuths', variables.smartAccountAddress],
-        context
-      )
+      queryClient.setQueryData(['spendingLimits', variables.address], context)
     },
     onSettled: (_data, _error, variables) => {
       const timeout = setTimeout(
         () =>
           queryClient.invalidateQueries({
-            queryKey: [
-              'smartAccountSpendingLimitsAuths',
-              variables.smartAccountAddress
-            ]
+            queryKey: ['spendingLimits', variables.address]
           }),
         5000
       )
