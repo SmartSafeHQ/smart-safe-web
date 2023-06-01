@@ -6,7 +6,7 @@ import { Heading } from '@components/Heading'
 import { AddNewOwnerModal } from './AddNewOwnerModal'
 import { ChangeThresholdModal } from './ChangeThresholdModal'
 
-import { useAccountManagementHook } from '@hooks/smartAccount/settings/useAccountManagementHook'
+import { useAccountManagementHook } from '@hooks/settings/useAccountManagementHook'
 import { formatWalletAddress } from '@utils/web3'
 
 export function AccountManagement() {
@@ -38,14 +38,14 @@ export function AccountManagement() {
 
   return (
     <div className="flex flex-col gap-4 p-2">
-      <div className="flex gap-4 lg:gap-28 flex-col lg:flex-row border-1 p-4 rounded-md dark:border-zinc-600 shadow-md">
+      <div className="flex gap-4 lg:gap-28 flex-col lg:flex-row p-4 rounded-md shadow-md">
         <Heading className="flex-2 w-[200px] text-lg">Manage owners</Heading>
 
         <div className="flex flex-col gap-2 flex-1">
           <p>Add or remove owners from this safe.</p>
 
           <div className="flex flex-col">
-            <p className="dark:text-gray-500 text-gray-800 px-2 font-bold py-4">
+            <p className="dark:text-zinc-500 text-zinc-800 px-2 font-bold py-4">
               Name
             </p>
 
@@ -85,7 +85,7 @@ export function AccountManagement() {
         </div>
       </div>
 
-      <div className="flex gap-2 flex-2 flex-col lg:flex-row lg:gap-28 border-1 p-4 rounded-md dark:border-zinc-600 shadow-md">
+      <div className="flex gap-2 flex-2 flex-col lg:flex-row lg:gap-28 p-4 rounded-md shadow-md">
         <Heading className="w-[200px] text-lg">Required confirmations</Heading>
 
         <div className="flex flex-col gap-2 flex-1">

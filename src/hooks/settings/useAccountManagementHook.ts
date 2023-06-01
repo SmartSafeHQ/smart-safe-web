@@ -7,10 +7,10 @@ import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
-import { useAddNewOwnerHook } from '@hooks/smartAccount/settings/useAddNewOwnerHook'
-import { useChangeThresholdHook } from '@hooks/smartAccount/settings/useChangeThresholdHook'
-import { useGetTransactionNonce } from '@/hooks/transactions/queries/useGetTransactionNonce'
-import { useGetRequiredTransactionNonce } from '@/hooks/transactions/queries/useGetRequiredTransactionNonce'
+import { useAddNewOwnerHook } from '@hooks/settings/useAddNewOwnerHook'
+import { useChangeThresholdHook } from '@hooks/settings/useChangeThresholdHook'
+import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
+import { useGetRequiredTransactionNonce } from '@hooks/transactions/queries/useGetRequiredTransactionNonce'
 
 interface RemoveOwner {
   safeAddress: string
