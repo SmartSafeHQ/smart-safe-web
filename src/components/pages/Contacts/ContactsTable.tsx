@@ -7,7 +7,7 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
-import { ContactProps } from '@contexts/SAContactsContext'
+import { ContactProps } from '@contexts/ContactsContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
 
 interface ContactsTableThProps extends ThHTMLAttributes<HTMLTableCellElement> {
@@ -46,13 +46,13 @@ function ContactsTableTr({
   handleDeleteContact
 }: ContactsTableTrProps) {
   return (
-    <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-gray-300 dark:border-gray-700">
+    <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3">
         <Text className="font-medium md:text-base">{contact.contactName}</Text>
       </td>
 
       <td>
-        <div className="flex items-center gap-6 text-gray-600 dark:text-gray-400">
+        <div className="flex items-center gap-6 text-zinc-600 dark:text-zinc-400">
           <Text>{contact.formattedAddress}</Text>
 
           <div className="flex items-center gap-2">
@@ -95,7 +95,7 @@ function ContactsTableTr({
           <DropdownMenu.Trigger>
             <button
               aria-label="Manage contacts option"
-              className="p-1 rounded-sm transition-colors hover:bg-gray-200 dark:hover:bg-gray-800"
+              className="p-1 rounded-sm transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
             >
               <DotsThreeVertical className="w-6 h-6" />
             </button>

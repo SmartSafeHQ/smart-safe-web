@@ -7,7 +7,7 @@ import {
   useState
 } from 'react'
 
-type SAContactsProviderProps = PropsWithChildren<Record<string, unknown>>
+type ContactsProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface ContactProps {
   contactAddress: string
@@ -16,7 +16,7 @@ export interface ContactProps {
   contactId: number
 }
 
-interface SAContactsContextData {
+interface ContactsContextData {
   selectedContact: ContactProps | null
   isCreateContactOpen: boolean
   isUpdateContactOpen: boolean
@@ -29,9 +29,9 @@ interface SAContactsContextData {
   handleDeleteContact: (_contact: ContactProps) => void
 }
 
-const SAContactsContext = createContext({} as SAContactsContextData)
+const ContactsContext = createContext({} as ContactsContextData)
 
-export function SAContactsProvider({ children }: SAContactsProviderProps) {
+export function ContactsProvider({ children }: ContactsProviderProps) {
   const [isCreateContactOpen, setIsCreateContactOpen] = useState(false)
   const [isUpdateContactOpen, setIsUpdateContactOpen] = useState(false)
   const [isDeleteContactOpen, setIsDeleteContactOpen] = useState(false)
@@ -52,7 +52,7 @@ export function SAContactsProvider({ children }: SAContactsProviderProps) {
   }
 
   return (
-    <SAContactsContext.Provider
+    <ContactsContext.Provider
       value={{
         isCreateContactOpen,
         setIsCreateContactOpen,
@@ -67,8 +67,8 @@ export function SAContactsProvider({ children }: SAContactsProviderProps) {
       }}
     >
       {children}
-    </SAContactsContext.Provider>
+    </ContactsContext.Provider>
   )
 }
 
-export const useSAContacts = () => useContext(SAContactsContext)
+export const useContacts = () => useContext(ContactsContext)

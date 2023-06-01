@@ -1,14 +1,14 @@
 import { ScrollArea } from '@components/ScrollArea'
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
-import { ContactsTable } from '@components/pages/SmartAccount/contacts/ContactsTable'
+import { ContactsTable } from '@components/pages/Contacts/ContactsTable'
 import { Text } from '@components/Text'
 
-import { useSAContactsHook } from '@hooks/smartAccount/useSAContactsHook'
+import { useContactsHook } from '@hooks/contacts/useContactsHook'
 
 export function ContactsList() {
   const { contacts, isLoading, error, handleEditContact, handleDeleteContact } =
-    useSAContactsHook()
+    useContactsHook()
 
   return (
     <ScrollArea>
@@ -26,7 +26,7 @@ export function ContactsList() {
             <strong>No contacts yet!</strong>
           </Text>
 
-          <Text asChild className="font-medium text-gray-400">
+          <Text asChild className="font-medium text-zinc-400">
             Create a contact to facilitate your navigation on the network.
           </Text>
         </div>
@@ -34,8 +34,8 @@ export function ContactsList() {
         contacts && (
           <>
             <table className="w-full">
-              <thead className="bg-gray-200 bg-opacity-60 border-[0.5px] border-[#e0e0e0] dark:border-[#333] dark:bg-gray-800">
-                <tr className="uppercase text-gray-500 dark:text-gray-400">
+              <thead className="bg-zinc-200 bg-opacity-60 border-[0.5px] border-[#e0e0e0] dark:border-[#333] dark:bg-zinc-800">
+                <tr className="uppercase text-zinc-500 dark:text-zinc-400">
                   <ContactsTable.Th className="pl-2 py-3 ">
                     name
                   </ContactsTable.Th>

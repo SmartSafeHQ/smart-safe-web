@@ -1,11 +1,11 @@
 import { useSafe } from '@contexts/SafeContext'
 import { useListContacts } from '@hooks/contacts/queries/useListContacts'
 
-import { useSAContacts } from '@contexts/SAContactsContext'
+import { useContacts } from '@contexts/ContactsContext'
 
 export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
 
-export const useSAContactsHook = () => {
+export const useContactsHook = () => {
   const {
     isCreateContactOpen,
     setIsCreateContactOpen,
@@ -17,7 +17,7 @@ export const useSAContactsHook = () => {
     setSelectedContact,
     handleEditContact,
     handleDeleteContact
-  } = useSAContacts()
+  } = useContacts()
 
   const { safe } = useSafe()
   const { data: contacts, isLoading, error } = useListContacts(safe?.ownerId!)
