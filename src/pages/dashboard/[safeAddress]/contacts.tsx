@@ -17,10 +17,10 @@ const Contacts = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Head>
-        <title>SmartSafe | Smart Account Contacts</title>
+        <title>SmartSafe | Contacts</title>
         <meta
           name="description"
-          content="Management of the contacts registered in your smart account"
+          content="Management of the contacts registered in your wallet"
         />
       </Head>
 

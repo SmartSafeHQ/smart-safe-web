@@ -7,7 +7,7 @@ const RecurringPayments = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Head>
-        <title>SmartSafe | Smart Account Recurring Payments</title>
+        <title>SmartSafe | Recurring Payments</title>
         <meta name="description" content="Management of recurring payments" />
       </Head>
 

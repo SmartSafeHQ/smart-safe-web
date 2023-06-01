@@ -6,10 +6,10 @@ import { Heading } from '@components/Heading'
 import { AddNewOwnerModal } from './AddNewOwnerModal'
 import { ChangeThresholdModal } from './ChangeThresholdModal'
 
-import { useAccountManagementHook } from '@hooks/settings/useAccountManagementHook'
+import { useSafeManagement } from '@hooks/settings/useSafeManagement'
 import { formatWalletAddress } from '@utils/web3'
 
-export function AccountManagement() {
+export function SafeManagement() {
   const {
     safe,
     ownersCount,
@@ -23,7 +23,7 @@ export function AccountManagement() {
     isChangeThresholdModalOpen,
     addNewOwnerMutationIsLoading,
     isCurrentConnectWalletAnOwner
-  } = useAccountManagementHook()
+  } = useSafeManagement()
 
   const isChangeThresholdModalReady =
     ownersCount !== undefined &&

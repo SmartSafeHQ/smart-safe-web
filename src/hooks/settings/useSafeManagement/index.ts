@@ -7,8 +7,8 @@ import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useGetThreshold } from '@hooks/transactions/queries/useGetThreshold'
 import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
 import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
-import { useAddNewOwnerHook } from '@hooks/settings/useAddNewOwnerHook'
-import { useChangeThresholdHook } from '@hooks/settings/useChangeThresholdHook'
+import { useAddNewOwnerHook } from '@hooks/settings/useSafeManagement/useAddNewOwnerHook'
+import { useChangeThresholdHook } from '@hooks/settings/useSafeManagement/useChangeThresholdHook'
 import { useGetTransactionNonce } from '@hooks/transactions/queries/useGetTransactionNonce'
 import { useGetRequiredTransactionNonce } from '@hooks/transactions/queries/useGetRequiredTransactionNonce'
 
@@ -19,7 +19,7 @@ interface RemoveOwner {
   transactionNonce: number
 }
 
-export function useAccountManagementHook() {
+export function useSafeManagement() {
   const { safe } = useSafe()
   const [wallets] = useWallets()
   const { setIsChangeThresholdOpen, isChangeThresholdModalOpen } =

@@ -16,7 +16,7 @@ const SpendingLimits = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Head>
-        <title>SmartSafe | Smart Account Spending Limits</title>
+        <title>SmartSafe | Spending Limits</title>
         <meta name="description" content="Management of spending limits" />
       </Head>
 
