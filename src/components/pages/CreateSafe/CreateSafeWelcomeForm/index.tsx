@@ -9,7 +9,7 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { WalletProfileNavigation } from './WalletProfileNavigation'
 
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { useCreateSafeHook } from '@hooks/safe/create/useCreateSafeHook'
+import { useCreateSafeHook } from '@hooks/createSafe/useCreateSafeHook'
 
 export function CreateSafeWelcomeForm() {
   const {

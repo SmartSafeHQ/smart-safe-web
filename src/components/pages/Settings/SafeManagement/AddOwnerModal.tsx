@@ -14,7 +14,7 @@ import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import type { Dispatch, SetStateAction } from 'react'
 import type { ContractTransactionResponse } from 'ethers'
 import type { UseMutateAsyncFunction } from '@tanstack/react-query'
-import type { AddOwnerFunctionInput } from '@hooks/transactions/mutation/useAddOwner'
+import type { AddOwnerFunctionInput } from '@hooks/safe/mutation/useAddOwner'
 
 interface AddOwnerModalProps {
   isOpen: boolean

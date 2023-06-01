@@ -8,7 +8,7 @@ import { Text } from '@components/Text'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 import { useSafe } from '@contexts/SafeContext'
-import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
+import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
 
 export function MainSafeInfos() {
   const { safe } = useSafe()

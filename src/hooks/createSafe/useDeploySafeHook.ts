@@ -14,10 +14,10 @@ import {
 import {
   validationSchema,
   FieldValues
-} from '@hooks/safe/create/deploySafeValidationSchema'
+} from '@hooks/createSafe/deploySafeValidationSchema'
 import { useSafe } from '@contexts/SafeContext'
-import { useDeploySafeProxyMutation } from '@hooks/safe/create/mutation/useDeploySafeProxyMutation'
-import { useSaveSmartSafeProxyData } from '@hooks/safe/create/mutation/useSaveSmartSafeProxyData'
+import { useDeploySafeProxyMutation } from '@hooks/createSafe/mutation/useDeploySafeProxyMutation'
+import { useSaveSmartSafeProxyData } from '@hooks/createSafe/mutation/useSaveSmartSafeProxyData'
 import { useAddressSafes } from '@hooks/safe/queries/useAddressSafes'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 

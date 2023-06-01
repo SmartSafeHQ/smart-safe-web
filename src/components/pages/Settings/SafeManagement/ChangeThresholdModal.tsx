@@ -6,7 +6,7 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Button } from '@components/Button'
 
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-import { useChangeThreshold } from '@hooks/transactions/mutation/useChangeThreshold'
+import { useChangeThreshold } from '@hooks/safe/mutation/useChangeThreshold'
 
 import type { Dispatch, SetStateAction } from 'react'
 

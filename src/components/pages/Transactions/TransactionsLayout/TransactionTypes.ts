@@ -11,7 +11,7 @@ import { PendingChangeThresholdTx } from './ChangeThresholdTx/PendingChangeThres
 import { ToApproveChangeThresholdTx } from './ChangeThresholdTx/ToApproveChangeThresholdTx'
 import { ChangeThresholdTxItem } from '../../Home/TransactionQueue/TransactionItemTypes/ChangeThresholdTxItem'
 
-import { TransactionType } from '@hooks/safe/queries/useSafeTxQueue/interfaces'
+import { TransactionType } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 
 type TransactionComponentProps = React.ComponentType<{
   transaction: any

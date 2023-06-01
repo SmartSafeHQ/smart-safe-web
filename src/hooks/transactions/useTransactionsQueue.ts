@@ -2,7 +2,7 @@ import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-import { useSafeTxQueue } from '@hooks/safe/queries/useSafeTxQueue'
+import { useSafeTxQueue } from '@hooks/transactions/queries/useSafeTxQueue'
 import { useApproveTransactionMutation } from '@hooks/transactions/mutation/useApproveTransactionMutation'
 import { useRejectTransactionMutation } from '@hooks/transactions/mutation/useRejectTransactionMutation'
 

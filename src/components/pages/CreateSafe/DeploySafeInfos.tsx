@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import { Text } from '@components/Text'
 
-import { useDeploySafeHook } from '@hooks/safe/create/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function DeploySafeInfos() {
   const { wallet, formattedOwnerAddress, safeInfos } = useDeploySafeHook()

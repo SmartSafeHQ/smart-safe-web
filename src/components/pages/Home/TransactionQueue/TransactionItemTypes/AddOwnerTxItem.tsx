@@ -2,7 +2,7 @@ import { ReactNode } from 'react'
 
 import { AddOwnerTx } from '@components/pages/Transactions/TransactionsLayout/AddOwnerTx'
 
-import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
+import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
 import { useSafe } from '@contexts/SafeContext'
 
 export interface HomeAddOwnerTxItemProps {

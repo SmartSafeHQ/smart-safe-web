@@ -7,7 +7,7 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 
-import { useDeploySafeHook } from '@hooks/safe/create/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function DeploySafeForm() {
   const {

@@ -2,15 +2,15 @@ import { useMemo } from 'react'
 import { useWallets } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useSafeOwners } from '@hooks/transactions/queries/useSafeOwners'
+import { useSafeOwners } from '@hooks/safe/queries/useSafeOwners'
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
-import { useSafeThreshold } from '@hooks/transactions/queries/useSafeThreshold'
-import { useSafeOwnersCount } from '@hooks/transactions/queries/useSafeOwnersCount'
-import { useRemoveOwner } from '@hooks/transactions/mutation/useRemoveOwner'
+import { useSafeThreshold } from '@hooks/safe/queries/useSafeThreshold'
+import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
+import { useRemoveOwner } from '@hooks/safe/mutation/useRemoveOwner'
 import { useAddOwnerHook } from '@hooks/settings/useSafeManagement/useAddOwnerHook'
 import { useChangeThresholdHook } from '@hooks/settings/useSafeManagement/useChangeThresholdHook'
-import { useSafeTxNonce } from '@hooks/transactions/queries/useSafeTxNonce'
-import { useSafeRequiredTxNonce } from '@hooks/transactions/queries/useSafeRequiredTxNonce'
+import { useSafeTxNonce } from '@hooks/safe/queries/useSafeTxNonce'
+import { useSafeRequiredTxNonce } from '@hooks/safe/queries/useSafeRequiredTxNonce'
 
 interface RemoveOwner {
   safeAddress: string

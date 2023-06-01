@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { useAddOwner } from '@hooks/transactions/mutation/useAddOwner'
+import { useAddOwner } from '@hooks/safe/mutation/useAddOwner'
 
 export interface AddOwnerProps {
   safeAddress: string
