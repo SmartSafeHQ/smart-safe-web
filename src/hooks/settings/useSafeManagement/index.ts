@@ -54,25 +54,27 @@ export function useSafeManagement() {
   )
   const { mutateAsync: removeOwnersMutation } = useRemoveOwner()
 
-  const richOwnersData = useMemo(() => {
+  const ownersData = useMemo(() => {
     if (!contactList || !safeOwners || !wallets) {
-      return [{ address: '', name: '' }]
+      return []
     }
 
-    return safeOwners.map(ownerAddress => {
-      if (ownerAddress.toLowerCase() === wallets?.accounts[0].address) {
+    return safeOwners.map(owner => {
+      if (owner.address.toLowerCase() === wallets?.accounts[0].address) {
         return {
-          address: ownerAddress,
+          address: owner.address,
+          formattedAddress: owner.formattedAddress,
           name: 'You'
         }
       }
 
       const ownerData = contactList.find(
-        ({ contactAddress }) => contactAddress === ownerAddress
+        ({ contactAddress }) => contactAddress === owner.address
       )
 
       return {
-        address: ownerData?.contactAddress || ownerAddress,
+        address: ownerData?.contactAddress || owner.address,
+        formattedAddress: ownerData?.formattedAddress || owner.formattedAddress,
         name: ownerData?.contactName || ''
       }
     })
@@ -94,7 +96,7 @@ export function useSafeManagement() {
     const currentConnectedWallet = wallets.accounts[0].address
 
     return safeOwners.some(
-      ownerAddress => ownerAddress.toLowerCase() === currentConnectedWallet
+      owner => owner.address.toLowerCase() === currentConnectedWallet
     )
   }, [wallets, safeOwners])
 
@@ -103,7 +105,7 @@ export function useSafeManagement() {
     ownersCount,
     removeOwner,
     safeThreshold,
-    richOwnersData,
+    ownersData,
     transactionNonce,
     setAddOwnerOpen,
     addOwnerMutation,
