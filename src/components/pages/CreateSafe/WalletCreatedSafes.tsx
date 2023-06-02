@@ -63,7 +63,7 @@ export function WalletCreatedSafes() {
             </div>
           )}
 
-          <Skeleton isLoading={isFetching} totalOfLines={3} className="h-40">
+          <Skeleton isLoading={isFetching} totalOfLines={3} className="h-56">
             {isError && (
               <div className="w-full flex flex-col items-center justify-center gap-5">
                 <SmartSafeIconLogo className="w-20 h-20 opacity-60" />

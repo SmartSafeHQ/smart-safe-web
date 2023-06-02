@@ -23,8 +23,7 @@ export function ChangeThresholdModal() {
     transactionNonce,
     isChangeThresholdOpen,
     setIsChangeThresholdOpen,
-    changeThresholdMutation,
-    changeThresholdMutationIsLoading
+    changeThresholdMutation
   } = useSafeManagementHook()
 
   async function handleChangeThreshold() {
@@ -44,7 +43,9 @@ export function ChangeThresholdModal() {
 
       setIsChangeThresholdOpen(false)
 
-      toast.success('Proposal created! View it on transactions tab')
+      toast.success(
+        'Transaction proposal successfully created! View it on the transactions tab'
+      )
     } catch (err) {
       getWe3ErrorMessageWithToast(err)
     } finally {
@@ -56,7 +57,7 @@ export function ChangeThresholdModal() {
     <DialogModal.Root
       open={isChangeThresholdOpen}
       onOpenChange={isOpen => {
-        if (changeThresholdMutationIsLoading) return
+        if (isWaitingTransaction) return
 
         setIsChangeThresholdOpen(isOpen)
       }}

@@ -26,7 +26,6 @@ export function AddOwnerModal() {
     isAddOwnerOpen,
     setIsAddOwnerOpen,
     addOwnerMutation,
-    addOwnerMutationIsLoading,
     createContactMutation,
     safeThreshold,
     transactionNonce
@@ -78,7 +77,9 @@ export function AddOwnerModal() {
 
       setIsAddOwnerOpen(false)
 
-      toast.success('Proposal created! View it on transactions tab')
+      toast.success(
+        'Transaction proposal successfully created! View it on the transactions tab'
+      )
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     } finally {
@@ -90,7 +91,7 @@ export function AddOwnerModal() {
     <DialogModal.Root
       open={isAddOwnerOpen}
       onOpenChange={isOpen => {
-        if (addOwnerMutationIsLoading) return
+        if (isWaitingTransaction) return
 
         setIsAddOwnerOpen(isOpen)
       }}

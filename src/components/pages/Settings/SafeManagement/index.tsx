@@ -1,3 +1,5 @@
+import clsx from 'clsx'
+
 import { Button } from '@components/Button'
 import { Heading } from '@components/Heading'
 import { AddOwnerModal } from './AddOwnerModal'
@@ -13,6 +15,8 @@ export function SafeManagement() {
     safeThreshold,
     ownersData,
     safeOwnersError,
+    thresholdIsFetching,
+    safeOwnersIsFetching,
     setIsChangeThresholdOpen,
     setIsAddOwnerOpen
   } = useSafeManagementHook()
@@ -50,7 +54,12 @@ export function SafeManagement() {
                     ownersData.map(({ address, formattedAddress, name }) => (
                       <div
                         key={address}
-                        className="flex flex-col gap-1 p-2 border-t-1 border-zinc-300 dark:border-zinc-700"
+                        className={clsx(
+                          'flex flex-col gap-1 p-2 border-t-1 border-zinc-300 dark:border-zinc-700',
+                          {
+                            'animate-pulse': safeOwnersIsFetching
+                          }
+                        )}
                       >
                         <Heading>{name}</Heading>
 
@@ -104,7 +113,12 @@ export function SafeManagement() {
                 isLoading={!safeThreshold || !ownersData}
                 className="w-full max-w-[8.5rem] h-6"
               >
-                <Text asChild>
+                <Text
+                  asChild
+                  className={clsx({
+                    'animate-pulse': thresholdIsFetching || safeOwnersIsFetching
+                  })}
+                >
                   <p>
                     <Text className="font-bold">{safeThreshold}</Text> out of{' '}
                     <Text className="font-bold">{ownersData?.length}</Text>{' '}
