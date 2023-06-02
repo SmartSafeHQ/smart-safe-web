@@ -24,7 +24,7 @@ export function DeleteSpendingLimitsModal() {
 
     try {
       await mutateAsync({
-        address: 'address',
+        safeAddress: 'address',
         customerWalletPrivateKey: 'privateKey',
         withdrawalIndex: selectedSpendingLimits.index
       })

@@ -57,39 +57,33 @@ export function useChangeThreshold() {
     mutationKey: ['changeThreshold'],
     mutationFn: (input: ChangeThreholdFunctionInput) =>
       changeThreholdFunction(input),
-    onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
+    onSuccess: (_, variables) => {
+      queryClient.cancelQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
-      await queryClient.cancelQueries({
+      queryClient.cancelQueries({
         queryKey: ['safeThreshold', variables.safeAddress]
       })
-      await queryClient.cancelQueries({
+      queryClient.cancelQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
     },
-    onError: async (_, variables, context) => {
-      await queryClient.setQueryData(
-        ['safeTxNonce', variables.safeAddress],
-        context
-      )
-      await queryClient.setQueryData(
+    onError: (_, variables, context) => {
+      queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
+      queryClient.setQueryData(
         ['safeThreshold', variables.safeAddress],
         context
       )
-      await queryClient.setQueryData(
-        ['safeTxQueue', variables.safeAddress],
-        context
-      )
+      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
     },
-    onSettled: async (_data, _error, variables) => {
-      await queryClient.invalidateQueries({
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['safeThreshold', variables.safeAddress]
       })
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
     }

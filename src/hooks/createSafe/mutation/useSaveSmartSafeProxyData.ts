@@ -40,8 +40,8 @@ export function useSaveSmartSafeProxyData() {
     mutationKey: ['saveSmartSafeProxyData'],
     mutationFn: (input: DeploySafeFunctionInput) =>
       saveSmartSafeProxyDataFunction(input),
-    onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
+    onSuccess: (_, variables) => {
+      queryClient.cancelQueries({
         queryKey: ['addressSafes', variables.deployWalletAddress]
       })
     },

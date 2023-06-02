@@ -69,8 +69,8 @@ export function useDeploySafeProxyMutation() {
     mutationKey: ['deploySafe'],
     mutationFn: (input: DeploySafeFunctionInput) =>
       deploySafeProxyFunction(input),
-    onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
+    onSuccess: (_, variables) => {
+      queryClient.cancelQueries({
         queryKey: ['addressSafes', variables.deployWalletAddress]
       })
     },

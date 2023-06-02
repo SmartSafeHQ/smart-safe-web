@@ -56,40 +56,23 @@ export function useAddOwner() {
   return useMutation({
     mutationKey: ['addOwner'],
     mutationFn: (input: AddOwnerFunctionInput) => addOwnerFunction(input),
-    onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
-        queryKey: ['safeOwners', variables.safeAddress]
-      })
-      await queryClient.cancelQueries({
-        queryKey: ['safeOwnersCount', variables.safeAddress]
-      })
-      await queryClient.cancelQueries({
+    onSuccess: (_, variables) => {
+      queryClient.cancelQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
-      await queryClient.cancelQueries({
+      queryClient.cancelQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['safeOwners', variables.safeAddress], context)
-      queryClient.setQueryData(
-        ['safeOwnersCount', variables.safeAddress],
-        context
-      )
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
       queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
     },
-    onSettled: async (_data, _error, variables) => {
-      await queryClient.invalidateQueries({
-        queryKey: ['safeOwners', variables.safeAddress]
-      })
-      await queryClient.invalidateQueries({
-        queryKey: ['safeOwnersCount', variables.safeAddress]
-      })
-      await queryClient.invalidateQueries({
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
     }

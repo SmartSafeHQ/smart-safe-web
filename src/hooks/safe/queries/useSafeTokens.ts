@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 interface FetchSafeTokensInput {
-  address?: string
+  safeAddress?: string
   chainId?: string
 }
 
@@ -17,8 +17,8 @@ export interface FetchSafeTokensOutput {
 export async function fetchSafeTokens(
   input: FetchSafeTokensInput
 ): Promise<FetchSafeTokensOutput[]> {
-  if (!input.address || !input.chainId) {
-    throw new Error('wallet address and chain id required')
+  if (!input.safeAddress || !input.chainId) {
+    throw new Error('safe address and chain id required')
   }
 
   const safeChain = CHAINS_ATTRIBUTES.find(
@@ -38,13 +38,13 @@ export async function fetchSafeTokens(
 }
 
 export function useSafeTokens(
-  address?: string,
+  safeAddress?: string,
   chainId?: string,
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['safeTokens', address],
-    queryFn: () => fetchSafeTokens({ address, chainId }),
+    queryKey: ['safeTokens', safeAddress],
+    queryFn: () => fetchSafeTokens({ safeAddress, chainId }),
     enabled,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes

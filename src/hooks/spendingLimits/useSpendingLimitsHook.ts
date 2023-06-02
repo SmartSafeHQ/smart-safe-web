@@ -122,7 +122,7 @@ export const useSpendingLimitsHook = () => {
 
       await mutateAsync({
         ...data,
-        address: 'address',
+        safeAddress: 'address',
         customerWalletPrivateKey: 'privateKey',
         coin: spendingLimitsToken,
         recipientName: findContactForRecipient?.contactName

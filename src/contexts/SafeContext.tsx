@@ -101,7 +101,7 @@ export function SafeProvider({ children }: SafeProviderProps) {
       >({
         queryKey: ['addressSafes', wallet.accounts[0].address],
         queryFn: () =>
-          fetchAddressSafes({ address: wallet.accounts[0].address })
+          fetchAddressSafes({ walletAddress: wallet.accounts[0].address })
       })
 
       const checkSafeExists = response.find(

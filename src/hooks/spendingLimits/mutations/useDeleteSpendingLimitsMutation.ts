@@ -5,7 +5,7 @@ import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { queryClient } from '@lib/reactQuery'
 
 interface DeleteSpedingLimitsFunctionInput {
-  address: string
+  safeAddress: string
   customerWalletPrivateKey: string
   withdrawalIndex: number
 }
@@ -31,18 +31,18 @@ export function useDeleteSpendingLimitsMutation() {
     mutationFn: (input: DeleteSpedingLimitsFunctionInput) =>
       deleteSpendingLimitsFunction(input),
     onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
-        queryKey: ['spendingLimits', variables.address]
+      queryClient.cancelQueries({
+        queryKey: ['spendingLimits', variables.safeAddress]
       })
 
       const prev = await queryClient.ensureQueryData<
         SelectedSpendingLimitsProps[]
       >({
-        queryKey: ['spendingLimits', variables.address]
+        queryKey: ['spendingLimits', variables.safeAddress]
       })
 
       queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
-        ['spendingLimits', variables.address],
+        ['spendingLimits', variables.safeAddress],
         () => {
           const deletedIndex = prev.findIndex(
             auth => auth.index === variables.withdrawalIndex
@@ -59,13 +59,16 @@ export function useDeleteSpendingLimitsMutation() {
       return prev
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['spendingLimits', variables.address], context)
+      queryClient.setQueryData(
+        ['spendingLimits', variables.safeAddress],
+        context
+      )
     },
     onSettled: (_data, _error, variables) => {
       const timeout = setTimeout(
         () =>
           queryClient.invalidateQueries({
-            queryKey: ['spendingLimits', variables.address]
+            queryKey: ['spendingLimits', variables.safeAddress]
           }),
         5000
       )

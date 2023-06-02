@@ -41,8 +41,8 @@ export function useSafeOwners(
   enabled = true
 ) {
   return useQuery({
-    queryFn: () => fetchSafeOwners({ safeAddress, rpcUrl }),
     queryKey: ['safeOwners', safeAddress],
+    queryFn: () => fetchSafeOwners({ safeAddress, rpcUrl }),
     staleTime: 60 * 2000, // 2 minutes
     enabled
   })

@@ -18,6 +18,7 @@ export const useTransactionsQueue = () => {
   const {
     data: transactionsQueue,
     error: transactionsQueueError,
+    isRefetching: transactionsQueueIsRefetching,
     isLoading: transactionsQueueIsLoading
   } = useSafeTxQueue(safe?.address, safe?.chain.chainId, !!safe)
 
@@ -34,7 +35,7 @@ export const useTransactionsQueue = () => {
 
       await mutateApproveTransaction({
         chainId: safe.chain.chainId,
-        fromSafe: safe.address,
+        safeAddress: safe.address,
         ownerAddress: wallet.accounts[0].address,
         provider: wallet.provider,
         to: transactionsQueue.toApprove.to,
@@ -54,7 +55,7 @@ export const useTransactionsQueue = () => {
 
       await mutateRejectTransaction({
         chainId: safe.chain.chainId,
-        fromSafe: safe.address,
+        safeAddress: safe.address,
         ownerAddress: wallet.accounts[0].address,
         provider: wallet.provider,
         to: transactionsQueue.toApprove.to,
@@ -71,6 +72,7 @@ export const useTransactionsQueue = () => {
     transactionsQueue,
     transactionsQueueError,
     transactionsQueueIsLoading,
+    transactionsQueueIsRefetching,
     handleApproveTransaction,
     handleRejectTransaction,
     isLoadingApprove,

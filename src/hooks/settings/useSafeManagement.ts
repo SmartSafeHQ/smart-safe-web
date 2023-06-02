@@ -42,27 +42,18 @@ export const useSafeManagementHook = () => {
   } = useSafeManagement()
   const [wallets] = useWallets()
 
-  const {
-    mutateAsync: addOwnerMutation,
-    isLoading: addOwnerMutationIsLoading
-  } = useAddOwner()
-  const {
-    mutateAsync: changeThresholdMutation,
-    isLoading: changeThresholdMutationIsLoading
-  } = useChangeThreshold()
+  const { mutateAsync: addOwnerMutation } = useAddOwner()
+  const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
   const { mutateAsync: createContactMutation } = useCreateContact()
   const { data: contactList } = useContactsQuery(safe?.ownerId, !!safe)
 
-  const { data: safeThreshold } = useSafeThreshold(
-    safe?.address,
-    safe?.chain.rpcUrl,
-    !!safe
-  )
-  const { data: safeOwners, error: safeOwnersError } = useSafeOwners(
-    safe?.address,
-    safe?.chain.rpcUrl,
-    !!safe
-  )
+  const { data: safeThreshold, isFetching: thresholdIsFetching } =
+    useSafeThreshold(safe?.address, safe?.chain.rpcUrl, !!safe)
+  const {
+    data: safeOwners,
+    isFetching: safeOwnersIsFetching,
+    error: safeOwnersError
+  } = useSafeOwners(safe?.address, safe?.chain.rpcUrl, !!safe)
   const { data: transactionNonce } = useSafeTxNonce(
     safe?.address,
     safe?.chain.rpcUrl,
@@ -103,10 +94,10 @@ export const useSafeManagementHook = () => {
     safeOwnersError,
     transactionNonce,
     addOwnerMutation,
-    addOwnerMutationIsLoading,
     changeThresholdMutation,
     createContactMutation,
-    changeThresholdMutationIsLoading,
+    thresholdIsFetching,
+    safeOwnersIsFetching,
     isAddOwnerOpen,
     setIsAddOwnerOpen,
     setIsChangeThresholdOpen,

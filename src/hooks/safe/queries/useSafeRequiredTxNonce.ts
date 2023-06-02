@@ -30,8 +30,8 @@ export function useSafeRequiredTxNonce(
   enabled = true
 ) {
   return useQuery({
-    queryFn: () => fetchSafeRequiredTxNonce({ safeAddress, rpcUrl }),
     queryKey: ['safeRequiredTxNonce', safeAddress],
+    queryFn: () => fetchSafeRequiredTxNonce({ safeAddress, rpcUrl }),
     staleTime: 60 * 2000, // 2 minutes
     enabled
   })

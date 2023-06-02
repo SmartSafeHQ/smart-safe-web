@@ -8,7 +8,7 @@ import {
 } from '@utils/web3/chains/supportedChains'
 
 interface FetchAddressSafesInput {
-  address?: string
+  walletAddress?: string
 }
 
 export interface FetchAddressSafesOutput {
@@ -39,12 +39,12 @@ interface FetchAddressSafesApiResponse {
 export async function fetchAddressSafes(
   input: FetchAddressSafesInput
 ): Promise<FetchAddressSafesOutput[]> {
-  if (!input.address) {
+  if (!input.walletAddress) {
     throw new Error('wallet address is required')
   }
 
   const response = await smartSafeApi.get<FetchAddressSafesApiResponse>(
-    `/safe/${input.address}`
+    `/safe/${input.walletAddress}`
   )
 
   const formattedSafes = response.data.safes.map(owner => {
@@ -74,10 +74,10 @@ export async function fetchAddressSafes(
   return formattedSafes
 }
 
-export function useAddressSafes(address?: string, enabled = true) {
+export function useAddressSafes(walletAddress?: string, enabled = true) {
   return useQuery({
-    queryKey: ['addressSafes', address],
-    queryFn: () => fetchAddressSafes({ address }),
+    queryKey: ['addressSafes', walletAddress],
+    queryFn: () => fetchAddressSafes({ walletAddress }),
     enabled,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes

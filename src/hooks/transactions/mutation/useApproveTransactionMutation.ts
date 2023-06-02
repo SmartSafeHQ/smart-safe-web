@@ -16,7 +16,7 @@ import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQu
 export type ApproveTransactionFunctionInput = {
   provider: Eip1193Provider
   chainId: string
-  fromSafe: string
+  safeAddress: string
   ownerAddress: string
   to: string
   data: string
@@ -26,11 +26,9 @@ export type ApproveTransactionFunctionInput = {
 async function approveTransactionFunction(
   input: ApproveTransactionFunctionInput
 ): Promise<void> {
-  if (!input.fromSafe || !input.chainId) {
+  if (!input.safeAddress || !input.chainId) {
     throw new Error('safe address and chain id required')
   }
-
-  console.log(input)
 
   const safeChain = CHAINS_ATTRIBUTES.find(
     chain => chain.chainId === input.chainId
@@ -44,7 +42,7 @@ async function approveTransactionFunction(
   })
 
   const signer = await provider.getSigner()
-  const contract = new Contract(input.fromSafe, SMART_SAFE_ABI, signer)
+  const contract = new Contract(input.safeAddress, SMART_SAFE_ABI, signer)
 
   const transactionNonce = await contract.getFunction(
     'requiredTransactionNonce'
@@ -54,7 +52,7 @@ async function approveTransactionFunction(
 
   const transaction = {
     chainId: parseInt(input.chainId, 16),
-    from: input.fromSafe,
+    from: input.safeAddress,
     to: input.to,
     transactionNonce: Number(transactionNonce),
     value: amountInWei.toString(),
@@ -78,17 +76,54 @@ export function useApproveTransactionMutation() {
     mutationKey: ['approveTransaction'],
     mutationFn: (input: ApproveTransactionFunctionInput) =>
       approveTransactionFunction(input),
-    onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
-        queryKey: ['safeTxQueue', variables.fromSafe]
+    onSuccess: (_, variables) => {
+      queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeTxNonce', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeOwners', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeOwnersCount', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeThreshold', variables.safeAddress]
       })
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['safeTxQueue', variables.fromSafe], context)
+      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+      queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
+      queryClient.setQueryData(['safeOwners', variables.safeAddress], context)
+      queryClient.setQueryData(
+        ['safeOwnersCount', variables.safeAddress],
+        context
+      )
+      queryClient.setQueryData(
+        ['safeThreshold', variables.safeAddress],
+        context
+      )
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['safeTxQueue', variables.fromSafe]
+        queryKey: ['safeTokenBalance', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxNonce', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeOwners', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeOwnersCount', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeThreshold', variables.safeAddress]
       })
     }
   })

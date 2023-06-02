@@ -7,7 +7,7 @@ import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
 
 interface CreateSpendingLimitsFunctionInput {
-  address: string
+  safeAddress: string
   customerWalletPrivateKey: string
   contactAddress: string
   coin: ChainSettings
@@ -63,12 +63,12 @@ export function useCreateSpendingLimitsMutation() {
       createSpendingLimitsFunction(input),
     onSuccess: async (data, variables) => {
       await queryClient.cancelQueries({
-        queryKey: ['spendingLimits', variables.address]
+        queryKey: ['spendingLimits', variables.safeAddress]
       })
 
       const prev = queryClient.getQueryData<SelectedSpendingLimitsProps[]>([
         'spendingLimits',
-        variables.address
+        variables.safeAddress
       ])
 
       const created = {
@@ -90,7 +90,7 @@ export function useCreateSpendingLimitsMutation() {
       }
 
       queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
-        ['spendingLimits', variables.address],
+        ['spendingLimits', variables.safeAddress],
         () => {
           prev?.push(created)
 
@@ -101,13 +101,16 @@ export function useCreateSpendingLimitsMutation() {
       return prev
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['spendingLimits', variables.address], context)
+      queryClient.setQueryData(
+        ['spendingLimits', variables.safeAddress],
+        context
+      )
     },
     onSettled: (_data, _error, variables) => {
       const timeout = setTimeout(
         () =>
           queryClient.invalidateQueries({
-            queryKey: ['spendingLimits', variables.address]
+            queryKey: ['spendingLimits', variables.safeAddress]
           }),
         5000
       )
