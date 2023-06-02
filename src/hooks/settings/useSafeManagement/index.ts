@@ -42,7 +42,7 @@ export function useSafeManagement() {
     safe?.chain.rpcUrl,
     !!safe
   )
-  const { data: safeOwners } = useSafeOwners(
+  const { data: safeOwners, error: safeOwnersError } = useSafeOwners(
     safe?.address,
     safe?.chain.rpcUrl,
     !!safe
@@ -56,7 +56,7 @@ export function useSafeManagement() {
 
   const ownersData = useMemo(() => {
     if (!contactList || !safeOwners || !wallets) {
-      return []
+      return
     }
 
     return safeOwners.map(owner => {
@@ -73,9 +73,9 @@ export function useSafeManagement() {
       )
 
       return {
-        address: ownerData?.contactAddress || owner.address,
-        formattedAddress: ownerData?.formattedAddress || owner.formattedAddress,
-        name: ownerData?.contactName || ''
+        address: ownerData?.contactAddress ?? owner.address,
+        formattedAddress: ownerData?.formattedAddress ?? owner.formattedAddress,
+        name: ownerData?.contactName ?? ''
       }
     })
   }, [contactList, safeOwners, wallets])
@@ -88,24 +88,13 @@ export function useSafeManagement() {
     }
   }
 
-  const isCurrentConnectWalletAnOwner = useMemo(() => {
-    if (!wallets?.accounts?.[0]?.address || !safeOwners) {
-      return false
-    }
-
-    const currentConnectedWallet = wallets.accounts[0].address
-
-    return safeOwners.some(
-      owner => owner.address.toLowerCase() === currentConnectedWallet
-    )
-  }, [wallets, safeOwners])
-
   return {
     safe,
     ownersCount,
     removeOwner,
     safeThreshold,
     ownersData,
+    safeOwnersError,
     transactionNonce,
     setAddOwnerOpen,
     addOwnerMutation,
@@ -113,7 +102,6 @@ export function useSafeManagement() {
     requiredTransactionNonce,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
-    addOwnerMutationIsLoading,
-    isCurrentConnectWalletAnOwner
+    addOwnerMutationIsLoading
   }
 }

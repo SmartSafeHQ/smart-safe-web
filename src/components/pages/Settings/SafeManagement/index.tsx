@@ -3,6 +3,8 @@ import { Heading } from '@components/Heading'
 import { AddOwnerModal } from './AddOwnerModal'
 import { Text } from '@components/Text'
 import { ChangeThresholdModal } from './ChangeThresholdModal'
+import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { ErrorState } from '@components/FetchingStates/ErrorState'
 
 import { useSafeManagement } from '@hooks/settings/useSafeManagement'
 
@@ -12,14 +14,14 @@ export function SafeManagement() {
     ownersCount,
     safeThreshold,
     ownersData,
+    safeOwnersError,
     transactionNonce,
     setAddOwnerOpen,
     addOwnerMutation,
     isAddOwnerModalOpen,
     setIsChangeThresholdOpen,
     isChangeThresholdModalOpen,
-    addOwnerMutationIsLoading,
-    isCurrentConnectWalletAnOwner
+    addOwnerMutationIsLoading
   } = useSafeManagement()
 
   const isChangeThresholdModalReady =
@@ -31,6 +33,7 @@ export function SafeManagement() {
   const isAddOwnerModalReady =
     safe?.address !== undefined &&
     transactionNonce !== undefined &&
+    ownersData !== undefined &&
     ownersCount !== undefined
 
   return (
@@ -48,39 +51,48 @@ export function SafeManagement() {
             <strong>Add or remove owners from this safe</strong>
           </Text>
 
-          <div className="flex flex-col">
-            <Text asChild className="mb-4 text-sm font-semibold">
-              <strong>Wallet</strong>
-            </Text>
+          <div className="max-w-lg flex flex-1 flex-col items-stretch gap-2">
+            {safeOwnersError ? (
+              <ErrorState title="Unable to load safe owners, please try again" />
+            ) : (
+              <div className="flex flex-col gap-2">
+                <Text asChild className="mb-2 text-sm font-semibold">
+                  <strong>Wallet</strong>
+                </Text>
 
-            <div className="flex gap-2 flex-col">
-              <div>
-                {ownersData.map(({ address, formattedAddress, name }) => (
-                  <div
-                    key={address}
-                    className="flex flex-col gap-1 p-2 border-t-1 border-zinc-300 dark:border-zinc-700"
-                  >
-                    <Heading>{name}</Heading>
+                <Skeleton
+                  isLoading={!ownersData}
+                  totalOfLines={3}
+                  className="w-full h-36"
+                >
+                  {ownersData &&
+                    ownersData.map(({ address, formattedAddress, name }) => (
+                      <div
+                        key={address}
+                        className="flex flex-col gap-1 p-2 border-t-1 border-zinc-300 dark:border-zinc-700"
+                      >
+                        <Heading>{name}</Heading>
 
-                    <Text className="block text-zinc-600 dark:text-zinc-400 lg:hidden">
-                      {formattedAddress}
-                    </Text>
+                        <Text className="block text-zinc-600 dark:text-zinc-400 lg:hidden">
+                          {formattedAddress}
+                        </Text>
 
-                    <Text className="hidden text-zinc-600 dark:text-zinc-400 lg:block">
-                      {address}
-                    </Text>
-                  </div>
-                ))}
+                        <Text className="hidden text-zinc-600 dark:text-zinc-400 lg:block">
+                          {address}
+                        </Text>
+                      </div>
+                    ))}
+                </Skeleton>
+
+                <Button
+                  className="w-max mt-2"
+                  onClick={() => setAddOwnerOpen(true)}
+                  disabled={!ownersData}
+                >
+                  + Add owner
+                </Button>
               </div>
-
-              <Button
-                className="w-max"
-                onClick={() => setAddOwnerOpen(true)}
-                disabled={!isCurrentConnectWalletAnOwner}
-              >
-                + Add owner
-              </Button>
-            </div>
+            )}
           </div>
         </div>
       </div>
@@ -98,22 +110,36 @@ export function SafeManagement() {
             <strong>Transaction requires the confirmation of:</strong>
           </Text>
 
-          <div className="flex flex-col items-stretch gap-4">
-            <Text asChild>
-              <p>
-                <Text className="font-bold">{safeThreshold}</Text> out of{' '}
-                <Text className="font-bold">{ownersCount}</Text> owners.
-              </p>
-            </Text>
-
-            <Button
-              className="w-max"
-              disabled={!isCurrentConnectWalletAnOwner}
-              onClick={() => setIsChangeThresholdOpen(true)}
+          {safeOwnersError ? (
+            <Text
+              asChild
+              className="text-sm font-medium text-zinc-800 dark:text-zinc-400"
             >
-              Change
-            </Button>
-          </div>
+              <strong>Unable to load threshold owners, please try again</strong>
+            </Text>
+          ) : (
+            <div className="flex flex-col items-stretch gap-4">
+              <Skeleton
+                isLoading={!safeThreshold || !ownersCount}
+                className="w-full max-w-[8.5rem] h-6"
+              >
+                <Text asChild>
+                  <p>
+                    <Text className="font-bold">{safeThreshold}</Text> out of{' '}
+                    <Text className="font-bold">{ownersCount}</Text> owners.
+                  </p>
+                </Text>
+              </Skeleton>
+
+              <Button
+                className="w-max"
+                disabled={!safeThreshold || !ownersCount}
+                onClick={() => setIsChangeThresholdOpen(true)}
+              >
+                Change
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
