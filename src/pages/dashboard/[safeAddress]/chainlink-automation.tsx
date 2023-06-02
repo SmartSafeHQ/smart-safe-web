@@ -10,7 +10,7 @@ import { PageLayout } from '@components/pages/Layouts/PageLayout'
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { SpendingLimitsProvider } from '@contexts/SpendingLimitsContext'
 
-const SpendingLimits = () => {
+const ChainlinkAutomation = () => {
   const { setIsCreateSpendingLimitsOpen } = useSpendingLimitsHook()
 
   return (
@@ -52,8 +52,8 @@ const SpendingLimits = () => {
   )
 }
 
-SpendingLimits.getLayout = function getLayout(page: ReactElement) {
+ChainlinkAutomation.getLayout = function getLayout(page: ReactElement) {
   return <SpendingLimitsProvider>{page}</SpendingLimitsProvider>
 }
 
-export default SpendingLimits
+export default ChainlinkAutomation

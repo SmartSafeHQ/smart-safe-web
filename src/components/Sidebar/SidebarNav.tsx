@@ -4,9 +4,7 @@ import {
   PaperPlaneTilt,
   Gear,
   ArrowsCounterClockwise,
-  Users,
-  ClockCountdown,
-  Dna
+  Users
 } from '@phosphor-icons/react'
 
 import { NavLink } from './NavLink'
@@ -40,6 +38,17 @@ const NAV_LINKS_SUB_GENERAL = [
   }
 ]
 
+const NAV_LINKS_SUB_CHAINLINK = [
+  {
+    href: 'chainlink-automation',
+    activePath: 'chainlink-automation',
+    icon: PaperPlaneTilt,
+    title: 'Chainlink automation',
+    isDisabled: false,
+    isExchange: true
+  }
+]
+
 const NAV_LINKS_SUB_MANAGE = [
   {
     href: 'send',
@@ -53,20 +62,6 @@ const NAV_LINKS_SUB_MANAGE = [
     activePath: 'contacts',
     icon: Users,
     title: 'Contacts',
-    isDisabled: false
-  },
-  {
-    href: 'spending-limits',
-    activePath: 'spending-limits',
-    icon: ClockCountdown,
-    title: 'Spending Limits',
-    isDisabled: false
-  },
-  {
-    href: 'recurring-payments',
-    activePath: 'recurring-payments',
-    icon: Dna,
-    title: 'Recurring Payments',
     isDisabled: false
   }
 ]
@@ -103,41 +98,60 @@ export function SidebarNav() {
               </DialogDrawer.Close>
             ))}
           </SidebarNavGroup.Root>
-
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
-            <SidebarNavGroup.Title>Manage funds</SidebarNavGroup.Title>
-
-            {NAV_LINKS_SUB_MANAGE.map(navLink => (
-              <DialogDrawer.Close key={navLink.title}>
-                <NavLink
-                  href={navLink.href}
-                  Icon={navLink.icon}
-                  isDisabled={navLink.isDisabled}
-                  basePath={`/dashboard/${safe?.address}`}
-                  activePath={navLink.activePath}
-                >
-                  {navLink.title}
-                </NavLink>
-              </DialogDrawer.Close>
-            ))}
-          </SidebarNavGroup.Root>
-
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
-            {NAV_LINKS_SUB_SETTINGS.map(navLink => (
-              <DialogDrawer.Close key={navLink.title}>
-                <NavLink
-                  href={navLink.href}
-                  Icon={navLink.icon}
-                  isDisabled={navLink.isDisabled}
-                  basePath={`/dashboard/${safe?.address}`}
-                  activePath={navLink.activePath}
-                >
-                  {navLink.title}
-                </NavLink>
-              </DialogDrawer.Close>
-            ))}
-          </SidebarNavGroup.Root>
         </ScrollArea>
+
+        <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+          <SidebarNavGroup.Title>Automation</SidebarNavGroup.Title>
+
+          {NAV_LINKS_SUB_CHAINLINK.map(navLink => (
+            <DialogDrawer.Close key={navLink.title}>
+              <NavLink
+                href={navLink.href}
+                Icon={navLink.icon}
+                isDisabled={navLink.isDisabled}
+                isExchange
+                basePath={`/dashboard/${safe?.address}`}
+                activePath={navLink.activePath}
+              >
+                {navLink.title}
+              </NavLink>
+            </DialogDrawer.Close>
+          ))}
+        </SidebarNavGroup.Root>
+
+        <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+          <SidebarNavGroup.Title>Manage funds</SidebarNavGroup.Title>
+
+          {NAV_LINKS_SUB_MANAGE.map(navLink => (
+            <DialogDrawer.Close key={navLink.title}>
+              <NavLink
+                href={navLink.href}
+                Icon={navLink.icon}
+                isDisabled={navLink.isDisabled}
+                basePath={`/dashboard/${safe?.address}`}
+                activePath={navLink.activePath}
+              >
+                {navLink.title}
+              </NavLink>
+            </DialogDrawer.Close>
+          ))}
+        </SidebarNavGroup.Root>
+
+        <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+          {NAV_LINKS_SUB_SETTINGS.map(navLink => (
+            <DialogDrawer.Close key={navLink.title}>
+              <NavLink
+                href={navLink.href}
+                Icon={navLink.icon}
+                isDisabled={navLink.isDisabled}
+                basePath={`/dashboard/${safe?.address}`}
+                activePath={navLink.activePath}
+              >
+                {navLink.title}
+              </NavLink>
+            </DialogDrawer.Close>
+          ))}
+        </SidebarNavGroup.Root>
       </div>
     </div>
   )
