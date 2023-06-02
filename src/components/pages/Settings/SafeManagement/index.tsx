@@ -6,35 +6,17 @@ import { ChangeThresholdModal } from './ChangeThresholdModal'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 
-import { useSafeManagement } from '@hooks/settings/useSafeManagement'
+import { useSafeManagementHook } from '@hooks/settings/useSafeManagement'
 
 export function SafeManagement() {
   const {
-    safe,
     ownersCount,
     safeThreshold,
     ownersData,
     safeOwnersError,
-    transactionNonce,
-    setAddOwnerOpen,
-    addOwnerMutation,
-    isAddOwnerModalOpen,
     setIsChangeThresholdOpen,
-    isChangeThresholdModalOpen,
-    addOwnerMutationIsLoading
-  } = useSafeManagement()
-
-  const isChangeThresholdModalReady =
-    ownersCount !== undefined &&
-    safeThreshold !== undefined &&
-    safe?.address !== undefined &&
-    transactionNonce !== undefined
-
-  const isAddOwnerModalReady =
-    safe?.address !== undefined &&
-    transactionNonce !== undefined &&
-    ownersData !== undefined &&
-    ownersCount !== undefined
+    setIsAddOwnerOpen
+  } = useSafeManagementHook()
 
   return (
     <div className="flex flex-col gap-4 p-2">
@@ -86,7 +68,7 @@ export function SafeManagement() {
 
                 <Button
                   className="w-max mt-2"
-                  onClick={() => setAddOwnerOpen(true)}
+                  onClick={() => setIsAddOwnerOpen(true)}
                   disabled={!ownersData}
                 >
                   + Add owner
@@ -143,30 +125,9 @@ export function SafeManagement() {
         </div>
       </div>
 
-      {isChangeThresholdModalReady && (
-        <ChangeThresholdModal
-          ownersCount={ownersCount}
-          safeAddress={safe.address}
-          safeThreshold={safeThreshold}
-          transactionNonce={transactionNonce}
-          isOpen={isChangeThresholdModalOpen}
-          onOpenChange={setIsChangeThresholdOpen}
-        />
-      )}
+      <AddOwnerModal />
 
-      {isAddOwnerModalReady && (
-        <AddOwnerModal
-          owners={ownersData}
-          threshold={safeThreshold ?? 1}
-          ownersCount={ownersCount}
-          isOpen={isAddOwnerModalOpen}
-          onOpenChange={setAddOwnerOpen}
-          currentSafeOwnerId={safe.ownerId}
-          transactionNonce={transactionNonce}
-          isLoading={addOwnerMutationIsLoading}
-          addOwnerMutation={addOwnerMutation}
-        />
-      )}
+      <ChangeThresholdModal />
     </div>
   )
 }

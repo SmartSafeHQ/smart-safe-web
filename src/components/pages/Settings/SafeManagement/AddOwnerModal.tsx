@@ -1,9 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react'
-import type { ContractTransactionResponse } from 'ethers'
-import type { UseMutateAsyncFunction } from '@tanstack/react-query'
-import type { AddOwnerFunctionInput } from '@hooks/safe/mutation/useAddOwner'
-
-import { z } from 'zod'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -16,74 +10,43 @@ import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SelectInput } from '@components/Inputs/SelectInput'
 import { Text } from '@components/Text'
 
-import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
+import {
+  AddOwnerFieldValues,
+  addOwnerValidationSchema,
+  useSafeManagementHook
+} from '@hooks/settings/useSafeManagement'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-import { useSafe } from '@contexts/SafeContext'
 
-interface AddOwnerModalProps {
-  isOpen: boolean
-  isLoading: boolean
-  ownersCount: number
-  threshold: number
-  transactionNonce: number
-  currentSafeOwnerId: string
-  owners: { name: string; address: string }[]
-  onOpenChange: Dispatch<SetStateAction<boolean>>
-  addOwnerMutation: UseMutateAsyncFunction<
-    ContractTransactionResponse,
-    unknown,
-    AddOwnerFunctionInput,
-    unknown
-  >
-}
-
-export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
-export const ADDRESS_REGEX = /^(0x)[0-9a-fA-F]{40}$/
-
-const validationSchema = z.object({
-  ownerName: z
-    .string()
-    .min(3, 'name required')
-    .regex(
-      CONTACT_NAME_REGEX,
-      'Invalid contact name. Ensure that it does not contain any special characters, spaces, or more than 20 letters'
-    ),
-  ownerAddress: z.string().regex(ADDRESS_REGEX, 'Invalid address.'),
-  threshold: z.number().min(1)
-})
-
-type FieldValues = z.infer<typeof validationSchema>
-
-export function AddOwnerModal({
-  isOpen,
-  owners,
-  isLoading,
-  threshold,
-  ownersCount,
-  onOpenChange,
-  transactionNonce,
-  currentSafeOwnerId,
-  addOwnerMutation
-}: AddOwnerModalProps) {
+export function AddOwnerModal() {
   const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
   const [{ wallet }] = useConnectWallet()
-  const { safe } = useSafe()
+  const {
+    safe,
+    safeOwners,
+    isAddOwnerOpen,
+    setIsAddOwnerOpen,
+    addOwnerMutation,
+    addOwnerMutationIsLoading,
+    createContactMutation,
+    ownersCount,
+    safeThreshold,
+    transactionNonce
+  } = useSafeManagementHook()
 
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors }
-  } = useForm<FieldValues>({
-    resolver: zodResolver(validationSchema)
+  } = useForm<AddOwnerFieldValues>({
+    resolver: zodResolver(addOwnerValidationSchema)
   })
-  const { mutateAsync: createContactMutation } = useCreateContact()
 
-  const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!safe || !wallet) return
+  const onSubmit: SubmitHandler<AddOwnerFieldValues> = async data => {
+    if (!safe || !wallet || !safeOwners || !transactionNonce) return
 
     try {
-      const isRepeatedOwnerAddress = owners.find(
+      const isRepeatedOwnerAddress = safeOwners.find(
         ({ address }) => address === data.ownerAddress
       )
 
@@ -108,8 +71,10 @@ export function AddOwnerModal({
       await createContactMutation({
         contactAddress: data.ownerAddress,
         contactName: data.ownerName,
-        creatorId: currentSafeOwnerId
+        creatorId: safe.ownerId
       })
+
+      setIsAddOwnerOpen(false)
 
       toast.success('Proposal created! View it on transactions tab.')
     } catch (error) {
@@ -121,11 +86,11 @@ export function AddOwnerModal({
 
   return (
     <DialogModal.Root
-      open={isOpen}
+      open={isAddOwnerOpen}
       onOpenChange={isOpen => {
-        if (isLoading) return
+        if (addOwnerMutationIsLoading) return
 
-        onOpenChange(isOpen)
+        setIsAddOwnerOpen(isOpen)
       }}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
@@ -176,36 +141,38 @@ export function AddOwnerModal({
               </TextInput.Content>
             </TextInput.Root>
 
-            <div className="flex flex-1 gap-6 items-center justify-start">
-              <SelectInput.Root
-                {...register('threshold', { valueAsNumber: true })}
-                className="w-full max-w-[5rem]"
-                defaultValue={String(threshold)}
-              >
-                <SelectInput.Trigger className="h-10" />
+            {ownersCount && (
+              <div className="flex flex-1 gap-6 items-center justify-start">
+                <SelectInput.Root
+                  {...register('threshold', { valueAsNumber: true })}
+                  className="w-full max-w-[5rem]"
+                  defaultValue={String(safeThreshold)}
+                >
+                  <SelectInput.Trigger className="h-10" />
 
-                <SelectInput.Content>
-                  <SelectInput.Group>
-                    {Array.from(
-                      { length: ownersCount + 1 },
-                      (_, i) => i + 1
-                    ).map(count => (
-                      <SelectInput.Item
-                        key={count}
-                        value={String(count)}
-                        className="h-8"
-                      >
-                        <div className="w-full flex items-streach justify-start">
-                          {count}
-                        </div>
-                      </SelectInput.Item>
-                    ))}
-                  </SelectInput.Group>
-                </SelectInput.Content>
-              </SelectInput.Root>
+                  <SelectInput.Content>
+                    <SelectInput.Group>
+                      {Array.from(
+                        { length: ownersCount + 1 },
+                        (_, i) => i + 1
+                      ).map(count => (
+                        <SelectInput.Item
+                          key={count}
+                          value={String(count)}
+                          className="h-8"
+                        >
+                          <div className="w-full flex items-streach justify-start">
+                            {count}
+                          </div>
+                        </SelectInput.Item>
+                      ))}
+                    </SelectInput.Group>
+                  </SelectInput.Content>
+                </SelectInput.Root>
 
-              <Text>out of {ownersCount + 1} owner(s).</Text>
-            </div>
+                <Text>out of {ownersCount + 1} owner(s).</Text>
+              </div>
+            )}
           </div>
 
           <DialogModal.Footer>

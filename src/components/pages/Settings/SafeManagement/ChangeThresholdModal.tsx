@@ -1,5 +1,3 @@
-import type { Dispatch, SetStateAction } from 'react'
-
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { useConnectWallet } from '@web3-onboard/react'
@@ -11,65 +9,56 @@ import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-import { useChangeThreshold } from '@hooks/safe/mutation/useChangeThreshold'
+import { useSafeManagementHook } from '@hooks/settings/useSafeManagement'
 
-interface ChangeThresholdModalProps {
-  isOpen: boolean
-  safeAddress: string
-  ownersCount: number
-
-  safeThreshold: number
-  transactionNonce: number
-  onOpenChange: Dispatch<SetStateAction<boolean>>
-}
-
-export function ChangeThresholdModal({
-  isOpen,
-  safeAddress,
-  ownersCount,
-  onOpenChange,
-  safeThreshold,
-  transactionNonce
-}: ChangeThresholdModalProps) {
+export function ChangeThresholdModal() {
   const [newThreshold, setNewThreshold] = useState('1')
   const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
   const [{ wallet }] = useConnectWallet()
 
   const {
-    mutateAsync: changeThresholdMutation,
-    isLoading: changeThresholdMutationIsLoading
-  } = useChangeThreshold()
+    safe,
+    ownersCount,
+    safeThreshold,
+    transactionNonce,
+    isChangeThresholdOpen,
+    setIsChangeThresholdOpen,
+    changeThresholdMutation,
+    changeThresholdMutationIsLoading
+  } = useSafeManagementHook()
 
   async function handleChangeThreshold() {
-    if (!wallet) return
+    if (!wallet || !safe || !transactionNonce) return
 
     try {
       setIsWaitingTransaction(true)
+
       const transaction = await changeThresholdMutation({
         provider: wallet.provider,
-        safeAddress,
+        safeAddress: safe.address,
         transactionNonce,
         newThreshold: Number(newThreshold)
       })
 
       await transaction.wait()
 
-      setIsWaitingTransaction(false)
+      setIsChangeThresholdOpen(false)
 
       toast.success('Proposal created! View it on transactions tab.')
     } catch (err) {
-      setIsWaitingTransaction(false)
       getWe3ErrorMessageWithToast(err)
+    } finally {
+      setIsWaitingTransaction(false)
     }
   }
 
   return (
     <DialogModal.Root
-      open={isOpen}
+      open={isChangeThresholdOpen}
       onOpenChange={isOpen => {
         if (changeThresholdMutationIsLoading) return
 
-        onOpenChange(isOpen)
+        setIsChangeThresholdOpen(isOpen)
       }}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
@@ -90,32 +79,34 @@ export function ChangeThresholdModal({
             </Text>
 
             <div className="flex flex-1 gap-6 items-center justify-start">
-              <SelectInput.Root
-                value={newThreshold}
-                defaultValue={String(safeThreshold)}
-                onValueChange={value => setNewThreshold(value)}
-                className="w-full max-w-[5rem]"
-              >
-                <SelectInput.Trigger className="h-10" />
+              {ownersCount && (
+                <SelectInput.Root
+                  value={newThreshold}
+                  defaultValue={String(safeThreshold)}
+                  onValueChange={value => setNewThreshold(value)}
+                  className="w-full max-w-[5rem]"
+                >
+                  <SelectInput.Trigger className="h-10" />
 
-                <SelectInput.Content>
-                  <SelectInput.Group>
-                    {Array.from({ length: ownersCount }, (_, i) => i + 1).map(
-                      count => (
-                        <SelectInput.Item
-                          key={count}
-                          value={String(count)}
-                          className="h-8"
-                        >
-                          <div className="w-full flex items-streach justify-start">
-                            {count}
-                          </div>
-                        </SelectInput.Item>
-                      )
-                    )}
-                  </SelectInput.Group>
-                </SelectInput.Content>
-              </SelectInput.Root>
+                  <SelectInput.Content>
+                    <SelectInput.Group>
+                      {Array.from({ length: ownersCount }, (_, i) => i + 1).map(
+                        count => (
+                          <SelectInput.Item
+                            key={count}
+                            value={String(count)}
+                            className="h-8"
+                          >
+                            <div className="w-full flex items-streach justify-start">
+                              {count}
+                            </div>
+                          </SelectInput.Item>
+                        )
+                      )}
+                    </SelectInput.Group>
+                  </SelectInput.Content>
+                </SelectInput.Root>
+              )}
 
               <Text>out of {ownersCount} owner(s)</Text>
             </div>

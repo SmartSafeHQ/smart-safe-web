@@ -1,7 +1,10 @@
 import Head from 'next/head'
+import { ReactElement } from 'react'
 
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
 import { SafeManagement } from '@components/pages/Settings/SafeManagement'
+
+import { SafeManagementProvider } from '@contexts/settings/SafeManagementContext'
 
 const Settings = () => {
   return (
@@ -31,6 +34,10 @@ const Settings = () => {
       </div>
     </div>
   )
+}
+
+Settings.getLayout = function getLayout(page: ReactElement) {
+  return <SafeManagementProvider>{page}</SafeManagementProvider>
 }
 
 export default Settings
