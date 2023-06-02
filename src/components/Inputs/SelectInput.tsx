@@ -62,7 +62,7 @@ function SelectInputTrigger({
   return (
     <RadixSelect.Trigger
       className={clsx(
-        'w-full gap-3 inline-flex items-center justify-between rounded-md px-4 text-sm outline-none ring-gray-900 dark:ring-gray-100 focus-within:ring-2 data-[placeholder]:text-gray-400',
+        'w-full gap-3 inline-flex items-center justify-between px-3 overflow-hidden rounded-md bg-white dark:bg-black capitalize border-1 border-zinc-200 dark:border-zinc-700 ring-zinc-900 dark:ring-zinc-100 focus-within:ring-2 data-[placeholder]:text-zinc-400 hover:border-zinc-300 hover:dark:border-zinc-600',
         className
       )}
       {...props}
@@ -101,7 +101,10 @@ function SelectInputContent({
   return (
     <RadixSelect.Portal className="z-50">
       <RadixSelect.Content
-        className={clsx('hidden rounded-md shadow-md', className)}
+        className={clsx(
+          'overflow-hidden hidden rounded-md shadow-md border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700',
+          className
+        )}
         {...props}
       >
         <RadixSelect.ScrollUpButton className="flex items-center justify-center h-7 text-cyan-500 cursor-default">
@@ -133,7 +136,7 @@ function SelectInputGroup({
   return (
     <RadixSelect.Group {...props}>
       {labelText && (
-        <RadixSelect.Label className="px-7 text-sm font-semibold leading-7 text-gray-500 dark:text-gray-400">
+        <RadixSelect.Label className="px-7 text-sm font-semibold leading-7 text-zinc-500 dark:text-zinc-400">
           {labelText}
         </RadixSelect.Label>
       )}
@@ -154,7 +157,7 @@ const SelectInputItem: ForwardRefRenderFunction<
       ref={ref}
       className={clsx(
         className,
-        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium text-gray-800 dark:text-gray-300 rounded data-[disabled]:text-gray-100 data-[disabled]:pointer-events-none data-[highlighted]:outline-none group'
+        'min-h-[2rem] pr-9 pl-7 flex items-center relative select-none text-sm font-medium overflow-hidden text-zinc-800 dark:text-zinc-300 rounded-md data-[disabled]:text-zinc-100 pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800 data-[disabled]:pointer-events-none data-[highlighted]:outline-none group'
       )}
       {...props}
     >

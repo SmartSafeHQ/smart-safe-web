@@ -4,8 +4,8 @@ import Image from 'next/image'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useDeploySmartSafeProxyFee } from '@hooks/safes/create/queries/useDeploySmartSafeProxyFee'
-import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
+import { useDeploySmartSafeProxyFee } from '@hooks/createSafe/queries/useDeploySmartSafeProxyFee'
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function NetworkFeeEst() {
   const { ownersFields, safeInfos } = useDeploySafeHook()

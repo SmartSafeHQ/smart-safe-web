@@ -16,7 +16,7 @@ export function AssetsTabsList() {
   return (
     <ScrollArea>
       <Tabs.List
-        aria-label="Manage your smart account assets"
+        aria-label="Manage your safe assets"
         className="w-full min-h-[2.75rem] text-center text-sm"
       >
         {safe && (

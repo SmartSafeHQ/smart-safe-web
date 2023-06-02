@@ -1,7 +1,7 @@
 import { Transaction } from './TransactionsLayout'
 import { transactionComponents } from '@components/pages/Transactions/TransactionsLayout/TransactionTypes'
 
-import { TransacitonTypes } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { TransacitonTypes } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 
 interface ToApproveTransactionProps {
   transaction: TransacitonTypes

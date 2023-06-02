@@ -3,7 +3,7 @@ import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { AssetsTable } from '@components/pages/Assets/AssetsTable'
 
-import { useSafeTokens } from '@hooks/safes/retrieve/queries/useSafeTokens'
+import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { useSafe } from '@contexts/SafeContext'
 
 export function AssetsList() {

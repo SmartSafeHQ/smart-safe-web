@@ -26,26 +26,24 @@ export function SendModal() {
     <DialogModal.Root
       open={isSendOpen}
       onOpenChange={isOpen => {
+        if (isSendingTx) return
+
         setIsSendOpen(isOpen)
 
         if (!isOpen) resetSendMutation()
       }}
     >
-      <DialogModal.Content
-        className="md:max-w-[32rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900"
-        onEscapeKeyDown={e => isSendingTx && e.preventDefault()}
-        onInteractOutside={e => isSendingTx && e.preventDefault()}
-      >
-        <div className="w-full h-full flex flex-col justify-start overflow-x-hidden">
+      <DialogModal.Content className="md:max-w-[32rem]">
+        <div className="w-full h-full flex flex-col justify-start">
           {!txData ? (
             <>
-              <header className="flex items-center flex-col gap-3 p-8 rounded-lg bg-zinc-50 dark:bg-zinc-950">
-                <DialogModal.Title className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+              <DialogModal.Header className="gap-3">
+                <DialogModal.Title className="text-3xl">
                   Send ${transaction.usdAmount.slice(0, 8)}
                 </DialogModal.Title>
 
                 <div className="w-full flex items-center justify-center gap-2">
-                  <DialogModal.Description className="text-center text-zinc-700 dark:text-zinc-300 text-xl font-semibold uppercase">
+                  <DialogModal.Description className="text-center text-xl font-semibold uppercase">
                     {transaction.formattedTokenAmount} {selectedToken.symbol}
                   </DialogModal.Description>
 
@@ -56,15 +54,15 @@ export function SendModal() {
                     height={24}
                   />
                 </div>
-              </header>
+              </DialogModal.Header>
 
-              <div className="w-full flex flex-col gap-4 py-8 px-4 border-t-1 border-zinc-200 dark:border-zinc-700 sm:px-8">
+              <div className="w-full flex flex-col gap-4 py-8 px-4 sm:px-8">
                 <SendAddresses />
 
                 <SendFeeEst />
               </div>
 
-              <div className="w-full px-4 pb-6 flex justify-center items-center sm:px-8">
+              <DialogModal.Footer className="pb-6 sm:px-8">
                 <Button
                   onClick={() =>
                     handleSendTransaction({
@@ -78,7 +76,7 @@ export function SendModal() {
                 >
                   Send
                 </Button>
-              </div>
+              </DialogModal.Footer>
             </>
           ) : (
             <SendSuccess
@@ -87,7 +85,7 @@ export function SendModal() {
           )}
         </div>
 
-        {!isSendingTx && <DialogModal.IconClose />}
+        <DialogModal.IconClose />
       </DialogModal.Content>
     </DialogModal.Root>
   )

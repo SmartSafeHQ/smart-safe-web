@@ -22,7 +22,7 @@ const TransactionsQueue = () => {
 
           <Tabs.Content value={SAFE_TRANSACTIONS_TABS_VALUES.QUEUE}>
             <PageLayout.Root>
-              <PageLayout.Header className="justify-center items-start gap-3 pb-8 pt-10 px-2">
+              <PageLayout.Header className="justify-center items-start gap-3 pb-8 pt-10 px-3">
                 <PageLayout.Title>Transactions Queue</PageLayout.Title>
               </PageLayout.Header>
 
