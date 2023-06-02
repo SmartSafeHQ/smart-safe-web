@@ -66,7 +66,23 @@ export async function fetchSpendingLimits(
 
   // return authorizations
 
-  return []
+  return [
+    {
+      index: 1,
+      recipientName: 'Paulo',
+      coinAmount: 10,
+      dateFrom: new Date(),
+      coin: {
+        symbol: 'MATIC',
+        avatar: '/networks/polygon-logo.svg',
+        address: 'https://api-testnet.polygonscan.com/api'
+      },
+      wallet: {
+        address: '0x7f79b85B062a81197196b33EB573D0B98973781A',
+        formattedAddress: '0x7f7...781A'
+      }
+    }
+  ]
 }
 
 export function useSpendingLimitsQuery(

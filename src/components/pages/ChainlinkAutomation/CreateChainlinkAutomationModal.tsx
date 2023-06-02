@@ -10,7 +10,7 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 
-export function CreateSpendingLimitsModal() {
+export function CreateChainlinkAutomationModal() {
   const {
     contacts,
     setSearchContacts,
@@ -44,7 +44,7 @@ export function CreateSpendingLimitsModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
           <DialogModal.Title className="text-3xl">
-            Create authorization
+            Create chainlink automation
           </DialogModal.Title>
         </DialogModal.Header>
 
@@ -64,7 +64,7 @@ export function CreateSpendingLimitsModal() {
                     ?.classList.remove('!hidden')
                 }
               >
-                <TextInput.Label>Contact</TextInput.Label>
+                <TextInput.Label>wallet address</TextInput.Label>
 
                 <Skeleton isLoading={contactsIsLoading} className="w-full h-12">
                   {contacts && (
@@ -78,7 +78,7 @@ export function CreateSpendingLimitsModal() {
                         role="combobox"
                         list=""
                         autoFocus={true}
-                        placeholder="Enter contact address"
+                        placeholder="Enter wallet address"
                         onChange={e => handleInputChange(e.target.value)}
                       />
                     </TextInput.Content>
@@ -212,7 +212,7 @@ export function CreateSpendingLimitsModal() {
 
           <DialogModal.Footer>
             <Button type="submit" isLoading={isSubmitting} className="w-full">
-              Create Authorization
+              Create automation
             </Button>
           </DialogModal.Footer>
         </form>

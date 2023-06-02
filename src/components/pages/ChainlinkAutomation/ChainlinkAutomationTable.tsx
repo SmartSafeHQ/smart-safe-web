@@ -14,15 +14,15 @@ import { handleCopyToClipboard } from '@utils/clipboard'
 
 dayjs.extend(utc)
 
-interface SpendingLimitsTableThProps
+interface ChainlinkAutomationTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode
 }
 
-function SpendingLimitsTableTh({
+function ChainlinkAutomationTableTh({
   children,
   className
-}: SpendingLimitsTableThProps) {
+}: ChainlinkAutomationTableThProps) {
   return (
     <th
       className={clsx(
@@ -35,18 +35,20 @@ function SpendingLimitsTableTh({
   )
 }
 
-SpendingLimitsTableTh.displayName = 'SpendingLimitsTable.Th'
+ChainlinkAutomationTableTh.displayName = 'ChainlinkAutomationTable.Th'
 
-interface SpendingLimitsTableTrProps {
-  spendingLimits: SelectedSpendingLimitsProps
-  handleDeleteSpendingLimits: (_withdrawal: SelectedSpendingLimitsProps) => void
+interface ChainlinkAutomationTableTrProps {
+  chainlinkAutomation: SelectedSpendingLimitsProps
+  handleDeleteChainlinkAutomation: (
+    _withdrawal: SelectedSpendingLimitsProps
+  ) => void
 }
 
-function SpendingLimitsTableTr({
-  spendingLimits,
-  handleDeleteSpendingLimits
-}: SpendingLimitsTableTrProps) {
-  const formattedDate = dayjs(spendingLimits.dateFrom)
+function ChainlinkAutomationTableTr({
+  chainlinkAutomation,
+  handleDeleteChainlinkAutomation
+}: ChainlinkAutomationTableTrProps) {
+  const formattedDate = dayjs(chainlinkAutomation.dateFrom)
     .utc()
     .format('DD/MM/YYYY')
 
@@ -54,9 +56,9 @@ function SpendingLimitsTableTr({
     <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3 min-w-[8rem]">
         <div className="flex flex-col gap-1">
-          {spendingLimits?.recipientName && (
+          {chainlinkAutomation?.recipientName && (
             <Text className="text-sm md:text-base" asChild>
-              <strong>{spendingLimits.recipientName}</strong>
+              <strong>{chainlinkAutomation.recipientName}</strong>
             </Text>
           )}
 
@@ -67,10 +69,10 @@ function SpendingLimitsTableTr({
             >
               <button
                 onClick={() =>
-                  handleCopyToClipboard(spendingLimits.wallet.address)
+                  handleCopyToClipboard(chainlinkAutomation.wallet.address)
                 }
               >
-                {spendingLimits.wallet.formattedAddress}
+                {chainlinkAutomation.wallet.formattedAddress}
               </button>
             </HoverCard.Trigger>
 
@@ -85,12 +87,12 @@ function SpendingLimitsTableTr({
       <td>
         <div className="flex items-center gap-2">
           <Text className="uppercase text-sm md:text-base">
-            {spendingLimits.coinAmount} {spendingLimits.coin.symbol}
+            {chainlinkAutomation.coinAmount} {chainlinkAutomation.coin.symbol}
           </Text>
 
           <Image
-            src={spendingLimits.coin.avatar}
-            alt={`${spendingLimits.coin.symbol} avatar`}
+            src={chainlinkAutomation.coin.avatar}
+            alt={`${chainlinkAutomation.coin.symbol} avatar`}
             width={20}
             height={20}
             className="w-5 h-5"
@@ -122,7 +124,9 @@ function SpendingLimitsTableTr({
               className="min-w-[10rem] p-2"
             >
               <DropdownMenu.Item
-                onSelect={() => handleDeleteSpendingLimits(spendingLimits)}
+                onSelect={() =>
+                  handleDeleteChainlinkAutomation(chainlinkAutomation)
+                }
                 className="px-3 py-2 rounded-md text-sm"
               >
                 <Text className="text-sm text-red-500">delete</Text>
@@ -135,9 +139,9 @@ function SpendingLimitsTableTr({
   )
 }
 
-SpendingLimitsTableTr.displayName = 'SpendingLimitsTableTr.Tr'
+ChainlinkAutomationTableTr.displayName = 'ChainlinkAutomationTableTr.Tr'
 
-export const SpendingLimitsTable = {
-  Th: SpendingLimitsTableTh,
-  Tr: SpendingLimitsTableTr
+export const ChainlinkAutomationTable = {
+  Th: ChainlinkAutomationTableTh,
+  Tr: ChainlinkAutomationTableTr
 }
