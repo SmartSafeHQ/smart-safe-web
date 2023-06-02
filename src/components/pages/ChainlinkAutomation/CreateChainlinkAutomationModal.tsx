@@ -46,6 +46,10 @@ export function CreateChainlinkAutomationModal() {
           <DialogModal.Title className="text-3xl">
             Create chainlink automation
           </DialogModal.Title>
+
+          <DialogModal.Description className="text-lg text-center">
+            Automate you safe key smart contract payment functions
+          </DialogModal.Description>
         </DialogModal.Header>
 
         <form
@@ -64,7 +68,7 @@ export function CreateChainlinkAutomationModal() {
                     ?.classList.remove('!hidden')
                 }
               >
-                <TextInput.Label>wallet address</TextInput.Label>
+                <TextInput.Label>Wallet address</TextInput.Label>
 
                 <Skeleton isLoading={contactsIsLoading} className="w-full h-12">
                   {contacts && (
@@ -192,7 +196,7 @@ export function CreateChainlinkAutomationModal() {
               variant="secondary"
               error={errors.fromDate?.message}
             >
-              <TextInput.Label>Start date</TextInput.Label>
+              <TextInput.Label>Time trigger</TextInput.Label>
 
               <TextInput.Content>
                 <TextInput.Input

@@ -87,7 +87,7 @@ export function DeleteChainlinkAutomationModal() {
 
           <div className="w-full flex items-start justify-between gap-1">
             <Heading asChild>
-              <h3>From date</h3>
+              <h3>Time trigger</h3>
             </Heading>
 
             <Text className="text-sm">

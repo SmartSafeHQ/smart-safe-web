@@ -1,11 +1,13 @@
 import Head from 'next/head'
 import { ReactElement } from 'react'
+import Link from 'next/link'
 
 import { Button } from '@components/Button'
 import { ChainlinkAutomationList } from '@components/pages/ChainlinkAutomation/ChainlinkAutomationList'
 import { DeleteChainlinkAutomationModal } from '@components/pages/ChainlinkAutomation/DeleteChainlinkAutomationModal'
 import { CreateChainlinkAutomationModal } from '@components/pages/ChainlinkAutomation/CreateChainlinkAutomationModal'
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
+import { Text } from '@components/Text'
 
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { SpendingLimitsProvider } from '@contexts/SpendingLimitsContext'
@@ -26,9 +28,18 @@ const ChainlinkAutomation = () => {
             <div className="flex flex-1 flex-col items-stretch justify-between gap-4">
               <PageLayout.Title>Chainlink Automation</PageLayout.Title>
 
-              <PageLayout.Description>
-                Set rules for beneficiaries to access funds without having to
-                collect all signatures
+              <PageLayout.Description className="flex items-center gap-1">
+                <Text>
+                  Automate payments in your safe contract powered by the
+                  Chainlink Web3
+                  <Link
+                    href="https://chain.link/automation"
+                    target="_blank"
+                    className="ml-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600"
+                  >
+                    automation services platform
+                  </Link>
+                </Text>
               </PageLayout.Description>
             </div>
 

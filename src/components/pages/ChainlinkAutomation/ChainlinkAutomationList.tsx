@@ -37,12 +37,14 @@ export function ChainlinkAutomationList() {
                   </ChainlinkAutomationTable.Th>
 
                   <ChainlinkAutomationTable.Th className="py-3 ">
-                    Spending limit allowed
+                    Payment amount
                   </ChainlinkAutomationTable.Th>
 
                   <ChainlinkAutomationTable.Th className="py-3 ">
-                    From
+                    Trigger
                   </ChainlinkAutomationTable.Th>
+
+                  <th />
 
                   <th />
                 </tr>

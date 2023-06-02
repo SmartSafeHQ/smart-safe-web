@@ -3,7 +3,8 @@ import Image from 'next/image'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import { ReactNode, ThHTMLAttributes } from 'react'
-import { DotsThreeVertical } from '@phosphor-icons/react'
+import { ArrowRight, DotsThreeVertical } from '@phosphor-icons/react'
+import Link from 'next/link'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
@@ -103,6 +104,18 @@ function ChainlinkAutomationTableTr({
       <td>
         <Text className="text-sm text-zinc-500 dark:text-zinc-400 md:text-base">
           {formattedDate}
+        </Text>
+      </td>
+
+      <td className="w-[9rem]">
+        <Text
+          asChild
+          className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
+        >
+          <Link href="https://chain.link/" target="_blank">
+            view on chainlink
+            <ArrowRight className="w-4 h-4 text-cyan-500" />
+          </Link>
         </Text>
       </td>
 
