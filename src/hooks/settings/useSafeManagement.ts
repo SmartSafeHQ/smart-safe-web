@@ -7,7 +7,6 @@ import { useSafe } from '@contexts/SafeContext'
 import { useSafeOwners } from '@hooks/safe/queries/useSafeOwners'
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useSafeThreshold } from '@hooks/safe/queries/useSafeThreshold'
-import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
 import { useSafeTxNonce } from '@hooks/safe/queries/useSafeTxNonce'
 import { useAddOwner } from '@hooks/safe/mutation/useAddOwner'
 import { useChangeThreshold } from '@hooks/safe/mutation/useChangeThreshold'
@@ -28,7 +27,7 @@ export const addOwnerValidationSchema = z.object({
 
     return isAddressValid
   }, 'Invalid owner address'),
-  threshold: z.number().min(1)
+  threshold: z.string().min(1)
 })
 
 export type AddOwnerFieldValues = z.infer<typeof addOwnerValidationSchema>
@@ -54,11 +53,6 @@ export const useSafeManagementHook = () => {
   const { mutateAsync: createContactMutation } = useCreateContact()
   const { data: contactList } = useContactsQuery(safe?.ownerId, !!safe)
 
-  const { data: ownersCount } = useSafeOwnersCount(
-    safe?.address,
-    safe?.chain.rpcUrl,
-    !!safe
-  )
   const { data: safeThreshold } = useSafeThreshold(
     safe?.address,
     safe?.chain.rpcUrl,
@@ -103,7 +97,6 @@ export const useSafeManagementHook = () => {
 
   return {
     safe,
-    ownersCount,
     safeThreshold,
     ownersData,
     safeOwners,

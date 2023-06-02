@@ -4,7 +4,7 @@ import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
 import { ChangeOwnersTxProps } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
-import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
+import { useSafeOwners } from '@hooks/safe/queries/useSafeOwners'
 
 interface ToApproveAddOwnerTxProps {
   transaction: ChangeOwnersTxProps
@@ -19,7 +19,7 @@ export function ToApproveAddOwnerTx({ transaction }: ToApproveAddOwnerTxProps) {
     isLoadingReject,
     handleRejectTransaction
   } = useTransactionsQueue()
-  const { data: ownersCount } = useSafeOwnersCount(
+  const { data: safeOwners } = useSafeOwners(
     safe?.address,
     safe?.chain.rpcUrl,
     !!safe
@@ -29,8 +29,8 @@ export function ToApproveAddOwnerTx({ transaction }: ToApproveAddOwnerTxProps) {
     <>
       <AddOwnerTx.Header
         txNonce={transaction.nonce}
-        currentOwnersCount={ownersCount}
-        newOwnersCount={(ownersCount ?? 0) + 1}
+        currentOwnersCount={safeOwners?.length}
+        newOwnersCount={(safeOwners?.length ?? 0) + 1}
         createdAt={transaction.createdAt}
         className="min-h-[4rem] py-4 px-6"
       >

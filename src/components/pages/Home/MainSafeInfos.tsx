@@ -8,11 +8,12 @@ import { Text } from '@components/Text'
 
 import { handleCopyToClipboard } from '@utils/clipboard'
 import { useSafe } from '@contexts/SafeContext'
-import { useSafeOwnersCount } from '@hooks/safe/queries/useSafeOwnersCount'
+import { useSafeOwners } from '@hooks/safe/queries/useSafeOwners'
 
 export function MainSafeInfos() {
   const { safe } = useSafe()
-  const { data: ownersCount } = useSafeOwnersCount(
+
+  const { data: safeOwners } = useSafeOwners(
     safe?.address,
     safe?.chain.rpcUrl,
     !!safe
@@ -91,13 +92,13 @@ export function MainSafeInfos() {
           </div>
         </Skeleton>
 
-        <Skeleton isLoading={!safe} className="w-14 h-[3.75rem]">
+        <Skeleton isLoading={!safeOwners} className="w-14 h-[3.75rem]">
           <div className="flex flex-col items-stretch justify-start gap-1">
             <Text asChild className="text-sm text-zinc-500">
               <strong>Owners</strong>
             </Text>
 
-            <Text className="text-3xl">{ownersCount}</Text>
+            <Text className="text-3xl">{safeOwners?.length}</Text>
           </div>
         </Skeleton>
       </div>

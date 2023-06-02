@@ -18,7 +18,7 @@ export function ChangeThresholdModal() {
 
   const {
     safe,
-    ownersCount,
+    safeOwners,
     safeThreshold,
     transactionNonce,
     isChangeThresholdOpen,
@@ -28,7 +28,7 @@ export function ChangeThresholdModal() {
   } = useSafeManagementHook()
 
   async function handleChangeThreshold() {
-    if (!wallet || !safe || !transactionNonce) return
+    if (!wallet || !safe || transactionNonce === undefined) return
 
     try {
       setIsWaitingTransaction(true)
@@ -44,7 +44,7 @@ export function ChangeThresholdModal() {
 
       setIsChangeThresholdOpen(false)
 
-      toast.success('Proposal created! View it on transactions tab.')
+      toast.success('Proposal created! View it on transactions tab')
     } catch (err) {
       getWe3ErrorMessageWithToast(err)
     } finally {
@@ -79,10 +79,9 @@ export function ChangeThresholdModal() {
             </Text>
 
             <div className="flex flex-1 gap-6 items-center justify-start">
-              {ownersCount && (
+              {safeOwners && (
                 <SelectInput.Root
                   value={newThreshold}
-                  defaultValue={String(safeThreshold)}
                   onValueChange={value => setNewThreshold(value)}
                   className="w-full max-w-[5rem]"
                 >
@@ -90,8 +89,12 @@ export function ChangeThresholdModal() {
 
                   <SelectInput.Content>
                     <SelectInput.Group>
-                      {Array.from({ length: ownersCount }, (_, i) => i + 1).map(
-                        count => (
+                      {Array.from(
+                        { length: safeOwners.length },
+                        (_, i) => i + 1
+                      )
+                        .filter(count => count !== safeThreshold)
+                        .map(count => (
                           <SelectInput.Item
                             key={count}
                             value={String(count)}
@@ -101,14 +104,13 @@ export function ChangeThresholdModal() {
                               {count}
                             </div>
                           </SelectInput.Item>
-                        )
-                      )}
+                        ))}
                     </SelectInput.Group>
                   </SelectInput.Content>
                 </SelectInput.Root>
               )}
 
-              <Text>out of {ownersCount} owner(s)</Text>
+              <Text>out of {safeOwners?.length} owner(s)</Text>
             </div>
 
             <div className="flex items-center justify-start gap-2 mt-4">
@@ -118,7 +120,7 @@ export function ChangeThresholdModal() {
                 <p>
                   Current policy is{' '}
                   <Text className="font-bold">{safeThreshold}</Text> out of{' '}
-                  <Text className="font-bold">{ownersCount}</Text>.
+                  <Text className="font-bold">{safeOwners?.length}</Text>
                 </p>
               </Text>
             </div>
@@ -126,7 +128,11 @@ export function ChangeThresholdModal() {
 
           <DialogModal.Footer>
             <DialogModal.Close>
-              <Button type="button" variant="ghost">
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isWaitingTransaction}
+              >
                 Cancel
               </Button>
             </DialogModal.Close>

@@ -10,7 +10,6 @@ import { useSafeManagementHook } from '@hooks/settings/useSafeManagement'
 
 export function SafeManagement() {
   const {
-    ownersCount,
     safeThreshold,
     ownersData,
     safeOwnersError,
@@ -102,20 +101,21 @@ export function SafeManagement() {
           ) : (
             <div className="flex flex-col items-stretch gap-4">
               <Skeleton
-                isLoading={!safeThreshold || !ownersCount}
+                isLoading={!safeThreshold || !ownersData}
                 className="w-full max-w-[8.5rem] h-6"
               >
                 <Text asChild>
                   <p>
                     <Text className="font-bold">{safeThreshold}</Text> out of{' '}
-                    <Text className="font-bold">{ownersCount}</Text> owners.
+                    <Text className="font-bold">{ownersData?.length}</Text>{' '}
+                    owners.
                   </p>
                 </Text>
               </Skeleton>
 
               <Button
                 className="w-max"
-                disabled={!safeThreshold || !ownersCount}
+                disabled={!safeThreshold || !ownersData}
                 onClick={() => setIsChangeThresholdOpen(true)}
               >
                 Change
@@ -126,7 +126,6 @@ export function SafeManagement() {
       </div>
 
       <AddOwnerModal />
-
       <ChangeThresholdModal />
     </div>
   )

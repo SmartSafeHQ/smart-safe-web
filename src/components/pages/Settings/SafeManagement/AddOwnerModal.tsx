@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { toast } from 'react-toastify'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type SubmitHandler, useForm } from 'react-hook-form'
+import { type SubmitHandler, useForm, Controller } from 'react-hook-form'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { Button } from '@components/Button'
@@ -28,12 +28,12 @@ export function AddOwnerModal() {
     addOwnerMutation,
     addOwnerMutationIsLoading,
     createContactMutation,
-    ownersCount,
     safeThreshold,
     transactionNonce
   } = useSafeManagementHook()
 
   const {
+    control,
     register,
     handleSubmit,
     setError,
@@ -43,7 +43,9 @@ export function AddOwnerModal() {
   })
 
   const onSubmit: SubmitHandler<AddOwnerFieldValues> = async data => {
-    if (!safe || !wallet || !safeOwners || !transactionNonce) return
+    if (!safe || !wallet || !safeOwners || transactionNonce === undefined) {
+      return
+    }
 
     try {
       const isRepeatedOwnerAddress = safeOwners.find(
@@ -51,7 +53,7 @@ export function AddOwnerModal() {
       )
 
       if (isRepeatedOwnerAddress) {
-        setError('ownerAddress', { message: 'Address already is an owner.' })
+        setError('ownerAddress', { message: 'Address already is an owner' })
 
         return
       }
@@ -63,7 +65,7 @@ export function AddOwnerModal() {
         transactionNonce,
         safeAddress: safe.address,
         ownerAddress: data.ownerAddress,
-        newThreshold: data.threshold
+        newThreshold: +data.threshold
       })
 
       await transaction.wait()
@@ -76,7 +78,7 @@ export function AddOwnerModal() {
 
       setIsAddOwnerOpen(false)
 
-      toast.success('Proposal created! View it on transactions tab.')
+      toast.success('Proposal created! View it on transactions tab')
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     } finally {
@@ -141,43 +143,56 @@ export function AddOwnerModal() {
               </TextInput.Content>
             </TextInput.Root>
 
-            {ownersCount && (
+            {safeOwners && (
               <div className="flex flex-1 gap-6 items-center justify-start">
-                <SelectInput.Root
-                  {...register('threshold', { valueAsNumber: true })}
-                  className="w-full max-w-[5rem]"
+                <Controller
+                  name="threshold"
+                  control={control}
                   defaultValue={String(safeThreshold)}
-                >
-                  <SelectInput.Trigger className="h-10" />
+                  render={({ field: { value, onChange, ref, ...props } }) => (
+                    <SelectInput.Root
+                      {...props}
+                      onValueChange={onChange}
+                      value={value}
+                      ref={ref}
+                      className="w-full max-w-[5rem]"
+                    >
+                      <SelectInput.Trigger className="h-10" />
 
-                  <SelectInput.Content>
-                    <SelectInput.Group>
-                      {Array.from(
-                        { length: ownersCount + 1 },
-                        (_, i) => i + 1
-                      ).map(count => (
-                        <SelectInput.Item
-                          key={count}
-                          value={String(count)}
-                          className="h-8"
-                        >
-                          <div className="w-full flex items-streach justify-start">
-                            {count}
-                          </div>
-                        </SelectInput.Item>
-                      ))}
-                    </SelectInput.Group>
-                  </SelectInput.Content>
-                </SelectInput.Root>
+                      <SelectInput.Content className="w-full">
+                        <SelectInput.Group>
+                          {Array.from(
+                            { length: safeOwners.length + 1 },
+                            (_, i) => i + 1
+                          ).map(count => (
+                            <SelectInput.Item
+                              key={count}
+                              value={String(count)}
+                              className="h-8"
+                            >
+                              <div className="w-full flex items-streach justify-start">
+                                {count}
+                              </div>
+                            </SelectInput.Item>
+                          ))}
+                        </SelectInput.Group>
+                      </SelectInput.Content>
+                    </SelectInput.Root>
+                  )}
+                />
 
-                <Text>out of {ownersCount + 1} owner(s).</Text>
+                <Text>out of {safeOwners.length + 1} owner(s).</Text>
               </div>
             )}
           </div>
 
           <DialogModal.Footer>
             <DialogModal.Close>
-              <Button type="button" variant="ghost">
+              <Button
+                type="button"
+                variant="ghost"
+                disabled={isWaitingTransaction}
+              >
                 Cancel
               </Button>
             </DialogModal.Close>
