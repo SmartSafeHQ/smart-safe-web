@@ -13,7 +13,7 @@ export interface SelectedSpendingLimitsProps {
   index: number
   recipientName?: string
   coinAmount: number
-  dateFrom: Date
+  dateFrom: string
   coin: {
     symbol: string
     avatar: string

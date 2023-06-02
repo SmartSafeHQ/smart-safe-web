@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import dayjs from 'dayjs'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -90,9 +89,7 @@ export function DeleteChainlinkAutomationModal() {
               <h3>Time trigger</h3>
             </Heading>
 
-            <Text className="text-sm">
-              {dayjs(selectedSpendingLimits.dateFrom).format('DD/MM/YYYY')}
-            </Text>
+            <Text className="text-sm">{selectedSpendingLimits.dateFrom}</Text>
           </div>
         </div>
 
@@ -108,6 +105,7 @@ export function DeleteChainlinkAutomationModal() {
             isLoading={isLoading}
             variant="red"
             className="w-max"
+            disabled
           >
             Delete Automation
           </Button>

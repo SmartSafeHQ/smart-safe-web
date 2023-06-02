@@ -8,11 +8,10 @@ import { formatWalletAddress } from '@utils/web3'
 
 interface CreateSpendingLimitsFunctionInput {
   safeAddress: string
-  customerWalletPrivateKey: string
   contactAddress: string
   coin: ChainSettings
   amount: number
-  fromDate: Date
+  fromDate: string
   recipientName?: string
 }
 
@@ -92,9 +91,9 @@ export function useCreateSpendingLimitsMutation() {
       queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
         ['spendingLimits', variables.safeAddress],
         () => {
-          prev?.push(created)
+          const updattedLimits = [...(prev ?? []), created]
 
-          return prev
+          return updattedLimits
         }
       )
 
@@ -106,16 +105,10 @@ export function useCreateSpendingLimitsMutation() {
         context
       )
     },
-    onSettled: (_data, _error, variables) => {
-      const timeout = setTimeout(
-        () =>
-          queryClient.invalidateQueries({
-            queryKey: ['spendingLimits', variables.safeAddress]
-          }),
-        5000
-      )
-
-      clearTimeout(timeout)
+    onSettled: (_data, _error) => {
+      // queryClient.invalidateQueries({
+      //   queryKey: ['spendingLimits', variables.safeAddress]
+      // })
     }
   })
 }

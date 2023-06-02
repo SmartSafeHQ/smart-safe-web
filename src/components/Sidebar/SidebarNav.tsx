@@ -81,7 +81,7 @@ export function SidebarNav() {
 
   return (
     <div className="flex flex-1 bg-zinc-50 dark:bg-zinc-950">
-      <div className="flex flex-1 flex-col items-stretch justify-start md:w-[15rem] md:max-lg:w-[6rem] md:max-lg:px-1 lg:p-3">
+      <div className="flex flex-1 flex-col items-stretch justify-start md:w-[15rem] md:max-lg:w-[7rem] md:max-lg:px-1 lg:p-3">
         <ScrollArea className="pr-3 max-h-[calc(100vh-86px)]">
           <SidebarNavGroup.Root>
             {NAV_LINKS_SUB_GENERAL.map(navLink => (
@@ -101,7 +101,7 @@ export function SidebarNav() {
         </ScrollArea>
 
         <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
-          <SidebarNavGroup.Title>Automation</SidebarNavGroup.Title>
+          <SidebarNavGroup.Title>Automations</SidebarNavGroup.Title>
 
           {NAV_LINKS_SUB_CHAINLINK.map(navLink => (
             <DialogDrawer.Close key={navLink.title}>

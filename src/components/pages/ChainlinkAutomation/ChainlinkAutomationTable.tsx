@@ -1,7 +1,5 @@
 import clsx from 'clsx'
 import Image from 'next/image'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { ReactNode, ThHTMLAttributes } from 'react'
 import { ArrowRight, DotsThreeVertical } from '@phosphor-icons/react'
 import Link from 'next/link'
@@ -12,8 +10,6 @@ import { DropdownMenu } from '@components/DropdownMenu'
 
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
-
-dayjs.extend(utc)
 
 interface ChainlinkAutomationTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
@@ -49,9 +45,7 @@ function ChainlinkAutomationTableTr({
   chainlinkAutomation,
   handleDeleteChainlinkAutomation
 }: ChainlinkAutomationTableTrProps) {
-  const formattedDate = dayjs(chainlinkAutomation.dateFrom)
-    .utc()
-    .format('DD/MM/YYYY')
+  const formattedDate = chainlinkAutomation.dateFrom
 
   return (
     <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
@@ -102,7 +96,7 @@ function ChainlinkAutomationTableTr({
       </td>
 
       <td>
-        <Text className="text-sm text-zinc-500 dark:text-zinc-400 md:text-base">
+        <Text className="text-sm text-zinc-500 dark:text-zinc-400">
           {formattedDate}
         </Text>
       </td>
