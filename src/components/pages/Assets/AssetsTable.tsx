@@ -61,7 +61,7 @@ function AssetsTableTr({
         </div>
       </td>
 
-      <td className="py-3 uppercase text-gray-800 dark:text-gray-400">
+      <td className="py-3 uppercase text-zinc-800 dark:text-zinc-400">
         <Skeleton isLoading={isLoading} className="w-20 h-6">
           {data && (
             <Text
@@ -75,7 +75,7 @@ function AssetsTableTr({
         </Skeleton>
       </td>
 
-      <td className="py-3 uppercase text-gray-800 dark:text-gray-400">
+      <td className="py-3 uppercase text-zinc-800 dark:text-zinc-400">
         <Skeleton isLoading={isLoading} className="w-20 h-6">
           {data && (
             <Text

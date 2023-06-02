@@ -31,15 +31,15 @@ export function useDeleteContact() {
       deleteContactFunction(input),
     onSuccess: async _ => {
       await queryClient.cancelQueries({
-        queryKey: ['listContacts']
+        queryKey: ['contacts']
       })
     },
     onError: (_, _variables, context) => {
-      queryClient.setQueryData(['listContacts'], context)
+      queryClient.setQueryData(['contacts'], context)
     },
     onSettled: (_data, _error, _variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['listContacts']
+        queryKey: ['contacts']
       })
     }
   })

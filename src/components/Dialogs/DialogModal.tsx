@@ -3,6 +3,7 @@ import clsx from 'clsx'
 import { IconProps, X } from '@phosphor-icons/react'
 import {
   ForwardRefExoticComponent,
+  HTMLAttributes,
   HtmlHTMLAttributes,
   ReactNode,
   RefAttributes
@@ -16,8 +17,6 @@ function DialogModalRoot({ children, ...props }: DialogModalRootProps) {
   return <RadixDialog.Root {...props}>{children}</RadixDialog.Root>
 }
 
-DialogModalRoot.displayName = 'DialogModal.Root'
-
 interface DialogModalTriggerProps {
   children: ReactNode
 }
@@ -26,25 +25,24 @@ function DialogModalTrigger({ children }: DialogModalTriggerProps) {
   return <RadixDialog.Trigger asChild>{children}</RadixDialog.Trigger>
 }
 
-DialogModalTrigger.displayName = 'DialogModal.Trigger'
-
 interface DialogModalTitleProps extends HtmlHTMLAttributes<HTMLHeadingElement> {
   children: ReactNode
 }
 
 function DialogModalTitle({
   children,
-
+  className,
   ...props
 }: DialogModalTitleProps) {
   return (
-    <RadixDialog.Title asChild>
+    <RadixDialog.Title
+      asChild
+      className={clsx('font-bold text-zinc-900 dark:text-zinc-50', className)}
+    >
       <h1 {...props}>{children}</h1>
     </RadixDialog.Title>
   )
 }
-
-DialogModalTitle.displayName = 'DialogModal.Title'
 
 interface DialogModalDescriptionProps
   extends HtmlHTMLAttributes<HTMLParagraphElement> {
@@ -57,15 +55,16 @@ function DialogModalDescription({
   ...props
 }: DialogModalDescriptionProps) {
   return (
-    <RadixDialog.Description asChild>
+    <RadixDialog.Description
+      asChild
+      className={clsx('text-zinc-700 dark:text-zinc-300', className)}
+    >
       <p className={className} {...props}>
         {children}
       </p>
     </RadixDialog.Description>
   )
 }
-
-DialogModalDescription.displayName = 'DialogModal.Description'
 
 interface DialogModalIconCloseProps {
   Icon?: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
@@ -84,8 +83,6 @@ function DialogModalIconClose({ Icon = X }: DialogModalIconCloseProps) {
   )
 }
 
-DialogModalIconClose.displayName = 'DialogModal.IconClose'
-
 interface DialogModalCloseProps {
   children: ReactNode
 }
@@ -93,8 +90,6 @@ interface DialogModalCloseProps {
 function DialogModalClose({ children }: DialogModalCloseProps) {
   return <RadixDialog.Close asChild>{children}</RadixDialog.Close>
 }
-
-DialogModalClose.displayName = 'DialogModal.Close'
 
 export interface DialogModalContentProps
   extends RadixDialog.DialogContentProps {
@@ -113,12 +108,12 @@ function DialogModalContent({
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-10">
         <RadixDialog.Content
           className={clsx(
-            'w-full h-full max-w-full relative bg-zinc-100 dark:bg-zinc-950 shadow-lg animate-dialog-open md:rounded-lg md:h-max',
+            'w-full h-full max-w-full relative bg-zinc-100 dark:bg-zinc-900 shadow-lg animate-dialog-open border-1 border-zinc-200 dark:border-zinc-700 md:rounded-lg md:h-max',
             className
           )}
           {...props}
         >
-          <div className="w-full h-full max-h-screen flex flex-col md:max-h-[90vh]">
+          <div className="w-full h-full max-h-screen flex flex-col items-stretch overflow-x-hidden md:max-h-[90vh]">
             {children}
           </div>
         </RadixDialog.Content>
@@ -127,7 +122,49 @@ function DialogModalContent({
   )
 }
 
-DialogModalContent.displayName = 'DialogModal.Content'
+export interface DialogModalHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
+}
+
+function DialogModalHeader({
+  className,
+  children,
+  ...props
+}: DialogModalHeaderProps) {
+  return (
+    <header
+      className={clsx(
+        'flex items-center flex-col p-8 rounded-t-lg bg-zinc-50 dark:bg-zinc-950 border-b-1 border-zinc-200 dark:border-zinc-700',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </header>
+  )
+}
+
+export interface DialogModalFooterProps extends HTMLAttributes<HTMLDivElement> {
+  children: ReactNode
+}
+
+function DialogModalFooter({
+  className,
+  children,
+  ...props
+}: DialogModalFooterProps) {
+  return (
+    <div
+      className={clsx(
+        'w-full p-4 flex justify-between items-center border-t-1 border-zinc-200 dark:border-zinc-700',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+}
 
 export const DialogModal = {
   Root: DialogModalRoot,
@@ -136,5 +173,7 @@ export const DialogModal = {
   Description: DialogModalDescription,
   Close: DialogModalClose,
   IconClose: DialogModalIconClose,
-  Content: DialogModalContent
+  Content: DialogModalContent,
+  Header: DialogModalHeader,
+  Footer: DialogModalFooter
 }

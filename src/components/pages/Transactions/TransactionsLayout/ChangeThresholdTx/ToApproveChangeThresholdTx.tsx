@@ -3,7 +3,7 @@ import { ChangeThresholdTx } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { ThresholdTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { ThresholdTxProps } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 
 interface ToApproveChangeThresholdTxProps {
   transaction: ThresholdTxProps
@@ -31,7 +31,7 @@ export function ToApproveChangeThresholdTx({
         className="min-h-[4rem] py-4 px-6"
       >
         <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
-          Approves {transaction.signatures.length}/{safe?.threshold}
+          Approves {transaction.signatures.approvesCount}/{safe?.threshold}
         </Text>
       </ChangeThresholdTx.Header>
 
@@ -60,7 +60,7 @@ export function ToApproveChangeThresholdTx({
           <Transaction.Actions
             isLoadingApprove={isLoadingApprove}
             isLoadingReject={isLoadingReject}
-            signatures={transactionsQueue?.toApprove?.signatures ?? []}
+            signatures={transactionsQueue?.toApprove?.signatures.list ?? []}
             handleApproveTransaction={handleApproveTransaction}
             handleRejectTransaction={handleRejectTransaction}
           />

@@ -76,7 +76,7 @@ export function SendProvider({ children }: SendProviderProps) {
     try {
       await mutateAsync({
         to: data.to,
-        fromSafe: safe.address,
+        safeAddress: safe.address,
         fromWallet: wallet.accounts[0].address,
         chainName: safe.chain.networkName,
         provider: wallet.provider,
@@ -86,7 +86,9 @@ export function SendProvider({ children }: SendProviderProps) {
         rpcUrl: safe.chain.rpcUrl
       })
 
-      toast.success('Transaction done successfully')
+      toast.success(
+        'Transaction proposal successfully created! View it on the transactions tab'
+      )
     } catch (e) {
       getWe3ErrorMessageWithToast(e)
     }

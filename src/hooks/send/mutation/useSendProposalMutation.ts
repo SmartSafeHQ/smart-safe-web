@@ -9,7 +9,7 @@ import { queryClient } from '@lib/reactQuery'
 interface SendProposalFunctionInput {
   provider: EIP1193Provider
   to: string
-  fromSafe: string
+  safeAddress: string
   fromWallet: string
   amount: number
   chainId: string
@@ -32,7 +32,7 @@ async function sendProposalFunction(
 
   const signer = await provider.getSigner()
   const smartSafeProxy = new ethers.Contract(
-    input.fromSafe,
+    input.safeAddress,
     SMART_SAFE_ABI,
     signer
   )
@@ -46,7 +46,7 @@ async function sendProposalFunction(
 
   const transaction = {
     chainId: parseInt(input.chainId, 16),
-    from: input.fromSafe,
+    from: input.safeAddress,
     to: input.to,
     transactionNonce: Number(transactionNonce),
     value: amountInWei.toString(),
@@ -81,17 +81,24 @@ export function useSendProposalMutation() {
     mutationKey: ['sendProposal'],
     mutationFn: (input: SendProposalFunctionInput) =>
       sendProposalFunction(input),
-    onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
-        queryKey: ['safeTxQueue', variables.fromSafe]
+    onSuccess: (_, variables) => {
+      queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeTxNonce', variables.safeAddress]
       })
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['safeTxQueue', variables.fromSafe], context)
+      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+      queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['safeTxQueue', variables.fromSafe]
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxNonce', variables.safeAddress]
       })
     }
   })

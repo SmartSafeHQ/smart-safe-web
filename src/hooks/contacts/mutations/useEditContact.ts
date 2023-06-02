@@ -36,15 +36,15 @@ export function useEditContact() {
       updateContactFunction(input),
     onSuccess: async (_, variables) => {
       await queryClient.cancelQueries({
-        queryKey: ['listContacts', variables.creatorId]
+        queryKey: ['contacts', variables.creatorId]
       })
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['listContacts', variables.creatorId], context)
+      queryClient.setQueryData(['contacts', variables.creatorId], context)
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['listContacts', variables.creatorId]
+        queryKey: ['contacts', variables.creatorId]
       })
     }
   })

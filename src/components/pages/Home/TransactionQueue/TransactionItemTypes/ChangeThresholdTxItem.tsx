@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-import { ChangeThresholdTx } from '@/components/pages/Transactions/TransactionsLayout/ChangeThresholdTx'
+import { ChangeThresholdTx } from '@components/pages/Transactions/TransactionsLayout/ChangeThresholdTx'
 
 import { useSafe } from '@contexts/SafeContext'
 

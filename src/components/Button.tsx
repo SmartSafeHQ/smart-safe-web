@@ -12,7 +12,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
   isLoading?: boolean
   asChild?: boolean
-  variant?: 'primary' | 'red' | 'green'
+  variant?: 'primary' | 'red' | 'green' | 'ghost'
 }
 
 const ButtonComponent: ForwardRefRenderFunction<
@@ -37,13 +37,15 @@ const ButtonComponent: ForwardRefRenderFunction<
       ref={ref}
       disabled={isLoading || disabled}
       className={clsx(
-        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm transition-colors focus:ring-2 ring-gray-900 dark:ring-gray-100 disabled:cursor-not-allowed disabled:brightness-75',
+        'flex items-center justify-center py-3 px-4 rounded font-semibold text-sm transition-colors focus:ring-2 ring-zinc-900 dark:ring-zinc-100 disabled:cursor-not-allowed',
         {
-          'bg-cyan-500 hover:bg-cyan-600 disabled:bg-cyan-600':
+          'bg-cyan-500 hover:bg-cyan-600 disabled:bg-cyan-700':
             variant === 'primary',
-          'bg-red-500 text-gray-50 hover:bg-red-600 disabled:bg-red-600':
+          'text-zinc-500 dark:text-zinc-400 bg-white dark:bg-black border-1 border-zinc-300 dark:border-zinc-700 hover:text-zinc-800 hover:border-zinc-900 hover:dark:text-zinc-100 hover:dark:border-zinc-100 min-w-[6.5rem] disabled:text-zinc-500 disabled:border-zinc-300 disabled:dark:text-zinc-400 disabled:dark:border-zinc-700':
+            variant === 'ghost',
+          'bg-red-500 text-zinc-50 hover:bg-red-600 disabled:bg-red-700':
             variant === 'red',
-          'bg-green-500 text-gray-50 hover:bg-green-600 disabled:bg-green-600':
+          'bg-green-500 text-zinc-50 hover:bg-green-600 disabled:bg-green-700':
             variant === 'green'
         },
         className
