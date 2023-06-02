@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify'
 import clsx from 'clsx'
 
 import { Button } from '@components/Button'
@@ -130,7 +131,16 @@ export function SafeManagement() {
               <Button
                 className="w-max"
                 disabled={!safeThreshold || !ownersData}
-                onClick={() => setIsChangeThresholdOpen(true)}
+                onClick={() => {
+                  if ((ownersData?.length ?? 0) <= 1) {
+                    toast.error(
+                      'Safe only has one owner, add more owners to be able to change the threshold'
+                    )
+                    return
+                  }
+
+                  setIsChangeThresholdOpen(true)
+                }}
               >
                 Change
               </Button>
