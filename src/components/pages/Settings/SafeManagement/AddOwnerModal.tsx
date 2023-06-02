@@ -128,91 +128,87 @@ export function AddOwnerModal({
         onOpenChange(isOpen)
       }}
     >
-      <DialogModal.Content className="md:max-w-[36rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900">
-        <header className="flex items-center flex-col gap-3 p-8 rounded-lg bg-zinc-50 dark:bg-zinc-950">
-          <DialogModal.Title className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-            Add owner
-          </DialogModal.Title>
+      <DialogModal.Content className="md:max-w-[36rem]">
+        <DialogModal.Header className="gap-3">
+          <DialogModal.Title className="text-3xl">Add owner</DialogModal.Title>
 
-          <DialogModal.Description className=" text-zinc-700 dark:text-zinc-300">
+          <DialogModal.Description>
             You&apos;ll be asked to sign a message and confirm the transaction.
           </DialogModal.Description>
-        </header>
+        </DialogModal.Header>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="w-full h-full flex flex-col justify-start overflow-x-hidden"
+          className="w-full h-full flex flex-col justify-start"
         >
-          <div className="w-full flex flex-col gap-4 py-8 px-4 border-t-1 border-zinc-200 dark:border-zinc-700 sm:px-8">
-            <div className="w-full flex flex-col items-stretch gap-4">
-              <TextInput.Root
-                className="w-full"
-                htmlFor="owner-name"
-                error={errors.ownerName?.message}
+          <div className="flex flex-col gap-4 py-8 px-4 sm:px-8">
+            <TextInput.Root
+              className="w-full"
+              htmlFor="owner-name"
+              error={errors.ownerName?.message}
+            >
+              <TextInput.Label>Owner name</TextInput.Label>
+
+              <TextInput.Content>
+                <TextInput.Input
+                  {...register('ownerName')}
+                  required
+                  id="owner-name"
+                  placeholder="Owner name"
+                />
+              </TextInput.Content>
+            </TextInput.Root>
+
+            <TextInput.Root
+              className="w-full"
+              htmlFor="ownerAddress"
+              error={errors.ownerAddress?.message}
+            >
+              <TextInput.Label>Owner address</TextInput.Label>
+
+              <TextInput.Content>
+                <TextInput.Input
+                  required
+                  {...register('ownerAddress')}
+                  id="ownerAddress"
+                  placeholder="Owner address"
+                />
+              </TextInput.Content>
+            </TextInput.Root>
+
+            <div className="flex flex-1 gap-6 items-center justify-start">
+              <SelectInput.Root
+                {...register('threshold', { valueAsNumber: true })}
+                className="w-full max-w-[5rem]"
+                defaultValue={String(threshold)}
               >
-                <TextInput.Label>Owner name</TextInput.Label>
+                <SelectInput.Trigger className="h-10" />
 
-                <TextInput.Content>
-                  <TextInput.Input
-                    {...register('ownerName')}
-                    required
-                    id="owner-name"
-                    placeholder="Owner name"
-                  />
-                </TextInput.Content>
-              </TextInput.Root>
+                <SelectInput.Content>
+                  <SelectInput.Group>
+                    {Array.from(
+                      { length: ownersCount + 1 },
+                      (_, i) => i + 1
+                    ).map(count => (
+                      <SelectInput.Item
+                        key={count}
+                        value={String(count)}
+                        className="h-8"
+                      >
+                        <div className="w-full flex items-streach justify-start">
+                          {count}
+                        </div>
+                      </SelectInput.Item>
+                    ))}
+                  </SelectInput.Group>
+                </SelectInput.Content>
+              </SelectInput.Root>
 
-              <TextInput.Root
-                className="w-full"
-                htmlFor="ownerAddress"
-                error={errors.ownerAddress?.message}
-              >
-                <TextInput.Label>Owner address</TextInput.Label>
-
-                <TextInput.Content>
-                  <TextInput.Input
-                    required
-                    {...register('ownerAddress')}
-                    id="ownerAddress"
-                    placeholder="Owner address"
-                  />
-                </TextInput.Content>
-              </TextInput.Root>
-
-              <div className="flex flex-1 gap-6 items-center justify-start">
-                <SelectInput.Root
-                  {...register('threshold', { valueAsNumber: true })}
-                  className="w-full max-w-[5rem]"
-                  defaultValue={String(threshold)}
-                >
-                  <SelectInput.Trigger className="h-10" />
-
-                  <SelectInput.Content>
-                    <SelectInput.Group>
-                      {Array.from(
-                        { length: ownersCount + 1 },
-                        (_, i) => i + 1
-                      ).map(count => (
-                        <SelectInput.Item
-                          key={count}
-                          value={String(count)}
-                          className="h-8"
-                        >
-                          <div className="w-full flex items-streach justify-start">
-                            {count}
-                          </div>
-                        </SelectInput.Item>
-                      ))}
-                    </SelectInput.Group>
-                  </SelectInput.Content>
-                </SelectInput.Root>
-
-                <Text>out of {ownersCount + 1} owner(s).</Text>
-              </div>
+              <Text>out of {ownersCount + 1} owner(s).</Text>
             </div>
           </div>
 
-          <div className="w-full p-4 flex justify-between items-center border-t-1 border-zinc-200 dark:border-zinc-700">
+          <DialogModal.Footer>
             <DialogModal.Close>
               <Button type="button" variant="ghost">
                 Cancel
@@ -221,12 +217,12 @@ export function AddOwnerModal({
 
             <Button
               type="submit"
-              className="min-w-[6.5rem]"
               isLoading={isWaitingTransaction}
+              className="min-w-[6.5rem]"
             >
               Add owner
             </Button>
-          </div>
+          </DialogModal.Footer>
         </form>
 
         <DialogModal.IconClose />

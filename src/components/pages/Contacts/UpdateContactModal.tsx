@@ -83,17 +83,17 @@ export function UpdateContactModal() {
       onOpenChange={setIsUpdateContactOpen}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
-        <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
-          <header className="w-full flex items-center flex-col gap-3 mb-6">
-            <DialogModal.Title className="text-3xl font-bold text-zinc-800 dark:text-zinc-50">
-              Update contact
-            </DialogModal.Title>
-          </header>
+        <DialogModal.Header className="gap-3">
+          <DialogModal.Title className="text-3xl">
+            Update contact
+          </DialogModal.Title>
+        </DialogModal.Header>
 
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col gap-4 items-stretch w-full"
-          >
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex flex-col justify-center items-stretch"
+        >
+          <div className="w-full flex flex-col justify-center items-stretch gap-6 py-8 px-4 sm:px-8">
             <Text className="capitalize text-zinc-600 dark:text-zinc-300">
               Contact address: {selectedContact?.formattedAddress}
             </Text>
@@ -118,12 +118,14 @@ export function UpdateContactModal() {
                 />
               </TextInput.Content>
             </TextInput.Root>
+          </div>
 
-            <Button type="submit" isLoading={isSubmitting} className="mt-1">
+          <DialogModal.Footer>
+            <Button type="submit" isLoading={isSubmitting} className="w-full">
               Update contact
             </Button>
-          </form>
-        </div>
+          </DialogModal.Footer>
+        </form>
 
         <DialogModal.IconClose />
       </DialogModal.Content>

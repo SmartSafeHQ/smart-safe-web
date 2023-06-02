@@ -42,17 +42,17 @@ export function CreateSpendingLimitsModal() {
       }}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
-        <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
-          <header className="w-full flex items-center flex-col gap-3 mb-6">
-            <DialogModal.Title className="text-3xl font-bold text-zinc-800 dark:text-zinc-50">
-              Create authorization
-            </DialogModal.Title>
-          </header>
+        <DialogModal.Header className="gap-3">
+          <DialogModal.Title className="text-3xl">
+            Create authorization
+          </DialogModal.Title>
+        </DialogModal.Header>
 
-          <form
-            onSubmit={handleSubmit(onSubmitCreateSpendingLimits)}
-            className="flex flex-col gap-6 items-stretch w-full"
-          >
+        <form
+          onSubmit={handleSubmit(onSubmitCreateSpendingLimits)}
+          className="w-full flex flex-col justify-center items-stretch"
+        >
+          <div className="w-full flex flex-col justify-center items-stretch gap-6 py-8 px-4 sm:px-8">
             <div className="flex flex-col gap-1 group">
               <TextInput.Root
                 htmlFor="contactAddress"
@@ -208,12 +208,14 @@ export function CreateSpendingLimitsModal() {
                 />
               </TextInput.Content>
             </TextInput.Root>
+          </div>
 
-            <Button type="submit" isLoading={isSubmitting} className="mt-1">
+          <DialogModal.Footer>
+            <Button type="submit" isLoading={isSubmitting} className="w-full">
               Create Authorization
             </Button>
-          </form>
-        </div>
+          </DialogModal.Footer>
+        </form>
 
         <DialogModal.IconClose />
       </DialogModal.Content>

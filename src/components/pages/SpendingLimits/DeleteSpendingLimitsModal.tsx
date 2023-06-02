@@ -43,77 +43,75 @@ export function DeleteSpendingLimitsModal() {
       onOpenChange={setIsDeleteSpendingLimitsOpen}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
-        <div className="w-full flex flex-col justify-center py-8 px-1 sm:py-4 sm:px-8">
-          <header className="w-full flex flex-col items-stretch gap-5 mb-6">
-            <DialogModal.Title className="text-3xl font-bold capitalize text-zinc-800 dark:text-zinc-50">
-              Delete authorization
-            </DialogModal.Title>
+        <DialogModal.Header className="gap-3">
+          <DialogModal.Title className="text-3xl">
+            Delete authorization
+          </DialogModal.Title>
 
-            <DialogModal.Description className="text-zinc-600 dark:text-zinc-300">
-              SmartSafe will delete the spending limit
-            </DialogModal.Description>
-          </header>
+          <DialogModal.Description>
+            SmartSafe will delete the spending limit
+          </DialogModal.Description>
+        </DialogModal.Header>
 
-          <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-8">
-            <div className="flex flex-col items-stretch justify-start gap-1">
-              <Text asChild className="text-start">
-                <strong>{selectedSpendingLimits.recipientName}</strong>
-              </Text>
+        <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-8 py-8 px-4 sm:px-8">
+          <div className="flex flex-col items-stretch justify-start gap-1">
+            <Text asChild className="text-start">
+              <strong>{selectedSpendingLimits.recipientName}</strong>
+            </Text>
 
-              <Text className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-300">
-                {selectedSpendingLimits.wallet.formattedAddress}
-              </Text>
-            </div>
+            <Text className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-300">
+              {selectedSpendingLimits.wallet.formattedAddress}
+            </Text>
+          </div>
 
-            <div className="w-full flex items-start justify-between gap-2 ">
-              <div className="flex items-center gap-2">
-                <Heading asChild className="capitalize">
-                  <h3>Amount</h3>
-                </Heading>
-
-                <Image
-                  src={selectedSpendingLimits.coin.avatar}
-                  alt={`${selectedSpendingLimits.coin.symbol} coin icon`}
-                  width={20}
-                  height={20}
-                  className="mr-1"
-                />
-              </div>
-
-              <Text className="text-sm">
-                {selectedSpendingLimits.coinAmount}{' '}
-                {selectedSpendingLimits.coin.symbol}
-              </Text>
-            </div>
-
-            <div className="w-full flex items-start justify-between gap-1">
-              <Heading asChild>
-                <h3>From date</h3>
+          <div className="w-full flex items-start justify-between gap-2 ">
+            <div className="flex items-center gap-2">
+              <Heading asChild className="capitalize">
+                <h3>Amount</h3>
               </Heading>
 
-              <Text className="text-sm">
-                {dayjs(selectedSpendingLimits.dateFrom).format('DD/MM/YYYY')}
-              </Text>
+              <Image
+                src={selectedSpendingLimits.coin.avatar}
+                alt={`${selectedSpendingLimits.coin.symbol} coin icon`}
+                width={20}
+                height={20}
+                className="mr-1"
+              />
             </div>
+
+            <Text className="text-sm">
+              {selectedSpendingLimits.coinAmount}{' '}
+              {selectedSpendingLimits.coin.symbol}
+            </Text>
           </div>
 
-          <div className="w-full flex items-center justify-center gap-4">
-            <DialogModal.Close>
-              <Button className="w-full" variant="ghost">
-                Cancel
-              </Button>
-            </DialogModal.Close>
+          <div className="w-full flex items-start justify-between gap-1">
+            <Heading asChild>
+              <h3>From date</h3>
+            </Heading>
 
-            <Button
-              onClick={handleConfirmDelete}
-              isLoading={isLoading}
-              variant="red"
-              className="w-full"
-            >
-              Delete Authorization
-            </Button>
+            <Text className="text-sm">
+              {dayjs(selectedSpendingLimits.dateFrom).format('DD/MM/YYYY')}
+            </Text>
           </div>
         </div>
+
+        <DialogModal.Footer>
+          <DialogModal.Close>
+            <Button className="w-full" variant="ghost">
+              Cancel
+            </Button>
+          </DialogModal.Close>
+
+          <Button
+            onClick={handleConfirmDelete}
+            isLoading={isLoading}
+            variant="red"
+            className="w-full"
+          >
+            Delete Authorization
+          </Button>
+        </DialogModal.Footer>
 
         <DialogModal.IconClose />
       </DialogModal.Content>

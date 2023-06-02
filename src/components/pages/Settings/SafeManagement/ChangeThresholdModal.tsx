@@ -72,68 +72,68 @@ export function ChangeThresholdModal({
         onOpenChange(isOpen)
       }}
     >
-      <DialogModal.Content className="md:max-w-[36rem] border-1 border-zinc-200 dark:border-zinc-700 !bg-zinc-100 dark:!bg-zinc-900">
-        <header className="flex items-center flex-col gap-3 p-8 rounded-lg bg-zinc-50 dark:bg-zinc-950">
-          <DialogModal.Title className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+      <DialogModal.Content className="md:max-w-[36rem]">
+        <DialogModal.Header className="gap-3">
+          <DialogModal.Title className="text-3xl">
             Change threshold
           </DialogModal.Title>
 
-          <DialogModal.Description className=" text-zinc-700 dark:text-zinc-300">
+          <DialogModal.Description>
             You&apos;ll be asked to sign a message and confirm the transaction.
           </DialogModal.Description>
-        </header>
+        </DialogModal.Header>
 
-        <div className="w-full h-full flex flex-col justify-start overflow-x-hidden">
-          <div className="w-full flex flex-col gap-4 py-8 px-4 border-t-1 border-zinc-200 dark:border-zinc-700 sm:px-8">
-            <div className="w-full flex flex-col items-stretch gap-4 ">
-              <p>Any transaction will require the confirmation of: </p>
+        <div className="w-full h-full flex flex-col justify-start">
+          <div className="w-full flex flex-col items-stretch gap-4 py-8 px-4 sm:px-8">
+            <Text asChild>
+              <p>Any transaction will require the confirmation of:</p>
+            </Text>
 
-              <div className="flex flex-1 gap-6 items-center justify-start">
-                <SelectInput.Root
-                  value={newThreshold}
-                  defaultValue={String(safeThreshold)}
-                  onValueChange={value => setNewThreshold(value)}
-                  className="w-full max-w-[5rem]"
-                >
-                  <SelectInput.Trigger className="h-10" />
+            <div className="flex flex-1 gap-6 items-center justify-start">
+              <SelectInput.Root
+                value={newThreshold}
+                defaultValue={String(safeThreshold)}
+                onValueChange={value => setNewThreshold(value)}
+                className="w-full max-w-[5rem]"
+              >
+                <SelectInput.Trigger className="h-10" />
 
-                  <SelectInput.Content>
-                    <SelectInput.Group>
-                      {Array.from({ length: ownersCount }, (_, i) => i + 1).map(
-                        count => (
-                          <SelectInput.Item
-                            key={count}
-                            value={String(count)}
-                            className="h-8"
-                          >
-                            <div className="w-full flex items-streach justify-start">
-                              {count}
-                            </div>
-                          </SelectInput.Item>
-                        )
-                      )}
-                    </SelectInput.Group>
-                  </SelectInput.Content>
-                </SelectInput.Root>
+                <SelectInput.Content>
+                  <SelectInput.Group>
+                    {Array.from({ length: ownersCount }, (_, i) => i + 1).map(
+                      count => (
+                        <SelectInput.Item
+                          key={count}
+                          value={String(count)}
+                          className="h-8"
+                        >
+                          <div className="w-full flex items-streach justify-start">
+                            {count}
+                          </div>
+                        </SelectInput.Item>
+                      )
+                    )}
+                  </SelectInput.Group>
+                </SelectInput.Content>
+              </SelectInput.Root>
 
-                <Text>out of {ownersCount} owner(s).</Text>
-              </div>
+              <Text>out of {ownersCount} owner(s)</Text>
+            </div>
 
-              <div className="flex items-center justify-start gap-2 mt-4">
-                <Info className="w-5 h-5" />
+            <div className="flex items-center justify-start gap-2 mt-4">
+              <Info className="w-5 h-5" />
 
-                <Text asChild>
-                  <p>
-                    Current policy is{' '}
-                    <Text className="font-bold">{safeThreshold}</Text> out of{' '}
-                    <Text className="font-bold">{ownersCount}</Text>.
-                  </p>
-                </Text>
-              </div>
+              <Text asChild>
+                <p>
+                  Current policy is{' '}
+                  <Text className="font-bold">{safeThreshold}</Text> out of{' '}
+                  <Text className="font-bold">{ownersCount}</Text>.
+                </p>
+              </Text>
             </div>
           </div>
 
-          <div className="w-full p-4 flex justify-between items-center border-t-1 border-zinc-200 dark:border-zinc-700">
+          <DialogModal.Footer>
             <DialogModal.Close>
               <Button type="button" variant="ghost">
                 Cancel
@@ -145,9 +145,9 @@ export function ChangeThresholdModal({
               isLoading={isWaitingTransaction}
               className="min-w-[6.5rem]"
             >
-              Add owner
+              Change threshold
             </Button>
-          </div>
+          </DialogModal.Footer>
         </div>
 
         <DialogModal.IconClose />
