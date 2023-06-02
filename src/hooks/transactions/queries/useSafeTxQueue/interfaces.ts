@@ -16,7 +16,10 @@ export interface DefaultTxProps {
   nonce: number
   amount: number
   createdAt: Date
-  signatures: OwnerSignaturesProps[]
+  signatures: {
+    list: OwnerSignaturesProps[]
+    approvesCount: number
+  }
   to: string
   formattedAddress: string
   hash: string

@@ -98,7 +98,10 @@ function TransactionTxInfos({
 }
 
 interface TransactionOwnersStatusProps extends HTMLAttributes<HTMLDivElement> {
-  signatures: OwnerSignaturesProps[]
+  signatures: {
+    list: OwnerSignaturesProps[]
+    approvesCount: number
+  }
   baseExplorerLink: string
   threshold: number
 }
@@ -109,7 +112,7 @@ function TransactionOwnersStatus({
   threshold,
   ...props
 }: TransactionOwnersStatusProps) {
-  const pendingSignatures = threshold - signatures.length
+  const pendingSignatures = threshold - signatures.approvesCount
 
   return (
     <Collapsible.Root
@@ -125,7 +128,8 @@ function TransactionOwnersStatus({
           <div className="flex flex-col items-stretch justify-start">
             <Heading asChild className="text-lg font-medium">
               <h3>
-                Transaction waiting approvals ({signatures.length}/{threshold})
+                Transaction waiting approvals ({signatures.approvesCount}/
+                {threshold})
               </h3>
             </Heading>
 
@@ -136,12 +140,12 @@ function TransactionOwnersStatus({
         </div>
 
         <Collapsible.Trigger className="h-min text-xs text-start text-cyan-500 transition-colors hover:text-cyan-600">
-          Show all owners
+          Show all owners ({signatures.list.length})
         </Collapsible.Trigger>
       </div>
 
       <Collapsible.Content className="w-full flex flex-col items-start justify-start">
-        {signatures.map(signature => (
+        {signatures.list.map(signature => (
           <TransactionOwnerStatus
             key={signature.address}
             signature={signature}

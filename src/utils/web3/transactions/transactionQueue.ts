@@ -5,6 +5,7 @@ import { SmartSafe } from '@utils/web3/typings/SmartSafe'
 import {
   ChangeOwnersTxProps,
   DefaultTxProps,
+  OwnerApproveStatus,
   OwnerSignaturesProps,
   SendTxProps,
   ThresholdTxProps,
@@ -17,7 +18,7 @@ export async function formatTransactionToQueueList(
   transaction: any,
   contract: SmartSafe,
   chainId: string
-) {
+): Promise<DefaultTxProps> {
   const from = transaction[0]
   const to = transaction[1]
   const nonce = Number(transaction[2])
@@ -37,22 +38,26 @@ export async function formatTransactionToQueueList(
   const approvals = await contract.getFunction('getTransactionApprovals')(nonce)
 
   const ownersSignatures: OwnerSignaturesProps[] = []
+  let approvesCount = 0
 
   approvals.forEach(approval => {
     const signatureAddress = approval[0]
     const signatureVote = Number(approval[1])
+    let signatureStatus: OwnerApproveStatus = 'rejected'
 
     if (typeof signatureAddress !== 'string') return
+
+    if (signatureVote === TransactionApprovalStatus.APPROVED) {
+      approvesCount++
+      signatureStatus = 'approved'
+    }
 
     ownersSignatures.push({
       address: signatureAddress,
       formattedAddress: formatWalletAddress({
         walletAddress: signatureAddress
       }),
-      status:
-        signatureVote === TransactionApprovalStatus.APPROVED
-          ? 'approved'
-          : 'rejected'
+      status: signatureStatus
     })
   })
 
@@ -60,7 +65,10 @@ export async function formatTransactionToQueueList(
     nonce,
     amount: Number(formatUnits(value, 'ether')),
     createdAt,
-    signatures: ownersSignatures,
+    signatures: {
+      list: ownersSignatures,
+      approvesCount
+    },
     to,
     formattedAddress: formatWalletAddress({
       walletAddress: transactionData.to

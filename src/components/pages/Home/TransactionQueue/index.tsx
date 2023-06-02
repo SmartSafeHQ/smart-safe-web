@@ -50,7 +50,8 @@ export function TransactionQueue() {
               <section className="w-full flex flex-col items-stretch justify-start gap-2">
                 <HomeTransactionItem transaction={transactionsQueue.toApprove}>
                   <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
-                    Approves {transactionsQueue.toApprove.signatures.length}/
+                    Approves{' '}
+                    {transactionsQueue.toApprove.signatures.approvesCount}/
                     {safe?.threshold}
                   </Text>
                 </HomeTransactionItem>
