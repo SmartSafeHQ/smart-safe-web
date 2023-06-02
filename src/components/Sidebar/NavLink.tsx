@@ -21,7 +21,7 @@ interface NavLinkProps extends LinkProps {
   basePath: string
   activePath?: string
   isDisabled?: boolean
-  isExchange?: boolean
+  partner?: string
 }
 
 const NavLinkComponent: ForwardRefRenderFunction<
@@ -31,7 +31,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
   {
     Icon,
     isDisabled = false,
-    isExchange = false,
+    partner,
     href,
     basePath,
     activePath,
@@ -71,10 +71,10 @@ const NavLinkComponent: ForwardRefRenderFunction<
       )}
     >
       <Link ref={ref} href={`${basePath}/${href}`} {...props}>
-        {isExchange ? (
+        {partner ? (
           <Image
-            src="/networks/okt-logo.svg"
-            alt="okt chain logo"
+            src={partner}
+            alt="partner logo icon"
             width={20}
             height={20}
             className="mr-2"

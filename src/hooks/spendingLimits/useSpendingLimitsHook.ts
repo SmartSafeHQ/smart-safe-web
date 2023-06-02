@@ -16,22 +16,24 @@ import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
+export const TIME_BASED_TRIGGERS = [
+  'Every day',
+  'Weekly: every Monday',
+  'Monthly on the first day of the month',
+  'Yearly on the first day of the year'
+]
+
 const createSpendingLimitsValidationSchema = z.object({
   contactAddress: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
 
     return isAddressValid
-  }, 'Invalid contact address'),
+  }, 'Invalid address'),
   coinSymbol: z.string().min(1, { message: 'coin required' }),
   amount: z
     .number({ invalid_type_error: 'min 0.1' })
     .min(0.1, { message: 'min 0.1' }),
-  fromDate: z
-    .date({
-      required_error: 'date required',
-      invalid_type_error: 'invalid date'
-    })
-    .min(new Date(), 'min date is tomorrow!')
+  fromDate: z.string().min(1, { message: 'time trigger required' })
 })
 
 export type CreateSpendingLimitsFieldValues = z.infer<
@@ -65,7 +67,7 @@ export const useSpendingLimitsHook = () => {
     data: spendingLimits,
     isLoading,
     error
-  } = useSpendingLimitsQuery(1, '1')
+  } = useSpendingLimitsQuery(safe?.address, safe?.ownerId, !!safe)
 
   const {
     control,
@@ -104,7 +106,7 @@ export const useSpendingLimitsHook = () => {
   const onSubmitCreateSpendingLimits: SubmitHandler<
     CreateSpendingLimitsFieldValues
   > = async data => {
-    if (!contacts) return
+    if (!contacts || !safe) return
 
     try {
       const spendingLimitsToken = CHAINS_ATTRIBUTES.find(
@@ -122,11 +124,12 @@ export const useSpendingLimitsHook = () => {
 
       await mutateAsync({
         ...data,
-        safeAddress: 'address',
-        customerWalletPrivateKey: 'privateKey',
+        safeAddress: safe.address,
         coin: spendingLimitsToken,
         recipientName: findContactForRecipient?.contactName
       })
+
+      toast.success('Automation successfully created!')
 
       reset()
       setSearchContacts(contacts)

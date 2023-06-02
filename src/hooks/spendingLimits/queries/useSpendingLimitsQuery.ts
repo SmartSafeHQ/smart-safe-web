@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 interface FetchSpendingLimitsInput {
-  address: string
-  customerId: number
+  address?: string
+  customerId?: string
 }
 
 export async function fetchSpendingLimits(
@@ -70,8 +70,8 @@ export async function fetchSpendingLimits(
 }
 
 export function useSpendingLimitsQuery(
-  id = 0,
-  address: string,
+  address?: string,
+  id?: string,
   enabled = true
 ) {
   return useQuery({

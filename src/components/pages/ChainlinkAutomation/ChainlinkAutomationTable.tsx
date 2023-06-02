@@ -1,9 +1,8 @@
 import clsx from 'clsx'
 import Image from 'next/image'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
 import { ReactNode, ThHTMLAttributes } from 'react'
-import { DotsThreeVertical } from '@phosphor-icons/react'
+import { ArrowRight, DotsThreeVertical } from '@phosphor-icons/react'
+import Link from 'next/link'
 
 import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
@@ -12,17 +11,15 @@ import { DropdownMenu } from '@components/DropdownMenu'
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
 
-dayjs.extend(utc)
-
-interface SpendingLimitsTableThProps
+interface ChainlinkAutomationTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode
 }
 
-function SpendingLimitsTableTh({
+function ChainlinkAutomationTableTh({
   children,
   className
-}: SpendingLimitsTableThProps) {
+}: ChainlinkAutomationTableThProps) {
   return (
     <th
       className={clsx(
@@ -35,28 +32,28 @@ function SpendingLimitsTableTh({
   )
 }
 
-SpendingLimitsTableTh.displayName = 'SpendingLimitsTable.Th'
+ChainlinkAutomationTableTh.displayName = 'ChainlinkAutomationTable.Th'
 
-interface SpendingLimitsTableTrProps {
-  spendingLimits: SelectedSpendingLimitsProps
-  handleDeleteSpendingLimits: (_withdrawal: SelectedSpendingLimitsProps) => void
+interface ChainlinkAutomationTableTrProps {
+  chainlinkAutomation: SelectedSpendingLimitsProps
+  handleDeleteChainlinkAutomation: (
+    _withdrawal: SelectedSpendingLimitsProps
+  ) => void
 }
 
-function SpendingLimitsTableTr({
-  spendingLimits,
-  handleDeleteSpendingLimits
-}: SpendingLimitsTableTrProps) {
-  const formattedDate = dayjs(spendingLimits.dateFrom)
-    .utc()
-    .format('DD/MM/YYYY')
+function ChainlinkAutomationTableTr({
+  chainlinkAutomation,
+  handleDeleteChainlinkAutomation
+}: ChainlinkAutomationTableTrProps) {
+  const formattedDate = chainlinkAutomation.dateFrom
 
   return (
     <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3 min-w-[8rem]">
         <div className="flex flex-col gap-1">
-          {spendingLimits?.recipientName && (
+          {chainlinkAutomation?.recipientName && (
             <Text className="text-sm md:text-base" asChild>
-              <strong>{spendingLimits.recipientName}</strong>
+              <strong>{chainlinkAutomation.recipientName}</strong>
             </Text>
           )}
 
@@ -67,10 +64,10 @@ function SpendingLimitsTableTr({
             >
               <button
                 onClick={() =>
-                  handleCopyToClipboard(spendingLimits.wallet.address)
+                  handleCopyToClipboard(chainlinkAutomation.wallet.address)
                 }
               >
-                {spendingLimits.wallet.formattedAddress}
+                {chainlinkAutomation.wallet.formattedAddress}
               </button>
             </HoverCard.Trigger>
 
@@ -85,12 +82,12 @@ function SpendingLimitsTableTr({
       <td>
         <div className="flex items-center gap-2">
           <Text className="uppercase text-sm md:text-base">
-            {spendingLimits.coinAmount} {spendingLimits.coin.symbol}
+            {chainlinkAutomation.coinAmount} {chainlinkAutomation.coin.symbol}
           </Text>
 
           <Image
-            src={spendingLimits.coin.avatar}
-            alt={`${spendingLimits.coin.symbol} avatar`}
+            src={chainlinkAutomation.coin.avatar}
+            alt={`${chainlinkAutomation.coin.symbol} avatar`}
             width={20}
             height={20}
             className="w-5 h-5"
@@ -99,8 +96,20 @@ function SpendingLimitsTableTr({
       </td>
 
       <td>
-        <Text className="text-sm text-zinc-500 dark:text-zinc-400 md:text-base">
+        <Text className="text-sm text-zinc-500 dark:text-zinc-400">
           {formattedDate}
+        </Text>
+      </td>
+
+      <td className="w-[9rem]">
+        <Text
+          asChild
+          className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
+        >
+          <Link href="https://chain.link/" target="_blank">
+            view on chainlink
+            <ArrowRight className="w-4 h-4 text-cyan-500" />
+          </Link>
         </Text>
       </td>
 
@@ -122,7 +131,9 @@ function SpendingLimitsTableTr({
               className="min-w-[10rem] p-2"
             >
               <DropdownMenu.Item
-                onSelect={() => handleDeleteSpendingLimits(spendingLimits)}
+                onSelect={() =>
+                  handleDeleteChainlinkAutomation(chainlinkAutomation)
+                }
                 className="px-3 py-2 rounded-md text-sm"
               >
                 <Text className="text-sm text-red-500">delete</Text>
@@ -135,9 +146,9 @@ function SpendingLimitsTableTr({
   )
 }
 
-SpendingLimitsTableTr.displayName = 'SpendingLimitsTableTr.Tr'
+ChainlinkAutomationTableTr.displayName = 'ChainlinkAutomationTableTr.Tr'
 
-export const SpendingLimitsTable = {
-  Th: SpendingLimitsTableTh,
-  Tr: SpendingLimitsTableTr
+export const ChainlinkAutomationTable = {
+  Th: ChainlinkAutomationTableTh,
+  Tr: ChainlinkAutomationTableTr
 }

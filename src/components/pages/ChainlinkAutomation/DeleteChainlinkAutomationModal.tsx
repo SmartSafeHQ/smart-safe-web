@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import dayjs from 'dayjs'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -10,7 +9,7 @@ import { useDeleteSpendingLimitsMutation } from '@hooks/spendingLimits/mutations
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-export function DeleteSpendingLimitsModal() {
+export function DeleteChainlinkAutomationModal() {
   const {
     selectedSpendingLimits,
     isDeleteSpendingLimitsOpen,
@@ -45,11 +44,11 @@ export function DeleteSpendingLimitsModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
           <DialogModal.Title className="text-3xl">
-            Delete authorization
+            Delete chainlink automation
           </DialogModal.Title>
 
           <DialogModal.Description>
-            SmartSafe will delete the spending limit
+            SmartSafe will delete the payment automation
           </DialogModal.Description>
         </DialogModal.Header>
 
@@ -87,18 +86,16 @@ export function DeleteSpendingLimitsModal() {
 
           <div className="w-full flex items-start justify-between gap-1">
             <Heading asChild>
-              <h3>From date</h3>
+              <h3>Time trigger</h3>
             </Heading>
 
-            <Text className="text-sm">
-              {dayjs(selectedSpendingLimits.dateFrom).format('DD/MM/YYYY')}
-            </Text>
+            <Text className="text-sm">{selectedSpendingLimits.dateFrom}</Text>
           </div>
         </div>
 
         <DialogModal.Footer>
           <DialogModal.Close>
-            <Button className="w-full" variant="ghost">
+            <Button className="w-max" variant="ghost">
               Cancel
             </Button>
           </DialogModal.Close>
@@ -107,9 +104,10 @@ export function DeleteSpendingLimitsModal() {
             onClick={handleConfirmDelete}
             isLoading={isLoading}
             variant="red"
-            className="w-full"
+            className="w-max"
+            disabled
           >
-            Delete Authorization
+            Delete Automation
           </Button>
         </DialogModal.Footer>
 
