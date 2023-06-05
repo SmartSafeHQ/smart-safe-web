@@ -44,7 +44,7 @@ export function DeleteChainlinkAutomationModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
           <DialogModal.Title className="text-3xl">
-            Delete chainlink automation
+            Delete automation
           </DialogModal.Title>
 
           <DialogModal.Description>

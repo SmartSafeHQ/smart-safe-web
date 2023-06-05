@@ -4,7 +4,8 @@ import {
   PaperPlaneTilt,
   Gear,
   ArrowsCounterClockwise,
-  Users
+  Users,
+  Cube
 } from '@phosphor-icons/react'
 
 import { NavLink } from './NavLink'
@@ -51,12 +52,11 @@ const NAV_LINKS_SUB_OKX = [
 
 const NAV_LINKS_SUB_CHAINLINK = [
   {
-    href: 'chainlink-automation',
-    activePath: 'chainlink-automation',
-    icon: PaperPlaneTilt,
-    title: 'Chainlink automation',
-    isDisabled: false,
-    partner: '/networks/chainlink-logo.svg'
+    href: 'automations',
+    activePath: 'automations',
+    icon: Cube,
+    title: 'automations',
+    isDisabled: false
   }
 ]
 
@@ -139,7 +139,6 @@ export function SidebarNav() {
                 href={navLink.href}
                 Icon={navLink.icon}
                 isDisabled={navLink.isDisabled}
-                partner={navLink.partner}
                 basePath={`/dashboard/${safe?.address}`}
                 activePath={navLink.activePath}
               >

@@ -47,7 +47,7 @@ export function CreateChainlinkAutomationModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
           <DialogModal.Title className="text-3xl">
-            Create chainlink automation
+            Create automation
           </DialogModal.Title>
 
           <DialogModal.Description className="text-lg text-center">
@@ -57,7 +57,7 @@ export function CreateChainlinkAutomationModal() {
 
         <Tabs.Root defaultValue="time-based">
           <Tabs.List
-            aria-label="Create smart safe automations with chainlink"
+            aria-label="Create smart safe automations with Smart Safe"
             className="w-full min-h-[2.75rem] text-center text-sm"
           >
             <Tabs.Trigger value="time-based" className="max-w-[8rem]">

@@ -106,8 +106,8 @@ function ChainlinkAutomationTableTr({
           asChild
           className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
         >
-          <Link href="https://chain.link/" target="_blank">
-            view on chainlink
+          <Link href="https://www.oklink.com/oktc" target="_blank">
+            view on explorer
             <ArrowRight className="w-4 h-4 text-cyan-500" />
           </Link>
         </Text>
