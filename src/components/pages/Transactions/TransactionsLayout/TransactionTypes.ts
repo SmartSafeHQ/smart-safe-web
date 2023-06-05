@@ -10,6 +10,9 @@ import { ToApproveSendTx } from './SendTx/ToApproveSendTx'
 import { PendingChangeThresholdTx } from './ChangeThresholdTx/PendingChangeThresholdTx'
 import { ToApproveChangeThresholdTx } from './ChangeThresholdTx/ToApproveChangeThresholdTx'
 import { ChangeThresholdTxItem } from '../../Home/TransactionQueue/TransactionItemTypes/ChangeThresholdTxItem'
+import { ScheduledTxItem } from '../../Home/TransactionQueue/TransactionItemTypes/ScheduledTxItem'
+import { ToApproveScheduledTx } from './ScheduledTx/ToApproveScheduledTx'
+import { PendingScheduledTx } from './ScheduledTx/PendingScheduledTx'
 
 import { TransactionType } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 
@@ -40,5 +43,10 @@ export const transactionComponents: Record<
     ToApprove: ToApproveChangeThresholdTx,
     Pending: PendingChangeThresholdTx,
     HomeItem: ChangeThresholdTxItem
+  },
+  SCHEDULED: {
+    ToApprove: ToApproveScheduledTx,
+    Pending: PendingScheduledTx,
+    HomeItem: ScheduledTxItem
   }
 }
