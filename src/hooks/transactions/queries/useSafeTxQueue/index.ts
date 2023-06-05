@@ -68,7 +68,8 @@ export async function fetchSafeTxQueue(
 
       formattedTransaction = formatTransactionFunction(
         transactionData,
-        parsedTransaction
+        parsedTransaction,
+        safeChain.chainId
       )
     } else {
       formattedTransaction = formatSendTxToQueue(

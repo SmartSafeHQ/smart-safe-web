@@ -7,6 +7,7 @@ import {
   DefaultTxProps,
   OwnerApproveStatus,
   OwnerSignaturesProps,
+  ScheduledTxProps,
   SendTxProps,
   ThresholdTxProps,
   TransacitonTypes
@@ -123,9 +124,29 @@ export function formatThresholdTxToQueue(
   }
 }
 
+export function formatScheduledTxToQueue(
+  transaction: DefaultTxProps,
+  parsedTransaction: TransactionDescription,
+  chainId: string
+): ScheduledTxProps {
+  const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
+
+  return {
+    ...transaction,
+    type: 'SCHEDULED',
+    triggerTitle: 'every week',
+    triggerType: 'time',
+    token: {
+      symbol: safeChain?.symbol ?? 'matic',
+      icon: safeChain?.icon ?? '/networks/polygon-logo.svg'
+    }
+  }
+}
+
 type TxFormatFunction = (
   transaction: DefaultTxProps,
-  parsedTransaction: TransactionDescription
+  parsedTransaction: TransactionDescription,
+  chainId: string
 ) => TransacitonTypes
 
 export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
@@ -138,5 +159,13 @@ export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
     'changeThreshold',
     (transaction: DefaultTxProps, parsedTransaction: TransactionDescription) =>
       formatThresholdTxToQueue(transaction, parsedTransaction)
+  ],
+  [
+    'scheduled',
+    (
+      transaction: DefaultTxProps,
+      parsedTransaction: TransactionDescription,
+      chainId: string
+    ) => formatScheduledTxToQueue(transaction, parsedTransaction, chainId)
   ]
 ])

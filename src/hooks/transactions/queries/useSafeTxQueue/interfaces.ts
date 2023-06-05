@@ -1,5 +1,6 @@
 export type OwnerApproveStatus = 'approved' | 'rejected'
-export type TransactionType = 'SEND' | 'ADD_OWNER' | 'THRESHOLD'
+export type SendScheduleTypes = 'time' | 'price'
+export type TransactionType = 'SEND' | 'ADD_OWNER' | 'THRESHOLD' | 'SCHEDULED'
 
 export interface FetchSafeTxQueueInput {
   safeAddress?: string
@@ -44,10 +45,21 @@ export interface ThresholdTxProps extends DefaultTxProps {
   newThreshold: number
 }
 
+export interface ScheduledTxProps extends DefaultTxProps {
+  type: 'SCHEDULED'
+  triggerType: SendScheduleTypes
+  triggerTitle: string
+  token: {
+    symbol: string
+    icon: string
+  }
+}
+
 export type TransacitonTypes =
   | SendTxProps
   | ChangeOwnersTxProps
   | ThresholdTxProps
+  | ScheduledTxProps
 
 export interface FetchSafeTxQueueOutput {
   toApprove?: TransacitonTypes

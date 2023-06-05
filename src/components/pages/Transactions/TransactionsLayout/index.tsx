@@ -50,11 +50,13 @@ function TransactionRoot({
 interface TransactionInfosProps extends HTMLAttributes<HTMLDivElement> {
   txHash: string
   createdAt: Date
+  children?: ReactNode
 }
 
 function TransactionTxInfos({
   txHash,
   createdAt,
+  children,
   ...props
 }: TransactionInfosProps) {
   return (
@@ -93,6 +95,8 @@ function TransactionTxInfos({
           {dayjs(createdAt).format('DD/MM/YYYY [at] HH:mm')}
         </Text>
       </div>
+
+      {children}
     </div>
   )
 }
