@@ -1,4 +1,6 @@
+import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowRight } from '@phosphor-icons/react'
 
 import { Text } from '@components/Text'
 
@@ -44,6 +46,17 @@ export function DeploySafeInfos() {
           </div>
         )}
       </div>
+
+      {safeInfos && safeInfos.chain.faucetUrl && (
+        <div className="w-full pt-4 mt-4 flex flex-col items-stretch justify-start gap-4 border-t-1 border-zinc-300 dark:border-zinc-800 text-zinc-700 dark:text-zinc-400 transition-colors hover:text-zinc-800 hover:dark:text-zinc-500 lg:pt-6 lg:mt-6">
+          <Text asChild className="flex items-center gap-1 text-sm font-medium">
+            <Link href={safeInfos.chain.faucetUrl} target="_blank">
+              Get {safeInfos.chain.symbol} token faucet now!
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </Text>
+        </div>
+      )}
     </aside>
   )
 }

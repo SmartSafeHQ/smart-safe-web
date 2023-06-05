@@ -7,28 +7,20 @@ export interface ChainSettings {
   rpcUrl: string
   explorerUrl: string
   scanUrl: string
+  faucetUrl?: string
 }
 
 const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
-    symbol: 'CELO',
-    networkName: 'Celo Testnet',
-    icon: '/networks/celo-logo.svg',
-    chainId: '0xaef3',
-    hexColor: '#fcff52',
-    rpcUrl: 'https://alfajores-forno.celo-testnet.org/',
-    explorerUrl: 'https://alfajores-blockscout.celo-testnet.org',
-    scanUrl: 'https://explorer.celo.org/alfajores/api'
-  },
-  {
-    symbol: 'AVAX',
-    networkName: 'Avalanche Testnet',
-    icon: '/networks/avalanche-logo.svg',
-    chainId: '0xa869',
-    hexColor: '#e84142',
-    rpcUrl: 'https://api.avax-test.network/ext/bc/C/rpc',
-    explorerUrl: 'https://testnet.snowtrace.io',
-    scanUrl: `https://api-testnet.snowtrace.io/api?apiKey=${process.env.NEXT_PUBLIC_AVAX_SCAN_API_KEY}`
+    symbol: 'ETH',
+    networkName: 'Ethereum Sepolia Testnet',
+    icon: '/networks/eth-logo.svg',
+    chainId: '0xaa36a7',
+    hexColor: '#464a76',
+    rpcUrl: 'https://rpc2.sepolia.org',
+    explorerUrl: 'https://sepolia.etherscan.io',
+    faucetUrl: 'https://sepoliafaucet.com',
+    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   },
   {
     symbol: 'MATIC',
@@ -38,6 +30,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     hexColor: '#8247e5',
     rpcUrl: 'https://rpc-mumbai.maticvigil.com/',
     explorerUrl: 'https://mumbai.polygonscan.com',
+    faucetUrl: 'https://faucet.polygon.technology/',
     scanUrl: `https://api-testnet.polygonscan.com/api?apiKey=${process.env.NEXT_PUBLIC_POLYGON_SCAN_API_KEY}`
   },
   {
@@ -48,42 +41,23 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     hexColor: '#fbdc45',
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     explorerUrl: 'https://testnet.bscscan.com',
+    faucetUrl: 'https://testnet.bnbchain.org/faucet-smart',
     scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'XDC',
-    networkName: 'XDC Testnet',
-    icon: '/networks/xdc-logo.svg',
-    chainId: '0x33',
-    hexColor: '#9ff3ff',
-    rpcUrl: 'https://rpc.apothem.network/',
-    explorerUrl: 'https://explorer.apothem.network',
-    scanUrl: ''
-  },
-  {
-    symbol: 'OKT',
-    networkName: 'OKT Chain Testnet',
-    icon: '/networks/okt-logo.svg',
-    chainId: '0x41',
-    hexColor: '#e5e7eb',
-    rpcUrl: 'https://exchaintestrpc.okex.org/',
-    explorerUrl: 'https://www.oklink.com/okexchain-test',
-    scanUrl: 'https://www.oklink.com/api/v5/explorer/'
-  },
-  {
-    symbol: 'ETH',
-    networkName: 'Ethereum Sepolia Testnet',
-    icon: '/networks/eth-logo.svg',
-    chainId: '0xaa36a7',
-    hexColor: '#464a76',
-    rpcUrl: 'https://rpc2.sepolia.org',
-    explorerUrl: 'https://sepolia.etherscan.io',
-    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   }
 ]
 
 const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
+    symbol: 'ETH',
+    networkName: 'Ethereum Sepolia Testnet',
+    icon: '/networks/eth-logo.svg',
+    chainId: '0xaa36a7',
+    hexColor: '#464a76',
+    rpcUrl: 'https://rpc2.sepolia.org',
+    explorerUrl: 'https://sepolia.etherscan.io',
+    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
+  },
+  {
     symbol: 'MATIC',
     networkName: 'Polygon Testnet',
     icon: '/networks/polygon-logo.svg',
@@ -102,16 +76,6 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
     rpcUrl: 'https://data-seed-prebsc-1-s1.binance.org:8545',
     explorerUrl: 'https://testnet.bscscan.com',
     scanUrl: `https://api-testnet.bscscan.com/api?apiKey=${process.env.NEXT_PUBLIC_BNB_SCAN_API_KEY}`
-  },
-  {
-    symbol: 'ETH',
-    networkName: 'Ethereum Sepolia Testnet',
-    icon: '/networks/eth-logo.svg',
-    chainId: '0xaa36a7',
-    hexColor: '#464a76',
-    rpcUrl: 'https://rpc2.sepolia.org',
-    explorerUrl: 'https://sepolia.etherscan.io',
-    scanUrl: `https://api-goerli.etherscan.io/api?apiKey=${process.env.NEXT_PUBLIC_ETH_SCAN_API_KEY}`
   }
 ]
 
