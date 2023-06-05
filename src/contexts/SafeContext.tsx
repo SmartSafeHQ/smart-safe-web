@@ -13,7 +13,7 @@ import { Contract, JsonRpcProvider } from 'ethers'
 import {
   fetchAddressSafes,
   FetchAddressSafesOutput
-} from '@hooks/safes/retrieve/queries/useAddressSafes'
+} from '@hooks/safe/queries/useAddressSafes'
 import { formatWalletAddress } from '@utils/web3'
 import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
@@ -101,7 +101,7 @@ export function SafeProvider({ children }: SafeProviderProps) {
       >({
         queryKey: ['addressSafes', wallet.accounts[0].address],
         queryFn: () =>
-          fetchAddressSafes({ address: wallet.accounts[0].address })
+          fetchAddressSafes({ walletAddress: wallet.accounts[0].address })
       })
 
       const checkSafeExists = response.find(

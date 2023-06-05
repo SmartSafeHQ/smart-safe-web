@@ -8,7 +8,7 @@ import clsx from 'clsx'
 
 import { Text } from '@components/Text'
 
-import { DeployStatus } from '@contexts/create-safe/CreateSafeContext'
+import { DeployStatus } from '@contexts/CreateSafeContext'
 
 const STATUS_ICONS = new Map<DeployStatus, Icon>([
   ['loading', WarningCircle],

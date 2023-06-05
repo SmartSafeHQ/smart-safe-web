@@ -52,9 +52,9 @@ function HoverCardContent({
     <RadixHoverCard.Portal>
       <RadixHoverCard.Content
         className={clsx(
-          '[&>*]:fill-gray-50 [&>*]:dark:fill-gray-800 z-50 w-full flex flex-col justify-center items-center p-2 rounded-md bg-gray-50 dark:bg-gray-800 shadow-md animate-dialog-open',
+          '[&>*]:fill-zinc-50 [&>*]:dark:fill-zinc-800 z-50 w-full flex flex-col justify-center items-center p-2 rounded-md bg-zinc-50 dark:bg-zinc-800 shadow-md animate-dialog-open',
           {
-            'dark:bg-gray-900 [&>*]:dark:fill-gray-900':
+            'dark:bg-zinc-900 [&>*]:dark:fill-zinc-900':
               variant === 'highlighted'
           },
           className

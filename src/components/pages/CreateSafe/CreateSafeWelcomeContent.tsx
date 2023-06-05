@@ -22,7 +22,7 @@ export function CreateSafeWelcomeContent() {
 
           <Text
             asChild
-            className="text-sm leading-7 text-gray-500 font-medium text-start"
+            className="text-sm leading-7 text-zinc-500 font-medium text-start"
           >
             <p>
               Your trusted, decentralized custody and asset management platform

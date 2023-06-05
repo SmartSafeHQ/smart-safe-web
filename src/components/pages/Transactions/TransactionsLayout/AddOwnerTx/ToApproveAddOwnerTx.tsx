@@ -3,8 +3,8 @@ import { AddOwnerTx } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { ChangeOwnersTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
-import { useGetOwnersCount } from '@hooks/transactions/queries/useGetOwnersCount'
+import { ChangeOwnersTxProps } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
+import { useSafeOwners } from '@hooks/safe/queries/useSafeOwners'
 
 interface ToApproveAddOwnerTxProps {
   transaction: ChangeOwnersTxProps
@@ -19,22 +19,23 @@ export function ToApproveAddOwnerTx({ transaction }: ToApproveAddOwnerTxProps) {
     isLoadingReject,
     handleRejectTransaction
   } = useTransactionsQueue()
-  const { data: ownersCount } = useGetOwnersCount({
-    safeAddress: safe?.address || '',
-    enabled: !!safe
-  })
+  const { data: safeOwners } = useSafeOwners(
+    safe?.address,
+    safe?.chain.rpcUrl,
+    !!safe
+  )
 
   return (
     <>
       <AddOwnerTx.Header
         txNonce={transaction.nonce}
-        currentOwnersCount={ownersCount}
-        newOwnersCount={(ownersCount ?? 0) + 1}
+        currentOwnersCount={safeOwners?.length}
+        newOwnersCount={(safeOwners?.length ?? 0) + 1}
         createdAt={transaction.createdAt}
         className="min-h-[4rem] py-4 px-6"
       >
         <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
-          Approves {transaction.signatures.length}/{safe?.threshold}
+          Approves {transaction.signatures.approvesCount}/{safe?.threshold}
         </Text>
       </AddOwnerTx.Header>
 
@@ -64,7 +65,7 @@ export function ToApproveAddOwnerTx({ transaction }: ToApproveAddOwnerTxProps) {
           <Transaction.Actions
             isLoadingApprove={isLoadingApprove}
             isLoadingReject={isLoadingReject}
-            signatures={transactionsQueue?.toApprove?.signatures ?? []}
+            signatures={transactionsQueue?.toApprove?.signatures.list ?? []}
             handleApproveTransaction={handleApproveTransaction}
             handleRejectTransaction={handleRejectTransaction}
           />

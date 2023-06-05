@@ -81,7 +81,7 @@ function PageLayoutDescription({
   return (
     <Text
       className={clsx(
-        'text-sm leading-7 text-gray-500 font-medium text-start break-words',
+        'text-sm leading-7 text-zinc-500 font-medium text-start break-words',
         className
       )}
       {...props}

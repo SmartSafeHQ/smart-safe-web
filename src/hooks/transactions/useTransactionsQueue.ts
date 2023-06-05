@@ -2,7 +2,7 @@ import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-import { useSafeTxQueue } from '@hooks/safes/retrieve/queries/useSafeTxQueue'
+import { useSafeTxQueue } from '@hooks/transactions/queries/useSafeTxQueue'
 import { useApproveTransactionMutation } from '@hooks/transactions/mutation/useApproveTransactionMutation'
 import { useRejectTransactionMutation } from '@hooks/transactions/mutation/useRejectTransactionMutation'
 
@@ -18,6 +18,7 @@ export const useTransactionsQueue = () => {
   const {
     data: transactionsQueue,
     error: transactionsQueueError,
+    isRefetching: transactionsQueueIsRefetching,
     isLoading: transactionsQueueIsLoading
   } = useSafeTxQueue(safe?.address, safe?.chain.chainId, !!safe)
 
@@ -34,7 +35,7 @@ export const useTransactionsQueue = () => {
 
       await mutateApproveTransaction({
         chainId: safe.chain.chainId,
-        fromSafe: safe.address,
+        safeAddress: safe.address,
         ownerAddress: wallet.accounts[0].address,
         provider: wallet.provider,
         to: transactionsQueue.toApprove.to,
@@ -54,7 +55,7 @@ export const useTransactionsQueue = () => {
 
       await mutateRejectTransaction({
         chainId: safe.chain.chainId,
-        fromSafe: safe.address,
+        safeAddress: safe.address,
         ownerAddress: wallet.accounts[0].address,
         provider: wallet.provider,
         to: transactionsQueue.toApprove.to,
@@ -71,6 +72,7 @@ export const useTransactionsQueue = () => {
     transactionsQueue,
     transactionsQueueError,
     transactionsQueueIsLoading,
+    transactionsQueueIsRefetching,
     handleApproveTransaction,
     handleRejectTransaction,
     isLoadingApprove,

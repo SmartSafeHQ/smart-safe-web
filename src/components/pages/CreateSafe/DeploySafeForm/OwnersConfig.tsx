@@ -3,17 +3,17 @@ import { FieldArrayWithId, useFormContext } from 'react-hook-form'
 import { ArrowSquareOut, CaretDown, Plus } from '@phosphor-icons/react'
 
 import { OwnerItem } from './OwnerItem'
-import { useListContacts } from '@hooks/contacts/queries/useListContacts'
+import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
 import { useSafe } from '@contexts/SafeContext'
 
-import { FieldValues } from '@hooks/safes/create/deploySafeValidationSchema'
+import { FieldValues } from '@hooks/createSafe/deploySafeValidationSchema'
 
 type OwnersConfigProps = {
   ownersFields: FieldArrayWithId<FieldValues, 'owners', 'id'>[]
   removeOwner: (index: number | number[]) => void
-  addNewOwner: () => Promise<void>
+  addOwner: () => Promise<void>
 }
 
 const MULTI_SIGN_OWNERS_LINK =
@@ -21,14 +21,14 @@ const MULTI_SIGN_OWNERS_LINK =
 
 export function OwnersConfig({
   ownersFields,
-  addNewOwner,
+  addOwner,
   removeOwner
 }: OwnersConfigProps) {
   const { safe } = useSafe()
   const {
     formState: { errors }
   } = useFormContext<FieldValues>()
-  const { data: contactsList } = useListContacts(safe?.ownerId!)
+  const { data: contactsList } = useContactsQuery(safe?.ownerId, !!safe)
 
   return (
     <Collapsible.Root
@@ -68,7 +68,7 @@ export function OwnersConfig({
         <div className="w-full flex items-stretch justify-start pt-4">
           <button
             type="button"
-            onClick={addNewOwner}
+            onClick={addOwner}
             className="flex items-center gap-2 py-2 px-3 text-sm text-cyan-500 rounded-md bg-transparent transition-colors hover:bg-cyan-300 hover:bg-opacity-20"
           >
             <Plus className="w-4 h-4" />

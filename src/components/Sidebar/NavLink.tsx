@@ -54,7 +54,7 @@ const NavLinkComponent: ForwardRefRenderFunction<
         {
           'bg-zinc-500/10 dark:bg-zinc-50/10 font-medium hover:bg-zinc-500/20 hover:dark:bg-zinc-50/20':
             isActive,
-          'pointer-events-none text-gray-400 dark:brightness-50':
+          'pointer-events-none text-zinc-400 dark:brightness-50':
             isDisabled || !safe?.id
         }
       )}

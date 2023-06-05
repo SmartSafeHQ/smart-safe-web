@@ -4,7 +4,7 @@ import { type ReactElement } from 'react'
 import { CreateSafeHeader } from '@components/pages/CreateSafe/CreateSafeHeader'
 import { CreateSafeWelcomeContent } from '@components/pages/CreateSafe/CreateSafeWelcomeContent'
 
-import { CreateSafeProvider } from '@contexts/create-safe/CreateSafeContext'
+import { CreateSafeProvider } from '@contexts/CreateSafeContext'
 
 const CreateSafeWelcome = () => {
   return (

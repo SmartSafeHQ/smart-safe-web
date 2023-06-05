@@ -7,7 +7,7 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 
-import { useDeploySafeHook } from '@hooks/safes/create/useDeploySafeHook'
+import { useDeploySafeHook } from '@hooks/createSafe/useDeploySafeHook'
 
 export function DeploySafeForm() {
   const {
@@ -20,7 +20,7 @@ export function DeploySafeForm() {
     ownersFields,
     register,
     removeOwner,
-    addNewOwner,
+    addOwner,
     watch,
     control,
     isSubmitting
@@ -50,7 +50,7 @@ export function DeploySafeForm() {
 
         <OwnersConfig
           ownersFields={ownersFields}
-          addNewOwner={addNewOwner}
+          addOwner={addOwner}
           removeOwner={removeOwner}
         />
 

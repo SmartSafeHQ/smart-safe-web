@@ -3,6 +3,7 @@ import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { ToApproveTransaction } from '@components/pages/Transactions/ToApproveTransaction'
 import { PendingTransaction } from '@components/pages/Transactions/PendingTransaction'
+import { LoadingSpinner } from '@components/FetchingStates/LoadingSpinner'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
@@ -12,6 +13,7 @@ export function TransactionsQueueList() {
     safe,
     transactionsQueue,
     transactionsQueueError,
+    transactionsQueueIsRefetching,
     transactionsQueueIsLoading
   } = useTransactionsQueue()
 
@@ -35,12 +37,18 @@ export function TransactionsQueueList() {
         transactionsQueue?.toApprove &&
         safe && (
           <section className="w-full flex flex-col items-stretch justify-start gap-2 px-4">
-            <Text
-              asChild
-              className="text-sm leading-7 text-zinc-500 font-medium text-start"
-            >
-              <strong>To approve</strong>
-            </Text>
+            <div className=" flex items-center justify-start gap-2">
+              <Text
+                asChild
+                className="text-sm leading-7 text-zinc-500 font-medium text-start"
+              >
+                <strong>To approve</strong>
+              </Text>
+
+              {transactionsQueueIsRefetching && (
+                <LoadingSpinner className="h-4 w-4" />
+              )}
+            </div>
 
             <ToApproveTransaction transaction={transactionsQueue.toApprove} />
 

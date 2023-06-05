@@ -3,7 +3,7 @@ import { SendTx } from '.'
 import { Text } from '@components/Text'
 
 import { useTransactionsQueue } from '@hooks/transactions/useTransactionsQueue'
-import { SendTxProps } from '@hooks/safes/retrieve/queries/useSafeTxQueue/interfaces'
+import { SendTxProps } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 
 interface ToApproveSendTxProps {
   transaction: SendTxProps
@@ -29,7 +29,7 @@ export function ToApproveSendTx({ transaction }: ToApproveSendTxProps) {
         className="min-h-[4rem] py-4 px-6"
       >
         <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
-          Approves {transaction.signatures.length}/{safe?.threshold}
+          Approves {transaction.signatures.approvesCount}/{safe?.threshold}
         </Text>
       </SendTx.Header>
 
@@ -61,7 +61,7 @@ export function ToApproveSendTx({ transaction }: ToApproveSendTxProps) {
           <Transaction.Actions
             isLoadingApprove={isLoadingApprove}
             isLoadingReject={isLoadingReject}
-            signatures={transactionsQueue?.toApprove?.signatures ?? []}
+            signatures={transactionsQueue?.toApprove?.signatures.list ?? []}
             handleApproveTransaction={handleApproveTransaction}
             handleRejectTransaction={handleRejectTransaction}
           />

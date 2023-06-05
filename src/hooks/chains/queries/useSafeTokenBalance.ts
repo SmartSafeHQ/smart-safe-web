@@ -8,7 +8,7 @@ import {
 import { queryClient } from '@lib/reactQuery'
 
 interface FetchSafeTokenBalanceInput {
-  address?: string
+  safeAddress?: string
   symbol?: string
   rpcUrl?: string
 }
@@ -21,8 +21,8 @@ export interface FetchSafeTokenBalanceOutput {
 export async function fetchSafeTokenBalance(
   input: FetchSafeTokenBalanceInput
 ): Promise<FetchSafeTokenBalanceOutput> {
-  if (!input.address || !input.rpcUrl || !input.symbol) {
-    throw new Error('wallet address and chain required')
+  if (!input.safeAddress || !input.rpcUrl || !input.symbol) {
+    throw new Error('safe address and chain required')
   }
 
   const provider = new ethers.JsonRpcProvider(input.rpcUrl)
@@ -32,7 +32,7 @@ export async function fetchSafeTokenBalance(
     queryFn: () => fetchTokenUsdValue({ symbol: input.symbol })
   })
 
-  const balance = await provider.getBalance(input.address)
+  const balance = await provider.getBalance(input.safeAddress)
   const balanceInTokens = +ethers.formatUnits(balance, 18)
 
   const usdBalance = balanceInTokens * data.usdValue
@@ -44,14 +44,14 @@ export async function fetchSafeTokenBalance(
 }
 
 export function useSafeTokenBalance(
-  address?: string,
+  safeAddress?: string,
   symbol?: string,
   rpcUrl?: string,
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['safeTokenBalance', address, symbol],
-    queryFn: () => fetchSafeTokenBalance({ address, symbol, rpcUrl }),
+    queryKey: ['safeTokenBalance', safeAddress, symbol],
+    queryFn: () => fetchSafeTokenBalance({ safeAddress, symbol, rpcUrl }),
     enabled,
     keepPreviousData: true,
     staleTime: 1000 * 3, // 3 seconds
