@@ -72,7 +72,7 @@
   },
   {
     "inputs": [],
-    "name": "TransactionAlreadyProcessed",
+    "name": "TransactionAlreadyExecuted",
     "type": "error"
   },
   {
@@ -275,6 +275,30 @@
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "_checkData",
+        "type": "bytes"
+      }
+    ],
+    "name": "checkUpkeep",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "_upkeepNeeded",
+        "type": "bool"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_performData",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "_to",
         "type": "address"
@@ -288,6 +312,11 @@
         "internalType": "bytes",
         "name": "_data",
         "type": "bytes"
+      },
+      {
+        "internalType": "enum TransactionManager.TransactionType",
+        "name": "_transactionType",
+        "type": "uint8"
       },
       {
         "internalType": "address",
@@ -413,6 +442,11 @@
             "internalType": "bytes[]",
             "name": "signatures",
             "type": "bytes[]"
+          },
+          {
+            "internalType": "enum TransactionManager.TransactionType",
+            "name": "transactionType",
+            "type": "uint8"
           }
         ],
         "internalType": "struct TransactionManager.Transaction[]",
@@ -421,6 +455,19 @@
       }
     ],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "_performData",
+        "type": "bytes"
+      }
+    ],
+    "name": "performUpkeep",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

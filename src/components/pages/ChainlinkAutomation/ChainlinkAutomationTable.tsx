@@ -45,8 +45,6 @@ function ChainlinkAutomationTableTr({
   chainlinkAutomation,
   handleDeleteChainlinkAutomation
 }: ChainlinkAutomationTableTrProps) {
-  const formattedDate = chainlinkAutomation.dateFrom
-
   return (
     <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3 min-w-[8rem]">
@@ -97,7 +95,7 @@ function ChainlinkAutomationTableTr({
 
       <td>
         <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-          {formattedDate}
+          {chainlinkAutomation.trigger}
         </Text>
       </td>
 

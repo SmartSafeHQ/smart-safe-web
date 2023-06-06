@@ -7,7 +7,6 @@ import { queryClient } from '@lib/reactQuery'
 interface DeleteSpedingLimitsFunctionInput {
   safeAddress: string
   customerWalletPrivateKey: string
-  withdrawalIndex: number
 }
 
 async function deleteSpendingLimitsFunction(
@@ -44,13 +43,13 @@ export function useDeleteSpendingLimitsMutation() {
       queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
         ['spendingLimits', variables.safeAddress],
         () => {
-          const deletedIndex = prev.findIndex(
-            auth => auth.index === variables.withdrawalIndex
-          )
+          // const deletedIndex = prev.findIndex(
+          //   auth => auth.index === variables.withdrawalIndex
+          // )
 
-          if (deletedIndex < 0) return prev
+          // if (1 < 0) return prev
 
-          prev.splice(deletedIndex, 1)
+          prev.splice(1, 1)
 
           return prev
         }

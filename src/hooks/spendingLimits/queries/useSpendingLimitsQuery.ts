@@ -49,7 +49,7 @@ export async function fetchSpendingLimits(
   //     index: authorization.authorizationIndex,
   //     recipientName: findContactForRecipient?.contactName,
   //     coinAmount: formattedAmount,
-  //     dateFrom: formattedDate,
+  //     trigger: formattedDate,
   //     coin: {
   //       symbol: spendingLimitsToken?.symbol,
   //       avatar: spendingLimitsToken?.icon,

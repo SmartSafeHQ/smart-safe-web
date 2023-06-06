@@ -10,10 +10,9 @@ import {
 type SpendingLimitsProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface SelectedSpendingLimitsProps {
-  index: number
   recipientName?: string
   coinAmount: number
-  dateFrom: string
+  trigger: string
   coin: {
     symbol: string
     avatar: string

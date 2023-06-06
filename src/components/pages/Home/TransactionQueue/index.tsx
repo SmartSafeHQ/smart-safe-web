@@ -14,6 +14,8 @@ export function TransactionQueue() {
     transactionsQueueIsLoading
   } = useTransactionsQueue()
 
+  const isQueueEmpty =
+    transactionsQueue && !transactionsQueueError && !transactionsQueue.toApprove
   const transactionsQueueCount = transactionsQueue?.toApprove
     ? transactionsQueue.pending.length + 1
     : 0
@@ -25,7 +27,7 @@ export function TransactionQueue() {
       </Heading>
 
       <div className="w-full flex flex-col items-center justify-center gap-5">
-        {transactionsQueue && !transactionsQueue.toApprove && (
+        {isQueueEmpty && (
           <ErrorState
             title="You have no pending transactions"
             className="pt-2"

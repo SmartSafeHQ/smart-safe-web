@@ -46,6 +46,7 @@ async function removeOwnerFunction(
     input.safeAddress,
     '0',
     removeOwnerCallEncoded,
+    0,
     signer.address,
     signedTypedDataHash
   )

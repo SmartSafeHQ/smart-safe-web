@@ -39,6 +39,8 @@ export function CreateChainlinkAutomationModal() {
     <DialogModal.Root
       open={isCreateSpendingLimitsOpen}
       onOpenChange={isOpen => {
+        if (isSubmitting) return
+
         setIsCreateSpendingLimitsOpen(isOpen)
         reset()
         setSearchContacts(contacts)
@@ -77,8 +79,8 @@ export function CreateChainlinkAutomationModal() {
               <div className="w-full flex flex-col justify-center items-stretch gap-6 py-8 px-4 sm:px-8">
                 <div className="flex flex-col gap-1 group">
                   <TextInput.Root
-                    htmlFor="contactAddress"
-                    error={errors.contactAddress?.message}
+                    htmlFor="to"
+                    error={errors.to?.message}
                     onClick={() =>
                       document
                         .getElementById('select-contact-id')
@@ -94,9 +96,9 @@ export function CreateChainlinkAutomationModal() {
                       {contacts && (
                         <TextInput.Content>
                           <TextInput.Input
-                            {...register('contactAddress')}
+                            {...register('to')}
                             required
-                            id="contactAddress"
+                            id="to"
                             type="search"
                             autoComplete="off"
                             role="combobox"
@@ -120,7 +122,7 @@ export function CreateChainlinkAutomationModal() {
                           <button
                             type="button"
                             onClick={() => {
-                              setValue('contactAddress', contact.contactAddress)
+                              setValue('to', contact.contactAddress)
                               handleInputChange(contact.contactAddress)
 
                               document
@@ -145,7 +147,7 @@ export function CreateChainlinkAutomationModal() {
 
                 {!!safeTokensData && (
                   <Controller
-                    name="coinSymbol"
+                    name="tokenSymbol"
                     control={control}
                     defaultValue={safeTokensData[0].symbol}
                     render={({ field: { onChange, value, ref, ...props } }) => (
@@ -200,15 +202,15 @@ export function CreateChainlinkAutomationModal() {
                       required
                       id="amount"
                       type="number"
-                      min={0.01}
-                      step={0.01}
+                      min="0"
+                      step={0.000001}
                       placeholder="Enter the amount of tokens"
                     />
                   </TextInput.Content>
                 </TextInput.Root>
 
                 <Controller
-                  name="fromDate"
+                  name="trigger"
                   control={control}
                   defaultValue={TIME_BASED_TRIGGERS[0]}
                   render={({ field: { onChange, value, ref, ...props } }) => (

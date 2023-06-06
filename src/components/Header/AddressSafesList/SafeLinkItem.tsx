@@ -4,8 +4,8 @@ import clsx from 'clsx'
 import { Text } from '@components/Text'
 
 const SAFE_GRADIENT_COLORS = [
-  'from-green-500 to-blue-500',
   'from-pink-500 to-yellow-500',
+  'from-purple-400 to-blue-700',
   'from-yellow-500 to-teal-500',
   'from-slate-300 to-slate-800',
   'from-green-500 to-blue-500',

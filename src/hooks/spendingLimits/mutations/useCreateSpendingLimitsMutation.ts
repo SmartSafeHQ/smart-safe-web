@@ -1,58 +1,72 @@
+import { ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
+import { EIP1193Provider } from '@web3-onboard/core'
 
+import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
+import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 
 import { queryClient } from '@lib/reactQuery'
-import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import { formatWalletAddress } from '@utils/web3'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 interface CreateSpendingLimitsFunctionInput {
+  provider: EIP1193Provider
+  to: string
   safeAddress: string
-  contactAddress: string
-  coin: ChainSettings
   amount: number
-  fromDate: string
-  recipientName?: string
+  trigger: string
+  chainId: string
 }
 
 interface CreateSpendingLimitsFunctionOutput {
-  index: number
-}
-
-export interface CreateSpendingLimitsApiResponse {
-  id: number
+  transactionHash: string
 }
 
 async function createSpendingLimitsFunction(
   input: CreateSpendingLimitsFunctionInput
 ): Promise<CreateSpendingLimitsFunctionOutput> {
-  console.log(input)
-  // const provider = new providers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
-  // const signer = new Wallet(input.customerWalletPrivateKey, provider)
+  const provider = new ethers.BrowserProvider(input.provider)
 
-  // const contract = new Contract(
-  //   input.address,
-  //   ACCOUNT_ABSTRACTION_ABI,
-  //   signer
-  // )
+  const signer = await provider.getSigner()
+  const contract = SmartSafe.connect(input.safeAddress, signer)
+  const transactionNonce = (
+    await contract.getFunction('transactionNonce')()
+  ).toString()
 
-  // const fromDateInSeconds = dayjs(input.fromDate).unix()
-  // const amountInWei = ethers.utils
-  //   .parseUnits(String(input.amount), 18)
-  //   .toString()
+  const amountInWei = ethers.parseEther(String(input.amount))
 
-  // await contract.functions.addAuthorizedUser({
-  //   userAddress: input.contactAddress,
-  //   tokenAddress: input.coin.contractAddress,
-  //   tokenAmount: amountInWei,
-  //   startDate: fromDateInSeconds
-  // })
+  const txData = '0x'
 
-  // const totalAuthorizations = await contract.functions.totalAuthorizations()
+  const transaction = {
+    chainId: parseInt(input.chainId, 16),
+    from: input.safeAddress,
+    to: input.to,
+    transactionNonce: Number(transactionNonce),
+    value: amountInWei.toString(),
+    data: ethers.keccak256(txData)
+  }
 
-  // const createdAuthIndex = +totalAuthorizations.toString()
+  const { signedTypedDataHash } = await createTransactionProposal({
+    signer,
+    transaction
+  })
 
-  return { index: 0 }
+  const proposal = await contract.getFunction('createTransactionProposal')(
+    input.to,
+    amountInWei.toString(),
+    txData,
+    1,
+    await signer.getAddress(),
+    signedTypedDataHash,
+    { value: amountInWei.toString() }
+  )
+
+  await proposal.wait()
+
+  return {
+    transactionHash: proposal.hash
+  }
 }
 
 export function useCreateSpendingLimitsMutation() {
@@ -65,25 +79,31 @@ export function useCreateSpendingLimitsMutation() {
         queryKey: ['spendingLimits', variables.safeAddress]
       })
 
+      const checkTokenExists = CHAINS_ATTRIBUTES.find(
+        token => token.chainId === variables.chainId
+      )
+
+      if (!checkTokenExists) {
+        return
+      }
+
       const prev = queryClient.getQueryData<SelectedSpendingLimitsProps[]>([
         'spendingLimits',
         variables.safeAddress
       ])
 
       const created = {
-        index: data.index,
-        recipientName: variables.recipientName,
         coinAmount: variables.amount,
-        dateFrom: variables.fromDate,
+        trigger: variables.trigger,
         coin: {
-          symbol: variables.coin.symbol,
-          avatar: variables.coin.icon,
-          address: variables.coin.rpcUrl
+          symbol: checkTokenExists.symbol,
+          avatar: checkTokenExists.icon,
+          address: checkTokenExists.rpcUrl
         },
         wallet: {
-          address: variables.contactAddress,
+          address: variables.to,
           formattedAddress: formatWalletAddress({
-            walletAddress: variables.contactAddress
+            walletAddress: variables.to
           })
         }
       }

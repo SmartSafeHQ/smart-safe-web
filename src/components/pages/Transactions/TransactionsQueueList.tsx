@@ -17,9 +17,12 @@ export function TransactionsQueueList() {
     transactionsQueueIsLoading
   } = useTransactionsQueue()
 
+  const isQueueEmpty =
+    transactionsQueue && !transactionsQueueError && !transactionsQueue.toApprove
+
   return (
     <ScrollArea className="px-2">
-      {transactionsQueue && !transactionsQueue.toApprove && (
+      {isQueueEmpty && (
         <ErrorState title="You have no pending transactions" className="pt-2" />
       )}
 

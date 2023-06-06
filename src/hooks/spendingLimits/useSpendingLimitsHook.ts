@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
 import { useSpendingLimits } from '@contexts/SpendingLimitsContext'
@@ -24,16 +25,16 @@ export const TIME_BASED_TRIGGERS = [
 ]
 
 const createSpendingLimitsValidationSchema = z.object({
-  contactAddress: z.string().refine(address => {
+  to: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
 
     return isAddressValid
   }, 'Invalid address'),
-  coinSymbol: z.string().min(1, { message: 'coin required' }),
+  tokenSymbol: z.string().min(1, { message: 'coin required' }),
   amount: z
     .number({ invalid_type_error: 'min 0.1' })
-    .min(0.1, { message: 'min 0.1' }),
-  fromDate: z.string().min(1, { message: 'time trigger required' })
+    .min(0.000001, { message: 'min 0.1' }),
+  trigger: z.string().min(1, { message: 'time trigger required' })
 })
 
 export type CreateSpendingLimitsFieldValues = z.infer<
@@ -50,7 +51,7 @@ export const useSpendingLimitsHook = () => {
     setSelectedSpendingLimits,
     handleDeleteSpendingLimits
   } = useSpendingLimits()
-
+  const [{ wallet }] = useConnectWallet()
   const { safe } = useSafe()
   const { data: safeTokensData } = useSafeTokens(
     safe?.address,
@@ -106,18 +107,14 @@ export const useSpendingLimitsHook = () => {
   const onSubmitCreateSpendingLimits: SubmitHandler<
     CreateSpendingLimitsFieldValues
   > = async data => {
-    if (!contacts || !safe) return
+    if (!wallet || !contacts || !safe) return
 
     try {
-      const spendingLimitsToken = CHAINS_ATTRIBUTES.find(
-        token => token.symbol === data.coinSymbol
+      const checkTokenExists = CHAINS_ATTRIBUTES.find(
+        token => token.symbol === data.tokenSymbol
       )
 
-      const findContactForRecipient = contacts.find(
-        contact => contact.contactAddress === data.contactAddress
-      )
-
-      if (!spendingLimitsToken) {
+      if (!checkTokenExists) {
         toast.error('token not found')
         return
       }
@@ -125,8 +122,8 @@ export const useSpendingLimitsHook = () => {
       await mutateAsync({
         ...data,
         safeAddress: safe.address,
-        coin: spendingLimitsToken,
-        recipientName: findContactForRecipient?.contactName
+        provider: wallet.provider,
+        chainId: checkTokenExists.chainId
       })
 
       toast.success('Automation successfully created!')

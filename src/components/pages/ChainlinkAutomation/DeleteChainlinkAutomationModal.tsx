@@ -24,8 +24,7 @@ export function DeleteChainlinkAutomationModal() {
     try {
       await mutateAsync({
         safeAddress: 'address',
-        customerWalletPrivateKey: 'privateKey',
-        withdrawalIndex: selectedSpendingLimits.index
+        customerWalletPrivateKey: 'privateKey'
       })
 
       setIsDeleteSpendingLimitsOpen(false)
@@ -89,7 +88,7 @@ export function DeleteChainlinkAutomationModal() {
               <h3>Time trigger</h3>
             </Heading>
 
-            <Text className="text-sm">{selectedSpendingLimits.dateFrom}</Text>
+            <Text className="text-sm">{selectedSpendingLimits.trigger}</Text>
           </div>
         </div>
 

@@ -28,17 +28,13 @@ const Home = () => {
             <Image
               src={securifyLogo}
               alt="Securify logo"
-              className="w-36 h-7"
+              className="w-28 h-5"
             />
           </div>
 
           <div className="relative">
             <span className="absolute bottom-0 bg-zinc-950 w-full h-4 -z-10" />
-            <Image
-              src={slitherLogo}
-              alt="Slither logo"
-              className="w-24 h-14 z-10"
-            />
+            <Image src={slitherLogo} alt="Slither logo" className="w-20 h-11" />
           </div>
         </div>
 

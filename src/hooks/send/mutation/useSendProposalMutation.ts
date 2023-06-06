@@ -64,6 +64,7 @@ async function sendProposalFunction(
     input.to,
     amountInWei.toString(),
     txData,
+    0,
     await signer.getAddress(),
     signedTypedDataHash,
     { value: amountInWei.toString() }
