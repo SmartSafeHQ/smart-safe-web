@@ -57,10 +57,17 @@ function TransactionTxInfos({
   txHash,
   createdAt,
   children,
+  className,
   ...props
 }: TransactionInfosProps) {
   return (
-    <div className="flex flex-col items-stretch justify-start gap-2" {...props}>
+    <div
+      className={clsx(
+        'flex flex-col items-stretch justify-start gap-2',
+        className
+      )}
+      {...props}
+    >
       <div className="w-full flex items-start justify-between gap-1">
         <Text
           asChild

@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import {
-  FORMAT_TRANSACTION_FUCTIONS,
-  formatSendTxToQueue,
+  formatSafeSendTokensTx,
+  formatSafeSettingsUpdateTx,
   formatTransactionToQueueList
 } from '@utils/web3/transactions/transactionQueue'
 import {
@@ -58,22 +58,14 @@ export async function fetchSafeTxQueue(
     let formattedTransaction: TransacitonTypes
 
     if (parsedTransaction) {
-      const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
-        parsedTransaction.name
-      )
-
-      if (!formatTransactionFunction) {
-        throw new Error('transaction type not supported')
-      }
-
-      formattedTransaction = formatTransactionFunction(
-        transactionData,
+      formattedTransaction = formatSafeSettingsUpdateTx(
         parsedTransaction,
-        safeChain.chainId
+        transactionData
       )
     } else {
-      formattedTransaction = formatSendTxToQueue(
+      formattedTransaction = formatSafeSendTokensTx(
         transactionData,
+        Number(transaction[7]),
         safeChain.chainId
       )
     }

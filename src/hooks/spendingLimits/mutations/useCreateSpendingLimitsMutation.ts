@@ -9,13 +9,14 @@ import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { queryClient } from '@lib/reactQuery'
 import { formatWalletAddress } from '@utils/web3'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 
 interface CreateSpendingLimitsFunctionInput {
   provider: EIP1193Provider
   to: string
   safeAddress: string
   amount: number
-  trigger: string
+  trigger: number
   chainId: string
 }
 
@@ -26,6 +27,7 @@ interface CreateSpendingLimitsFunctionOutput {
 async function createSpendingLimitsFunction(
   input: CreateSpendingLimitsFunctionInput
 ): Promise<CreateSpendingLimitsFunctionOutput> {
+  console.log(input)
   const provider = new ethers.BrowserProvider(input.provider)
 
   const signer = await provider.getSigner()
@@ -56,7 +58,7 @@ async function createSpendingLimitsFunction(
     input.to,
     amountInWei.toString(),
     txData,
-    1,
+    input.trigger,
     await signer.getAddress(),
     signedTypedDataHash,
     { value: amountInWei.toString() }
@@ -74,7 +76,15 @@ export function useCreateSpendingLimitsMutation() {
     mutationKey: ['createSpendingLimits'],
     mutationFn: (input: CreateSpendingLimitsFunctionInput) =>
       createSpendingLimitsFunction(input),
+
     onSuccess: async (data, variables) => {
+      queryClient.cancelQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeTxNonce', variables.safeAddress]
+      })
+
       await queryClient.cancelQueries({
         queryKey: ['spendingLimits', variables.safeAddress]
       })
@@ -94,7 +104,11 @@ export function useCreateSpendingLimitsMutation() {
 
       const created = {
         coinAmount: variables.amount,
-        trigger: variables.trigger,
+        trigger: {
+          id: variables.trigger,
+          title:
+            AUTOMATION_TRIGGERS.get(variables.trigger)?.title ?? 'unknown type'
+        },
         coin: {
           symbol: checkTokenExists.symbol,
           avatar: checkTokenExists.icon,
@@ -120,12 +134,20 @@ export function useCreateSpendingLimitsMutation() {
       return prev
     },
     onError: (_, variables, context) => {
+      queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
+      queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
       queryClient.setQueryData(
         ['spendingLimits', variables.safeAddress],
         context
       )
     },
-    onSettled: (_data, _error) => {
+    onSettled: (_data, _error, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxQueue', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeTxNonce', variables.safeAddress]
+      })
       // queryClient.invalidateQueries({
       //   queryKey: ['spendingLimits', variables.safeAddress]
       // })

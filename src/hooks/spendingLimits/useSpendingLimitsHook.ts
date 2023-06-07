@@ -17,13 +17,6 @@ import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-export const TIME_BASED_TRIGGERS = [
-  'Every day',
-  'Weekly: every Monday',
-  'Monthly on the first day of the month',
-  'Yearly on the first day of the year'
-]
-
 const createSpendingLimitsValidationSchema = z.object({
   to: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
@@ -122,6 +115,7 @@ export const useSpendingLimitsHook = () => {
       await mutateAsync({
         ...data,
         safeAddress: safe.address,
+        trigger: +data.trigger,
         provider: wallet.provider,
         chainId: checkTokenExists.chainId
       })

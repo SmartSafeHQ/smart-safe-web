@@ -10,10 +10,8 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { Tabs } from '@components/Tabs'
 
-import {
-  TIME_BASED_TRIGGERS,
-  useSpendingLimitsHook
-} from '@hooks/spendingLimits/useSpendingLimitsHook'
+import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
+import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 
 export function CreateChainlinkAutomationModal() {
   const {
@@ -212,12 +210,12 @@ export function CreateChainlinkAutomationModal() {
                 <Controller
                   name="trigger"
                   control={control}
-                  defaultValue={TIME_BASED_TRIGGERS[0]}
+                  defaultValue={'1'}
                   render={({ field: { onChange, value, ref, ...props } }) => (
                     <SelectInput.Root
                       {...props}
                       onValueChange={onChange}
-                      value={value}
+                      value={String(value)}
                       ref={ref}
                       className="w-full"
                       labelText="Time trigger"
@@ -226,14 +224,19 @@ export function CreateChainlinkAutomationModal() {
 
                       <SelectInput.Content className="bg-white dark:bg-black">
                         <SelectInput.Group>
-                          {TIME_BASED_TRIGGERS.map(trigger => (
+                          {[...AUTOMATION_TRIGGERS.keys()].map(trigger => (
                             <SelectInput.Item
-                              key={trigger.replace(/\s/g, '')}
-                              value={trigger}
+                              key={trigger}
+                              value={String(trigger)}
                               className="min-h-[3rem] py-1"
                             >
                               <div className="w-full flex items-center justify-start gap-2">
-                                <Text>{trigger}</Text>
+                                <Text>
+                                  {
+                                    AUTOMATION_TRIGGERS.get(trigger)
+                                      ?.description
+                                  }
+                                </Text>
                               </div>
                             </SelectInput.Item>
                           ))}

@@ -15,6 +15,25 @@ import {
 import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
+export const AUTOMATION_TRIGGERS = new Map([
+  [1, { title: 'every day', description: 'Every day' }],
+  [2, { title: 'every week', description: 'Weekly: every Monday' }],
+  [
+    3,
+    {
+      title: 'every month',
+      description: 'Monthly on the first day of the month'
+    }
+  ],
+  [
+    4,
+    {
+      title: 'every year',
+      description: 'Yearly on the first day of the year'
+    }
+  ]
+])
+
 export async function formatTransactionToQueueList(
   transaction: any,
   contract: SmartSafe,
@@ -79,6 +98,48 @@ export async function formatTransactionToQueueList(
   }
 }
 
+export function formatSafeSettingsUpdateTx(
+  parsedTransaction: TransactionDescription,
+  transactionData: DefaultTxProps
+): TransacitonTypes {
+  const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
+    parsedTransaction.name
+  )
+
+  if (!formatTransactionFunction) {
+    throw new Error('transaction type not supported')
+  }
+
+  const formatedTx = formatTransactionFunction(
+    transactionData,
+    parsedTransaction
+  )
+
+  return formatedTx
+}
+
+export function formatSafeSendTokensTx(
+  transactionData: DefaultTxProps,
+  scheduledTrigger: number,
+  chainId: string
+): TransacitonTypes {
+  const isScheduledTransaction = Number(scheduledTrigger)
+
+  let formatedTx: TransacitonTypes
+
+  if (isScheduledTransaction) {
+    formatedTx = formatScheduledTxToQueue(
+      transactionData,
+      isScheduledTransaction,
+      chainId
+    )
+  } else {
+    formatedTx = formatSendTxToQueue(transactionData, chainId)
+  }
+
+  return formatedTx
+}
+
 export function formatSendTxToQueue(
   transaction: DefaultTxProps,
   chainId: string
@@ -126,15 +187,21 @@ export function formatThresholdTxToQueue(
 
 export function formatScheduledTxToQueue(
   transaction: DefaultTxProps,
-  parsedTransaction: TransactionDescription,
+  trigger: number,
   chainId: string
 ): ScheduledTxProps {
   const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
 
+  const scheduledTransaction = AUTOMATION_TRIGGERS.get(trigger)
+
+  if (!scheduledTransaction) {
+    throw new Error('transaction schedule type not supported')
+  }
+
   return {
     ...transaction,
     type: 'SCHEDULED',
-    triggerTitle: 'every week',
+    triggerTitle: scheduledTransaction.title,
     triggerType: 'time',
     token: {
       symbol: safeChain?.symbol ?? 'matic',
@@ -145,8 +212,7 @@ export function formatScheduledTxToQueue(
 
 type TxFormatFunction = (
   transaction: DefaultTxProps,
-  parsedTransaction: TransactionDescription,
-  chainId: string
+  parsedTransaction: TransactionDescription
 ) => TransacitonTypes
 
 export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
@@ -159,13 +225,5 @@ export const FORMAT_TRANSACTION_FUCTIONS = new Map<string, TxFormatFunction>([
     'changeThreshold',
     (transaction: DefaultTxProps, parsedTransaction: TransactionDescription) =>
       formatThresholdTxToQueue(transaction, parsedTransaction)
-  ],
-  [
-    'scheduled',
-    (
-      transaction: DefaultTxProps,
-      parsedTransaction: TransactionDescription,
-      chainId: string
-    ) => formatScheduledTxToQueue(transaction, parsedTransaction, chainId)
   ]
 ])

@@ -95,7 +95,7 @@ function ChainlinkAutomationTableTr({
 
       <td>
         <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-          {chainlinkAutomation.trigger}
+          {chainlinkAutomation.trigger.title}
         </Text>
       </td>
 

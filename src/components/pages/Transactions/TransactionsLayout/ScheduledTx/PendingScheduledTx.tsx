@@ -33,39 +33,37 @@ export function PendingScheduledTx({ transaction }: PendingScheduledTxProps) {
       <Collapsible.Content>
         {safe && (
           <div className="w-full flex flex-col items-stretch justify-start border-t-1 border-zinc-200 dark:border-zinc-700">
-            <div className="w-full flex flex-col items-stretch justify-start">
-              <Transaction.OwnersStatus
-                signatures={transaction.signatures}
-                threshold={safe.threshold}
-                baseExplorerLink={`${safe.chain.explorerUrl}/address`}
+            <Transaction.OwnersStatus
+              signatures={transaction.signatures}
+              threshold={safe.threshold}
+              baseExplorerLink={`${safe.chain.explorerUrl}/address`}
+            />
+
+            <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3">
+              <ScheduledTx.Infos
+                tokenSymbol={transaction.token.symbol}
+                address={transaction.to}
+                explorerLink={`${safe.chain.explorerUrl}/address/${transaction.to}`}
+                formattedAddress={transaction.formattedAddress}
+                amount={transaction.amount}
               />
 
-              <div className="w-full flex flex-col px-6 items-stretch justify-start py-4 gap-3 md:max-w-sm">
-                <ScheduledTx.Infos
-                  tokenSymbol={transaction.token.symbol}
-                  address={transaction.to}
-                  triggerTitle={transaction.triggerTitle}
-                  explorerLink={`${safe.chain.explorerUrl}/address/${transaction.to}`}
-                  formattedAddress={transaction.formattedAddress}
-                  amount={transaction.amount}
-                />
+              <Transaction.TxInfos
+                txHash={transaction.hash}
+                createdAt={transaction.createdAt}
+                className="md:max-w-xs"
+              >
+                <div className="w-full flex items-start justify-between gap-1">
+                  <Text
+                    asChild
+                    className="text-sm text-zinc-700 dark:text-zinc-400 font-medium capitalize"
+                  >
+                    <strong>Trigger policy</strong>
+                  </Text>
 
-                <Transaction.TxInfos
-                  txHash={transaction.hash}
-                  createdAt={transaction.createdAt}
-                >
-                  <div className="w-full flex items-start justify-between gap-1">
-                    <Text
-                      asChild
-                      className="text-sm text-zinc-700 dark:text-zinc-400 font-medium capitalize"
-                    >
-                      <strong>Trigger policy</strong>
-                    </Text>
-
-                    <Text className="text-sm">{transaction.triggerTitle}</Text>
-                  </div>
-                </Transaction.TxInfos>
-              </div>
+                  <Text className="text-sm">{transaction.triggerTitle}</Text>
+                </div>
+              </Transaction.TxInfos>
             </div>
           </div>
         )}

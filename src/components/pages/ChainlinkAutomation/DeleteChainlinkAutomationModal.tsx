@@ -88,7 +88,9 @@ export function DeleteChainlinkAutomationModal() {
               <h3>Time trigger</h3>
             </Heading>
 
-            <Text className="text-sm">{selectedSpendingLimits.trigger}</Text>
+            <Text className="text-sm">
+              {selectedSpendingLimits.trigger.title}
+            </Text>
           </div>
         </div>
 

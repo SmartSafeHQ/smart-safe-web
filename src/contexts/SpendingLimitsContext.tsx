@@ -12,7 +12,10 @@ type SpendingLimitsProviderProps = PropsWithChildren<Record<string, unknown>>
 export interface SelectedSpendingLimitsProps {
   recipientName?: string
   coinAmount: number
-  trigger: string
+  trigger: {
+    id: number
+    title: string
+  }
   coin: {
     symbol: string
     avatar: string

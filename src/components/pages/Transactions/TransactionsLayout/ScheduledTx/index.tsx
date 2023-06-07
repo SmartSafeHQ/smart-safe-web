@@ -52,7 +52,7 @@ function ScheduledTxHeader({
       <div className="max-w-5xl flex flex-1 flex-col items-stretch justify-between gap-2 md:items-center md:flex-row">
         <div className="flex items-center gap-2 lowercase">
           <Icon className="w-4 h-4 text-red-500" />
-          <Text>{triggerType} schedule send</Text>
+          <Text>{triggerTitle} send</Text>
         </div>
 
         <div className="flex items-center gap-2">
@@ -67,8 +67,6 @@ function ScheduledTxHeader({
             -{amount} {token.symbol}
           </Text>
         </div>
-
-        <Text className="w-max">{triggerTitle}</Text>
       </div>
 
       {children}
@@ -79,7 +77,6 @@ function ScheduledTxHeader({
 interface ScheduledTxInfosProps extends HTMLAttributes<HTMLDivElement> {
   tokenSymbol: string
   address: string
-  triggerTitle: string
   explorerLink: string
   formattedAddress: string
   amount: number
@@ -88,7 +85,6 @@ interface ScheduledTxInfosProps extends HTMLAttributes<HTMLDivElement> {
 function ScheduledTxInfos({
   tokenSymbol,
   address,
-  triggerTitle,
   formattedAddress,
   explorerLink,
   amount,
@@ -96,9 +92,15 @@ function ScheduledTxInfos({
 }: ScheduledTxInfosProps) {
   return (
     <div className="w-full flex flex-col gap-2" {...props}>
-      <Heading className="text-xl font-medium">
-        Send {amount} {tokenSymbol} {triggerTitle} to:
-      </Heading>
+      <div className="w-full flex items-center justify-between gap-2">
+        <Heading className="text-xl font-medium">
+          Send {amount} {tokenSymbol} to:
+        </Heading>
+
+        <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">
+          scheduled transaction
+        </Text>
+      </div>
 
       <div className="flex items-center justify-start gap-2">
         <div className="flex items-stretch justify-start gap-2">
