@@ -104,7 +104,10 @@ function ChainlinkAutomationTableTr({
           asChild
           className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
         >
-          <Link href="https://chain.link/" target="_blank">
+          <Link
+            href="https://automation.chain.link/mumbai/28261828003323169961858536349369109521020186415586712063073823033660067482394"
+            target="_blank"
+          >
             view on chainlink
             <ArrowRight className="w-4 h-4 text-cyan-500" />
           </Link>

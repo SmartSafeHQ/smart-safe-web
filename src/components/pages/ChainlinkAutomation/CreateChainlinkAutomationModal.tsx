@@ -113,7 +113,7 @@ export function CreateChainlinkAutomationModal() {
                   <div className="relative w-full">
                     <ul
                       id="select-contact-id"
-                      className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-zinc-100 dark:bg-zinc-900 rounded"
+                      className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-white dark:bg-black rounded"
                     >
                       {searchContacts?.map(contact => (
                         <li key={contact.contactName} className="min-h-[3rem]">
@@ -260,7 +260,7 @@ export function CreateChainlinkAutomationModal() {
           </Tabs.Content>
 
           <Tabs.Content value="custom-logic">
-            <div className="w-full h-[25rem] flex flex-col justify-start items-stretch gap-6 py-8 px-4 sm:px-8">
+            <div className="w-full h-[28.5rem] flex flex-col justify-start items-stretch gap-6 py-8 px-4 sm:px-8">
               <div className="w-full flex items-center justify-start gap-2">
                 <Wrench className="w-5 h-5 text-gray-500" />
 
