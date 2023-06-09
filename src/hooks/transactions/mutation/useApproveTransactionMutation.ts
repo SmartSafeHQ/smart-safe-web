@@ -74,7 +74,7 @@ async function approveTransactionFunction(
   if (input.isScheduledApprove) {
     const registerUpKeepResponse = await registerScheduleTxUpKeep({
       signer,
-      networkName: safeChain.networkName,
+      symbol: safeChain.symbol,
       safeAddress: input.safeAddress,
       ownerAddress: input.ownerAddress,
       txNonce: input.nonce

@@ -1,17 +1,15 @@
-import { ethers } from 'ethers'
+import { JsonRpcProvider, formatUnits } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 
-import {
-  ScheduledTxProps,
-  TransacitonTypes
-} from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 import { fetchContacts } from '@hooks/contacts/queries/useContactsQuery'
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { queryClient } from '@lib/reactQuery'
 import { formatWalletAddress } from '@utils/web3'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { fetchSafeTxQueue } from '@hooks/transactions/queries/useSafeTxQueue'
 import { RegisterUpkeep__factory as RegisterUpkeep } from '@utils/web3/typings/factories/RegisterUpkeep__factory'
+import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
+import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
+import { SMART_SAFE_UPKEEP_ADRESSES } from '@utils/web3/chains/adresses'
 
 interface FetchSpendingLimitsInput {
   safeAddress?: string
@@ -32,56 +30,67 @@ export async function fetchSpendingLimits(
 
   if (!safeChain) throw new Error('Chain not supported')
 
-  const provider = new ethers.JsonRpcProvider(safeChain.rpcUrl)
-  const contract = RegisterUpkeep.connect(input.safeAddress, provider)
+  const smartSafeUpKeepAddress = SMART_SAFE_UPKEEP_ADRESSES.get(
+    safeChain.symbol
+  )
 
-  const txQueue = await queryClient.fetchQuery({
-    queryKey: ['safeTxQueue', input.safeAddress],
-    queryFn: () =>
-      fetchSafeTxQueue({
-        safeAddress: input.safeAddress,
-        chainId: input.chainId
-      })
-  })
+  if (!smartSafeUpKeepAddress) throw new Error('Chain not supported')
 
   const contacts = await queryClient.ensureQueryData({
     queryKey: ['contacts', input.creatorId],
     queryFn: () => fetchContacts({ creatorId: input.creatorId })
   })
 
-  const scheduledTx = [txQueue.toApprove, ...txQueue.pending].filter(
-    (tx: TransacitonTypes | undefined): tx is ScheduledTxProps =>
-      tx?.type === 'SCHEDULED'
+  const provider = new JsonRpcProvider(safeChain.rpcUrl)
+  const contract = SmartSafe.connect(input.safeAddress, provider)
+  const upkeepContract = RegisterUpkeep.connect(
+    smartSafeUpKeepAddress,
+    provider
   )
 
-  const ScheduledTxPromise = scheduledTx.map(async transaction => {
-    const response = await contract.getFunction('upKeepsPerSmartSafe')(
-      input.safeAddress ?? '',
-      transaction.nonce
-    )
+  const scheduledTxQueue = await contract.getFunction('getTransactions')(0, 2)
 
-    console.log(response)
+  const scheduledTxPromise = scheduledTxQueue.map(async transaction => {
+    const to = transaction[1]
+    const nonce = Number(transaction[2])
+    const trigger = Number(transaction[7])
+    const value = transaction[3]
+
+    const scheduledTransaction = AUTOMATION_TRIGGERS.get(trigger)
+
+    if (!scheduledTransaction) {
+      throw new Error('transaction schedule type not supported')
+    }
+
+    const response = await upkeepContract.getFunction('upKeepsPerSmartSafe')(
+      input.safeAddress ?? '',
+      nonce
+    )
 
     const recipentContact = contacts.find(
       contact => contact.contactAddress === transaction.to
     )
 
     return {
-      id: 'id-' + transaction.nonce,
-      amount: transaction.amount,
-      triggerTitle: transaction.triggerTitle,
-      token: transaction.token,
+      id: String(response),
+      nonce,
+      amount: Number(formatUnits(value, 'ether')),
+      triggerTitle: scheduledTransaction.title,
+      token: {
+        symbol: safeChain.symbol,
+        icon: safeChain.icon
+      },
       wallet: {
-        address: transaction.to,
+        address: to,
         formattedAddress: formatWalletAddress({
-          walletAddress: transaction.to
+          walletAddress: to
         })
       },
       recipientName: recipentContact?.contactName
     }
   })
 
-  const formattedScheduledTx = Promise.all(ScheduledTxPromise)
+  const formattedScheduledTx = await Promise.all(scheduledTxPromise)
 
   return formattedScheduledTx
 }
@@ -105,29 +114,3 @@ export function useSpendingLimitsQuery(
     staleTime: 1000 * 60 * 5 // 5 minutes
   })
 }
-
-// const mock = {
-//   amount: 0.00001,
-//   createdAt: new Date(
-//     'Fri Jun 09 2023 09:50:48 GMT-0300 (Brasilia Standard Time)'
-//   ),
-//   data: '0x',
-//   formattedAddress: '0x701d...3d71',
-//   hash: '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d',
-//   nonce: 0,
-//   signatures: {
-//     list: [
-//       {
-//         address: '0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71',
-//         formattedAddress: '0x701d...3d71',
-//         status: 'approved'
-//       }
-//     ],
-//     approvesCount: 1
-//   },
-//   to: '0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71',
-//   token: { symbol: 'MATIC', icon: '/networks/polygon-logo.svg' },
-//   triggerTitle: 'every minute',
-//   triggerType: 'time',
-//   type: 'SCHEDULED'
-// }

@@ -78,7 +78,7 @@ async function createSpendingLimitsFunction(
   if (input.threshold === 1) {
     const registerUpKeepResponse = await registerScheduleTxUpKeep({
       signer,
-      networkName: safeChain.networkName,
+      symbol: safeChain.symbol,
       safeAddress: input.safeAddress,
       ownerAddress: input.ownerAddress,
       txNonce: +transactionNonce

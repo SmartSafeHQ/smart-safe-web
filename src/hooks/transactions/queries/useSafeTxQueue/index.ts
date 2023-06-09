@@ -36,14 +36,11 @@ export async function fetchSafeTxQueue(
   const currentTxQueueNonce = Number(transactionNonce)
   const transactionsQueue = await contract.getFunction('getTransactions')(0, 0)
 
-  // console.log(transactionsQueue)
+  console.log(transactionsQueue)
 
   let toApprove: TransacitonTypes | undefined
 
-  console.log('requiredTransactionNonce => ', transactionNonce)
-
   const txQueuePromise = transactionsQueue.map(async transaction => {
-    console.log('transactionNonce', Number(transaction[2]))
     if (!transaction[4]) {
       return
     }

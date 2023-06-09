@@ -11,6 +11,12 @@ import { DropdownMenu } from '@components/DropdownMenu'
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
 
+const CHAINLINK_NETWORKS = new Map<string, string>([
+  ['MATIC', 'mumbai'],
+  ['ETH', 'sepolia'],
+  ['BNB', 'bnb-chain-testnet']
+])
+
 interface ChainlinkAutomationTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode
@@ -45,6 +51,10 @@ function ChainlinkAutomationTableTr({
   chainlinkAutomation,
   handleDeleteChainlinkAutomation
 }: ChainlinkAutomationTableTrProps) {
+  const chainlinkNetworkLink = CHAINLINK_NETWORKS.get(
+    chainlinkAutomation.token.symbol
+  )
+
   return (
     <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3 min-w-[8rem]">
@@ -105,7 +115,7 @@ function ChainlinkAutomationTableTr({
           className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
         >
           <Link
-            href={`https://automation.chain.link/mumbai/${chainlinkAutomation.id}`}
+            href={`https://automation.chain.link/${chainlinkNetworkLink}/${chainlinkAutomation.id}`}
             target="_blank"
           >
             view on chainlink

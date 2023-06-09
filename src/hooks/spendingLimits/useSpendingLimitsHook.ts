@@ -127,7 +127,9 @@ export const useSpendingLimitsHook = () => {
         chainId: checkTokenExists.chainId
       })
 
-      toast.success('Automation successfully created!')
+      toast.success(
+        'Automation successfully created! View it on the transactions tab'
+      )
 
       reset()
       setSearchContacts(contacts)
