@@ -33,6 +33,11 @@ export const useTransactionsQueue = () => {
         throw new Error('no safe and wallet infos available')
       }
 
+      const isScheduledApprove =
+        transactionsQueue.toApprove.type === 'SCHEDULED' &&
+        safe.threshold <=
+          transactionsQueue.toApprove.signatures.approvesCount + 1
+
       await mutateApproveTransaction({
         chainId: safe.chain.chainId,
         safeAddress: safe.address,
@@ -40,7 +45,9 @@ export const useTransactionsQueue = () => {
         provider: wallet.provider,
         to: transactionsQueue.toApprove.to,
         data: transactionsQueue.toApprove.data,
-        amount: transactionsQueue.toApprove.amount
+        amount: transactionsQueue.toApprove.amount,
+        nonce: transactionsQueue.toApprove.nonce,
+        isScheduledApprove
       })
     } catch (error) {
       getWe3ErrorMessageWithToast(error)

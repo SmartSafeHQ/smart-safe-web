@@ -1,15 +1,14 @@
-import { ethers } from 'ethers'
+import { BrowserProvider, ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 import { EIP1193Provider } from '@web3-onboard/core'
 
-import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
-import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
-import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
-
+import {
+  createTransactionProposal,
+  registerScheduleTxUpKeep
+} from '@utils/web3/transactions/createTransactionProposal'
 import { queryClient } from '@lib/reactQuery'
-import { formatWalletAddress } from '@utils/web3'
+import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 
 interface CreateSpendingLimitsFunctionInput {
   provider: EIP1193Provider
@@ -18,6 +17,8 @@ interface CreateSpendingLimitsFunctionInput {
   amount: number
   trigger: number
   chainId: string
+  ownerAddress: string
+  threshold: number
 }
 
 interface CreateSpendingLimitsFunctionOutput {
@@ -27,8 +28,16 @@ interface CreateSpendingLimitsFunctionOutput {
 async function createSpendingLimitsFunction(
   input: CreateSpendingLimitsFunctionInput
 ): Promise<CreateSpendingLimitsFunctionOutput> {
-  console.log(input)
-  const provider = new ethers.BrowserProvider(input.provider)
+  const safeChain = CHAINS_ATTRIBUTES.find(
+    chain => chain.chainId === input.chainId
+  )
+
+  if (!safeChain) throw new Error('Chain not supported')
+
+  const provider = new BrowserProvider(input.provider, {
+    chainId: parseInt(input.chainId, 16),
+    name: safeChain.networkName
+  })
 
   const signer = await provider.getSigner()
   const contract = SmartSafe.connect(input.safeAddress, signer)
@@ -66,6 +75,18 @@ async function createSpendingLimitsFunction(
 
   await proposal.wait()
 
+  if (input.threshold === 1) {
+    const registerUpKeepResponse = await registerScheduleTxUpKeep({
+      signer,
+      networkName: safeChain.networkName,
+      safeAddress: input.safeAddress,
+      ownerAddress: input.ownerAddress,
+      txNonce: +transactionNonce
+    })
+
+    await registerUpKeepResponse.wait()
+  }
+
   return {
     transactionHash: proposal.hash
   }
@@ -73,7 +94,7 @@ async function createSpendingLimitsFunction(
 
 export function useCreateSpendingLimitsMutation() {
   return useMutation({
-    mutationKey: ['createSpendingLimits'],
+    mutationKey: ['createScheduledAutomation'],
     mutationFn: (input: CreateSpendingLimitsFunctionInput) =>
       createSpendingLimitsFunction(input),
 
@@ -85,59 +106,15 @@ export function useCreateSpendingLimitsMutation() {
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
 
-      await queryClient.cancelQueries({
-        queryKey: ['spendingLimits', variables.safeAddress]
+      queryClient.cancelQueries({
+        queryKey: ['scheduledAutomations', variables.safeAddress]
       })
-
-      const checkTokenExists = CHAINS_ATTRIBUTES.find(
-        token => token.chainId === variables.chainId
-      )
-
-      if (!checkTokenExists) {
-        return
-      }
-
-      const prev = queryClient.getQueryData<SelectedSpendingLimitsProps[]>([
-        'spendingLimits',
-        variables.safeAddress
-      ])
-
-      const created = {
-        coinAmount: variables.amount,
-        trigger: {
-          id: variables.trigger,
-          title:
-            AUTOMATION_TRIGGERS.get(variables.trigger)?.title ?? 'unknown type'
-        },
-        coin: {
-          symbol: checkTokenExists.symbol,
-          avatar: checkTokenExists.icon,
-          address: checkTokenExists.rpcUrl
-        },
-        wallet: {
-          address: variables.to,
-          formattedAddress: formatWalletAddress({
-            walletAddress: variables.to
-          })
-        }
-      }
-
-      queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
-        ['spendingLimits', variables.safeAddress],
-        () => {
-          const updattedLimits = [...(prev ?? []), created]
-
-          return updattedLimits
-        }
-      )
-
-      return prev
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
       queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
       queryClient.setQueryData(
-        ['spendingLimits', variables.safeAddress],
+        ['scheduledAutomations', variables.safeAddress],
         context
       )
     },
@@ -148,9 +125,9 @@ export function useCreateSpendingLimitsMutation() {
       queryClient.invalidateQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
-      // queryClient.invalidateQueries({
-      //   queryKey: ['spendingLimits', variables.safeAddress]
-      // })
+      queryClient.invalidateQueries({
+        queryKey: ['scheduledAutomations', variables.safeAddress]
+      })
     }
   })
 }

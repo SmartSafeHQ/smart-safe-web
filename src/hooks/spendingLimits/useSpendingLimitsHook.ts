@@ -61,7 +61,12 @@ export const useSpendingLimitsHook = () => {
     data: spendingLimits,
     isLoading,
     error
-  } = useSpendingLimitsQuery(safe?.address, safe?.ownerId, !!safe)
+  } = useSpendingLimitsQuery(
+    safe?.address,
+    safe?.chain.chainId,
+    safe?.ownerId,
+    !!safe
+  )
 
   const {
     control,
@@ -117,6 +122,8 @@ export const useSpendingLimitsHook = () => {
         safeAddress: safe.address,
         trigger: +data.trigger,
         provider: wallet.provider,
+        ownerAddress: wallet.accounts[0].address,
+        threshold: safe.threshold,
         chainId: checkTokenExists.chainId
       })
 
