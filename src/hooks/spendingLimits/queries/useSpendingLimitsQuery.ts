@@ -10,6 +10,7 @@ import { RegisterUpkeep__factory as RegisterUpkeep } from '@utils/web3/typings/f
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 import { SMART_SAFE_UPKEEP_ADRESSES } from '@utils/web3/chains/adresses'
+import { TransactionManager } from '@utils/web3/typings/SmartSafe'
 
 interface FetchSpendingLimitsInput {
   safeAddress?: string
@@ -48,9 +49,15 @@ export async function fetchSpendingLimits(
     provider
   )
 
-  const scheduledTxQueue = await contract.getFunction('getTransactions')(0, 2)
+  const scheduledTxResponse = await contract.getFunction('getTransactions')(
+    0,
+    2
+  )
+  const scheduledTx: TransactionManager.TransactionStructOutput[] = []
 
-  const scheduledTxPromise = scheduledTxQueue.map(async transaction => {
+  scheduledTxResponse.forEach(transaction => scheduledTx.push(transaction))
+
+  const scheduledTxPromise = scheduledTx.map(async transaction => {
     const to = transaction[1]
     const nonce = Number(transaction[2])
     const trigger = Number(transaction[7])
