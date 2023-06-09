@@ -80,12 +80,12 @@ function ChainlinkAutomationTableTr({
       <td>
         <div className="flex items-center gap-2">
           <Text className="uppercase text-sm md:text-base">
-            {chainlinkAutomation.coinAmount} {chainlinkAutomation.coin.symbol}
+            {chainlinkAutomation.amount} {chainlinkAutomation.token.symbol}
           </Text>
 
           <Image
-            src={chainlinkAutomation.coin.avatar}
-            alt={`${chainlinkAutomation.coin.symbol} avatar`}
+            src={chainlinkAutomation.token.icon}
+            alt={`${chainlinkAutomation.token.symbol} icon`}
             width={20}
             height={20}
             className="w-5 h-5"
@@ -95,7 +95,7 @@ function ChainlinkAutomationTableTr({
 
       <td>
         <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-          {chainlinkAutomation.trigger.title}
+          {chainlinkAutomation.triggerTitle}
         </Text>
       </td>
 
@@ -105,7 +105,7 @@ function ChainlinkAutomationTableTr({
           className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
         >
           <Link
-            href="https://automation.chain.link/mumbai/28261828003323169961858536349369109521020186415586712063073823033660067482394"
+            href={`https://automation.chain.link/mumbai/${chainlinkAutomation.id}`}
             target="_blank"
           >
             view on chainlink

@@ -10,21 +10,18 @@ import {
 type SpendingLimitsProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface SelectedSpendingLimitsProps {
-  recipientName?: string
-  coinAmount: number
-  trigger: {
-    id: number
-    title: string
-  }
-  coin: {
+  id: string
+  amount: number
+  triggerTitle: string
+  token: {
     symbol: string
-    avatar: string
-    address: string
+    icon: string
   }
   wallet: {
     address: string
     formattedAddress: string
   }
+  recipientName?: string
 }
 
 interface SpendingLimitsContextData {

@@ -1,7 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
 
-import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
-
 import { queryClient } from '@lib/reactQuery'
 
 interface DeleteSpedingLimitsFunctionInput {
@@ -31,25 +29,21 @@ export function useDeleteSpendingLimitsMutation() {
       deleteSpendingLimitsFunction(input),
     onSuccess: async (_, variables) => {
       queryClient.cancelQueries({
-        queryKey: ['spendingLimits', variables.safeAddress]
+        queryKey: ['scheduledAutomations', variables.safeAddress]
       })
 
-      const prev = await queryClient.ensureQueryData<
-        SelectedSpendingLimitsProps[]
-      >({
-        queryKey: ['spendingLimits', variables.safeAddress]
+      const prev = await queryClient.ensureQueryData({
+        queryKey: ['scheduledAutomations', variables.safeAddress]
       })
 
-      queryClient.setQueryData<SelectedSpendingLimitsProps[]>(
-        ['spendingLimits', variables.safeAddress],
+      queryClient.setQueryData(
+        ['scheduledAutomations', variables.safeAddress],
         () => {
           // const deletedIndex = prev.findIndex(
           //   auth => auth.index === variables.withdrawalIndex
           // )
 
           // if (1 < 0) return prev
-
-          prev.splice(1, 1)
 
           return prev
         }
@@ -59,7 +53,7 @@ export function useDeleteSpendingLimitsMutation() {
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(
-        ['spendingLimits', variables.safeAddress],
+        ['scheduledAutomations', variables.safeAddress],
         context
       )
     },
@@ -67,7 +61,7 @@ export function useDeleteSpendingLimitsMutation() {
       const timeout = setTimeout(
         () =>
           queryClient.invalidateQueries({
-            queryKey: ['spendingLimits', variables.safeAddress]
+            queryKey: ['scheduledAutomations', variables.safeAddress]
           }),
         5000
       )

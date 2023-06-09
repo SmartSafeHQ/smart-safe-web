@@ -69,8 +69,8 @@ export function DeleteChainlinkAutomationModal() {
               </Heading>
 
               <Image
-                src={selectedSpendingLimits.coin.avatar}
-                alt={`${selectedSpendingLimits.coin.symbol} coin icon`}
+                src={selectedSpendingLimits.token.icon}
+                alt={`${selectedSpendingLimits.token.symbol} token icon`}
                 width={20}
                 height={20}
                 className="mr-1"
@@ -78,8 +78,8 @@ export function DeleteChainlinkAutomationModal() {
             </div>
 
             <Text className="text-sm">
-              {selectedSpendingLimits.coinAmount}{' '}
-              {selectedSpendingLimits.coin.symbol}
+              {selectedSpendingLimits.amount}{' '}
+              {selectedSpendingLimits.token.symbol}
             </Text>
           </div>
 
@@ -89,7 +89,7 @@ export function DeleteChainlinkAutomationModal() {
             </Heading>
 
             <Text className="text-sm">
-              {selectedSpendingLimits.trigger.title}
+              {selectedSpendingLimits.triggerTitle}
             </Text>
           </div>
         </div>

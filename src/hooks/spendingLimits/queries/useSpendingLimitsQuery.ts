@@ -1,88 +1,133 @@
+import { ethers } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 
+import {
+  ScheduledTxProps,
+  TransacitonTypes
+} from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
+import { fetchContacts } from '@hooks/contacts/queries/useContactsQuery'
 import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
+import { queryClient } from '@lib/reactQuery'
+import { formatWalletAddress } from '@utils/web3'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { fetchSafeTxQueue } from '@hooks/transactions/queries/useSafeTxQueue'
+import { RegisterUpkeep__factory as RegisterUpkeep } from '@utils/web3/typings/factories/RegisterUpkeep__factory'
+
 interface FetchSpendingLimitsInput {
-  address?: string
-  customerId?: string
+  safeAddress?: string
+  chainId?: string
+  creatorId?: string
 }
 
 export async function fetchSpendingLimits(
   input: FetchSpendingLimitsInput
 ): Promise<SelectedSpendingLimitsProps[]> {
-  console.log(input)
-  // const contacts = await queryClient.ensureQueryData<FetchContactsResponse[]>({
-  //   queryKey: ['contacts'],
-  //   queryFn: () => fetchContacts({ creatorId: String(input.customerId) })
-  // })
+  if (!input.safeAddress || !input.chainId || !input.creatorId) {
+    throw new Error('safe address and chain required')
+  }
 
-  // const provider = new ethers.JsonRpcProvider(CHAINS_ATTRIBUTES[0].rpcUrl)
-  // const contract = new ethers.Contract(input.address, '{}', provider)
+  const safeChain = CHAINS_ATTRIBUTES.find(
+    chain => chain.chainId === input.chainId
+  )
 
-  // const totalAuthorizations = await contract.getFunction(
-  //   'totalAuthorizations'
-  // )()
+  if (!safeChain) throw new Error('Chain not supported')
 
-  // const formattedAuthorizationsCount = +totalAuthorizations.toString()
+  const provider = new ethers.JsonRpcProvider(safeChain.rpcUrl)
+  const contract = RegisterUpkeep.connect(input.safeAddress, provider)
 
-  // const authorizations: SelectedSpendingLimitsProps[] = []
+  const txQueue = await queryClient.fetchQuery({
+    queryKey: ['safeTxQueue', input.safeAddress],
+    queryFn: () =>
+      fetchSafeTxQueue({
+        safeAddress: input.safeAddress,
+        chainId: input.chainId
+      })
+  })
 
-  // for (let i = 0; i < formattedAuthorizationsCount; i++) {
-  //   const authorization = await contract.getFunction('authorizations')(i)
+  const contacts = await queryClient.ensureQueryData({
+    queryKey: ['contacts', input.creatorId],
+    queryFn: () => fetchContacts({ creatorId: input.creatorId })
+  })
 
-  //   const spendingLimitsToken = CHAINS_ATTRIBUTES.find(
-  //     token => token.rpcUrl === authorization.tokenAddress
-  //   )
+  const scheduledTx = [txQueue.toApprove, ...txQueue.pending].filter(
+    (tx: TransacitonTypes | undefined): tx is ScheduledTxProps =>
+      tx?.type === 'SCHEDULED'
+  )
 
-  //   if (!spendingLimitsToken) continue
+  const ScheduledTxPromise = scheduledTx.map(async transaction => {
+    const response = await contract.getFunction('upKeepsPerSmartSafe')(
+      input.safeAddress ?? '',
+      transaction.nonce
+    )
 
-  //   const findContactForRecipient = contacts?.find(
-  //     contact => contact.contactAddress === authorization.userAddress
-  //   )
+    console.log(response)
 
-  //   const formattedAmount = +ethers.formatEther(
-  //     authorization.tokenAmount.toString()
-  //   )
+    const recipentContact = contacts.find(
+      contact => contact.contactAddress === transaction.to
+    )
 
-  //   const formattedDate = new Date(authorization.startDate * 1000)
+    return {
+      id: 'id-' + transaction.nonce,
+      amount: transaction.amount,
+      triggerTitle: transaction.triggerTitle,
+      token: transaction.token,
+      wallet: {
+        address: transaction.to,
+        formattedAddress: formatWalletAddress({
+          walletAddress: transaction.to
+        })
+      },
+      recipientName: recipentContact?.contactName
+    }
+  })
 
-  //   authorizations.push({
-  //     index: authorization.authorizationIndex,
-  //     recipientName: findContactForRecipient?.contactName,
-  //     coinAmount: formattedAmount,
-  //     trigger: formattedDate,
-  //     coin: {
-  //       symbol: spendingLimitsToken?.symbol,
-  //       avatar: spendingLimitsToken?.icon,
-  //       address: spendingLimitsToken?.scanUrl
-  //     },
-  //     wallet: {
-  //       address: authorization.userAddress,
-  //       formattedAddress: formatWalletAddress({
-  //         walletAddress: authorization.userAddress
-  //       })
-  //     }
-  //   })
-  // }
+  const formattedScheduledTx = Promise.all(ScheduledTxPromise)
 
-  // return authorizations
-
-  return []
+  return formattedScheduledTx
 }
 
 export function useSpendingLimitsQuery(
-  address?: string,
-  id?: string,
+  safeAddress?: string,
+  chainId?: string,
+  creatorId?: string,
   enabled = true
 ) {
   return useQuery({
-    queryKey: ['spendingLimits', address],
+    queryKey: ['scheduledAutomations', safeAddress],
     queryFn: () =>
       fetchSpendingLimits({
-        customerId: id,
-        address
+        safeAddress,
+        chainId,
+        creatorId
       }),
     enabled,
     keepPreviousData: true,
     staleTime: 1000 * 60 * 5 // 5 minutes
   })
 }
+
+// const mock = {
+//   amount: 0.00001,
+//   createdAt: new Date(
+//     'Fri Jun 09 2023 09:50:48 GMT-0300 (Brasilia Standard Time)'
+//   ),
+//   data: '0x',
+//   formattedAddress: '0x701d...3d71',
+//   hash: '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d',
+//   nonce: 0,
+//   signatures: {
+//     list: [
+//       {
+//         address: '0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71',
+//         formattedAddress: '0x701d...3d71',
+//         status: 'approved'
+//       }
+//     ],
+//     approvesCount: 1
+//   },
+//   to: '0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71',
+//   token: { symbol: 'MATIC', icon: '/networks/polygon-logo.svg' },
+//   triggerTitle: 'every minute',
+//   triggerType: 'time',
+//   type: 'SCHEDULED'
+// }

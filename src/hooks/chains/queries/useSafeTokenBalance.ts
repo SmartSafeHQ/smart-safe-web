@@ -1,10 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
-import {
-  FetchTokenUsdValueResponse,
-  fetchTokenUsdValue
-} from '@hooks/chains/queries/useTokenUsdValue'
+import { fetchTokenUsdValue } from '@hooks/chains/queries/useTokenUsdValue'
 import { queryClient } from '@lib/reactQuery'
 
 interface FetchSafeTokenBalanceInput {
@@ -27,7 +24,7 @@ export async function fetchSafeTokenBalance(
 
   const provider = new ethers.JsonRpcProvider(input.rpcUrl)
 
-  const data = await queryClient.ensureQueryData<FetchTokenUsdValueResponse>({
+  const data = await queryClient.ensureQueryData({
     queryKey: ['tokenUsdValue', input.symbol],
     queryFn: () => fetchTokenUsdValue({ symbol: input.symbol })
   })
