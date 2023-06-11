@@ -16,25 +16,7 @@ import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQu
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
 export const AUTOMATION_TRIGGERS = new Map([
-  [1, { title: 'every minute', description: 'Every minute' }],
-  [2, { title: 'every 5 minutes', description: 'Every 5 minutes' }],
-  [3, { title: 'every hour', description: 'Every hour' }],
-  [4, { title: 'every day', description: 'Every day' }],
-  [5, { title: 'every week', description: 'Weekly: every Monday' }],
-  [
-    6,
-    {
-      title: 'every month',
-      description: 'Monthly on the first day of the month'
-    }
-  ],
-  [
-    7,
-    {
-      title: 'every year',
-      description: 'Yearly on the first day of the year'
-    }
-  ]
+  [1, { title: 'every minute', description: 'Every minute' }]
 ])
 
 export async function formatTransactionToQueueList(
