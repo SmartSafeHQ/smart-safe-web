@@ -9,7 +9,7 @@ import { useDeleteSpendingLimitsMutation } from '@hooks/spendingLimits/mutations
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-export function DeleteChainlinkAutomationModal() {
+export function DeleteAutomationModal() {
   const {
     selectedSpendingLimits,
     isDeleteSpendingLimitsOpen,
@@ -43,7 +43,7 @@ export function DeleteChainlinkAutomationModal() {
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
           <DialogModal.Title className="text-3xl">
-            Delete chainlink automation
+            Delete automation
           </DialogModal.Title>
 
           <DialogModal.Description>

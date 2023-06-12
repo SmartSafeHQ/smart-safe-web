@@ -1,12 +1,12 @@
 import { ScrollArea } from '@components/ScrollArea'
 import { ErrorState } from '@components/FetchingStates/ErrorState'
 import { LoadingState } from '@components/FetchingStates/LoadingState'
-import { ChainlinkAutomationTable } from '@components/pages/ChainlinkAutomation/ChainlinkAutomationTable'
+import { AutomationsTable } from '@components/pages/Automations/AutomationsTable'
 import { Text } from '@components/Text'
 
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 
-export function ChainlinkAutomationList() {
+export function AutomationsList() {
   const { spendingLimits, isLoading, error, handleDeleteSpendingLimits } =
     useSpendingLimitsHook()
 
@@ -32,17 +32,17 @@ export function ChainlinkAutomationList() {
             <table className="w-full">
               <thead className="bg-zinc-200 bg-opacity-60 border-[0.5px] border-[#e0e0e0] dark:border-[#333] dark:bg-zinc-800">
                 <tr className="uppercase text-zinc-500 dark:text-zinc-400">
-                  <ChainlinkAutomationTable.Th className="pl-2 py-3 ">
+                  <AutomationsTable.Th className="pl-2 py-3 ">
                     Wallet
-                  </ChainlinkAutomationTable.Th>
+                  </AutomationsTable.Th>
 
-                  <ChainlinkAutomationTable.Th className="py-3 ">
+                  <AutomationsTable.Th className="py-3 ">
                     Payment amount
-                  </ChainlinkAutomationTable.Th>
+                  </AutomationsTable.Th>
 
-                  <ChainlinkAutomationTable.Th className="py-3 ">
+                  <AutomationsTable.Th className="py-3 ">
                     Trigger
-                  </ChainlinkAutomationTable.Th>
+                  </AutomationsTable.Th>
 
                   <th />
 
@@ -52,10 +52,10 @@ export function ChainlinkAutomationList() {
 
               <tbody>
                 {spendingLimits.map((spendingLimits, i) => (
-                  <ChainlinkAutomationTable.Tr
+                  <AutomationsTable.Tr
                     key={`${i}-${spendingLimits.wallet}`}
-                    chainlinkAutomation={spendingLimits}
-                    handleDeleteChainlinkAutomation={handleDeleteSpendingLimits}
+                    automation={spendingLimits}
+                    handleDeleteAutomation={handleDeleteSpendingLimits}
                   />
                 ))}
               </tbody>

@@ -17,15 +17,12 @@ const CHAINLINK_NETWORKS = new Map<string, string>([
   ['BNB', 'bnb-chain-testnet']
 ])
 
-interface ChainlinkAutomationTableThProps
+interface AutomationsTableThProps
   extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode
 }
 
-function ChainlinkAutomationTableTh({
-  children,
-  className
-}: ChainlinkAutomationTableThProps) {
+function AutomationsTableTh({ children, className }: AutomationsTableThProps) {
   return (
     <th
       className={clsx(
@@ -38,30 +35,26 @@ function ChainlinkAutomationTableTh({
   )
 }
 
-ChainlinkAutomationTableTh.displayName = 'ChainlinkAutomationTable.Th'
+AutomationsTableTh.displayName = 'AutomationsTable.Th'
 
-interface ChainlinkAutomationTableTrProps {
-  chainlinkAutomation: SelectedSpendingLimitsProps
-  handleDeleteChainlinkAutomation: (
-    _withdrawal: SelectedSpendingLimitsProps
-  ) => void
+interface AutomationsTableTrProps {
+  automation: SelectedSpendingLimitsProps
+  handleDeleteAutomation: (_withdrawal: SelectedSpendingLimitsProps) => void
 }
 
-function ChainlinkAutomationTableTr({
-  chainlinkAutomation,
-  handleDeleteChainlinkAutomation
-}: ChainlinkAutomationTableTrProps) {
-  const chainlinkNetworkLink = CHAINLINK_NETWORKS.get(
-    chainlinkAutomation.token.symbol
-  )
+function AutomationsTableTr({
+  automation,
+  handleDeleteAutomation
+}: AutomationsTableTrProps) {
+  const chainlinkNetworkLink = CHAINLINK_NETWORKS.get(automation.token.symbol)
 
   return (
     <tr className="font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3 min-w-[8rem]">
         <div className="flex flex-col gap-1">
-          {chainlinkAutomation?.recipientName && (
+          {automation?.recipientName && (
             <Text className="text-sm md:text-base" asChild>
-              <strong>{chainlinkAutomation.recipientName}</strong>
+              <strong>{automation.recipientName}</strong>
             </Text>
           )}
 
@@ -71,11 +64,9 @@ function ChainlinkAutomationTableTr({
               className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-400"
             >
               <button
-                onClick={() =>
-                  handleCopyToClipboard(chainlinkAutomation.wallet.address)
-                }
+                onClick={() => handleCopyToClipboard(automation.wallet.address)}
               >
-                {chainlinkAutomation.wallet.formattedAddress}
+                {automation.wallet.formattedAddress}
               </button>
             </HoverCard.Trigger>
 
@@ -90,12 +81,12 @@ function ChainlinkAutomationTableTr({
       <td>
         <div className="flex items-center gap-2">
           <Text className="uppercase text-sm md:text-base">
-            {chainlinkAutomation.amount} {chainlinkAutomation.token.symbol}
+            {automation.amount} {automation.token.symbol}
           </Text>
 
           <Image
-            src={chainlinkAutomation.token.icon}
-            alt={`${chainlinkAutomation.token.symbol} icon`}
+            src={automation.token.icon}
+            alt={`${automation.token.symbol} icon`}
             width={20}
             height={20}
             className="w-5 h-5"
@@ -105,7 +96,7 @@ function ChainlinkAutomationTableTr({
 
       <td>
         <Text className="text-sm text-zinc-500 dark:text-zinc-400">
-          {chainlinkAutomation.triggerTitle}
+          {automation.triggerTitle}
         </Text>
       </td>
 
@@ -115,7 +106,7 @@ function ChainlinkAutomationTableTr({
           className="flex items-center gap-1 text-sm font-medium text-cyan-500 transition-colors hover:text-cyan-600 md:text-sm"
         >
           <Link
-            href={`https://automation.chain.link/${chainlinkNetworkLink}/${chainlinkAutomation.id}`}
+            href={`https://automation.chain.link/${chainlinkNetworkLink}/${automation.id}`}
             target="_blank"
           >
             view on chainlink
@@ -142,9 +133,7 @@ function ChainlinkAutomationTableTr({
               className="min-w-[10rem] p-2"
             >
               <DropdownMenu.Item
-                onSelect={() =>
-                  handleDeleteChainlinkAutomation(chainlinkAutomation)
-                }
+                onSelect={() => handleDeleteAutomation(automation)}
                 className="px-3 py-2 rounded-md text-sm"
               >
                 <Text className="text-sm text-red-500">delete</Text>
@@ -157,9 +146,9 @@ function ChainlinkAutomationTableTr({
   )
 }
 
-ChainlinkAutomationTableTr.displayName = 'ChainlinkAutomationTableTr.Tr'
+AutomationsTableTr.displayName = 'AutomationsTableTr.Tr'
 
-export const ChainlinkAutomationTable = {
-  Th: ChainlinkAutomationTableTh,
-  Tr: ChainlinkAutomationTableTr
+export const AutomationsTable = {
+  Th: AutomationsTableTh,
+  Tr: AutomationsTableTr
 }

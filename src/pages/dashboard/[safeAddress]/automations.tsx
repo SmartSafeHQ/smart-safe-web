@@ -3,16 +3,16 @@ import { ReactElement } from 'react'
 import Link from 'next/link'
 
 import { Button } from '@components/Button'
-import { ChainlinkAutomationList } from '@components/pages/ChainlinkAutomation/ChainlinkAutomationList'
-import { DeleteChainlinkAutomationModal } from '@components/pages/ChainlinkAutomation/DeleteChainlinkAutomationModal'
-import { CreateChainlinkAutomationModal } from '@components/pages/ChainlinkAutomation/CreateChainlinkAutomationModal'
+import { AutomationsList } from '@components/pages/Automations/AutomationsList'
+import { DeleteAutomationModal } from '@components/pages/Automations/DeleteAutomationModal'
+import { CreateAutomationModal } from '@components/pages/Automations/CreateAutomationModal'
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
 import { Text } from '@components/Text'
 
 import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
 import { SpendingLimitsProvider } from '@contexts/SpendingLimitsContext'
 
-const ChainlinkAutomation = () => {
+const Automations = () => {
   const { setIsCreateSpendingLimitsOpen } = useSpendingLimitsHook()
 
   return (
@@ -31,7 +31,7 @@ const ChainlinkAutomation = () => {
               <PageLayout.Description className="flex items-center gap-1">
                 <Text>
                   Automate payments in your safe contract powered by the
-                  Chainlink Web3
+                  Chainlink
                   <Link
                     href="https://chain.link/automation"
                     target="_blank"
@@ -52,19 +52,19 @@ const ChainlinkAutomation = () => {
           </PageLayout.Header>
 
           <div className="w-full py-3 flex flex-col relative justify-start items-stretch gap-5">
-            <ChainlinkAutomationList />
+            <AutomationsList />
           </div>
         </PageLayout.Root>
       </div>
 
-      <CreateChainlinkAutomationModal />
-      <DeleteChainlinkAutomationModal />
+      <CreateAutomationModal />
+      <DeleteAutomationModal />
     </div>
   )
 }
 
-ChainlinkAutomation.getLayout = function getLayout(page: ReactElement) {
+Automations.getLayout = function getLayout(page: ReactElement) {
   return <SpendingLimitsProvider>{page}</SpendingLimitsProvider>
 }
 
-export default ChainlinkAutomation
+export default Automations

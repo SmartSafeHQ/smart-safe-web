@@ -39,7 +39,7 @@ const NAV_LINKS_SUB_GENERAL = [
   }
 ]
 
-const NAV_LINKS_SUB_CHAINLINK = [
+const NAV_LINKS_SUB_AUTOMATIONS = [
   {
     href: 'automations',
     activePath: 'automations',
@@ -103,7 +103,7 @@ export function SidebarNav() {
         <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
           <SidebarNavGroup.Title>Automations</SidebarNavGroup.Title>
 
-          {NAV_LINKS_SUB_CHAINLINK.map(navLink => (
+          {NAV_LINKS_SUB_AUTOMATIONS.map(navLink => (
             <DialogDrawer.Close key={navLink.title}>
               <NavLink
                 href={navLink.href}
