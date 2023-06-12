@@ -18,15 +18,15 @@ const ChainlinkAutomation = () => {
   return (
     <div className="flex flex-col items-center justify-center">
       <Head>
-        <title>SmartSafe | Chainlink Automation</title>
-        <meta name="description" content="Management of Chainlink automation" />
+        <title>SmartSafe | Automations</title>
+        <meta name="description" content="Management of Automations" />
       </Head>
 
       <div className="w-full flex flex-1 flex-col items-stretch">
         <PageLayout.Root>
           <PageLayout.Header className="flex-col justify-between items-stretch gap-3 pb-8 pt-4 px-3 sm:flex-row sm:items-center">
             <div className="flex flex-1 flex-col items-stretch justify-between gap-4">
-              <PageLayout.Title>Chainlink Automation</PageLayout.Title>
+              <PageLayout.Title>Automations</PageLayout.Title>
 
               <PageLayout.Description className="flex items-center gap-1">
                 <Text>
