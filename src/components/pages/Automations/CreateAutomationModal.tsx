@@ -10,7 +10,7 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 import { Tabs } from '@components/Tabs'
 
-import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
+import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
 import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 
 export function CreateAutomationModal() {
@@ -28,18 +28,18 @@ export function CreateAutomationModal() {
     setValue,
     isSubmitting,
     reset,
-    onSubmitCreateSpendingLimits,
-    isCreateSpendingLimitsOpen,
-    setIsCreateSpendingLimitsOpen
-  } = useSpendingLimitsHook()
+    onSubmitCreateAutomation,
+    isCreateAutomationOpen,
+    setIsCreateAutomationOpen
+  } = useAutomationsHook()
 
   return (
     <DialogModal.Root
-      open={isCreateSpendingLimitsOpen}
+      open={isCreateAutomationOpen}
       onOpenChange={isOpen => {
         if (isSubmitting) return
 
-        setIsCreateSpendingLimitsOpen(isOpen)
+        setIsCreateAutomationOpen(isOpen)
         reset()
         setSearchContacts(contacts)
       }}
@@ -71,7 +71,7 @@ export function CreateAutomationModal() {
 
           <Tabs.Content value="time-based">
             <form
-              onSubmit={handleSubmit(onSubmitCreateSpendingLimits)}
+              onSubmit={handleSubmit(onSubmitCreateAutomation)}
               className="w-full flex flex-col justify-center items-stretch"
             >
               <div className="w-full flex flex-col justify-center items-stretch gap-6 py-8 px-4 sm:px-8">

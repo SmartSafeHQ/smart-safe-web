@@ -8,7 +8,7 @@ import { Text } from '@components/Text'
 import { HoverCard } from '@components/HoverCard'
 import { DropdownMenu } from '@components/DropdownMenu'
 
-import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
+import { SelectedAutomationProps } from '@contexts/AutomationsContext'
 import { handleCopyToClipboard } from '@utils/clipboard'
 
 const CHAINLINK_NETWORKS = new Map<string, string>([
@@ -38,8 +38,8 @@ function AutomationsTableTh({ children, className }: AutomationsTableThProps) {
 AutomationsTableTh.displayName = 'AutomationsTable.Th'
 
 interface AutomationsTableTrProps {
-  automation: SelectedSpendingLimitsProps
-  handleDeleteAutomation: (_withdrawal: SelectedSpendingLimitsProps) => void
+  automation: SelectedAutomationProps
+  handleDeleteAutomation: (_withdrawal: SelectedAutomationProps) => void
 }
 
 function AutomationsTableTr({
@@ -120,7 +120,7 @@ function AutomationsTableTr({
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <button
-                aria-label="Spending limits management options"
+                aria-label="Payments automations management options"
                 className="p-1 rounded-sm transition-colors hover:bg-zinc-200 dark:hover:bg-zinc-800"
               >
                 <DotsThreeVertical className="w-6 h-6" />

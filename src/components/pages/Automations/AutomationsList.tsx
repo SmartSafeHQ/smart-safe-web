@@ -4,11 +4,11 @@ import { LoadingState } from '@components/FetchingStates/LoadingState'
 import { AutomationsTable } from '@components/pages/Automations/AutomationsTable'
 import { Text } from '@components/Text'
 
-import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
+import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
 
 export function AutomationsList() {
-  const { spendingLimits, isLoading, error, handleDeleteSpendingLimits } =
-    useSpendingLimitsHook()
+  const { automations, isLoading, error, handleDeleteAutomation } =
+    useAutomationsHook()
 
   return (
     <ScrollArea>
@@ -20,14 +20,14 @@ export function AutomationsList() {
         />
       ) : isLoading ? (
         <LoadingState title="Loading automations" className="mt-10" />
-      ) : spendingLimits && spendingLimits.length === 0 ? (
+      ) : automations && automations.length === 0 ? (
         <div className="w-full flex flex-col items-center gap-1 pt-8 text-center">
           <Text asChild className="text-lg font-medium">
             <strong>No automation added!</strong>
           </Text>
         </div>
       ) : (
-        spendingLimits && (
+        automations && (
           <>
             <table className="w-full">
               <thead className="bg-zinc-200 bg-opacity-60 border-[0.5px] border-[#e0e0e0] dark:border-[#333] dark:bg-zinc-800">
@@ -51,11 +51,11 @@ export function AutomationsList() {
               </thead>
 
               <tbody>
-                {spendingLimits.map((spendingLimits, i) => (
+                {automations.map((automation, i) => (
                   <AutomationsTable.Tr
-                    key={`${i}-${spendingLimits.wallet}`}
-                    automation={spendingLimits}
-                    handleDeleteAutomation={handleDeleteSpendingLimits}
+                    key={`${i}-${automation.wallet}`}
+                    automation={automation}
+                    handleDeleteAutomation={handleDeleteAutomation}
                   />
                 ))}
               </tbody>

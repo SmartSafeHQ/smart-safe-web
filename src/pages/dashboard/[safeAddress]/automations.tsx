@@ -9,11 +9,11 @@ import { CreateAutomationModal } from '@components/pages/Automations/CreateAutom
 import { PageLayout } from '@components/pages/Layouts/PageLayout'
 import { Text } from '@components/Text'
 
-import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
-import { SpendingLimitsProvider } from '@contexts/SpendingLimitsContext'
+import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
+import { AutomationsProvider } from '@contexts/AutomationsContext'
 
 const Automations = () => {
-  const { setIsCreateSpendingLimitsOpen } = useSpendingLimitsHook()
+  const { setIsCreateAutomationOpen } = useAutomationsHook()
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -45,7 +45,7 @@ const Automations = () => {
 
             <Button
               className="w-max"
-              onClick={() => setIsCreateSpendingLimitsOpen(true)}
+              onClick={() => setIsCreateAutomationOpen(true)}
             >
               Add automation
             </Button>
@@ -64,7 +64,7 @@ const Automations = () => {
 }
 
 Automations.getLayout = function getLayout(page: ReactElement) {
-  return <SpendingLimitsProvider>{page}</SpendingLimitsProvider>
+  return <AutomationsProvider>{page}</AutomationsProvider>
 }
 
 export default Automations

@@ -10,7 +10,7 @@ import { queryClient } from '@lib/reactQuery'
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
-interface CreateSpendingLimitsFunctionInput {
+interface CreateAutomationFunctionInput {
   provider: EIP1193Provider
   to: string
   safeAddress: string
@@ -21,13 +21,13 @@ interface CreateSpendingLimitsFunctionInput {
   threshold: number
 }
 
-interface CreateSpendingLimitsFunctionOutput {
+interface CreateAutomationFunctionOutput {
   transactionHash: string
 }
 
-async function createSpendingLimitsFunction(
-  input: CreateSpendingLimitsFunctionInput
-): Promise<CreateSpendingLimitsFunctionOutput> {
+async function createAutomationFunction(
+  input: CreateAutomationFunctionInput
+): Promise<CreateAutomationFunctionOutput> {
   const safeChain = CHAINS_ATTRIBUTES.find(
     chain => chain.chainId === input.chainId
   )
@@ -92,11 +92,11 @@ async function createSpendingLimitsFunction(
   }
 }
 
-export function useCreateSpendingLimitsMutation() {
+export function useCreateAutomationMutation() {
   return useMutation({
     mutationKey: ['createScheduledAutomation'],
-    mutationFn: (input: CreateSpendingLimitsFunctionInput) =>
-      createSpendingLimitsFunction(input),
+    mutationFn: (input: CreateAutomationFunctionInput) =>
+      createAutomationFunction(input),
 
     onSuccess: async (data, variables) => {
       queryClient.cancelQueries({

@@ -5,21 +5,21 @@ import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useDeleteSpendingLimitsMutation'
-import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
+import { useDeleteAutomationMutation } from '@hooks/automations/mutations/useDeleteAutomationMutation'
+import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 export function DeleteAutomationModal() {
   const {
-    selectedSpendingLimits,
-    isDeleteSpendingLimitsOpen,
-    setIsDeleteSpendingLimitsOpen
-  } = useSpendingLimitsHook()
+    selectedAutomation,
+    isDeleteAutomationOpen,
+    setIsDeleteAutomationOpen
+  } = useAutomationsHook()
 
-  const { mutateAsync, isLoading } = useDeleteSpendingLimitsMutation()
+  const { mutateAsync, isLoading } = useDeleteAutomationMutation()
 
   async function handleConfirmDelete() {
-    if (!selectedSpendingLimits) return
+    if (!selectedAutomation) return
 
     try {
       await mutateAsync({
@@ -27,18 +27,18 @@ export function DeleteAutomationModal() {
         customerWalletPrivateKey: 'privateKey'
       })
 
-      setIsDeleteSpendingLimitsOpen(false)
+      setIsDeleteAutomationOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
-  if (!selectedSpendingLimits) return <></>
+  if (!selectedAutomation) return <></>
 
   return (
     <DialogModal.Root
-      open={isDeleteSpendingLimitsOpen}
-      onOpenChange={setIsDeleteSpendingLimitsOpen}
+      open={isDeleteAutomationOpen}
+      onOpenChange={setIsDeleteAutomationOpen}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
@@ -54,11 +54,11 @@ export function DeleteAutomationModal() {
         <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-8 py-8 px-4 sm:px-8">
           <div className="flex flex-col items-stretch justify-start gap-1">
             <Text asChild className="text-start">
-              <strong>{selectedSpendingLimits.recipientName}</strong>
+              <strong>{selectedAutomation.recipientName}</strong>
             </Text>
 
             <Text className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-300">
-              {selectedSpendingLimits.wallet.formattedAddress}
+              {selectedAutomation.wallet.formattedAddress}
             </Text>
           </div>
 
@@ -69,8 +69,8 @@ export function DeleteAutomationModal() {
               </Heading>
 
               <Image
-                src={selectedSpendingLimits.token.icon}
-                alt={`${selectedSpendingLimits.token.symbol} token icon`}
+                src={selectedAutomation.token.icon}
+                alt={`${selectedAutomation.token.symbol} token icon`}
                 width={20}
                 height={20}
                 className="mr-1"
@@ -78,8 +78,7 @@ export function DeleteAutomationModal() {
             </div>
 
             <Text className="text-sm">
-              {selectedSpendingLimits.amount}{' '}
-              {selectedSpendingLimits.token.symbol}
+              {selectedAutomation.amount} {selectedAutomation.token.symbol}
             </Text>
           </div>
 
@@ -88,9 +87,7 @@ export function DeleteAutomationModal() {
               <h3>Time trigger</h3>
             </Heading>
 
-            <Text className="text-sm">
-              {selectedSpendingLimits.triggerTitle}
-            </Text>
+            <Text className="text-sm">{selectedAutomation.triggerTitle}</Text>
           </div>
         </div>
 

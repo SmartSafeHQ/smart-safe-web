@@ -2,7 +2,7 @@ import { JsonRpcProvider, formatUnits } from 'ethers'
 import { useQuery } from '@tanstack/react-query'
 
 import { fetchContacts } from '@hooks/contacts/queries/useContactsQuery'
-import { SelectedSpendingLimitsProps } from '@contexts/SpendingLimitsContext'
+import { SelectedAutomationProps } from '@contexts/AutomationsContext'
 import { queryClient } from '@lib/reactQuery'
 import { formatWalletAddress } from '@utils/web3'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
@@ -12,15 +12,15 @@ import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 import { SMART_SAFE_UPKEEP_ADRESSES } from '@utils/web3/chains/adresses'
 import { TransactionManager } from '@utils/web3/typings/SmartSafe'
 
-interface FetchSpendingLimitsInput {
+interface FetchAutomationsInput {
   safeAddress?: string
   chainId?: string
   creatorId?: string
 }
 
-export async function fetchSpendingLimits(
-  input: FetchSpendingLimitsInput
-): Promise<SelectedSpendingLimitsProps[]> {
+export async function fetchAutomations(
+  input: FetchAutomationsInput
+): Promise<SelectedAutomationProps[]> {
   if (!input.safeAddress || !input.chainId || !input.creatorId) {
     throw new Error('safe address and chain required')
   }
@@ -102,7 +102,7 @@ export async function fetchSpendingLimits(
   return formattedScheduledTx
 }
 
-export function useSpendingLimitsQuery(
+export function useAutomationsQuery(
   safeAddress?: string,
   chainId?: string,
   creatorId?: string,
@@ -111,7 +111,7 @@ export function useSpendingLimitsQuery(
   return useQuery({
     queryKey: ['scheduledAutomations', safeAddress],
     queryFn: () =>
-      fetchSpendingLimits({
+      fetchAutomations({
         safeAddress,
         chainId,
         creatorId

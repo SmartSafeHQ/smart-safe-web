@@ -7,17 +7,17 @@ import { ethers } from 'ethers'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useSpendingLimits } from '@contexts/SpendingLimitsContext'
+import { useAutomations } from '@contexts/AutomationsContext'
 import { ContactProps } from '@contexts/ContactsContext'
 
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
-import { useSpendingLimitsQuery } from '@hooks/spendingLimits/queries/useSpendingLimitsQuery'
-import { useCreateSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useCreateSpendingLimitsMutation'
+import { useAutomationsQuery } from '@hooks/automations/queries/useAutomationsQuery'
+import { useCreateAutomationMutation } from '@hooks/automations/mutations/useCreateAutomationMutation'
 import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-const createSpendingLimitsValidationSchema = z.object({
+const createAutomationValidationSchema = z.object({
   to: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
 
@@ -30,20 +30,20 @@ const createSpendingLimitsValidationSchema = z.object({
   trigger: z.string().min(1, { message: 'time trigger required' })
 })
 
-export type CreateSpendingLimitsFieldValues = z.infer<
-  typeof createSpendingLimitsValidationSchema
+export type CreateAutomationFieldValues = z.infer<
+  typeof createAutomationValidationSchema
 >
 
-export const useSpendingLimitsHook = () => {
+export const useAutomationsHook = () => {
   const {
-    isCreateSpendingLimitsOpen,
-    setIsCreateSpendingLimitsOpen,
-    isDeleteSpendingLimitsOpen,
-    setIsDeleteSpendingLimitsOpen,
-    selectedSpendingLimits,
-    setSelectedSpendingLimits,
-    handleDeleteSpendingLimits
-  } = useSpendingLimits()
+    isCreateAutomationOpen,
+    setIsCreateAutomationOpen,
+    isDeleteAutomationOpen,
+    setIsDeleteAutomationOpen,
+    selectedAutomation,
+    setSelectedAutomation,
+    handleDeleteAutomation
+  } = useAutomations()
   const [{ wallet }] = useConnectWallet()
   const { safe } = useSafe()
   const { data: safeTokensData } = useSafeTokens(
@@ -55,13 +55,13 @@ export const useSpendingLimitsHook = () => {
     safe?.ownerId,
     !!safe
   )
-  const { mutateAsync } = useCreateSpendingLimitsMutation()
+  const { mutateAsync } = useCreateAutomationMutation()
 
   const {
-    data: spendingLimits,
+    data: automations,
     isLoading,
     error
-  } = useSpendingLimitsQuery(
+  } = useAutomationsQuery(
     safe?.address,
     safe?.chain.chainId,
     safe?.ownerId,
@@ -75,8 +75,8 @@ export const useSpendingLimitsHook = () => {
     reset,
     setValue,
     formState: { errors, isSubmitting }
-  } = useForm<CreateSpendingLimitsFieldValues>({
-    resolver: zodResolver(createSpendingLimitsValidationSchema)
+  } = useForm<CreateAutomationFieldValues>({
+    resolver: zodResolver(createAutomationValidationSchema)
   })
 
   const [searchContacts, setSearchContacts] = useState<
@@ -102,8 +102,8 @@ export const useSpendingLimitsHook = () => {
     setSearchContacts(searchResults)
   }
 
-  const onSubmitCreateSpendingLimits: SubmitHandler<
-    CreateSpendingLimitsFieldValues
+  const onSubmitCreateAutomation: SubmitHandler<
+    CreateAutomationFieldValues
   > = async data => {
     if (!wallet || !contacts || !safe) return
 
@@ -133,14 +133,14 @@ export const useSpendingLimitsHook = () => {
 
       reset()
       setSearchContacts(contacts)
-      setIsCreateSpendingLimitsOpen(false)
+      setIsCreateAutomationOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
   return {
-    spendingLimits,
+    automations,
     isLoading,
     error,
     searchContacts,
@@ -156,13 +156,13 @@ export const useSpendingLimitsHook = () => {
     setValue,
     isSubmitting,
     reset,
-    onSubmitCreateSpendingLimits,
-    isCreateSpendingLimitsOpen,
-    setIsCreateSpendingLimitsOpen,
-    isDeleteSpendingLimitsOpen,
-    setIsDeleteSpendingLimitsOpen,
-    selectedSpendingLimits,
-    setSelectedSpendingLimits,
-    handleDeleteSpendingLimits
+    onSubmitCreateAutomation,
+    isCreateAutomationOpen,
+    setIsCreateAutomationOpen,
+    isDeleteAutomationOpen,
+    setIsDeleteAutomationOpen,
+    selectedAutomation,
+    setSelectedAutomation,
+    handleDeleteAutomation
   }
 }
