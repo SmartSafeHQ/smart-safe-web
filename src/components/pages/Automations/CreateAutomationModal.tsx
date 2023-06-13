@@ -72,9 +72,9 @@ export function CreateAutomationModal() {
           <Tabs.Content value="time-based">
             <form
               onSubmit={handleSubmit(onSubmitCreateAutomation)}
-              className="w-full flex flex-col justify-center items-stretch"
+              className="w-full flex flex-1 flex-col justify-center items-stretch"
             >
-              <div className="w-full flex flex-col justify-center items-stretch gap-6 py-8 px-4 sm:px-8">
+              <div className="w-full flex flex-col justify-center items-stretch gap-6 py-6 px-4 sm:px-8">
                 <div className="flex flex-col gap-1 group">
                   <TextInput.Root
                     htmlFor="to"

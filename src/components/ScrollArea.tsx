@@ -4,11 +4,20 @@ import clsx from 'clsx'
 
 export interface ScrollAreaProps extends RadixScrollArea.ScrollAreaProps {
   children: ReactNode
+  rootClassName?: string
 }
 
-export function ScrollArea({ children, className, ...props }: ScrollAreaProps) {
+export function ScrollArea({
+  children,
+  rootClassName,
+  className,
+  ...props
+}: ScrollAreaProps) {
   return (
-    <RadixScrollArea.Root className="w-full overflow-hidden" {...props}>
+    <RadixScrollArea.Root
+      className={clsx('w-full overflow-hidden', rootClassName)}
+      {...props}
+    >
       <RadixScrollArea.Viewport
         className={clsx(
           'w-full h-full flex flex-1 [&>div]:!block px-[0.1rem] pt-[0.1rem]',

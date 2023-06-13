@@ -49,7 +49,7 @@ export function AddressSafesList() {
           <NavigationMenu.Content
             onPointerEnter={event => event.preventDefault()}
             onPointerLeave={event => event.preventDefault()}
-            className="fixed w-[calc(100vw-1rem)] left-2 py-2 pl-2 sm:w-max sm:left-auto"
+            className="fixed w-[calc(100vw-1rem)] left-2 py-2 px-2 sm:w-max sm:left-auto"
           >
             <div className="flex pl-2 pt-1 mb-1">
               <Text className="font-medium text-xs text-zinc-600 dark:text-zinc-400">

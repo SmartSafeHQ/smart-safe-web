@@ -40,7 +40,7 @@ function SidebarNavGroupTitle({
   return (
     <Text
       className={clsx(
-        'px-3 pt-1 pb-3 text-start font-normal text-sm md:max-lg:text-center',
+        'px-3 pt-1 pb-3 text-start font-normal text-sm md:max-lg:px-0 md:max-lg:text-center',
         className
       )}
       {...props}
