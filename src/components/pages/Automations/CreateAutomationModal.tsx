@@ -154,18 +154,17 @@ export function CreateAutomationModal() {
                         onValueChange={onChange}
                         value={value}
                         ref={ref}
-                        className="w-full"
                         labelText="Token"
                       >
-                        <SelectInput.Trigger className="min-h-[3rem] py-1 bg-white dark:bg-black" />
+                        <SelectInput.Trigger className="h-12" />
 
-                        <SelectInput.Content className="bg-white dark:bg-black">
+                        <SelectInput.Content>
                           <SelectInput.Group>
                             {safeTokensData.map(token => (
                               <SelectInput.Item
                                 key={token.symbol}
                                 value={token.symbol}
-                                className="min-h-[3rem] py-1"
+                                className="h-12"
                               >
                                 <div className="w-full flex items-center justify-start gap-2">
                                   <Image
@@ -210,27 +209,26 @@ export function CreateAutomationModal() {
                 <Controller
                   name="trigger"
                   control={control}
-                  defaultValue={'1'}
+                  defaultValue="1"
                   render={({ field: { onChange, value, ref, ...props } }) => (
                     <SelectInput.Root
                       {...props}
                       onValueChange={onChange}
                       value={String(value)}
                       ref={ref}
-                      className="w-full"
                       labelText="Time trigger"
                     >
-                      <SelectInput.Trigger className="min-h-[3rem] py-1 bg-white dark:bg-black" />
+                      <SelectInput.Trigger className="h-12" />
 
-                      <SelectInput.Content className="bg-white dark:bg-black">
+                      <SelectInput.Content>
                         <SelectInput.Group>
                           {[...AUTOMATION_TRIGGERS.keys()].map(trigger => (
                             <SelectInput.Item
                               key={trigger}
                               value={String(trigger)}
-                              className="min-h-[3rem] py-1"
+                              className="h-12"
                             >
-                              <div className="w-full flex items-center justify-start gap-2">
+                              <div>
                                 <Text>
                                   {
                                     AUTOMATION_TRIGGERS.get(trigger)

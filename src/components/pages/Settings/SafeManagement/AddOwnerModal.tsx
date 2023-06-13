@@ -160,7 +160,7 @@ export function AddOwnerModal() {
                     >
                       <SelectInput.Trigger className="h-10" />
 
-                      <SelectInput.Content className="w-full">
+                      <SelectInput.Content>
                         <SelectInput.Group>
                           {Array.from(
                             { length: safeOwners.length + 1 },

@@ -119,7 +119,7 @@ function DialogModalContent({
             rootClassName="!static"
             className="w-full max-h-screen flex flex-col items-stretch overflow-x-hidden md:max-h-[90vh]"
           >
-            <div className="z-10 absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-zinc-50 dark:from-zinc-950 from-30% via-transparent via-80% to-transparent rounded-t-lg pointer-events-none" />
+            <div className="z-10 absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-zinc-50 dark:from-black from-30% via-transparent via-80% to-transparent rounded-t-lg pointer-events-none" />
 
             {children}
           </ScrollArea>

@@ -45,15 +45,15 @@ export function SendSelectToken({
               onValueChange={handleChangeToken}
               defaultValue={tokens[0].symbol}
             >
-              <SelectInput.Trigger className="min-h-[3rem] bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
+              <SelectInput.Trigger className="h-12" />
 
-              <SelectInput.Content className="border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
+              <SelectInput.Content>
                 <SelectInput.Group>
                   {tokens.map(token => (
                     <SelectInput.Item
                       key={token.symbol}
                       value={token.symbol}
-                      className="min-h-[3rem] py-1"
+                      className="h-12"
                     >
                       <div className="w-full flex items-center justify-start gap-2">
                         <Image
