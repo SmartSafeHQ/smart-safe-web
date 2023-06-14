@@ -9,6 +9,8 @@ import {
   RefAttributes
 } from 'react'
 
+import { ScrollArea } from '@components/ScrollArea'
+
 interface DialogModalRootProps extends RadixDialog.DialogProps {
   children: ReactNode
 }
@@ -74,7 +76,7 @@ function DialogModalIconClose({ Icon = X }: DialogModalIconCloseProps) {
   return (
     <RadixDialog.Close
       asChild
-      className="flex items-center justify-center p-2 absolute top-4 right-6 text-zinc-900 dark:text-zinc-100 text-2xl bg-transparent rounded-md hover:text-zinc-800 hover:bg-zinc-700/10 hover:dark:text-zinc-50 hover:dark:bg-zinc-500/10 transition-colors"
+      className="flex items-center justify-center p-2 absolute top-4 right-6 text-zinc-900 dark:text-zinc-100 text-2xl bg-transparent rounded-md hover:text-zinc-800 hover:bg-zinc-700/10 hover:dark:text-zinc-50 hover:dark:bg-zinc-300/10 transition-colors"
     >
       <button aria-label="Close">
         <Icon weight="bold" />
@@ -113,9 +115,14 @@ function DialogModalContent({
           )}
           {...props}
         >
-          <div className="w-full h-full max-h-screen flex flex-col items-stretch overflow-x-hidden md:max-h-[90vh]">
+          <ScrollArea
+            rootClassName="!static"
+            className="w-full max-h-screen flex flex-col items-stretch overflow-x-hidden md:max-h-[90vh]"
+          >
+            <div className="z-10 absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-zinc-50 dark:from-black from-30% via-transparent via-80% to-transparent rounded-t-lg pointer-events-none" />
+
             {children}
-          </div>
+          </ScrollArea>
         </RadixDialog.Content>
       </div>
     </RadixDialog.Portal>
@@ -134,7 +141,7 @@ function DialogModalHeader({
   return (
     <header
       className={clsx(
-        'flex items-center flex-col p-8 rounded-t-lg bg-zinc-50 dark:bg-zinc-950 border-b-1 border-zinc-200 dark:border-zinc-700',
+        'flex items-center flex-col p-8 rounded-t-lg bg-white dark:bg-black border-b-1 border-zinc-200 dark:border-zinc-700',
         className
       )}
       {...props}
@@ -154,14 +161,16 @@ function DialogModalFooter({
   ...props
 }: DialogModalFooterProps) {
   return (
-    <div
-      className={clsx(
-        'w-full p-4 flex justify-between items-center border-t-1 border-zinc-200 dark:border-zinc-700',
-        className
-      )}
-      {...props}
-    >
-      {children}
+    <div className="py-10">
+      <div
+        className={clsx(
+          'absolute bottom-0 left-0 w-full p-4 flex justify-between items-center rounded-b-lg bg-white dark:bg-zinc-950 border-t-1 border-zinc-200 dark:border-zinc-700',
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
     </div>
   )
 }

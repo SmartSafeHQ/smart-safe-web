@@ -81,19 +81,18 @@ export function DeploySafeForm() {
                 onValueChange={onChange}
                 value={value}
                 ref={ref}
-                className="w-full flex flex-1"
               >
-                <SelectInput.Trigger className="w-full h-10 px-3 text-left overflow-hidden rounded-md bg-white dark:bg-black capitalize border-1 border-zinc-200 dark:border-zinc-700 hover:border-zinc-300 hover:dark:border-zinc-600" />
+                <SelectInput.Trigger className="h-10" />
 
-                <SelectInput.Content className="w-full border-1 bg-white dark:bg-black border-zinc-200 dark:border-zinc-700">
-                  <SelectInput.Group className="w-full">
+                <SelectInput.Content>
+                  <SelectInput.Group>
                     {ownersFields.map((owner, index) => (
                       <SelectInput.Item
                         key={`${owner.name}-${index}`}
                         value={String(index + 1)}
-                        className="w-full h-9 px-2 text-left overflow-hidden rounded-md capitalize pointer data-[highlighted]:bg-zinc-200 data-[highlighted]:dark:bg-zinc-800"
+                        className="h-9"
                       >
-                        <div className="flex items-center gap-3">
+                        <div>
                           <Text>{index + 1}</Text>
                         </div>
                       </SelectInput.Item>

@@ -10,7 +10,10 @@ import {
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 import { queryClient } from '@lib/reactQuery'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
-import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
+import {
+  createTransactionProposal,
+  registerScheduleTxUpKeep
+} from '@utils/web3/transactions/createTransactionProposal'
 import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 
 export type ApproveTransactionFunctionInput = {
@@ -19,17 +22,15 @@ export type ApproveTransactionFunctionInput = {
   safeAddress: string
   ownerAddress: string
   to: string
+  nonce: number
   data: string
   amount: number
+  isScheduledApprove: boolean
 }
 
 async function approveTransactionFunction(
   input: ApproveTransactionFunctionInput
 ): Promise<void> {
-  if (!input.safeAddress || !input.chainId) {
-    throw new Error('safe address and chain id required')
-  }
-
   const safeChain = CHAINS_ATTRIBUTES.find(
     chain => chain.chainId === input.chainId
   )
@@ -69,6 +70,18 @@ async function approveTransactionFunction(
   )(input.ownerAddress, TransactionApprovalStatus.APPROVED, signedTypedDataHash)
 
   await transactionSignature.wait()
+
+  if (input.isScheduledApprove) {
+    const registerUpKeepResponse = await registerScheduleTxUpKeep({
+      signer,
+      symbol: safeChain.symbol,
+      safeAddress: input.safeAddress,
+      ownerAddress: input.ownerAddress,
+      txNonce: input.nonce
+    })
+
+    await registerUpKeepResponse.wait()
+  }
 }
 
 export function useApproveTransactionMutation() {
@@ -92,6 +105,9 @@ export function useApproveTransactionMutation() {
       queryClient.cancelQueries({
         queryKey: ['safeThreshold', variables.safeAddress]
       })
+      queryClient.cancelQueries({
+        queryKey: ['scheduledAutomations', variables.safeAddress]
+      })
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
@@ -103,6 +119,10 @@ export function useApproveTransactionMutation() {
       )
       queryClient.setQueryData(
         ['safeThreshold', variables.safeAddress],
+        context
+      )
+      queryClient.setQueryData(
+        ['scheduledAutomations', variables.safeAddress],
         context
       )
     },
@@ -124,6 +144,9 @@ export function useApproveTransactionMutation() {
       })
       queryClient.invalidateQueries({
         queryKey: ['safeThreshold', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['scheduledAutomations', variables.safeAddress]
       })
     }
   })

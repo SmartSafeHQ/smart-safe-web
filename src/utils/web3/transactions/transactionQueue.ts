@@ -7,12 +7,17 @@ import {
   DefaultTxProps,
   OwnerApproveStatus,
   OwnerSignaturesProps,
+  ScheduledTxProps,
   SendTxProps,
   ThresholdTxProps,
   TransacitonTypes
 } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+
+export const AUTOMATION_TRIGGERS = new Map([
+  [1, { title: 'every minute', description: 'Every minute' }]
+])
 
 export async function formatTransactionToQueueList(
   transaction: any,
@@ -78,6 +83,48 @@ export async function formatTransactionToQueueList(
   }
 }
 
+export function formatSafeSettingsUpdateTx(
+  parsedTransaction: TransactionDescription,
+  transactionData: DefaultTxProps
+): TransacitonTypes {
+  const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
+    parsedTransaction.name
+  )
+
+  if (!formatTransactionFunction) {
+    throw new Error('transaction type not supported')
+  }
+
+  const formatedTx = formatTransactionFunction(
+    transactionData,
+    parsedTransaction
+  )
+
+  return formatedTx
+}
+
+export function formatSafeSendTokensTx(
+  transactionData: DefaultTxProps,
+  scheduledTrigger: number,
+  chainId: string
+): TransacitonTypes {
+  const isScheduledTransaction = Number(scheduledTrigger)
+
+  let formatedTx: TransacitonTypes
+
+  if (isScheduledTransaction) {
+    formatedTx = formatScheduledTxToQueue(
+      transactionData,
+      isScheduledTransaction,
+      chainId
+    )
+  } else {
+    formatedTx = formatSendTxToQueue(transactionData, chainId)
+  }
+
+  return formatedTx
+}
+
 export function formatSendTxToQueue(
   transaction: DefaultTxProps,
   chainId: string
@@ -120,6 +167,31 @@ export function formatThresholdTxToQueue(
     ...transaction,
     type: 'THRESHOLD',
     newThreshold
+  }
+}
+
+export function formatScheduledTxToQueue(
+  transaction: DefaultTxProps,
+  trigger: number,
+  chainId: string
+): ScheduledTxProps {
+  const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
+
+  const scheduledTransaction = AUTOMATION_TRIGGERS.get(trigger)
+
+  if (!scheduledTransaction) {
+    throw new Error('transaction schedule type not supported')
+  }
+
+  return {
+    ...transaction,
+    type: 'SCHEDULED',
+    triggerTitle: scheduledTransaction.title,
+    triggerType: 'time',
+    token: {
+      symbol: safeChain?.symbol ?? 'matic',
+      icon: safeChain?.icon ?? '/networks/polygon-logo.svg'
+    }
   }
 }
 

@@ -38,7 +38,7 @@ export function useCreateContact() {
     mutationFn: (input: CreateContactFunctionInput) =>
       createContactFunction(input),
     onSuccess: async (_, variables) => {
-      await queryClient.cancelQueries({
+      queryClient.cancelQueries({
         queryKey: ['contacts', variables.creatorId]
       })
     },

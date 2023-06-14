@@ -45,6 +45,7 @@ async function addOwnerFunction(input: AddOwnerFunctionInput) {
     input.safeAddress,
     '0',
     addOwnerCallEncoded,
+    0,
     signer.address,
     signedTypedDataHash
   )

@@ -3,7 +3,8 @@ import { CaretUpDown } from '@phosphor-icons/react'
 
 import { NavigationMenu } from '@components/NavigationMenu'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
-import { SafeLinkItem } from '@components/Header/SafeLinkItem'
+import { SafeLinkItem } from '@components/Header/AddressSafesList/SafeLinkItem'
+import { CurrentSafeItem } from '@components/Header/AddressSafesList/CurrentSafeItem'
 import { ScrollArea } from '@components/ScrollArea'
 import { Text } from '@components/Text'
 
@@ -21,7 +22,10 @@ export function AddressSafesList() {
     <NavigationMenu.Root className="flex items-stretch justify-start">
       <NavigationMenu.List>
         <NavigationMenu.Item>
-          <Skeleton isLoading={isLoadingAddressSafes} className="w-44 h-10">
+          <Skeleton
+            isLoading={isLoadingAddressSafes || !safe}
+            className="w-44 h-10"
+          >
             <NavigationMenu.Trigger
               type="button"
               onPointerMove={event => event.preventDefault()}
@@ -45,28 +49,42 @@ export function AddressSafesList() {
           <NavigationMenu.Content
             onPointerEnter={event => event.preventDefault()}
             onPointerLeave={event => event.preventDefault()}
-            className="fixed p-2"
+            className="fixed w-[calc(100vw-1rem)] left-2 py-2 px-2 sm:w-max sm:left-auto"
           >
-            <div className="flex mb-2">
-              <Text className="font-medium text-sm text-zinc-600 dark:text-zinc-400">
+            <div className="flex pl-2 pt-1 mb-1">
+              <Text className="font-medium text-xs text-zinc-600 dark:text-zinc-400">
                 Your safes
               </Text>
             </div>
 
-            <ScrollArea className="pr-2 max-h-[20rem]">
-              {addressSafes?.map(safe => {
-                return (
-                  <SafeLinkItem
-                    key={safe.safeAddress}
-                    safeAddress={safe.safeAddress}
-                    safeName={safe.safeName}
-                    safeFormattedAddress={safe.safeFormattedAddress}
-                    hexColor={safe.chain.hexColor}
-                    networkName={safe.chain.networkName}
-                  />
-                )
-              })}
-            </ScrollArea>
+            {safe && (
+              <ScrollArea className="pr-2 max-h-[20rem]">
+                <CurrentSafeItem
+                  safeAddress={safe.address}
+                  safeName={safe.name}
+                  safeFormattedAddress={safe.formattedAddress}
+                  hexColor={safe.chain.hexColor}
+                  networkName={safe.chain.networkName}
+                  explorerUrl={safe.chain.explorerUrl}
+                />
+
+                {addressSafes?.map((addressSafe, index) => {
+                  if (addressSafe.safeAddress === safe.address) return null
+
+                  return (
+                    <SafeLinkItem
+                      key={addressSafe.safeAddress}
+                      index={index}
+                      safeAddress={addressSafe.safeAddress}
+                      safeName={addressSafe.safeName}
+                      safeFormattedAddress={addressSafe.safeFormattedAddress}
+                      hexColor={addressSafe.chain.hexColor}
+                      networkName={addressSafe.chain.networkName}
+                    />
+                  )
+                })}
+              </ScrollArea>
+            )}
           </NavigationMenu.Content>
         </NavigationMenu.Item>
       </NavigationMenu.List>

@@ -4,15 +4,20 @@ import clsx from 'clsx'
 import { Text } from '@components/Text'
 
 const SAFE_GRADIENT_COLORS = [
-  'from-green-500 to-blue-500',
-  'from-cyan-500 to-fuchsia-800',
   'from-pink-500 to-yellow-500',
+  'from-purple-400 to-blue-700',
   'from-yellow-500 to-teal-500',
   'from-slate-300 to-slate-800',
-  'from-purple-500 to-rose-800'
+  'from-green-500 to-blue-500',
+  'from-purple-500 to-rose-800',
+  'from-lime-600 to-red-400',
+  'from-cyan-400 to-pink-700',
+  'from-orange-400 to-violet-700',
+  'from-red-600 to-sky-600'
 ]
 
 type SafeLinkItemProps = {
+  index: number
   safeAddress: string
   safeName: string
   safeFormattedAddress: string
@@ -21,15 +26,14 @@ type SafeLinkItemProps = {
 }
 
 export function SafeLinkItem({
+  index,
   safeAddress,
   safeName,
   safeFormattedAddress,
   hexColor,
   networkName
 }: SafeLinkItemProps) {
-  const randomColorIndex = Math.floor(
-    Math.random() * SAFE_GRADIENT_COLORS.length
-  )
+  const safeIndexLastDigit = index % 10
 
   return (
     <Link
@@ -39,7 +43,7 @@ export function SafeLinkItem({
       <div
         className={clsx(
           'w-7 h-7 rounded-full bg-gradient-to-r',
-          SAFE_GRADIENT_COLORS[randomColorIndex]
+          SAFE_GRADIENT_COLORS[safeIndexLastDigit]
         )}
       />
 

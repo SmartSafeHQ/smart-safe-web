@@ -50,13 +50,13 @@ export function CreateSafeWelcomeForm() {
             >
               <SelectInput.Trigger className="h-10" />
 
-              <SelectInput.Content className="w-full">
-                <SelectInput.Group className="w-full">
+              <SelectInput.Content>
+                <SelectInput.Group>
                   {CHAINS_ATTRIBUTES.map(chain => (
                     <SelectInput.Item
                       key={chain.chainId}
                       value={chain.chainId}
-                      className="w-full h-9 px-2 text-left"
+                      className="w-full h-9"
                     >
                       <div className="flex items-center gap-3">
                         <span

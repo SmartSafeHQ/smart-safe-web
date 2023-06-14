@@ -1,5 +1,8 @@
 import { ethers, type JsonRpcSigner } from 'ethers'
 
+import { RegisterUpkeep__factory as RegisterUpkeep } from '@utils/web3/typings/factories/RegisterUpkeep__factory'
+import { SMART_SAFE_UPKEEP_ADRESSES } from '@utils/web3/chains/adresses'
+
 interface TransactionProps {
   chainId: number
   from: string
@@ -110,4 +113,42 @@ export async function createTransactionProposal({
   )
 
   return { signedTypedDataHash, typedDataHash }
+}
+
+interface RegisterScheduleTxUpKeepProps {
+  signer: JsonRpcSigner
+  safeAddress: string
+  ownerAddress: string
+  txNonce: number
+  symbol: string
+}
+
+export async function registerScheduleTxUpKeep(
+  input: RegisterScheduleTxUpKeepProps
+) {
+  const smartSafeUpKeepAddress = SMART_SAFE_UPKEEP_ADRESSES.get(input.symbol)
+
+  if (!smartSafeUpKeepAddress) throw new Error('Chain not supported')
+
+  const upKeepContract = RegisterUpkeep.connect(
+    smartSafeUpKeepAddress,
+    input.signer
+  )
+
+  const checkData = new ethers.AbiCoder().encode(['uint64'], [input.txNonce])
+
+  const registerUpKeep = await upKeepContract.getFunction(
+    'registerAndPredictID'
+  )({
+    name: `${input.safeAddress.slice(0, 6)}-smart-safe-schedule-send`,
+    encryptedEmail: '0x',
+    upkeepContract: input.safeAddress,
+    gasLimit: '500000',
+    adminAddress: input.ownerAddress,
+    checkData,
+    offchainConfig: '0x',
+    amount: '1000000000000000000'
+  })
+
+  return registerUpKeep
 }

@@ -4,8 +4,8 @@ import { useQuery } from '@tanstack/react-query'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 import {
-  FORMAT_TRANSACTION_FUCTIONS,
-  formatSendTxToQueue,
+  formatSafeSendTokensTx,
+  formatSafeSettingsUpdateTx,
   formatTransactionToQueueList
 } from '@utils/web3/transactions/transactionQueue'
 import {
@@ -33,7 +33,7 @@ export async function fetchSafeTxQueue(
   const transactionNonce = await contract.getFunction(
     'requiredTransactionNonce'
   )()
-  const currenTxQueueNonce = Number(transactionNonce)
+  const currentTxQueueNonce = Number(transactionNonce)
   const transactionsQueue = await contract.getFunction('getTransactions')(0, 0)
 
   console.log(transactionsQueue)
@@ -58,26 +58,19 @@ export async function fetchSafeTxQueue(
     let formattedTransaction: TransacitonTypes
 
     if (parsedTransaction) {
-      const formatTransactionFunction = FORMAT_TRANSACTION_FUCTIONS.get(
-        parsedTransaction.name
-      )
-
-      if (!formatTransactionFunction) {
-        throw new Error('transaction type not supported')
-      }
-
-      formattedTransaction = formatTransactionFunction(
-        transactionData,
-        parsedTransaction
+      formattedTransaction = formatSafeSettingsUpdateTx(
+        parsedTransaction,
+        transactionData
       )
     } else {
-      formattedTransaction = formatSendTxToQueue(
+      formattedTransaction = formatSafeSendTokensTx(
         transactionData,
+        Number(transaction[7]),
         safeChain.chainId
       )
     }
 
-    if (formattedTransaction.nonce === currenTxQueueNonce) {
+    if (formattedTransaction.nonce === currentTxQueueNonce) {
       toApprove = formattedTransaction
       return
     }

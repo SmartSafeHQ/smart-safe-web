@@ -10,10 +10,7 @@ import { toast } from 'react-toastify'
 import { useRouter } from 'next/router'
 import { Contract, JsonRpcProvider } from 'ethers'
 
-import {
-  fetchAddressSafes,
-  FetchAddressSafesOutput
-} from '@hooks/safe/queries/useAddressSafes'
+import { fetchAddressSafes } from '@hooks/safe/queries/useAddressSafes'
 import { formatWalletAddress } from '@utils/web3'
 import { ChainSettings } from '@utils/web3/chains/supportedChains'
 import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
@@ -96,9 +93,7 @@ export function SafeProvider({ children }: SafeProviderProps) {
     }
 
     try {
-      const response = await queryClient.ensureQueryData<
-        FetchAddressSafesOutput[]
-      >({
+      const response = await queryClient.ensureQueryData({
         queryKey: ['addressSafes', wallet.accounts[0].address],
         queryFn: () =>
           fetchAddressSafes({ walletAddress: wallet.accounts[0].address })

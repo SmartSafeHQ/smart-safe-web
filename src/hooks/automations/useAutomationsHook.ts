@@ -4,51 +4,47 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useSpendingLimits } from '@contexts/SpendingLimitsContext'
+import { useAutomations } from '@contexts/AutomationsContext'
 import { ContactProps } from '@contexts/ContactsContext'
 
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
-import { useSpendingLimitsQuery } from '@hooks/spendingLimits/queries/useSpendingLimitsQuery'
-import { useCreateSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useCreateSpendingLimitsMutation'
+import { useAutomationsQuery } from '@hooks/automations/queries/useAutomationsQuery'
+import { useCreateAutomationMutation } from '@hooks/automations/mutations/useCreateAutomationMutation'
 import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-const createSpendingLimitsValidationSchema = z.object({
-  contactAddress: z.string().refine(address => {
+const createAutomationValidationSchema = z.object({
+  to: z.string().refine(address => {
     const isAddressValid = ethers.isAddress(address)
 
     return isAddressValid
-  }, 'Invalid contact address'),
-  coinSymbol: z.string().min(1, { message: 'coin required' }),
+  }, 'Invalid address'),
+  tokenSymbol: z.string().min(1, { message: 'coin required' }),
   amount: z
     .number({ invalid_type_error: 'min 0.1' })
-    .min(0.1, { message: 'min 0.1' }),
-  fromDate: z
-    .date({
-      required_error: 'date required',
-      invalid_type_error: 'invalid date'
-    })
-    .min(new Date(), 'min date is tomorrow!')
+    .min(0.000001, { message: 'min 0.1' }),
+  trigger: z.string().min(1, { message: 'time trigger required' })
 })
 
-export type CreateSpendingLimitsFieldValues = z.infer<
-  typeof createSpendingLimitsValidationSchema
+export type CreateAutomationFieldValues = z.infer<
+  typeof createAutomationValidationSchema
 >
 
-export const useSpendingLimitsHook = () => {
+export const useAutomationsHook = () => {
   const {
-    isCreateSpendingLimitsOpen,
-    setIsCreateSpendingLimitsOpen,
-    isDeleteSpendingLimitsOpen,
-    setIsDeleteSpendingLimitsOpen,
-    selectedSpendingLimits,
-    setSelectedSpendingLimits,
-    handleDeleteSpendingLimits
-  } = useSpendingLimits()
-
+    isCreateAutomationOpen,
+    setIsCreateAutomationOpen,
+    isDeleteAutomationOpen,
+    setIsDeleteAutomationOpen,
+    selectedAutomation,
+    setSelectedAutomation,
+    handleDeleteAutomation
+  } = useAutomations()
+  const [{ wallet }] = useConnectWallet()
   const { safe } = useSafe()
   const { data: safeTokensData } = useSafeTokens(
     safe?.address,
@@ -59,13 +55,18 @@ export const useSpendingLimitsHook = () => {
     safe?.ownerId,
     !!safe
   )
-  const { mutateAsync } = useCreateSpendingLimitsMutation()
+  const { mutateAsync } = useCreateAutomationMutation()
 
   const {
-    data: spendingLimits,
+    data: automations,
     isLoading,
     error
-  } = useSpendingLimitsQuery(1, '1')
+  } = useAutomationsQuery(
+    safe?.address,
+    safe?.chain.chainId,
+    safe?.ownerId,
+    !!safe
+  )
 
   const {
     control,
@@ -74,8 +75,8 @@ export const useSpendingLimitsHook = () => {
     reset,
     setValue,
     formState: { errors, isSubmitting }
-  } = useForm<CreateSpendingLimitsFieldValues>({
-    resolver: zodResolver(createSpendingLimitsValidationSchema)
+  } = useForm<CreateAutomationFieldValues>({
+    resolver: zodResolver(createAutomationValidationSchema)
   })
 
   const [searchContacts, setSearchContacts] = useState<
@@ -101,43 +102,45 @@ export const useSpendingLimitsHook = () => {
     setSearchContacts(searchResults)
   }
 
-  const onSubmitCreateSpendingLimits: SubmitHandler<
-    CreateSpendingLimitsFieldValues
+  const onSubmitCreateAutomation: SubmitHandler<
+    CreateAutomationFieldValues
   > = async data => {
-    if (!contacts) return
+    if (!wallet || !contacts || !safe) return
 
     try {
-      const spendingLimitsToken = CHAINS_ATTRIBUTES.find(
-        token => token.symbol === data.coinSymbol
+      const checkTokenExists = CHAINS_ATTRIBUTES.find(
+        token => token.symbol === data.tokenSymbol
       )
 
-      const findContactForRecipient = contacts.find(
-        contact => contact.contactAddress === data.contactAddress
-      )
-
-      if (!spendingLimitsToken) {
+      if (!checkTokenExists) {
         toast.error('token not found')
         return
       }
 
       await mutateAsync({
         ...data,
-        safeAddress: 'address',
-        customerWalletPrivateKey: 'privateKey',
-        coin: spendingLimitsToken,
-        recipientName: findContactForRecipient?.contactName
+        safeAddress: safe.address,
+        trigger: +data.trigger,
+        provider: wallet.provider,
+        ownerAddress: wallet.accounts[0].address,
+        threshold: safe.threshold,
+        chainId: checkTokenExists.chainId
       })
+
+      toast.success(
+        'Automation successfully created! View it on the transactions tab'
+      )
 
       reset()
       setSearchContacts(contacts)
-      setIsCreateSpendingLimitsOpen(false)
+      setIsCreateAutomationOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
   return {
-    spendingLimits,
+    automations,
     isLoading,
     error,
     searchContacts,
@@ -153,13 +156,13 @@ export const useSpendingLimitsHook = () => {
     setValue,
     isSubmitting,
     reset,
-    onSubmitCreateSpendingLimits,
-    isCreateSpendingLimitsOpen,
-    setIsCreateSpendingLimitsOpen,
-    isDeleteSpendingLimitsOpen,
-    setIsDeleteSpendingLimitsOpen,
-    selectedSpendingLimits,
-    setSelectedSpendingLimits,
-    handleDeleteSpendingLimits
+    onSubmitCreateAutomation,
+    isCreateAutomationOpen,
+    setIsCreateAutomationOpen,
+    isDeleteAutomationOpen,
+    setIsDeleteAutomationOpen,
+    selectedAutomation,
+    setSelectedAutomation,
+    handleDeleteAutomation
   }
 }

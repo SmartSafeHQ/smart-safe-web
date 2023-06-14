@@ -5,7 +5,6 @@ import {
   Gear,
   ArrowsCounterClockwise,
   Users,
-  ClockCountdown,
   Dna
 } from '@phosphor-icons/react'
 
@@ -40,6 +39,16 @@ const NAV_LINKS_SUB_GENERAL = [
   }
 ]
 
+const NAV_LINKS_SUB_AUTOMATIONS = [
+  {
+    href: 'automations',
+    activePath: 'automations',
+    icon: Dna,
+    title: 'automations',
+    isDisabled: false
+  }
+]
+
 const NAV_LINKS_SUB_MANAGE = [
   {
     href: 'send',
@@ -53,20 +62,6 @@ const NAV_LINKS_SUB_MANAGE = [
     activePath: 'contacts',
     icon: Users,
     title: 'Contacts',
-    isDisabled: false
-  },
-  {
-    href: 'spending-limits',
-    activePath: 'spending-limits',
-    icon: ClockCountdown,
-    title: 'Spending Limits',
-    isDisabled: false
-  },
-  {
-    href: 'recurring-payments',
-    activePath: 'recurring-payments',
-    icon: Dna,
-    title: 'Recurring Payments',
     isDisabled: false
   }
 ]
@@ -86,7 +81,7 @@ export function SidebarNav() {
 
   return (
     <div className="flex flex-1 bg-zinc-50 dark:bg-zinc-950">
-      <div className="flex flex-1 flex-col items-stretch justify-start md:w-[15rem] md:max-lg:w-[6rem] md:max-lg:px-1 lg:p-3">
+      <div className="flex flex-1 flex-col items-stretch justify-start md:w-[15rem] md:max-lg:w-[7rem] md:max-lg:px-1 lg:p-3">
         <ScrollArea className="pr-3 max-h-[calc(100vh-86px)]">
           <SidebarNavGroup.Root>
             {NAV_LINKS_SUB_GENERAL.map(navLink => (
@@ -104,7 +99,25 @@ export function SidebarNav() {
             ))}
           </SidebarNavGroup.Root>
 
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
+          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+            <SidebarNavGroup.Title>Automations</SidebarNavGroup.Title>
+
+            {NAV_LINKS_SUB_AUTOMATIONS.map(navLink => (
+              <DialogDrawer.Close key={navLink.title}>
+                <NavLink
+                  href={navLink.href}
+                  Icon={navLink.icon}
+                  isDisabled={navLink.isDisabled}
+                  basePath={`/dashboard/${safe?.address}`}
+                  activePath={navLink.activePath}
+                >
+                  {navLink.title}
+                </NavLink>
+              </DialogDrawer.Close>
+            ))}
+          </SidebarNavGroup.Root>
+
+          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
             <SidebarNavGroup.Title>Manage funds</SidebarNavGroup.Title>
 
             {NAV_LINKS_SUB_MANAGE.map(navLink => (
@@ -122,7 +135,7 @@ export function SidebarNav() {
             ))}
           </SidebarNavGroup.Root>
 
-          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-300 dark:border-zinc-700">
+          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
             {NAV_LINKS_SUB_SETTINGS.map(navLink => (
               <DialogDrawer.Close key={navLink.title}>
                 <NavLink

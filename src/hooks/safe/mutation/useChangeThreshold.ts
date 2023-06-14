@@ -45,6 +45,7 @@ async function changeThreholdFunction(input: ChangeThreholdFunctionInput) {
     input.safeAddress,
     '0',
     changeThresholdCallEncoded,
+    0,
     signer.address,
     signedTypedDataHash
   )

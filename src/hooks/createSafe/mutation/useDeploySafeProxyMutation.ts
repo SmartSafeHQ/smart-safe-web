@@ -4,7 +4,7 @@ import { EIP1193Provider } from '@web3-onboard/core'
 
 import { queryClient } from '@lib/reactQuery'
 import SMART_SAFE_PROXY_FACTORY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
-import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
+import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/chains/adresses'
 
 export type DeploySafeFunctionInput = {
   provider: EIP1193Provider

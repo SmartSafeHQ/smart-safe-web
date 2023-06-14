@@ -30,7 +30,7 @@ export function useDeleteContact() {
     mutationFn: (input: CreateContactFunctionInput) =>
       deleteContactFunction(input),
     onSuccess: async _ => {
-      await queryClient.cancelQueries({
+      queryClient.cancelQueries({
         queryKey: ['contacts']
       })
     },

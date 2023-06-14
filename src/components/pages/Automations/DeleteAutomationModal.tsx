@@ -1,66 +1,64 @@
 import Image from 'next/image'
-import dayjs from 'dayjs'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 
-import { useDeleteSpendingLimitsMutation } from '@hooks/spendingLimits/mutations/useDeleteSpendingLimitsMutation'
-import { useSpendingLimitsHook } from '@hooks/spendingLimits/useSpendingLimitsHook'
+import { useDeleteAutomationMutation } from '@hooks/automations/mutations/useDeleteAutomationMutation'
+import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
-export function DeleteSpendingLimitsModal() {
+export function DeleteAutomationModal() {
   const {
-    selectedSpendingLimits,
-    isDeleteSpendingLimitsOpen,
-    setIsDeleteSpendingLimitsOpen
-  } = useSpendingLimitsHook()
+    selectedAutomation,
+    isDeleteAutomationOpen,
+    setIsDeleteAutomationOpen
+  } = useAutomationsHook()
 
-  const { mutateAsync, isLoading } = useDeleteSpendingLimitsMutation()
+  const { mutateAsync, isLoading } = useDeleteAutomationMutation()
 
   async function handleConfirmDelete() {
-    if (!selectedSpendingLimits) return
+    if (!selectedAutomation) return
 
     try {
       await mutateAsync({
         safeAddress: 'address',
-        customerWalletPrivateKey: 'privateKey',
-        withdrawalIndex: selectedSpendingLimits.index
+        customerWalletPrivateKey: 'privateKey'
       })
 
-      setIsDeleteSpendingLimitsOpen(false)
+      setIsDeleteAutomationOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
     }
   }
 
-  if (!selectedSpendingLimits) return <></>
+  if (!selectedAutomation) return <></>
 
   return (
     <DialogModal.Root
-      open={isDeleteSpendingLimitsOpen}
-      onOpenChange={setIsDeleteSpendingLimitsOpen}
+      open={isDeleteAutomationOpen}
+      onOpenChange={setIsDeleteAutomationOpen}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
         <DialogModal.Header className="gap-3">
           <DialogModal.Title className="text-3xl">
-            Delete authorization
+            Delete automation
           </DialogModal.Title>
 
           <DialogModal.Description>
-            SmartSafe will delete the spending limit
+            SmartSafe will delete the payment automation
           </DialogModal.Description>
         </DialogModal.Header>
 
         <div className="w-full flex flex-col items-stretch justify-start gap-4 mb-8 py-8 px-4 sm:px-8">
           <div className="flex flex-col items-stretch justify-start gap-1">
             <Text asChild className="text-start">
-              <strong>{selectedSpendingLimits.recipientName}</strong>
+              <strong>{selectedAutomation.recipientName}</strong>
             </Text>
 
             <Text className="w-min text-sm capitalize text-zinc-500 dark:text-zinc-300">
-              {selectedSpendingLimits.wallet.formattedAddress}
+              {selectedAutomation.wallet.formattedAddress}
             </Text>
           </div>
 
@@ -71,8 +69,8 @@ export function DeleteSpendingLimitsModal() {
               </Heading>
 
               <Image
-                src={selectedSpendingLimits.coin.avatar}
-                alt={`${selectedSpendingLimits.coin.symbol} coin icon`}
+                src={selectedAutomation.token.icon}
+                alt={`${selectedAutomation.token.symbol} token icon`}
                 width={20}
                 height={20}
                 className="mr-1"
@@ -80,25 +78,22 @@ export function DeleteSpendingLimitsModal() {
             </div>
 
             <Text className="text-sm">
-              {selectedSpendingLimits.coinAmount}{' '}
-              {selectedSpendingLimits.coin.symbol}
+              {selectedAutomation.amount} {selectedAutomation.token.symbol}
             </Text>
           </div>
 
           <div className="w-full flex items-start justify-between gap-1">
             <Heading asChild>
-              <h3>From date</h3>
+              <h3>Time trigger</h3>
             </Heading>
 
-            <Text className="text-sm">
-              {dayjs(selectedSpendingLimits.dateFrom).format('DD/MM/YYYY')}
-            </Text>
+            <Text className="text-sm">{selectedAutomation.triggerTitle}</Text>
           </div>
         </div>
 
         <DialogModal.Footer>
           <DialogModal.Close>
-            <Button className="w-full" variant="ghost">
+            <Button className="w-max" variant="ghost">
               Cancel
             </Button>
           </DialogModal.Close>
@@ -107,9 +102,10 @@ export function DeleteSpendingLimitsModal() {
             onClick={handleConfirmDelete}
             isLoading={isLoading}
             variant="red"
-            className="w-full"
+            className="w-max"
+            disabled
           >
-            Delete Authorization
+            Delete Automation
           </Button>
         </DialogModal.Footer>
 

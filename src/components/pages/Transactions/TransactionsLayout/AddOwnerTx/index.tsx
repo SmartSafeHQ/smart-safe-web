@@ -95,7 +95,7 @@ function AddOwnerTxInfos({
               onClick={() => handleCopyToClipboard(ownerAddress)}
               className="transition-colors hover:text-cyan-500"
             >
-              <Copy className="w-4 h-4 " />
+              <Copy className="w-4 h-4" />
             </button>
 
             <Link
@@ -103,7 +103,7 @@ function AddOwnerTxInfos({
               target="_blank"
               className="transition-colors hover:text-cyan-500"
             >
-              <ArrowSquareOut className="w-4 h-4 " />
+              <ArrowSquareOut className="w-4 h-4" />
             </Link>
           </div>
         </div>

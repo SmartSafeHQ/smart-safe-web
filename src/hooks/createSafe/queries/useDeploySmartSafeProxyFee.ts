@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
 import SMART_SAFE_FACTORY_PROXY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory.json'
-import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/ABIs/adresses'
+import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/chains/adresses'
 
 interface FetchDeploySmartSafeFeeInput {
   rpcUrl: string
