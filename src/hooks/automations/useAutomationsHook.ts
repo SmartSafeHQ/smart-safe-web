@@ -1,15 +1,12 @@
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { ethers } from 'ethers'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
 import { useAutomations } from '@contexts/AutomationsContext'
-import { ContactProps } from '@contexts/ContactsContext'
-
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useAutomationsQuery } from '@hooks/automations/queries/useAutomationsQuery'
 import { useCreateAutomationMutation } from '@hooks/automations/mutations/useCreateAutomationMutation'
@@ -51,10 +48,7 @@ export const useAutomationsHook = () => {
     safe?.chain.chainId,
     !!safe
   )
-  const { data: contacts, isLoading: contactsIsLoading } = useContactsQuery(
-    safe?.ownerId,
-    !!safe
-  )
+  const { data: contacts } = useContactsQuery(safe?.ownerId, !!safe)
   const { mutateAsync } = useCreateAutomationMutation()
 
   const {
@@ -73,34 +67,14 @@ export const useAutomationsHook = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     setValue,
     formState: { errors, isSubmitting }
   } = useForm<CreateAutomationFieldValues>({
     resolver: zodResolver(createAutomationValidationSchema)
   })
 
-  const [searchContacts, setSearchContacts] = useState<
-    ContactProps[] | null | undefined
-  >(contacts)
-
-  useEffect(() => {
-    if (!contacts) return
-
-    setSearchContacts(contacts)
-  }, [contacts])
-
-  function handleInputChange(currentValue = '') {
-    if (!currentValue) {
-      setSearchContacts(contacts)
-      return
-    }
-
-    const searchResults = contacts?.filter(contact =>
-      contact.contactAddress.startsWith(currentValue)
-    )
-
-    setSearchContacts(searchResults)
-  }
+  const contactSearch = watch('to')
 
   const onSubmitCreateAutomation: SubmitHandler<
     CreateAutomationFieldValues
@@ -132,7 +106,6 @@ export const useAutomationsHook = () => {
       )
 
       reset()
-      setSearchContacts(contacts)
       setIsCreateAutomationOpen(false)
     } catch (error) {
       getWe3ErrorMessageWithToast(error)
@@ -143,12 +116,9 @@ export const useAutomationsHook = () => {
     automations,
     isLoading,
     error,
-    searchContacts,
     safeTokensData,
-    setSearchContacts,
-    handleInputChange,
     contacts,
-    contactsIsLoading,
+    contactSearch,
     control,
     register,
     handleSubmit,

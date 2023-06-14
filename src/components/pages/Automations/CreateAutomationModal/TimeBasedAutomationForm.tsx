@@ -6,20 +6,19 @@ import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { SelectInput } from '@components/Inputs/SelectInput'
-import { Skeleton } from '@components/FetchingStates/Skeleton'
+import { ContactsTextInput } from '@components/Inputs/ContactsTextInput'
 
 import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
 import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
+import { ContactProps } from '@contexts/ContactsContext'
 
 export function TimeBasedAutomationForm() {
   const {
     contacts,
-    contactsIsLoading,
     control,
-    searchContacts,
     safeTokensData,
-    handleInputChange,
     register,
+    contactSearch,
     handleSubmit,
     errors,
     setValue,
@@ -33,70 +32,21 @@ export function TimeBasedAutomationForm() {
       className="w-full flex flex-1 flex-col justify-center items-stretch"
     >
       <div className="w-full flex flex-col justify-center items-stretch gap-6 py-6 px-4 sm:px-8">
-        <div className="flex flex-col gap-1 group">
-          <TextInput.Root
-            htmlFor="to"
+        <ContactsTextInput.Root
+          search={contactSearch}
+          contactsList={contacts ?? []}
+          handleSelectContact={(contact: ContactProps) =>
+            setValue('to', contact.contactAddress)
+          }
+        >
+          <ContactsTextInput.Input
+            {...register('to')}
+            required
+            id="to"
             error={errors.to?.message}
-            onClick={() =>
-              document
-                .getElementById('select-contact-id')
-                ?.classList.remove('!hidden')
-            }
-          >
-            <TextInput.Label>Wallet address</TextInput.Label>
-
-            <Skeleton isLoading={contactsIsLoading} className="w-full h-12">
-              {contacts && (
-                <TextInput.Content>
-                  <TextInput.Input
-                    {...register('to')}
-                    required
-                    id="to"
-                    type="search"
-                    autoComplete="off"
-                    role="combobox"
-                    list=""
-                    autoFocus={true}
-                    placeholder="Enter wallet address"
-                    onChange={e => handleInputChange(e.target.value)}
-                  />
-                </TextInput.Content>
-              )}
-            </Skeleton>
-          </TextInput.Root>
-
-          <div className="relative w-full">
-            <ul
-              id="select-contact-id"
-              className="w-full hidden flex-col items-stretch absolute top-2 left-0 group-focus-within:flex bg-white dark:bg-black rounded"
-            >
-              {searchContacts?.map(contact => (
-                <li key={contact.contactName} className="min-h-[3rem]">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setValue('to', contact.contactAddress)
-                      handleInputChange(contact.contactAddress)
-
-                      document
-                        .getElementById('select-contact-id')
-                        ?.classList.add('!hidden')
-                    }}
-                    className="w-full flex flex-col items-stretch justify-start gap-1 p-2 outline-none ring-cyan-500 rounded transition-colors hover:bg-cyan-600 focus-within:bg-cyan-600 hover:!text-zinc-50"
-                  >
-                    <Text asChild className="text-start">
-                      <strong>{contact.contactName}</strong>
-                    </Text>
-
-                    <Text className="w-min text-sm capitalize ">
-                      {contact.formattedAddress}
-                    </Text>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+            placeholder="Enter wallet address or contact name"
+          />
+        </ContactsTextInput.Root>
 
         {!!safeTokensData && (
           <Controller

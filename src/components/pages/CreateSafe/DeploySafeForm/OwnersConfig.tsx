@@ -28,7 +28,7 @@ export function OwnersConfig({
   const {
     formState: { errors }
   } = useFormContext<FieldValues>()
-  const { data: contactsList } = useContactsQuery(safe?.ownerId, !!safe)
+  const { data: contacts } = useContactsQuery(safe?.ownerId, !!safe)
 
   return (
     <Collapsible.Root
@@ -53,7 +53,7 @@ export function OwnersConfig({
               <OwnerItem
                 index={index}
                 removeOwner={removeOwner}
-                contactsList={contactsList}
+                contacts={contacts ?? []}
               />
             </div>
           ))}

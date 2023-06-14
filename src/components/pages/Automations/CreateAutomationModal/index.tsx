@@ -7,8 +7,6 @@ import { CustomLogicAutomationForm } from './CustomLogicAutomationForm'
 
 export function CreateAutomationModal() {
   const {
-    contacts,
-    setSearchContacts,
     isSubmitting,
     reset,
     isCreateAutomationOpen,
@@ -23,7 +21,6 @@ export function CreateAutomationModal() {
 
         setIsCreateAutomationOpen(isOpen)
         reset()
-        setSearchContacts(contacts)
       }}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
