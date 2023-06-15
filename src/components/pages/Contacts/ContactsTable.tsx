@@ -30,12 +30,7 @@ function ContactsTableTh({ children, className }: ContactsTableThProps) {
 ContactsTableTh.displayName = 'ContactsTable.Th'
 
 interface ContactsTableTrProps {
-  contact: {
-    contactId: number
-    contactName: string
-    contactAddress: string
-    formattedAddress: string
-  }
+  contact: ContactProps
   handleEditContact: (_contact: ContactProps) => void
   handleDeleteContact: (_contact: ContactProps) => void
 }
@@ -48,7 +43,7 @@ function ContactsTableTr({
   return (
     <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-zinc-300 dark:border-zinc-700">
       <td className="pl-2 py-3">
-        <Text className="font-medium md:text-base">{contact.contactName}</Text>
+        <Text className="font-medium md:text-base">{contact.name}</Text>
       </td>
 
       <td>
@@ -58,9 +53,7 @@ function ContactsTableTr({
           <div className="flex items-center gap-2">
             <HoverCard.Root>
               <HoverCard.Trigger asChild>
-                <button
-                  onClick={() => handleCopyToClipboard(contact.contactAddress)}
-                >
+                <button onClick={() => handleCopyToClipboard(contact.address)}>
                   <Copy className="w-5 h-5" />
                 </button>
               </HoverCard.Trigger>
@@ -74,7 +67,7 @@ function ContactsTableTr({
             <HoverCard.Root>
               <HoverCard.Trigger asChild>
                 <Link
-                  href={`https://etherscan.io/address/${contact.contactAddress}`}
+                  href={`https://etherscan.io/address/${contact.address}`}
                   target="_blank"
                 >
                   <ArrowSquareOut className="w-5 h-5" />

@@ -5,6 +5,7 @@ import {
   useState
 } from 'react'
 import clsx from 'clsx'
+import { useWallets } from '@web3-onboard/react'
 
 import {
   NavigationMenu,
@@ -13,28 +14,33 @@ import {
 import { Text } from '@components/Text'
 import { TextInput, TextInputInputProps } from '@components/Inputs/TextInput'
 
+import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { ContactProps } from '@contexts/ContactsContext'
 
 export interface ContactsTextInputRootProps extends NavigationMenuRootProps {
   search: string
-  contactsList: ContactProps[]
   children: ReactNode
   handleSelectContact: (contact: ContactProps) => void
 }
 
 function ContactsTextInputRoot({
   children,
-  contactsList,
   search = '',
   handleSelectContact,
   ...props
 }: ContactsTextInputRootProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const filteredContacts = contactsList.filter(
-    ({ contactName, contactAddress }) =>
-      contactName.toLowerCase().startsWith(search?.toLowerCase()) ||
-      contactAddress.toLowerCase().startsWith(search?.toLowerCase())
+  const [wallets] = useWallets()
+  const { data: contacts } = useContactsQuery(
+    wallets?.accounts[0].address,
+    !!wallets
+  )
+
+  const filteredContacts = (contacts ?? []).filter(
+    ({ name, address }) =>
+      name.toLowerCase().startsWith(search?.toLowerCase()) ||
+      address.toLowerCase().startsWith(search?.toLowerCase())
   )
 
   return (
@@ -55,7 +61,7 @@ function ContactsTextInputRoot({
               <div className="w-full flex flex-col items-stretch bg-white dark:bg-black rounded">
                 {filteredContacts?.map(contact => (
                   <button
-                    key={contact.contactId}
+                    key={contact.id}
                     type="button"
                     onClick={() => {
                       handleSelectContact(contact)
@@ -64,7 +70,7 @@ function ContactsTextInputRoot({
                     className="w-full flex flex-col items-stretch justify-start gap-1 p-2 ring-cyan-500 rounded transition-colors hover:bg-zinc-500/10 hover:dark:bg-zinc-50/10"
                   >
                     <Text asChild className="text-start">
-                      <strong>{contact.contactName}</strong>
+                      <strong>{contact.name}</strong>
                     </Text>
 
                     <Text className="w-min text-sm capitalize">

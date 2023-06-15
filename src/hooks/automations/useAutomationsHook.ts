@@ -7,7 +7,6 @@ import {
   CreateTimeBasedAutomationFieldValues,
   useAutomations
 } from '@contexts/AutomationsContext'
-import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useAutomationsQuery } from '@hooks/automations/queries/useAutomationsQuery'
 import { useCreateAutomationMutation } from '@hooks/automations/mutations/useCreateAutomationMutation'
 import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
@@ -32,7 +31,7 @@ export const useAutomationsHook = () => {
     safe?.chain.chainId,
     !!safe
   )
-  const { data: contacts } = useContactsQuery(safe?.ownerId, !!safe)
+
   const { mutateAsync } = useCreateAutomationMutation()
 
   const {
@@ -42,8 +41,8 @@ export const useAutomationsHook = () => {
   } = useAutomationsQuery(
     safe?.address,
     safe?.chain.chainId,
-    safe?.ownerId,
-    !!safe
+    wallet?.accounts[0].address,
+    !!safe || !!wallet
   )
 
   const {
@@ -61,7 +60,7 @@ export const useAutomationsHook = () => {
   const onSubmitCreateAutomation: SubmitHandler<
     CreateTimeBasedAutomationFieldValues
   > = async data => {
-    if (!wallet || !contacts || !safe) return
+    if (!wallet || !safe) return
 
     try {
       const checkTokenExists = CHAINS_ATTRIBUTES.find(
@@ -99,7 +98,6 @@ export const useAutomationsHook = () => {
     isLoading,
     error,
     safeTokensData,
-    contacts,
     contactSearch,
     control,
     register,

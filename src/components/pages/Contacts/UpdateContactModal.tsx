@@ -5,17 +5,16 @@ import { SubmitHandler, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
-import { useSafe } from '@contexts/SafeContext'
 import { Button } from '@components/Button'
 import { TextInput } from '@components/Inputs/TextInput'
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Text } from '@components/Text'
 
-import { useEditContact } from '@hooks/contacts/mutations/useEditContact'
 import {
   CONTACT_NAME_REGEX,
   useContactsHook
 } from '@hooks/contacts/useContactsHook'
+import { useUpdateContact } from '@hooks/contacts/mutations/useUpdateContact'
 
 const validationSchema = z.object({
   name: z
@@ -32,8 +31,7 @@ export type FieldValues = z.infer<typeof validationSchema>
 export function UpdateContactModal() {
   const { selectedContact, isUpdateContactOpen, setIsUpdateContactOpen } =
     useContactsHook()
-  const { mutateAsync } = useEditContact()
-  const { safe } = useSafe()
+  const { mutateAsync } = useUpdateContact()
 
   const {
     register,
@@ -44,7 +42,7 @@ export function UpdateContactModal() {
   } = useForm<FieldValues>({
     resolver: zodResolver(validationSchema),
     defaultValues: {
-      name: selectedContact?.contactName
+      name: selectedContact?.name
     }
   })
 
@@ -53,8 +51,7 @@ export function UpdateContactModal() {
 
     try {
       await mutateAsync({
-        creatorId: safe?.ownerId!,
-        contactId: selectedContact.contactId,
+        contactId: selectedContact.id,
         newData: {
           contactName: data.name
         }
@@ -74,7 +71,7 @@ export function UpdateContactModal() {
   useEffect(() => {
     if (!selectedContact) return
 
-    setValue('name', selectedContact.contactName)
+    setValue('name', selectedContact.name)
   }, [selectedContact])
 
   return (

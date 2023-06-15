@@ -4,9 +4,9 @@ import { queryClient } from '@lib/reactQuery'
 import { smartSafeApi } from '@lib/axios'
 
 interface CreateContactFunctionInput {
-  creatorId: string
-  contactName: string
-  contactAddress: string
+  ownerId: string
+  name: string
+  address: string
 }
 
 interface CreateContactFunctionOutput {
@@ -21,11 +21,11 @@ async function createContactFunction(
   input: CreateContactFunctionInput
 ): Promise<CreateContactFunctionOutput> {
   const response = await smartSafeApi.post<CreateContactApiResponse>(
-    'addressBook',
+    'contacts',
     {
-      creatorId: input.creatorId,
-      contactName: input.contactName,
-      contactAddress: input.contactAddress
+      ownerId: input.ownerId,
+      name: input.name,
+      address: input.address
     }
   )
 
@@ -39,15 +39,15 @@ export function useCreateContact() {
       createContactFunction(input),
     onSuccess: async (_, variables) => {
       queryClient.cancelQueries({
-        queryKey: ['contacts', variables.creatorId]
+        queryKey: ['contacts', variables.ownerId]
       })
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['contacts', variables.creatorId], context)
+      queryClient.setQueryData(['contacts', variables.ownerId], context)
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['contacts', variables.creatorId]
+        queryKey: ['contacts', variables.ownerId]
       })
     }
   })

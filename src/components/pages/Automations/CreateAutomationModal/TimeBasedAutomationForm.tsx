@@ -14,7 +14,6 @@ import { ContactProps } from '@contexts/ContactsContext'
 
 export function TimeBasedAutomationForm() {
   const {
-    contacts,
     control,
     safeTokensData,
     register,
@@ -34,9 +33,8 @@ export function TimeBasedAutomationForm() {
       <div className="w-full flex flex-col justify-center items-stretch gap-6 py-6 px-4 sm:px-8">
         <ContactsTextInput.Root
           search={contactSearch}
-          contactsList={contacts ?? []}
           handleSelectContact={(contact: ContactProps) =>
-            setValue('to', contact.contactAddress)
+            setValue('to', contact.address)
           }
         >
           <ContactsTextInput.Input

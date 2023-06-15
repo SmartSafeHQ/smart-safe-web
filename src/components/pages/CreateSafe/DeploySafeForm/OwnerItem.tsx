@@ -9,11 +9,10 @@ import { ContactProps } from '@contexts/ContactsContext'
 
 interface OwnerItemProps {
   index: number
-  contacts: ContactProps[]
   removeOwner: (index: number | number[]) => void
 }
 
-export function OwnerItem({ index, removeOwner, contacts }: OwnerItemProps) {
+export function OwnerItem({ index, removeOwner }: OwnerItemProps) {
   const {
     setValue,
     register,
@@ -31,10 +30,9 @@ export function OwnerItem({ index, removeOwner, contacts }: OwnerItemProps) {
       <div className="flex w-full flex-col flex-1 items-stretch justify-start gap-3 relative">
         <ContactsTextInput.Root
           search={contactSearch}
-          contactsList={contacts ?? []}
           handleSelectContact={(contact: ContactProps) => {
-            setValue(`owners.${index}.name`, contact.contactName)
-            setValue(`owners.${index}.address`, contact.contactAddress)
+            setValue(`owners.${index}.name`, contact.name)
+            setValue(`owners.${index}.address`, contact.address)
           }}
         >
           <ContactsTextInput.Input

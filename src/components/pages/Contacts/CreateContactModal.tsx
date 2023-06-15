@@ -48,11 +48,13 @@ export function CreateContactModal() {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
+    if (!safe) return
+
     try {
       await createContactMutation({
-        contactAddress: data.address,
-        contactName: data.name,
-        creatorId: safe?.ownerId!
+        address: data.address,
+        name: data.name,
+        ownerId: safe.ownerId
       })
 
       reset()

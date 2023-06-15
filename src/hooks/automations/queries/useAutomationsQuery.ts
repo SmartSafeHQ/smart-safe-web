@@ -15,13 +15,13 @@ import { TransactionManager } from '@utils/web3/typings/SmartSafe'
 interface FetchAutomationsInput {
   safeAddress?: string
   chainId?: string
-  creatorId?: string
+  walletAddress?: string
 }
 
 export async function fetchAutomations(
   input: FetchAutomationsInput
 ): Promise<SelectedAutomationProps[]> {
-  if (!input.safeAddress || !input.chainId || !input.creatorId) {
+  if (!input.safeAddress || !input.chainId || !input.walletAddress) {
     throw new Error('safe address and chain required')
   }
 
@@ -37,8 +37,8 @@ export async function fetchAutomations(
   if (!smartSafeUpKeepAddress) throw new Error('Chain not supported')
 
   const contacts = await queryClient.ensureQueryData({
-    queryKey: ['contacts', input.creatorId],
-    queryFn: () => fetchContacts({ creatorId: input.creatorId })
+    queryKey: ['contacts', input.walletAddress],
+    queryFn: () => fetchContacts({ walletAddress: input.walletAddress })
   })
 
   const provider = new JsonRpcProvider(safeChain.rpcUrl)
@@ -76,7 +76,7 @@ export async function fetchAutomations(
     )
 
     const recipentContact = contacts.find(
-      contact => contact.contactAddress === transaction.to
+      contact => contact.address === transaction.to
     )
 
     return {
@@ -94,7 +94,7 @@ export async function fetchAutomations(
           walletAddress: to
         })
       },
-      recipientName: recipentContact?.contactName
+      recipientName: recipentContact?.name
     }
   })
 
@@ -106,7 +106,7 @@ export async function fetchAutomations(
 export function useAutomationsQuery(
   safeAddress?: string,
   chainId?: string,
-  creatorId?: string,
+  walletAddress?: string,
   enabled = true
 ) {
   return useQuery({
@@ -115,7 +115,7 @@ export function useAutomationsQuery(
       fetchAutomations({
         safeAddress,
         chainId,
-        creatorId
+        walletAddress
       }),
     enabled,
     keepPreviousData: true,

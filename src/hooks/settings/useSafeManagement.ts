@@ -45,7 +45,10 @@ export const useSafeManagementHook = () => {
   const { mutateAsync: addOwnerMutation } = useAddOwner()
   const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
   const { mutateAsync: createContactMutation } = useCreateContact()
-  const { data: contactList } = useContactsQuery(safe?.ownerId, !!safe)
+  const { data: contacts } = useContactsQuery(
+    wallets?.accounts[0].address,
+    !!wallets
+  )
 
   const { data: safeThreshold, isFetching: thresholdIsFetching } =
     useSafeThreshold(safe?.address, safe?.chain.rpcUrl, !!safe)
@@ -61,7 +64,7 @@ export const useSafeManagementHook = () => {
   )
 
   const ownersData = useMemo(() => {
-    if (!contactList || !safeOwners || !wallets) {
+    if (!contacts || !safeOwners || !wallets) {
       return
     }
 
@@ -74,17 +77,17 @@ export const useSafeManagementHook = () => {
         }
       }
 
-      const ownerData = contactList.find(
-        ({ contactAddress }) => contactAddress === owner.address
+      const ownerData = contacts.find(
+        ({ address }) => address === owner.address
       )
 
       return {
-        address: ownerData?.contactAddress ?? owner.address,
+        address: ownerData?.address ?? owner.address,
         formattedAddress: ownerData?.formattedAddress ?? owner.formattedAddress,
-        name: ownerData?.contactName ?? ''
+        name: ownerData?.name ?? ''
       }
     })
-  }, [contactList, safeOwners, wallets])
+  }, [contacts, safeOwners, wallets])
 
   return {
     safe,

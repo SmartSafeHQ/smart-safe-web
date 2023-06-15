@@ -3,10 +3,8 @@ import { FieldArrayWithId, useFormContext } from 'react-hook-form'
 import { ArrowSquareOut, CaretDown, Plus } from '@phosphor-icons/react'
 
 import { OwnerItem } from './OwnerItem'
-import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { Collapsible } from '@components/Collapsible'
 import { Text } from '@components/Text'
-import { useSafe } from '@contexts/SafeContext'
 
 import { FieldValues } from '@hooks/createSafe/deploySafeValidationSchema'
 
@@ -24,11 +22,9 @@ export function OwnersConfig({
   addOwner,
   removeOwner
 }: OwnersConfigProps) {
-  const { safe } = useSafe()
   const {
     formState: { errors }
   } = useFormContext<FieldValues>()
-  const { data: contacts } = useContactsQuery(safe?.ownerId, !!safe)
 
   return (
     <Collapsible.Root
@@ -50,11 +46,7 @@ export function OwnersConfig({
               key={owner.id}
               className="w-full flex items-stretch justify-start gap-5"
             >
-              <OwnerItem
-                index={index}
-                removeOwner={removeOwner}
-                contacts={contacts ?? []}
-              />
+              <OwnerItem index={index} removeOwner={removeOwner} />
             </div>
           ))}
 

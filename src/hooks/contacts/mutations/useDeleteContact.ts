@@ -14,12 +14,9 @@ export interface DeleteContactReponse {
 async function deleteContactFunction(
   input: CreateContactFunctionInput
 ): Promise<DeleteContactReponse> {
-  const response = await smartSafeApi.delete<DeleteContactReponse>(
-    'addressBook',
-    {
-      data: { contactId: input.contactId }
-    }
-  )
+  const response = await smartSafeApi.delete<DeleteContactReponse>('contacts', {
+    data: { id: input.contactId }
+  })
 
   return { id: response.data.id }
 }

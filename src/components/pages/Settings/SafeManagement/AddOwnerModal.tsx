@@ -70,9 +70,9 @@ export function AddOwnerModal() {
       await transaction.wait()
 
       await createContactMutation({
-        contactAddress: data.ownerAddress,
-        contactName: data.ownerName,
-        creatorId: safe.ownerId
+        address: data.ownerAddress,
+        name: data.ownerName,
+        ownerId: safe.ownerId
       })
 
       setIsAddOwnerOpen(false)
