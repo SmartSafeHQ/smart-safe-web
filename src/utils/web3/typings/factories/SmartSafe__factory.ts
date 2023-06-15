@@ -7,101 +7,9 @@ import type { SmartSafe, SmartSafeInterface } from "../SmartSafe";
 
 const _abi = [
   {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_newOwner",
-        type: "address",
-      },
-      {
-        internalType: "uint8",
-        name: "_newThreshold",
-        type: "uint8",
-      },
-    ],
-    name: "addNewOwner",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_transactionProposalSigner",
-        type: "address",
-      },
-      {
-        internalType: "enum TransactionManager.TransactionApproval",
-        name: "_transactionApprovalType",
-        type: "uint8",
-      },
-      {
-        internalType: "bytes",
-        name: "_transactionProposalSignature",
-        type: "bytes",
-      },
-    ],
-    name: "addTransactionSignature",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     inputs: [],
     name: "CallerIsNotAuthorized",
     type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint8",
-        name: "_newThreshold",
-        type: "uint8",
-      },
-    ],
-    name: "changeThreshold",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_to",
-        type: "address",
-      },
-      {
-        internalType: "uint256",
-        name: "_value",
-        type: "uint256",
-      },
-      {
-        internalType: "bytes",
-        name: "_data",
-        type: "bytes",
-      },
-      {
-        internalType: "enum TransactionManager.TransactionRecurrence",
-        name: "_trigger",
-        type: "uint8",
-      },
-      {
-        internalType: "address",
-        name: "_transactionProposalSigner",
-        type: "address",
-      },
-      {
-        internalType: "bytes",
-        name: "_transactionProposalSignature",
-        type: "bytes",
-      },
-    ],
-    name: "createTransactionProposal",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
   },
   {
     inputs: [
@@ -113,19 +21,6 @@ const _abi = [
     ],
     name: "DuplicatedAddress",
     type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint64",
-        name: "_transactionNonce",
-        type: "uint64",
-      },
-    ],
-    name: "executeTransaction",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     inputs: [],
@@ -181,44 +76,6 @@ const _abi = [
     inputs: [],
     name: "OwnersLengthOutOfBounds",
     type: "error",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes",
-        name: "_performData",
-        type: "bytes",
-      },
-    ],
-    name: "performUpkeep",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_prevOwner",
-        type: "address",
-      },
-      {
-        internalType: "address",
-        name: "_owner",
-        type: "address",
-      },
-    ],
-    name: "removeOwner",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "removeTransaction",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
   },
   {
     inputs: [],
@@ -333,24 +190,6 @@ const _abi = [
     type: "event",
   },
   {
-    inputs: [
-      {
-        internalType: "address[]",
-        name: "_owners",
-        type: "address[]",
-      },
-      {
-        internalType: "uint8",
-        name: "_threshold",
-        type: "uint8",
-      },
-    ],
-    name: "setupOwners",
-    outputs: [],
-    stateMutability: "payable",
-    type: "function",
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -409,8 +248,58 @@ const _abi = [
     type: "event",
   },
   {
-    stateMutability: "payable",
-    type: "receive",
+    inputs: [
+      {
+        internalType: "address",
+        name: "_newOwner",
+        type: "address",
+      },
+      {
+        internalType: "uint8",
+        name: "_newThreshold",
+        type: "uint8",
+      },
+    ],
+    name: "addNewOwner",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_transactionProposalSigner",
+        type: "address",
+      },
+      {
+        internalType: "enum TransactionManager.TransactionApproval",
+        name: "_transactionApprovalType",
+        type: "uint8",
+      },
+      {
+        internalType: "bytes",
+        name: "_transactionProposalSignature",
+        type: "bytes",
+      },
+    ],
+    name: "addTransactionSignature",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint8",
+        name: "_newThreshold",
+        type: "uint8",
+      },
+    ],
+    name: "changeThreshold",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
     inputs: [
@@ -434,6 +323,44 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_to",
+        type: "address",
+      },
+      {
+        internalType: "uint256",
+        name: "_value",
+        type: "uint256",
+      },
+      {
+        internalType: "bytes",
+        name: "_data",
+        type: "bytes",
+      },
+      {
+        internalType: "uint256",
+        name: "_trigger",
+        type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "_transactionProposalSigner",
+        type: "address",
+      },
+      {
+        internalType: "bytes",
+        name: "_transactionProposalSignature",
+        type: "bytes",
+      },
+    ],
+    name: "createTransactionProposal",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -477,6 +404,19 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint64",
+        name: "_transactionNonce",
+        type: "uint64",
+      },
+    ],
+    name: "executeTransaction",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -576,9 +516,9 @@ const _abi = [
             type: "bytes[]",
           },
           {
-            internalType: "enum TransactionManager.TransactionRecurrence",
+            internalType: "uint256",
             name: "trigger",
-            type: "uint8",
+            type: "uint256",
           },
         ],
         internalType: "struct TransactionManager.Transaction[]",
@@ -587,6 +527,44 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "bytes",
+        name: "_performData",
+        type: "bytes",
+      },
+    ],
+    name: "performUpkeep",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_prevOwner",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_owner",
+        type: "address",
+      },
+    ],
+    name: "removeOwner",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "removeTransaction",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -600,6 +578,24 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address[]",
+        name: "_owners",
+        type: "address[]",
+      },
+      {
+        internalType: "uint8",
+        name: "_threshold",
+        type: "uint8",
+      },
+    ],
+    name: "setupOwners",
+    outputs: [],
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -640,6 +636,10 @@ const _abi = [
     ],
     stateMutability: "view",
     type: "function",
+  },
+  {
+    stateMutability: "payable",
+    type: "receive",
   },
 ] as const;
 

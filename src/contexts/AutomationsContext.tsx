@@ -6,8 +6,29 @@ import {
   useContext,
   useState
 } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm, UseFormReturn } from 'react-hook-form'
+import { ethers } from 'ethers'
+import { z } from 'zod'
 
 type AutomationsProviderProps = PropsWithChildren<Record<string, unknown>>
+
+export const createTimeBasedAutomationValidationSchema = z.object({
+  to: z.string().refine(address => {
+    const isAddressValid = ethers.isAddress(address)
+
+    return isAddressValid
+  }, 'Invalid address'),
+  tokenSymbol: z.string().min(1, { message: 'coin required' }),
+  amount: z
+    .number({ invalid_type_error: 'min 0.1' })
+    .min(0.000001, { message: 'min 0.1' }),
+  intervalInSeconds: z.string().min(1, { message: 'time interval required' })
+})
+
+export type CreateTimeBasedAutomationFieldValues = z.infer<
+  typeof createTimeBasedAutomationValidationSchema
+>
 
 export interface SelectedAutomationProps {
   id: string
@@ -28,6 +49,7 @@ interface AutomationsContextData {
   selectedAutomation: SelectedAutomationProps | null
   isCreateAutomationOpen: boolean
   isDeleteAutomationOpen: boolean
+  createTimeBasedUseForm: UseFormReturn<CreateTimeBasedAutomationFieldValues>
   setSelectedAutomation: Dispatch<
     SetStateAction<SelectedAutomationProps | null>
   >
@@ -50,6 +72,10 @@ export function AutomationsProvider({ children }: AutomationsProviderProps) {
     setIsDeleteAutomationOpen(true)
   }
 
+  const createTimeBasedUseForm = useForm<CreateTimeBasedAutomationFieldValues>({
+    resolver: zodResolver(createTimeBasedAutomationValidationSchema)
+  })
+
   return (
     <AutomationsContext.Provider
       value={{
@@ -59,7 +85,8 @@ export function AutomationsProvider({ children }: AutomationsProviderProps) {
         setIsDeleteAutomationOpen,
         selectedAutomation,
         setSelectedAutomation,
-        handleDeleteAutomation
+        handleDeleteAutomation,
+        createTimeBasedUseForm
       }}
     >
       {children}

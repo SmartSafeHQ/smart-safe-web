@@ -9,7 +9,7 @@ import { SelectInput } from '@components/Inputs/SelectInput'
 import { ContactsTextInput } from '@components/Inputs/ContactsTextInput'
 
 import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
-import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
+import { AUTOMATION_TIME_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 import { ContactProps } from '@contexts/ContactsContext'
 
 export function TimeBasedAutomationForm() {
@@ -112,9 +112,9 @@ export function TimeBasedAutomationForm() {
         </TextInput.Root>
 
         <Controller
-          name="trigger"
+          name="intervalInSeconds"
           control={control}
-          defaultValue="1"
+          defaultValue="60"
           render={({ field: { onChange, value, ref, ...props } }) => (
             <SelectInput.Root
               {...props}
@@ -127,7 +127,7 @@ export function TimeBasedAutomationForm() {
 
               <SelectInput.Content>
                 <SelectInput.Group>
-                  {[...AUTOMATION_TRIGGERS.keys()].map(trigger => (
+                  {[...AUTOMATION_TIME_TRIGGERS.keys()].map(trigger => (
                     <SelectInput.Item
                       key={trigger}
                       value={String(trigger)}
@@ -135,7 +135,7 @@ export function TimeBasedAutomationForm() {
                     >
                       <div>
                         <Text>
-                          {AUTOMATION_TRIGGERS.get(trigger)?.description}
+                          {AUTOMATION_TIME_TRIGGERS.get(trigger)?.description}
                         </Text>
                       </div>
                     </SelectInput.Item>

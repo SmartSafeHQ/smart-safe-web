@@ -1,35 +1,18 @@
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import { ethers } from 'ethers'
 import { useConnectWallet } from '@web3-onboard/react'
 
 import { useSafe } from '@contexts/SafeContext'
-import { useAutomations } from '@contexts/AutomationsContext'
+import {
+  CreateTimeBasedAutomationFieldValues,
+  useAutomations
+} from '@contexts/AutomationsContext'
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useAutomationsQuery } from '@hooks/automations/queries/useAutomationsQuery'
 import { useCreateAutomationMutation } from '@hooks/automations/mutations/useCreateAutomationMutation'
 import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
-
-const createAutomationValidationSchema = z.object({
-  to: z.string().refine(address => {
-    const isAddressValid = ethers.isAddress(address)
-
-    return isAddressValid
-  }, 'Invalid address'),
-  tokenSymbol: z.string().min(1, { message: 'coin required' }),
-  amount: z
-    .number({ invalid_type_error: 'min 0.1' })
-    .min(0.000001, { message: 'min 0.1' }),
-  trigger: z.string().min(1, { message: 'time trigger required' })
-})
-
-export type CreateAutomationFieldValues = z.infer<
-  typeof createAutomationValidationSchema
->
 
 export const useAutomationsHook = () => {
   const {
@@ -39,6 +22,7 @@ export const useAutomationsHook = () => {
     setIsDeleteAutomationOpen,
     selectedAutomation,
     setSelectedAutomation,
+    createTimeBasedUseForm,
     handleDeleteAutomation
   } = useAutomations()
   const [{ wallet }] = useConnectWallet()
@@ -70,14 +54,12 @@ export const useAutomationsHook = () => {
     watch,
     setValue,
     formState: { errors, isSubmitting }
-  } = useForm<CreateAutomationFieldValues>({
-    resolver: zodResolver(createAutomationValidationSchema)
-  })
+  } = createTimeBasedUseForm
 
   const contactSearch = watch('to')
 
   const onSubmitCreateAutomation: SubmitHandler<
-    CreateAutomationFieldValues
+    CreateTimeBasedAutomationFieldValues
   > = async data => {
     if (!wallet || !contacts || !safe) return
 
@@ -94,7 +76,7 @@ export const useAutomationsHook = () => {
       await mutateAsync({
         ...data,
         safeAddress: safe.address,
-        trigger: +data.trigger,
+        intervalInSeconds: +data.intervalInSeconds,
         provider: wallet.provider,
         ownerAddress: wallet.accounts[0].address,
         threshold: safe.threshold,

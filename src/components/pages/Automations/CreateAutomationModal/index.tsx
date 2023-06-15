@@ -1,9 +1,9 @@
 import { DialogModal } from '@components/Dialogs/DialogModal'
 import { Tabs } from '@components/Tabs'
 import { TimeBasedAutomationForm } from './TimeBasedAutomationForm'
+import { CustomLogicAutomationForm } from './CustomLogicAutomationForm'
 
 import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
-import { CustomLogicAutomationForm } from './CustomLogicAutomationForm'
 
 export function CreateAutomationModal() {
   const {
