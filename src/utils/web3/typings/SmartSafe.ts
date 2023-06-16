@@ -72,18 +72,18 @@ export interface SmartSafeInterface extends Interface {
       | "addNewOwner"
       | "addTransactionSignature"
       | "changeThreshold"
-      | "createTransactionProposal"
-      | "executeTransaction"
-      | "performUpkeep"
-      | "removeOwner"
-      | "removeTransaction"
-      | "setupOwners"
       | "checkUpkeep"
+      | "createTransactionProposal"
       | "eip712Domain"
+      | "executeTransaction"
       | "getOwners"
       | "getTransactionApprovals"
       | "getTransactions"
+      | "performUpkeep"
+      | "removeOwner"
+      | "removeTransaction"
       | "requiredTransactionNonce"
+      | "setupOwners"
       | "threshold"
       | "totalOwners"
       | "transactionNonce"
@@ -115,6 +115,10 @@ export interface SmartSafeInterface extends Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "checkUpkeep",
+    values: [BytesLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "createTransactionProposal",
     values: [
       AddressLike,
@@ -126,8 +130,21 @@ export interface SmartSafeInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "eip712Domain",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
     functionFragment: "executeTransaction",
     values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "getOwners", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getTransactionApprovals",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getTransactions",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "performUpkeep",
@@ -142,29 +159,12 @@ export interface SmartSafeInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "setupOwners",
-    values: [AddressLike[], BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "checkUpkeep",
-    values: [BytesLike]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "eip712Domain",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "getOwners", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "getTransactionApprovals",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getTransactions",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "requiredTransactionNonce",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setupOwners",
+    values: [AddressLike[], BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "threshold", values?: undefined): string;
   encodeFunctionData(
@@ -189,11 +189,28 @@ export interface SmartSafeInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "checkUpkeep",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "createTransactionProposal",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "eip712Domain",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "executeTransaction",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getOwners", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTransactionApprovals",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getTransactions",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -209,28 +226,11 @@ export interface SmartSafeInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setupOwners",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "checkUpkeep",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "eip712Domain",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getOwners", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getTransactionApprovals",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getTransactions",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "requiredTransactionNonce",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setupOwners",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "threshold", data: BytesLike): Result;
@@ -418,6 +418,12 @@ export interface SmartSafe extends BaseContract {
     "nonpayable"
   >;
 
+  checkUpkeep: TypedContractMethod<
+    [_checkData: BytesLike],
+    [[boolean, string] & { _upkeepNeeded: boolean; _performData: string }],
+    "view"
+  >;
+
   createTransactionProposal: TypedContractMethod<
     [
       _to: AddressLike,
@@ -429,38 +435,6 @@ export interface SmartSafe extends BaseContract {
     ],
     [void],
     "payable"
-  >;
-
-  executeTransaction: TypedContractMethod<
-    [_transactionNonce: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-
-  performUpkeep: TypedContractMethod<
-    [_performData: BytesLike],
-    [void],
-    "nonpayable"
-  >;
-
-  removeOwner: TypedContractMethod<
-    [_prevOwner: AddressLike, _owner: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-
-  removeTransaction: TypedContractMethod<[], [void], "nonpayable">;
-
-  setupOwners: TypedContractMethod<
-    [_owners: AddressLike[], _threshold: BigNumberish],
-    [void],
-    "payable"
-  >;
-
-  checkUpkeep: TypedContractMethod<
-    [_checkData: BytesLike],
-    [[boolean, string] & { _upkeepNeeded: boolean; _performData: string }],
-    "view"
   >;
 
   eip712Domain: TypedContractMethod<
@@ -479,6 +453,12 @@ export interface SmartSafe extends BaseContract {
     "view"
   >;
 
+  executeTransaction: TypedContractMethod<
+    [_transactionNonce: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+
   getOwners: TypedContractMethod<[], [string[]], "view">;
 
   getTransactionApprovals: TypedContractMethod<
@@ -493,7 +473,27 @@ export interface SmartSafe extends BaseContract {
     "view"
   >;
 
+  performUpkeep: TypedContractMethod<
+    [_performData: BytesLike],
+    [void],
+    "nonpayable"
+  >;
+
+  removeOwner: TypedContractMethod<
+    [_prevOwner: AddressLike, _owner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
+  removeTransaction: TypedContractMethod<[], [void], "nonpayable">;
+
   requiredTransactionNonce: TypedContractMethod<[], [bigint], "view">;
+
+  setupOwners: TypedContractMethod<
+    [_owners: AddressLike[], _threshold: BigNumberish],
+    [void],
+    "payable"
+  >;
 
   threshold: TypedContractMethod<[], [bigint], "view">;
 
@@ -527,6 +527,13 @@ export interface SmartSafe extends BaseContract {
     nameOrSignature: "changeThreshold"
   ): TypedContractMethod<[_newThreshold: BigNumberish], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "checkUpkeep"
+  ): TypedContractMethod<
+    [_checkData: BytesLike],
+    [[boolean, string] & { _upkeepNeeded: boolean; _performData: string }],
+    "view"
+  >;
+  getFunction(
     nameOrSignature: "createTransactionProposal"
   ): TypedContractMethod<
     [
@@ -539,40 +546,6 @@ export interface SmartSafe extends BaseContract {
     ],
     [void],
     "payable"
-  >;
-  getFunction(
-    nameOrSignature: "executeTransaction"
-  ): TypedContractMethod<
-    [_transactionNonce: BigNumberish],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "performUpkeep"
-  ): TypedContractMethod<[_performData: BytesLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "removeOwner"
-  ): TypedContractMethod<
-    [_prevOwner: AddressLike, _owner: AddressLike],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "removeTransaction"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setupOwners"
-  ): TypedContractMethod<
-    [_owners: AddressLike[], _threshold: BigNumberish],
-    [void],
-    "payable"
-  >;
-  getFunction(
-    nameOrSignature: "checkUpkeep"
-  ): TypedContractMethod<
-    [_checkData: BytesLike],
-    [[boolean, string] & { _upkeepNeeded: boolean; _performData: string }],
-    "view"
   >;
   getFunction(
     nameOrSignature: "eip712Domain"
@@ -592,6 +565,13 @@ export interface SmartSafe extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "executeTransaction"
+  ): TypedContractMethod<
+    [_transactionNonce: BigNumberish],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
     nameOrSignature: "getOwners"
   ): TypedContractMethod<[], [string[]], "view">;
   getFunction(
@@ -609,8 +589,28 @@ export interface SmartSafe extends BaseContract {
     "view"
   >;
   getFunction(
+    nameOrSignature: "performUpkeep"
+  ): TypedContractMethod<[_performData: BytesLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "removeOwner"
+  ): TypedContractMethod<
+    [_prevOwner: AddressLike, _owner: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "removeTransaction"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "requiredTransactionNonce"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "setupOwners"
+  ): TypedContractMethod<
+    [_owners: AddressLike[], _threshold: BigNumberish],
+    [void],
+    "payable"
+  >;
   getFunction(
     nameOrSignature: "threshold"
   ): TypedContractMethod<[], [bigint], "view">;

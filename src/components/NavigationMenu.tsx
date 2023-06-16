@@ -5,24 +5,28 @@ import clsx from 'clsx'
 export interface NavigationMenuRootProps
   extends RadixNavigationMenu.NavigationMenuProps {
   children: ReactNode
+  viewPortClassName?: string
 }
 
 function NavigationMenuRoot({
   children,
   className,
+  viewPortClassName,
   ...props
 }: NavigationMenuRootProps) {
   return (
     <RadixNavigationMenu.Root
-      className={clsx(
-        'relative flex justify-center z-9 [&>div]:w-full',
-        className
-      )}
+      className={clsx('relative flex justify-center [&>div]:w-full', className)}
       {...props}
     >
       {children}
 
-      <div className="w-full h-full absolute top-full left-0 flex justify-center">
+      <div
+        className={clsx(
+          'w-full h-full absolute top-full left-0 flex justify-center',
+          viewPortClassName
+        )}
+      >
         <RadixNavigationMenu.Viewport className="w-full relative mt-[10px] shadow-sm" />
       </div>
     </RadixNavigationMenu.Root>
@@ -121,8 +125,6 @@ function NavigationMenuContent({
         'bg-white dark:bg-black border-1 border-zinc-200 dark:border-zinc-700 rounded-md animate-dialog-open',
         className
       )}
-      onPointerEnter={event => event.preventDefault()}
-      onPointerLeave={event => event.preventDefault()}
       {...props}
     >
       {children}

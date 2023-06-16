@@ -10,10 +10,10 @@ import {
 type ContactsProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface ContactProps {
-  contactAddress: string
+  id: number
+  name: string
+  address: string
   formattedAddress: string
-  contactName: string
-  contactId: number
 }
 
 interface ContactsContextData {

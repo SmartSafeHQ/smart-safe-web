@@ -8,27 +8,26 @@ import { formatWalletAddress } from '@utils/web3'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { RegisterUpkeep__factory as RegisterUpkeep } from '@utils/web3/typings/factories/RegisterUpkeep__factory'
 import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
-import { AUTOMATION_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
+import { AUTOMATION_TIME_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
 import { SMART_SAFE_UPKEEP_ADRESSES } from '@utils/web3/chains/adresses'
 import { TransactionManager } from '@utils/web3/typings/SmartSafe'
 
 interface FetchAutomationsInput {
   safeAddress?: string
   chainId?: string
-  creatorId?: string
+  walletAddress?: string
 }
 
 export async function fetchAutomations(
   input: FetchAutomationsInput
 ): Promise<SelectedAutomationProps[]> {
-  if (!input.safeAddress || !input.chainId || !input.creatorId) {
+  if (!input.safeAddress || !input.chainId || !input.walletAddress) {
     throw new Error('safe address and chain required')
   }
 
   const safeChain = CHAINS_ATTRIBUTES.find(
     chain => chain.chainId === input.chainId
   )
-
   if (!safeChain) throw new Error('Chain not supported')
 
   const smartSafeUpKeepAddress = SMART_SAFE_UPKEEP_ADRESSES.get(
@@ -38,8 +37,8 @@ export async function fetchAutomations(
   if (!smartSafeUpKeepAddress) throw new Error('Chain not supported')
 
   const contacts = await queryClient.ensureQueryData({
-    queryKey: ['contacts', input.creatorId],
-    queryFn: () => fetchContacts({ creatorId: input.creatorId })
+    queryKey: ['contacts', input.walletAddress],
+    queryFn: () => fetchContacts({ walletAddress: input.walletAddress })
   })
 
   const provider = new JsonRpcProvider(safeChain.rpcUrl)
@@ -57,13 +56,15 @@ export async function fetchAutomations(
 
   scheduledTxResponse.forEach(transaction => scheduledTx.push(transaction))
 
+  console.log(scheduledTx)
+
   const scheduledTxPromise = scheduledTx.map(async transaction => {
     const to = transaction[1]
     const nonce = Number(transaction[2])
-    const trigger = Number(transaction[7])
+    const timeTrigger = Number(transaction[7])
     const value = transaction[3]
 
-    const scheduledTransaction = AUTOMATION_TRIGGERS.get(trigger)
+    const scheduledTransaction = AUTOMATION_TIME_TRIGGERS.get(timeTrigger)
 
     if (!scheduledTransaction) {
       throw new Error('transaction schedule type not supported')
@@ -75,7 +76,7 @@ export async function fetchAutomations(
     )
 
     const recipentContact = contacts.find(
-      contact => contact.contactAddress === transaction.to
+      contact => contact.address === transaction.to
     )
 
     return {
@@ -93,7 +94,7 @@ export async function fetchAutomations(
           walletAddress: to
         })
       },
-      recipientName: recipentContact?.contactName
+      recipientName: recipentContact?.name
     }
   })
 
@@ -105,7 +106,7 @@ export async function fetchAutomations(
 export function useAutomationsQuery(
   safeAddress?: string,
   chainId?: string,
-  creatorId?: string,
+  walletAddress?: string,
   enabled = true
 ) {
   return useQuery({
@@ -114,7 +115,7 @@ export function useAutomationsQuery(
       fetchAutomations({
         safeAddress,
         chainId,
-        creatorId
+        walletAddress
       }),
     enabled,
     keepPreviousData: true,

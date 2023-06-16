@@ -3,27 +3,29 @@ import { smartSafeApi } from '@lib/axios'
 import { formatWalletAddress } from '@utils/web3'
 
 interface FetchContactsApiResponse {
-  contacts: { name: string; address: string; id: number }[]
+  name: string
+  address: string
+  id: number
 }
 
 interface FetchContactsInput {
-  creatorId?: string
+  walletAddress?: string
 }
 
 export interface FetchContactsResponse {
-  contactName: string
-  contactAddress: string
+  id: number
+  name: string
+  address: string
   formattedAddress: string
-  contactId: number
 }
 
 export async function fetchContacts({
-  creatorId
+  walletAddress
 }: FetchContactsInput): Promise<FetchContactsResponse[]> {
-  if (!creatorId) throw new Error('creator id required')
+  if (!walletAddress) throw new Error('wallet address required')
 
-  const { data } = await smartSafeApi.get<FetchContactsApiResponse | null>(
-    `addressBook/${creatorId}`,
+  const { data } = await smartSafeApi.get<FetchContactsApiResponse[]>(
+    `contacts/${walletAddress}`,
     {
       params: { page: 0 }
     }
@@ -33,21 +35,19 @@ export async function fetchContacts({
     return []
   }
 
-  const formattedContactsList = data.contacts.map(({ address, name, id }) => ({
-    contactId: id,
-    contactName: name,
-    contactAddress: address,
-    formattedAddress: formatWalletAddress({ walletAddress: address })
+  const formattedContactsList = data.map(contact => ({
+    ...contact,
+    formattedAddress: formatWalletAddress({ walletAddress: contact.address })
   }))
 
   return formattedContactsList
 }
 
-export function useContactsQuery(creatorId?: string, enabled = true) {
+export function useContactsQuery(walletAddress?: string, enabled = true) {
   return useQuery({
-    queryKey: ['contacts', creatorId],
-    queryFn: () => fetchContacts({ creatorId }),
-    staleTime: 1000 * 60 * 1, // 1 minute
-    enabled
+    queryKey: ['contacts', walletAddress],
+    queryFn: () => fetchContacts({ walletAddress }),
+    enabled,
+    staleTime: 1000 * 60 * 2 // 2 minute
   })
 }

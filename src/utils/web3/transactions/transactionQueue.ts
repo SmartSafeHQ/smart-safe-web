@@ -15,8 +15,26 @@ import {
 import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 
-export const AUTOMATION_TRIGGERS = new Map([
-  [1, { title: 'every minute', description: 'Every minute' }]
+export const AUTOMATION_TIME_TRIGGERS = new Map([
+  [60, { title: 'every minute', description: 'Every minute' }],
+  [300, { title: 'every 5 minutes', description: 'Every 5 minutes' }],
+  [3600, { title: 'every hour', description: 'Every hour' }],
+  [86400, { title: 'every day', description: 'Every day' }],
+  [604800, { title: 'every week', description: 'Weekly: every Monday' }],
+  [
+    2592000,
+    {
+      title: 'every month',
+      description: 'Monthly on the first day of the month'
+    }
+  ],
+  [
+    31536000,
+    {
+      title: 'every year',
+      description: 'Yearly on the first day of the year'
+    }
+  ]
 ])
 
 export async function formatTransactionToQueueList(
@@ -177,7 +195,7 @@ export function formatScheduledTxToQueue(
 ): ScheduledTxProps {
   const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
 
-  const scheduledTransaction = AUTOMATION_TRIGGERS.get(trigger)
+  const scheduledTransaction = AUTOMATION_TIME_TRIGGERS.get(trigger)
 
   if (!scheduledTransaction) {
     throw new Error('transaction schedule type not supported')

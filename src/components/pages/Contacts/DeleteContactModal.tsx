@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -8,16 +9,18 @@ import { useDeleteContact } from '@hooks/contacts/mutations/useDeleteContact'
 import { useContactsHook } from '@hooks/contacts/useContactsHook'
 
 export function DeleteContactModal() {
+  const [{ wallet }] = useConnectWallet()
   const { selectedContact, isDeleteContactOpen, setIsDeleteContactOpen } =
     useContactsHook()
   const { mutateAsync, isLoading } = useDeleteContact()
 
   async function handleConfirmDelete() {
-    if (!selectedContact) return
+    if (!selectedContact || !wallet) return
 
     try {
       await mutateAsync({
-        contactId: selectedContact.contactId
+        contactId: selectedContact.id,
+        ownerAddress: wallet.accounts[0].address
       })
 
       setIsDeleteContactOpen(false)
@@ -44,7 +47,7 @@ export function DeleteContactModal() {
           <DialogModal.Description className="text-lg text-center">
             SmartSafe will delete the contact
             <Text asChild className="ml-1">
-              <strong>{selectedContact?.contactName}</strong>
+              <strong>{selectedContact?.name}</strong>
             </Text>
           </DialogModal.Description>
         </DialogModal.Header>

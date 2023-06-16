@@ -1,29 +1,18 @@
-import clsx from 'clsx'
-import { useState } from 'react'
 import { Trash } from '@phosphor-icons/react'
 import { useFormContext } from 'react-hook-form'
 
-import { Text } from '@components/Text'
 import { TextInput } from '@components/Inputs/TextInput'
+import { ContactsTextInput } from '@components/Inputs/ContactsTextInput'
 
 import type { FieldValues } from '@hooks/createSafe/deploySafeValidationSchema'
+import { ContactProps } from '@contexts/ContactsContext'
 
 interface OwnerItemProps {
   index: number
   removeOwner: (index: number | number[]) => void
-  contactsList:
-    | { contactName: string; contactAddress: string }[]
-    | undefined
-    | null
 }
 
-export function OwnerItem({
-  index,
-  removeOwner,
-  contactsList
-}: OwnerItemProps) {
-  const [isContactsListOpen, setIsContactsListOpen] = useState(false)
-
+export function OwnerItem({ index, removeOwner }: OwnerItemProps) {
   const {
     setValue,
     register,
@@ -31,7 +20,7 @@ export function OwnerItem({
     formState: { errors }
   } = useFormContext<FieldValues>()
 
-  const contactSearchName = watch(`owners.${index}.name`)
+  const contactSearch = watch(`owners.${index}.name`)
 
   const fieldNameError = errors?.owners && errors.owners[index]?.name
   const fieldAddressError = errors?.owners && errors.owners[index]?.address
@@ -39,55 +28,22 @@ export function OwnerItem({
   return (
     <div className="flex flex-wrap w-full gap-3">
       <div className="flex w-full flex-col flex-1 items-stretch justify-start gap-3 relative">
-        <TextInput.Root
-          htmlFor={`ownerName-${index}`}
-          className="flex flex-1"
-          error={fieldNameError?.message}
+        <ContactsTextInput.Root
+          search={contactSearch}
+          handleSelectContact={(contact: ContactProps) => {
+            setValue(`owners.${index}.name`, contact.name)
+            setValue(`owners.${index}.address`, contact.address)
+          }}
         >
-          <TextInput.Label>Owner name</TextInput.Label>
-
-          <TextInput.Content>
-            <TextInput.Input
-              {...register(`owners.${index}.name`)}
-              required
-              id={`ownerName-${index}`}
-              placeholder="Example name"
-              onFocus={() => setIsContactsListOpen(true)}
-              onBlur={() => {
-                window.setTimeout(() => setIsContactsListOpen(false), 100)
-              }}
-            />
-          </TextInput.Content>
-        </TextInput.Root>
-
-        {contactsList && contactsList?.length > 0 && (
-          <div
-            className={clsx(
-              'py-2 border-1 rounded-lg border-zinc-200 dark:border-zinc-700',
-              isContactsListOpen ? 'flex flex-col flex-1' : 'hidden'
-            )}
-          >
-            {contactsList
-              .filter(({ contactName }) =>
-                contactName
-                  .toLowerCase()
-                  .startsWith(contactSearchName.toLowerCase())
-              )
-              .map(({ contactAddress, contactName }) => (
-                <div
-                  key={contactAddress}
-                  className="flex flex-col p-2 gap-1 cursor-pointer hover:bg-slate-200/[.20] overflow-hidden"
-                  onClick={() => {
-                    setValue(`owners.${index}.name`, contactName)
-                    setValue(`owners.${index}.address`, contactAddress)
-                  }}
-                >
-                  <Text>{contactName}</Text>
-                  <Text>{contactAddress}</Text>
-                </div>
-              ))}
-          </div>
-        )}
+          <ContactsTextInput.Input
+            {...register(`owners.${index}.name`)}
+            required
+            id={`ownerName-${index}`}
+            label="Owner name"
+            error={fieldNameError?.message}
+            placeholder="Example name"
+          />
+        </ContactsTextInput.Root>
       </div>
 
       <div className="flex flex-1 items-stretch justify-start gap-3 pr-7 relative">

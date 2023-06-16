@@ -1,6 +1,6 @@
-import { useSafe } from '@contexts/SafeContext'
-import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
+import { useConnectWallet } from '@web3-onboard/react'
 
+import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useContacts } from '@contexts/ContactsContext'
 
 export const CONTACT_NAME_REGEX = /^[A-Za-z0-9_-]{1,20}$/
@@ -19,12 +19,12 @@ export const useContactsHook = () => {
     handleDeleteContact
   } = useContacts()
 
-  const { safe } = useSafe()
+  const [{ wallet }] = useConnectWallet()
   const {
     data: contacts,
     isLoading,
     error
-  } = useContactsQuery(safe?.ownerId, !!safe)
+  } = useContactsQuery(wallet?.accounts[0].address, !!wallet)
 
   return {
     contacts,

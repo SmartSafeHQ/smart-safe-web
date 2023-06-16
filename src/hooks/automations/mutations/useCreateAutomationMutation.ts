@@ -15,7 +15,7 @@ interface CreateAutomationFunctionInput {
   to: string
   safeAddress: string
   amount: number
-  trigger: number
+  intervalInSeconds: number
   chainId: string
   ownerAddress: string
   threshold: number
@@ -67,7 +67,7 @@ async function createAutomationFunction(
     input.to,
     amountInWei.toString(),
     txData,
-    input.trigger,
+    input.intervalInSeconds,
     await signer.getAddress(),
     signedTypedDataHash,
     { value: amountInWei.toString() }
@@ -105,7 +105,6 @@ export function useCreateAutomationMutation() {
       queryClient.cancelQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
-
       queryClient.cancelQueries({
         queryKey: ['scheduledAutomations', variables.safeAddress]
       })

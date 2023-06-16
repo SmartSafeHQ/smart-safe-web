@@ -2,11 +2,13 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { smartSafeApi } from '@lib/axios'
+import { FetchContactsResponse } from '@hooks/contacts/queries/useContactsQuery'
 
 interface CreateContactFunctionInput {
-  creatorId: string
-  contactName: string
-  contactAddress: string
+  ownerId: string
+  ownerAddress: string
+  name: string
+  address: string
 }
 
 interface CreateContactFunctionOutput {
@@ -21,11 +23,11 @@ async function createContactFunction(
   input: CreateContactFunctionInput
 ): Promise<CreateContactFunctionOutput> {
   const response = await smartSafeApi.post<CreateContactApiResponse>(
-    'addressBook',
+    'contacts',
     {
-      creatorId: input.creatorId,
-      contactName: input.contactName,
-      contactAddress: input.contactAddress
+      ownerId: input.ownerId,
+      name: input.name,
+      address: input.address
     }
   )
 
@@ -37,18 +39,40 @@ export function useCreateContact() {
     mutationKey: ['createContact'],
     mutationFn: (input: CreateContactFunctionInput) =>
       createContactFunction(input),
-    onSuccess: async (_, variables) => {
+    onSuccess: async (data, variables) => {
       queryClient.cancelQueries({
-        queryKey: ['contacts', variables.creatorId]
+        queryKey: ['contacts', variables.ownerAddress]
       })
+
+      const prevContacts = await queryClient.ensureQueryData<
+        FetchContactsResponse[]
+      >({
+        queryKey: ['contacts', variables.ownerAddress]
+      })
+
+      const createdContact = {
+        id: data.id,
+        name: variables.name,
+        address: variables.address,
+        formattedAddress: `${variables.address.slice(
+          0,
+          6
+        )}...${variables.address.slice(-4)}`
+      }
+
+      queryClient.setQueryData<FetchContactsResponse[]>(
+        ['contacts', variables.ownerAddress],
+        () => {
+          prevContacts?.push(createdContact)
+
+          return prevContacts
+        }
+      )
+
+      return prevContacts
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['contacts', variables.creatorId], context)
-    },
-    onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: ['contacts', variables.creatorId]
-      })
+      queryClient.setQueryData(['contacts', variables.ownerAddress], context)
     }
   })
 }

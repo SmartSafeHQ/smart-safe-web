@@ -49,7 +49,7 @@ export function ContactsList() {
               <tbody>
                 {contacts.map(contact => (
                   <ContactsTable.Tr
-                    key={contact.contactAddress}
+                    key={contact.address}
                     contact={contact}
                     handleEditContact={handleEditContact}
                     handleDeleteContact={handleDeleteContact}

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useWallets } from '@web3-onboard/react'
+import { useConnectWallet } from '@web3-onboard/react'
 import { ethers } from 'ethers'
 import { z } from 'zod'
 
@@ -12,7 +12,7 @@ import { useAddOwner } from '@hooks/safe/mutation/useAddOwner'
 import { useChangeThreshold } from '@hooks/safe/mutation/useChangeThreshold'
 import { useSafeManagement } from '@contexts/settings/SafeManagementContext'
 import { CONTACT_NAME_REGEX } from '@hooks/contacts/useContactsHook'
-import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
+import { useAddOwnerRegistry } from '@hooks/settings/mutations/useAddOwnerRegistry'
 
 export const addOwnerValidationSchema = z.object({
   ownerName: z
@@ -40,12 +40,15 @@ export const useSafeManagementHook = () => {
     isChangeThresholdOpen,
     setIsChangeThresholdOpen
   } = useSafeManagement()
-  const [wallets] = useWallets()
+  const [{ wallet }] = useConnectWallet()
 
   const { mutateAsync: addOwnerMutation } = useAddOwner()
   const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
-  const { mutateAsync: createContactMutation } = useCreateContact()
-  const { data: contactList } = useContactsQuery(safe?.ownerId, !!safe)
+  const { mutateAsync: addOwnerRegistryMutation } = useAddOwnerRegistry()
+  const { data: contacts } = useContactsQuery(
+    wallet?.accounts[0].address,
+    !!wallet
+  )
 
   const { data: safeThreshold, isFetching: thresholdIsFetching } =
     useSafeThreshold(safe?.address, safe?.chain.rpcUrl, !!safe)
@@ -61,12 +64,12 @@ export const useSafeManagementHook = () => {
   )
 
   const ownersData = useMemo(() => {
-    if (!contactList || !safeOwners || !wallets) {
+    if (!contacts || !safeOwners || !wallet) {
       return
     }
 
     return safeOwners.map(owner => {
-      if (owner.address.toLowerCase() === wallets?.accounts[0].address) {
+      if (owner.address.toLowerCase() === wallet?.accounts[0].address) {
         return {
           address: owner.address,
           formattedAddress: owner.formattedAddress,
@@ -74,17 +77,17 @@ export const useSafeManagementHook = () => {
         }
       }
 
-      const ownerData = contactList.find(
-        ({ contactAddress }) => contactAddress === owner.address
+      const ownerData = contacts.find(
+        ({ address }) => address === owner.address
       )
 
       return {
-        address: ownerData?.contactAddress ?? owner.address,
+        address: ownerData?.address ?? owner.address,
         formattedAddress: ownerData?.formattedAddress ?? owner.formattedAddress,
-        name: ownerData?.contactName ?? ''
+        name: ownerData?.name ?? ''
       }
     })
-  }, [contactList, safeOwners, wallets])
+  }, [contacts, safeOwners, wallet])
 
   return {
     safe,
@@ -95,7 +98,7 @@ export const useSafeManagementHook = () => {
     transactionNonce,
     addOwnerMutation,
     changeThresholdMutation,
-    createContactMutation,
+    addOwnerRegistryMutation,
     thresholdIsFetching,
     safeOwnersIsFetching,
     isAddOwnerOpen,
