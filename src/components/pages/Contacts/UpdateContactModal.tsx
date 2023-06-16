@@ -98,11 +98,7 @@ export function UpdateContactModal() {
               Contact address: {selectedContact?.formattedAddress}
             </Text>
 
-            <TextInput.Root
-              htmlFor="name"
-              variant="secondary"
-              error={errors.name?.message}
-            >
+            <TextInput.Root htmlFor="name" error={errors.name?.message}>
               <TextInput.Label>Name</TextInput.Label>
 
               <TextInput.Content>

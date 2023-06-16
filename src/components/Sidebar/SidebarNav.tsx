@@ -5,7 +5,8 @@ import {
   Gear,
   ArrowsCounterClockwise,
   Users,
-  Dna
+  Dna,
+  Cpu
 } from '@phosphor-icons/react'
 
 import { NavLink } from './NavLink'
@@ -49,6 +50,16 @@ const NAV_LINKS_SUB_AUTOMATIONS = [
   }
 ]
 
+const NAV_LINKS_SUB_SMART_GPT = [
+  {
+    href: 'smart-gpt',
+    activePath: 'smart-gpt',
+    icon: Cpu,
+    title: 'Smart GPT',
+    isDisabled: false
+  }
+]
+
 const NAV_LINKS_SUB_MANAGE = [
   {
     href: 'send',
@@ -85,6 +96,24 @@ export function SidebarNav() {
         <ScrollArea className="pr-3 max-h-[calc(100vh-86px)]">
           <SidebarNavGroup.Root>
             {NAV_LINKS_SUB_GENERAL.map(navLink => (
+              <DialogDrawer.Close key={navLink.title}>
+                <NavLink
+                  href={navLink.href}
+                  Icon={navLink.icon}
+                  isDisabled={navLink.isDisabled}
+                  basePath={`/dashboard/${safe?.address}`}
+                  activePath={navLink.activePath}
+                >
+                  {navLink.title}
+                </NavLink>
+              </DialogDrawer.Close>
+            ))}
+          </SidebarNavGroup.Root>
+
+          <SidebarNavGroup.Root className="pt-3 mt-3 border-t-1 border-zinc-700">
+            <SidebarNavGroup.Title>Smart GPT</SidebarNavGroup.Title>
+
+            {NAV_LINKS_SUB_SMART_GPT.map(navLink => (
               <DialogDrawer.Close key={navLink.title}>
                 <NavLink
                   href={navLink.href}

@@ -91,11 +91,7 @@ export function CreateContactModal() {
           className="w-full flex flex-col justify-center items-stretch"
         >
           <div className="w-full flex flex-col justify-center items-stretch gap-6 py-8 px-4 sm:px-8">
-            <TextInput.Root
-              htmlFor="name"
-              variant="secondary"
-              error={errors.name?.message}
-            >
+            <TextInput.Root htmlFor="name" error={errors.name?.message}>
               <TextInput.Label>Name</TextInput.Label>
 
               <TextInput.Content>
@@ -112,11 +108,7 @@ export function CreateContactModal() {
               </TextInput.Content>
             </TextInput.Root>
 
-            <TextInput.Root
-              htmlFor="address"
-              variant="secondary"
-              error={errors.address?.message}
-            >
+            <TextInput.Root htmlFor="address" error={errors.address?.message}>
               <TextInput.Label>Wallet address</TextInput.Label>
 
               <TextInput.Content>
