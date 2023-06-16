@@ -41,7 +41,7 @@ async function addOwnerFunction(input: AddOwnerFunctionInput) {
     transaction: signaturePayload
   })
 
-  const transaction = await contract.getFunction('createTransactionProposal')(
+  const proposal = await contract.getFunction('createTransactionProposal')(
     input.safeAddress,
     '0',
     addOwnerCallEncoded,
@@ -50,7 +50,11 @@ async function addOwnerFunction(input: AddOwnerFunctionInput) {
     signedTypedDataHash
   )
 
-  return transaction
+  await proposal.wait()
+
+  return {
+    transactionHash: proposal.hash
+  }
 }
 
 export function useAddOwner() {
@@ -64,10 +68,21 @@ export function useAddOwner() {
       queryClient.cancelQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
       })
+      queryClient.cancelQueries({
+        queryKey: ['safeOwners', variables.safeAddress]
+      })
+      queryClient.cancelQueries({
+        queryKey: ['safeThreshold', variables.safeAddress]
+      })
     },
     onError: (_, variables, context) => {
       queryClient.setQueryData(['safeTxQueue', variables.safeAddress], context)
       queryClient.setQueryData(['safeTxNonce', variables.safeAddress], context)
+      queryClient.setQueryData(['safeOwners', variables.safeAddress], context)
+      queryClient.setQueryData(
+        ['safeThreshold', variables.safeAddress],
+        context
+      )
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
@@ -75,6 +90,12 @@ export function useAddOwner() {
       })
       queryClient.invalidateQueries({
         queryKey: ['safeTxNonce', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeOwners', variables.safeAddress]
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['safeThreshold', variables.safeAddress]
       })
     }
   })

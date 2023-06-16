@@ -12,7 +12,7 @@ import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 import { useSafeManagementHook } from '@hooks/settings/useSafeManagement'
 
 export function ChangeThresholdModal() {
-  const [newThreshold, setNewThreshold] = useState('1')
+  const [newThreshold, setNewThreshold] = useState<string | undefined>()
   const [isWaitingTransaction, setIsWaitingTransaction] = useState(false)
   const [{ wallet }] = useConnectWallet()
 
@@ -26,6 +26,11 @@ export function ChangeThresholdModal() {
     changeThresholdMutation
   } = useSafeManagementHook()
 
+  const thresholdOptions = Array.from(
+    { length: safeOwners?.length ?? 0 },
+    (_, i) => i + 1
+  ).filter(count => count !== safeThreshold)
+
   async function handleChangeThreshold() {
     if (!wallet || !safe || transactionNonce === undefined) return
 
@@ -36,7 +41,7 @@ export function ChangeThresholdModal() {
         provider: wallet.provider,
         safeAddress: safe.address,
         transactionNonce,
-        newThreshold: Number(newThreshold)
+        newThreshold: Number(newThreshold ?? thresholdOptions[0])
       })
 
       await transaction.wait()
@@ -82,7 +87,7 @@ export function ChangeThresholdModal() {
             <div className="flex flex-1 gap-6 items-center justify-start">
               {safeOwners && (
                 <SelectInput.Root
-                  value={newThreshold}
+                  value={newThreshold ?? String(thresholdOptions[0])}
                   onValueChange={value => setNewThreshold(value)}
                   className="w-full max-w-[5rem]"
                 >
@@ -90,22 +95,17 @@ export function ChangeThresholdModal() {
 
                   <SelectInput.Content>
                     <SelectInput.Group>
-                      {Array.from(
-                        { length: safeOwners.length },
-                        (_, i) => i + 1
-                      )
-                        .filter(count => count !== safeThreshold)
-                        .map(count => (
-                          <SelectInput.Item
-                            key={count}
-                            value={String(count)}
-                            className="h-8"
-                          >
-                            <div className="w-full flex items-streach justify-start">
-                              {count}
-                            </div>
-                          </SelectInput.Item>
-                        ))}
+                      {thresholdOptions.map(count => (
+                        <SelectInput.Item
+                          key={count}
+                          value={String(count)}
+                          className="h-8"
+                        >
+                          <div className="w-full flex items-streach justify-start">
+                            {count}
+                          </div>
+                        </SelectInput.Item>
+                      ))}
                     </SelectInput.Group>
                   </SelectInput.Content>
                 </SelectInput.Root>

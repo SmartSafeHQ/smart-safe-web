@@ -12,7 +12,7 @@ import { useAddOwner } from '@hooks/safe/mutation/useAddOwner'
 import { useChangeThreshold } from '@hooks/safe/mutation/useChangeThreshold'
 import { useSafeManagement } from '@contexts/settings/SafeManagementContext'
 import { CONTACT_NAME_REGEX } from '@hooks/contacts/useContactsHook'
-import { useCreateContact } from '@hooks/contacts/mutations/useCreateContact'
+import { useAddOwnerRegistry } from '@hooks/settings/mutations/useAddOwnerRegistry'
 
 export const addOwnerValidationSchema = z.object({
   ownerName: z
@@ -44,7 +44,7 @@ export const useSafeManagementHook = () => {
 
   const { mutateAsync: addOwnerMutation } = useAddOwner()
   const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
-  const { mutateAsync: createContactMutation } = useCreateContact()
+  const { mutateAsync: addOwnerRegistryMutation } = useAddOwnerRegistry()
   const { data: contacts } = useContactsQuery(
     wallet?.accounts[0].address,
     !!wallet
@@ -98,7 +98,7 @@ export const useSafeManagementHook = () => {
     transactionNonce,
     addOwnerMutation,
     changeThresholdMutation,
-    createContactMutation,
+    addOwnerRegistryMutation,
     thresholdIsFetching,
     safeOwnersIsFetching,
     isAddOwnerOpen,

@@ -26,7 +26,7 @@ export function AddOwnerModal() {
     isAddOwnerOpen,
     setIsAddOwnerOpen,
     addOwnerMutation,
-    createContactMutation,
+    addOwnerRegistryMutation,
     safeThreshold,
     transactionNonce
   } = useSafeManagementHook()
@@ -35,6 +35,7 @@ export function AddOwnerModal() {
     control,
     register,
     handleSubmit,
+    reset,
     setError,
     formState: { errors }
   } = useForm<AddOwnerFieldValues>({
@@ -59,7 +60,7 @@ export function AddOwnerModal() {
 
       setIsWaitingTransaction(true)
 
-      const transaction = await addOwnerMutation({
+      await addOwnerMutation({
         provider: wallet.provider,
         transactionNonce,
         safeAddress: safe.address,
@@ -67,13 +68,11 @@ export function AddOwnerModal() {
         newThreshold: +data.threshold
       })
 
-      await transaction.wait()
-
-      await createContactMutation({
-        address: data.ownerAddress,
+      await addOwnerRegistryMutation({
         name: data.ownerName,
-        ownerAddress: wallet.accounts[0].address,
-        ownerId: safe.ownerId
+        address: data.ownerAddress,
+        safeAddress: safe.address,
+        creatorOwnerAddress: wallet.accounts[0].address
       })
 
       setIsAddOwnerOpen(false)
@@ -95,6 +94,7 @@ export function AddOwnerModal() {
         if (isWaitingTransaction) return
 
         setIsAddOwnerOpen(isOpen)
+        reset()
       }}
     >
       <DialogModal.Content className="md:max-w-[36rem]">
