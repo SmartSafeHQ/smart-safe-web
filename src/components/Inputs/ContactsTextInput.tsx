@@ -5,7 +5,7 @@ import {
   useState
 } from 'react'
 import clsx from 'clsx'
-import { useWallets } from '@web3-onboard/react'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import {
   NavigationMenu,
@@ -31,10 +31,10 @@ function ContactsTextInputRoot({
 }: ContactsTextInputRootProps) {
   const [isOpen, setIsOpen] = useState(false)
 
-  const [wallets] = useWallets()
+  const [{ wallet }] = useConnectWallet()
   const { data: contacts } = useContactsQuery(
-    wallets?.accounts[0].address,
-    !!wallets
+    wallet?.accounts[0].address,
+    !!wallet
   )
 
   const filteredContacts = (contacts ?? []).filter(

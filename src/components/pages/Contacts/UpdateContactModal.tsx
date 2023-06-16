@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { User } from '@phosphor-icons/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useConnectWallet } from '@web3-onboard/react'
 import { toast } from 'react-toastify'
 import { z } from 'zod'
 
@@ -31,6 +32,7 @@ export type FieldValues = z.infer<typeof validationSchema>
 export function UpdateContactModal() {
   const { selectedContact, isUpdateContactOpen, setIsUpdateContactOpen } =
     useContactsHook()
+  const [{ wallet }] = useConnectWallet()
   const { mutateAsync } = useUpdateContact()
 
   const {
@@ -47,11 +49,12 @@ export function UpdateContactModal() {
   })
 
   const onSubmit: SubmitHandler<FieldValues> = async data => {
-    if (!selectedContact) return
+    if (!selectedContact || !wallet) return
 
     try {
       await mutateAsync({
         contactId: selectedContact.id,
+        ownerAddress: wallet.accounts[0].address,
         newData: {
           contactName: data.name
         }

@@ -42,7 +42,7 @@ export const useAutomationsHook = () => {
     safe?.address,
     safe?.chain.chainId,
     wallet?.accounts[0].address,
-    !!safe || !!wallet
+    !!safe && !!wallet
   )
 
   const {

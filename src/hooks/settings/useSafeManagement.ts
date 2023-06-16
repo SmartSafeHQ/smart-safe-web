@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useWallets } from '@web3-onboard/react'
+import { useConnectWallet } from '@web3-onboard/react'
 import { ethers } from 'ethers'
 import { z } from 'zod'
 
@@ -40,14 +40,14 @@ export const useSafeManagementHook = () => {
     isChangeThresholdOpen,
     setIsChangeThresholdOpen
   } = useSafeManagement()
-  const [wallets] = useWallets()
+  const [{ wallet }] = useConnectWallet()
 
   const { mutateAsync: addOwnerMutation } = useAddOwner()
   const { mutateAsync: changeThresholdMutation } = useChangeThreshold()
   const { mutateAsync: createContactMutation } = useCreateContact()
   const { data: contacts } = useContactsQuery(
-    wallets?.accounts[0].address,
-    !!wallets
+    wallet?.accounts[0].address,
+    !!wallet
   )
 
   const { data: safeThreshold, isFetching: thresholdIsFetching } =
@@ -64,12 +64,12 @@ export const useSafeManagementHook = () => {
   )
 
   const ownersData = useMemo(() => {
-    if (!contacts || !safeOwners || !wallets) {
+    if (!contacts || !safeOwners || !wallet) {
       return
     }
 
     return safeOwners.map(owner => {
-      if (owner.address.toLowerCase() === wallets?.accounts[0].address) {
+      if (owner.address.toLowerCase() === wallet?.accounts[0].address) {
         return {
           address: owner.address,
           formattedAddress: owner.formattedAddress,
@@ -87,7 +87,7 @@ export const useSafeManagementHook = () => {
         name: ownerData?.name ?? ''
       }
     })
-  }, [contacts, safeOwners, wallets])
+  }, [contacts, safeOwners, wallet])
 
   return {
     safe,

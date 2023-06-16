@@ -2,9 +2,11 @@ import { useMutation } from '@tanstack/react-query'
 
 import { queryClient } from '@lib/reactQuery'
 import { smartSafeApi } from '@lib/axios'
+import { FetchContactsResponse } from '@hooks/contacts/queries/useContactsQuery'
 
 interface UpdateContactFunctionInput {
   contactId: number
+  ownerAddress: string
   newData: {
     contactName: string
   }
@@ -33,17 +35,40 @@ export function useUpdateContact() {
     mutationFn: (input: UpdateContactFunctionInput) =>
       updateContactFunction(input),
     onSuccess: async (_, variables) => {
-      queryClient.cancelQueries({
-        queryKey: ['contacts', variables.contactId]
+      await queryClient.cancelQueries({
+        queryKey: ['contacts', variables.ownerAddress]
       })
+
+      const prevContacts = await queryClient.ensureQueryData<
+        FetchContactsResponse[]
+      >({
+        queryKey: ['contacts', variables.ownerAddress]
+      })
+
+      queryClient.setQueryData<FetchContactsResponse[]>(
+        ['contacts', variables.ownerAddress],
+        () => {
+          const updatedContactIndex = prevContacts.findIndex(
+            contact => contact.id === variables.contactId
+          )
+
+          if (updatedContactIndex < 0) return prevContacts
+
+          const updatedContact = {
+            ...prevContacts[updatedContactIndex],
+            name: variables.newData.contactName
+          }
+
+          prevContacts.splice(updatedContactIndex, 1, updatedContact)
+
+          return prevContacts
+        }
+      )
+
+      return prevContacts
     },
     onError: (_, variables, context) => {
-      queryClient.setQueryData(['contacts', variables.contactId], context)
-    },
-    onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: ['contacts', variables.contactId]
-      })
+      queryClient.setQueryData(['contacts', variables.ownerAddress], context)
     }
   })
 }

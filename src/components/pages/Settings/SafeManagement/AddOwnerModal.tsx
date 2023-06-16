@@ -72,6 +72,7 @@ export function AddOwnerModal() {
       await createContactMutation({
         address: data.ownerAddress,
         name: data.ownerName,
+        ownerAddress: wallet.accounts[0].address,
         ownerId: safe.ownerId
       })
 

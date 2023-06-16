@@ -1,4 +1,4 @@
-import { useWallets } from '@web3-onboard/react'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { useContactsQuery } from '@hooks/contacts/queries/useContactsQuery'
 import { useContacts } from '@contexts/ContactsContext'
@@ -19,12 +19,12 @@ export const useContactsHook = () => {
     handleDeleteContact
   } = useContacts()
 
-  const [wallets] = useWallets()
+  const [{ wallet }] = useConnectWallet()
   const {
     data: contacts,
     isLoading,
     error
-  } = useContactsQuery(wallets?.accounts[0].address, !!wallets)
+  } = useContactsQuery(wallet?.accounts[0].address, !!wallet)
 
   return {
     contacts,

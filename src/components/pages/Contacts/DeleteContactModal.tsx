@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify'
+import { useConnectWallet } from '@web3-onboard/react'
 
 import { Button } from '@components/Button'
 import { Text } from '@components/Text'
@@ -8,16 +9,18 @@ import { useDeleteContact } from '@hooks/contacts/mutations/useDeleteContact'
 import { useContactsHook } from '@hooks/contacts/useContactsHook'
 
 export function DeleteContactModal() {
+  const [{ wallet }] = useConnectWallet()
   const { selectedContact, isDeleteContactOpen, setIsDeleteContactOpen } =
     useContactsHook()
   const { mutateAsync, isLoading } = useDeleteContact()
 
   async function handleConfirmDelete() {
-    if (!selectedContact) return
+    if (!selectedContact || !wallet) return
 
     try {
       await mutateAsync({
-        contactId: selectedContact.id
+        contactId: selectedContact.id,
+        ownerAddress: wallet.accounts[0].address
       })
 
       setIsDeleteContactOpen(false)
