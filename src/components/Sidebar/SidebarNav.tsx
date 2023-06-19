@@ -44,7 +44,7 @@ const NAV_LINKS_SUB_AUTOMATIONS = [
     href: 'automations',
     activePath: 'automations',
     icon: Dna,
-    title: 'automations',
+    title: 'Automations',
     isDisabled: false
   }
 ]

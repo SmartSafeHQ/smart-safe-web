@@ -30,7 +30,7 @@ export function CreateAutomationModal() {
           </DialogModal.Title>
 
           <DialogModal.Description className="text-lg text-center">
-            Automate you safe key smart contract payment functions
+            Automate your safe wallet payments
           </DialogModal.Description>
         </DialogModal.Header>
 
