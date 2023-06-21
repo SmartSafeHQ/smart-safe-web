@@ -46,10 +46,9 @@ export function AssetsList() {
               {assets.map(asset => (
                 <AssetsTable.Tr
                   key={asset.symbol}
-                  safeAddress={safe.address}
                   symbol={asset.symbol}
-                  rpcUrl={asset.rpcUrl}
                   icon={asset.icon}
+                  balance={asset.balance}
                 />
               ))}
             </tbody>

@@ -128,9 +128,6 @@ export function useApproveTransactionMutation() {
     },
     onSettled: (_data, _error, variables) => {
       queryClient.invalidateQueries({
-        queryKey: ['safeTokenBalance', variables.safeAddress]
-      })
-      queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })
       queryClient.invalidateQueries({

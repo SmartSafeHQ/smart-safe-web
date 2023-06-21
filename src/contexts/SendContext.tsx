@@ -21,6 +21,7 @@ type SendProviderProps = PropsWithChildren<Record<string, unknown>>
 export interface TokenProps {
   symbol: string
   icon: string
+  balance: number
 }
 
 export interface TransactionProps {
@@ -74,11 +75,11 @@ export function SendProvider({ children }: SendProviderProps) {
     try {
       await mutateAsync({
         to: data.to,
-        safeAddress: safe.address,
         fromWallet: wallet.accounts[0].address,
         provider: wallet.provider,
         amount: data.amount,
         symbol: selectedToken.symbol,
+        safeAddress: safe.address,
         chainId: safe.chain.chainId,
         chainName: safe.chain.name,
         rpcUrl: safe.chain.rpcUrl
