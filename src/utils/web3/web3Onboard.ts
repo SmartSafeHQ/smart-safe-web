@@ -25,7 +25,7 @@ const chains: InitOptions['chains'] = CHAINS_ATTRIBUTES.map(chain => ({
   rpcUrl: chain.rpcUrl,
   color: chain.hexColor,
   token: chain.symbol,
-  label: chain.networkName,
+  label: chain.name,
   icon: chain.icon,
   blockExplorerUrl: chain.explorerUrl
 }))

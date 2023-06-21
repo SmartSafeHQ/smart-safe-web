@@ -36,7 +36,7 @@ async function createAutomationFunction(
 
   const provider = new BrowserProvider(input.provider, {
     chainId: parseInt(input.chainId, 16),
-    name: safeChain.networkName
+    name: safeChain.name
   })
 
   const signer = await provider.getSigner()

@@ -41,7 +41,7 @@ export function DeploySafeInfos() {
             />
 
             <Text asChild className="font-medium capitalize">
-              <strong>{safeInfos.chain.networkName}</strong>
+              <strong>{safeInfos.chain.name}</strong>
             </Text>
           </div>
         )}

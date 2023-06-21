@@ -1,6 +1,6 @@
 export interface ChainSettings {
   symbol: string
-  networkName: string
+  name: string
   icon: string
   chainId: string
   hexColor: string
@@ -13,7 +13,7 @@ export interface ChainSettings {
 const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
     symbol: 'ETH',
-    networkName: 'Ethereum Sepolia Testnet',
+    name: 'Ethereum Sepolia Testnet',
     icon: '/networks/eth-logo.svg',
     chainId: '0xaa36a7',
     hexColor: '#464a76',
@@ -24,7 +24,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'MATIC',
-    networkName: 'Polygon Testnet',
+    name: 'Polygon Testnet',
     icon: '/networks/polygon-logo.svg',
     chainId: '0x13881',
     hexColor: '#8247e5',
@@ -35,7 +35,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'BNB',
-    networkName: 'BNB Smart Chain Testnet',
+    name: 'BNB Smart Chain Testnet',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x61',
     hexColor: '#fbdc45',
@@ -49,7 +49,7 @@ const TESTNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
 const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   {
     symbol: 'ETH',
-    networkName: 'Ethereum Sepolia Testnet',
+    name: 'Ethereum Sepolia Testnet',
     icon: '/networks/eth-logo.svg',
     chainId: '0xaa36a7',
     hexColor: '#464a76',
@@ -59,7 +59,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'MATIC',
-    networkName: 'Polygon Testnet',
+    name: 'Polygon Testnet',
     icon: '/networks/polygon-logo.svg',
     chainId: '0x13881',
     hexColor: '#8247e5',
@@ -69,7 +69,7 @@ const MAINNET_CHAINS_ATTRIBUTES: ChainSettings[] = [
   },
   {
     symbol: 'BNB',
-    networkName: 'BNB Smart Chain Testnet',
+    name: 'BNB Smart Chain Testnet',
     icon: '/networks/bnb-logo.svg',
     chainId: '0x61',
     hexColor: '#fbdc45',

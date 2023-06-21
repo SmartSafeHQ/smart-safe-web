@@ -80,7 +80,7 @@ export function SendProvider({ children }: SendProviderProps) {
         amount: data.amount,
         symbol: selectedToken.symbol,
         chainId: safe.chain.chainId,
-        chainName: safe.chain.networkName,
+        chainName: safe.chain.name,
         rpcUrl: safe.chain.rpcUrl
       })
 

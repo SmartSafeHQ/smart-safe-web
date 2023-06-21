@@ -64,7 +64,7 @@ export function AddressSafesList() {
                   safeName={safe.name}
                   safeFormattedAddress={safe.formattedAddress}
                   hexColor={safe.chain.hexColor}
-                  networkName={safe.chain.networkName}
+                  name={safe.chain.name}
                   explorerUrl={safe.chain.explorerUrl}
                 />
 
@@ -79,7 +79,7 @@ export function AddressSafesList() {
                       safeName={addressSafe.safeName}
                       safeFormattedAddress={addressSafe.safeFormattedAddress}
                       hexColor={addressSafe.chain.hexColor}
-                      networkName={addressSafe.chain.networkName}
+                      name={addressSafe.chain.name}
                     />
                   )
                 })}
