@@ -5,16 +5,18 @@ import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSend } from '@contexts/SendContext'
+import { useSafe } from '@contexts/SafeContext'
 import { useChainFee } from '@hooks/chains/queries/useChainFee'
 
 export function SendFeeEst() {
   const { selectedToken } = useSend()
+  const { safe } = useSafe()
   const {
     data: feeData,
     isLoading: feeIsLoading,
     isFetching: feeIsFetching,
     isPreviousData: feeIsPreviousData
-  } = useChainFee(selectedToken?.rpcUrl, !!selectedToken)
+  } = useChainFee(safe?.chain.rpcUrl, !!selectedToken)
 
   return (
     <div

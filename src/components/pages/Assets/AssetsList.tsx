@@ -12,7 +12,7 @@ export function AssetsList() {
     data: assets,
     error,
     isLoading
-  } = useSafeTokens(safe?.address, safe?.chain.chainId, !!safe)
+  } = useSafeTokens(safe?.address, safe?.chain.symbol, !!safe)
 
   return (
     <ScrollArea className="px-2">

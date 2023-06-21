@@ -50,7 +50,7 @@ export const useSendHook = () => {
 
   const { data: tokens, isLoading: tokensIsLoading } = useSafeTokens(
     safe?.address,
-    safe?.chain.chainId,
+    safe?.chain.symbol,
     !!safe
   )
   const { data: tokenUsdData, isFetching: tokenUsdIsFetching } =
@@ -59,7 +59,7 @@ export const useSendHook = () => {
   const { data: tokenBalanceData } = useSafeTokenBalance(
     safe?.address,
     selectedToken?.symbol,
-    selectedToken?.rpcUrl,
+    safe?.chain.rpcUrl,
     !!safe && !!selectedToken
   )
 

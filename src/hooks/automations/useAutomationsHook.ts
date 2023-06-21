@@ -28,7 +28,7 @@ export const useAutomationsHook = () => {
   const { safe } = useSafe()
   const { data: safeTokensData } = useSafeTokens(
     safe?.address,
-    safe?.chain.chainId,
+    safe?.chain.symbol,
     !!safe
   )
 

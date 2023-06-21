@@ -7,6 +7,7 @@ import { SendFeeEst } from '@components/pages/Send/SendFeeEst'
 import { SendAddresses } from '@components/pages/Send/SendAddresses'
 
 import { useSend } from '@contexts/SendContext'
+import { useSafe } from '@contexts/SafeContext'
 
 export function SendModal() {
   const {
@@ -19,6 +20,7 @@ export function SendModal() {
     resetSendMutation,
     handleSendTransaction
   } = useSend()
+  const { safe } = useSafe()
 
   if (!transaction || !selectedToken) return <></>
 
@@ -80,7 +82,7 @@ export function SendModal() {
             </>
           ) : (
             <SendSuccess
-              transactionUrl={`${selectedToken.explorerUrl}/tx/${txData.transactionHash}`}
+              transactionUrl={`${safe?.chain.explorerUrl}/tx/${txData.transactionHash}`}
             />
           )}
         </div>

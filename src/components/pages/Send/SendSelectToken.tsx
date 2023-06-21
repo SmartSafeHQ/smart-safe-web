@@ -27,7 +27,7 @@ export function SendSelectToken({
   const { data, isLoading } = useSafeTokenBalance(
     safe?.address,
     selectedToken?.symbol,
-    selectedToken?.rpcUrl,
+    safe?.chain.rpcUrl,
     !!safe && !!selectedToken
   )
 
