@@ -56,6 +56,7 @@ export const useSendHook = () => {
     useTokenUsdValue(selectedToken?.symbol)
 
   const currentAmount = watch()?.amount ?? '0'
+  const contactSearch = watch('to')
   const usdAmount = +currentAmount * (tokenUsdData?.usdValue ?? 0)
 
   useEffect(() => {
@@ -102,9 +103,8 @@ export const useSendHook = () => {
       })
 
       const amountData = {
-        usdAmount: String(+currentAmount * tokenUsdData.usdValue),
-        tokenAmount: +currentAmount,
-        formattedTokenAmount: currentAmount
+        usdAmount: +currentAmount * tokenUsdData.usdValue,
+        tokenAmount: +currentAmount
       }
 
       setTransaction({
@@ -126,10 +126,12 @@ export const useSendHook = () => {
     handleChangeToken,
     handleChangeAmountInput,
     register,
+    setValue,
     handleSubmit,
     errors,
     onSubmit,
     tokenUsdIsFetching,
-    usdAmount
+    usdAmount,
+    contactSearch
   }
 }

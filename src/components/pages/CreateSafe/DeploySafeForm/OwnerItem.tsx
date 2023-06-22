@@ -5,7 +5,6 @@ import { TextInput } from '@components/Inputs/TextInput'
 import { ContactsTextInput } from '@components/Inputs/ContactsTextInput'
 
 import type { FieldValues } from '@hooks/createSafe/deploySafeValidationSchema'
-import { ContactProps } from '@contexts/ContactsContext'
 
 interface OwnerItemProps {
   index: number
@@ -30,7 +29,7 @@ export function OwnerItem({ index, removeOwner }: OwnerItemProps) {
       <div className="flex w-full flex-col flex-1 items-stretch justify-start gap-3 relative">
         <ContactsTextInput.Root
           search={contactSearch}
-          handleSelectContact={(contact: ContactProps) => {
+          handleSelectContact={contact => {
             setValue(`owners.${index}.name`, contact.name)
             setValue(`owners.${index}.address`, contact.address)
           }}

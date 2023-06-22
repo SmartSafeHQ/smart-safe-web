@@ -1,11 +1,14 @@
 import {
+  ForwardRefExoticComponent,
   ForwardRefRenderFunction,
   ReactNode,
+  RefAttributes,
   forwardRef,
   useState
 } from 'react'
 import clsx from 'clsx'
 import { useConnectWallet } from '@web3-onboard/react'
+import { IconProps } from '@phosphor-icons/react'
 
 import {
   NavigationMenu,
@@ -92,12 +95,13 @@ ContactsTextInputRoot.displayName = 'ContactsTextInput.Root'
 export interface ContactsTextInputInputProps extends TextInputInputProps {
   error?: string
   label?: string
+  Icon?: ForwardRefExoticComponent<IconProps & RefAttributes<SVGSVGElement>>
 }
 
 const ContactsTextInputInput: ForwardRefRenderFunction<
   HTMLInputElement,
   ContactsTextInputInputProps
-> = ({ error, label = 'Wallet address', id, ...props }, ref) => {
+> = ({ error, label = 'Wallet address', Icon, id, ...props }, ref) => {
   return (
     <TextInput.Root
       htmlFor={id}
@@ -107,6 +111,12 @@ const ContactsTextInputInput: ForwardRefRenderFunction<
       <TextInput.Label>{label}</TextInput.Label>
 
       <TextInput.Content>
+        {Icon && (
+          <TextInput.Icon>
+            <Icon />
+          </TextInput.Icon>
+        )}
+
         <TextInput.Input
           ref={ref}
           id={id}

@@ -25,11 +25,10 @@ export interface TokenProps {
 }
 
 export interface TransactionProps {
-  usdAmount: string
+  usdAmount: number
   tokenAmount: number
   to: string
   formattedTo: string
-  formattedTokenAmount: string
 }
 
 export interface HandleSendTransactionProps {

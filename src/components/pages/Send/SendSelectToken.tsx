@@ -86,7 +86,7 @@ export function SendSelectToken({
                 <Text className="capitalize">balance:</Text>
 
                 <Text className="font-semibold">
-                  {selectedToken.balance.toFixed(4)}
+                  {selectedToken.balance.toPrecision(4)}
                 </Text>
               </div>
             </div>

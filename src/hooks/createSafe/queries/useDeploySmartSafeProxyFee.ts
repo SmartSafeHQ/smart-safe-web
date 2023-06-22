@@ -5,13 +5,13 @@ import SMART_SAFE_FACTORY_PROXY_ABI from '@utils/web3/ABIs/SmartSafeProxyFactory
 import { SMART_SAFE_FACTORY_CHAINS_ADRESSES } from '@utils/web3/chains/adresses'
 
 interface FetchDeploySmartSafeFeeInput {
-  rpcUrl: string
-  chainSymbol: string
+  rpcUrl?: string
+  chainSymbol?: string
   owners: string[]
 }
 
 export interface FetchDeploySmartSafeFeeResponse {
-  valueInToken: string
+  valueInToken: number
 }
 
 async function fetchDeploySmartSafeProxyFee({
@@ -19,6 +19,8 @@ async function fetchDeploySmartSafeProxyFee({
   chainSymbol,
   owners
 }: FetchDeploySmartSafeFeeInput): Promise<FetchDeploySmartSafeFeeResponse> {
+  if (!rpcUrl || !chainSymbol) throw new Error('chains infos required')
+
   const smartSafeProxyFactoryAddress =
     SMART_SAFE_FACTORY_CHAINS_ADRESSES.get(chainSymbol)
 
@@ -42,14 +44,14 @@ async function fetchDeploySmartSafeProxyFee({
   const gasCostInToken = ethers.formatUnits(gasFee, 'ether')
 
   return {
-    valueInToken: gasCostInToken.toString()
+    valueInToken: +gasCostInToken
   }
 }
 
 export function useDeploySmartSafeProxyFee(
-  rpcUrl: string,
-  chainSymbol: string,
   owners: string[],
+  rpcUrl?: string,
+  chainSymbol?: string,
   enabled = true
 ) {
   return useQuery({

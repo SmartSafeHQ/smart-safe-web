@@ -59,7 +59,7 @@ function AssetsTableTr({ symbol, icon, balance }: AssetsTableTrProps) {
                 'animate-pulse': isFetching
               })}
             >
-              {balance.toFixed(4)} {symbol}
+              {balance.toPrecision(4)} {symbol}
             </Text>
           )}
         </Skeleton>
@@ -73,7 +73,7 @@ function AssetsTableTr({ symbol, icon, balance }: AssetsTableTrProps) {
                 'animate-pulse': isFetching
               })}
             >
-              {(data.usdValue * balance).toFixed(4)} usd
+              {(data.usdValue * balance).toPrecision(4)} usd
             </Text>
           )}
         </Skeleton>

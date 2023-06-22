@@ -1,8 +1,8 @@
-import { Wallet } from '@phosphor-icons/react'
 import { ReactElement } from 'react'
 import Image from 'next/image'
 import Head from 'next/head'
 import clsx from 'clsx'
+import { Wallet } from '@phosphor-icons/react'
 
 import { SendSelectToken } from '@components/pages/Send/SendSelectToken'
 import { TextInput } from '@components/Inputs/TextInput'
@@ -12,6 +12,7 @@ import { SendModal } from '@components/pages/Send/SendModal'
 
 import { SendProvider } from '@contexts/SendContext'
 import { useSendHook } from '@hooks/send/useSendHook'
+import { ContactsTextInput } from '@/components/Inputs/ContactsTextInput'
 
 const Send = () => {
   const {
@@ -21,6 +22,8 @@ const Send = () => {
     handleChangeToken,
     handleChangeAmountInput,
     register,
+    setValue,
+    contactSearch,
     handleSubmit,
     errors,
     onSubmit,
@@ -50,22 +53,19 @@ const Send = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="w-full flex flex-col gap-5 items-stretch"
           >
-            <TextInput.Root htmlFor="to" error={errors.to?.message}>
-              <TextInput.Label>to</TextInput.Label>
-
-              <TextInput.Content>
-                <TextInput.Icon>
-                  <Wallet />
-                </TextInput.Icon>
-
-                <TextInput.Input
-                  {...register('to')}
-                  required
-                  id="to"
-                  placeholder="Enter account address"
-                />
-              </TextInput.Content>
-            </TextInput.Root>
+            <ContactsTextInput.Root
+              search={contactSearch}
+              handleSelectContact={contact => setValue('to', contact.address)}
+            >
+              <ContactsTextInput.Input
+                {...register('to')}
+                required
+                id="to"
+                placeholder="Enter wallet address"
+                error={errors.to?.message}
+                Icon={Wallet}
+              />
+            </ContactsTextInput.Root>
 
             <TextInput.Root htmlFor="amount" error={errors.amount?.message}>
               <TextInput.Label>Amount</TextInput.Label>
@@ -106,7 +106,7 @@ const Send = () => {
                     { 'animate-pulse': tokenUsdIsFetching }
                   )}
                 >
-                  USD ${usdAmount?.toFixed(4) ?? 0}
+                  USD ${usdAmount.toPrecision(4) ?? 0}
                 </Text>
               </TextInput.Content>
             </TextInput.Root>

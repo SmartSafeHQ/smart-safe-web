@@ -41,12 +41,13 @@ export function SendModal() {
             <>
               <DialogModal.Header className="gap-3">
                 <DialogModal.Title className="text-3xl">
-                  Send ${transaction.usdAmount.slice(0, 8)}
+                  Send ${transaction.usdAmount.toPrecision(3)}
                 </DialogModal.Title>
 
                 <div className="w-full flex items-center justify-center gap-2">
                   <DialogModal.Description className="text-center text-xl font-semibold uppercase">
-                    {transaction.formattedTokenAmount} {selectedToken.symbol}
+                    {transaction.tokenAmount.toPrecision(1)}{' '}
+                    {selectedToken.symbol}
                   </DialogModal.Description>
 
                   <Image
