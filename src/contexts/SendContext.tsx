@@ -19,6 +19,7 @@ import { useSafe } from '@contexts/SafeContext'
 type SendProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface TokenProps {
+  address: string
   symbol: string
   icon: string
   balance: number
@@ -74,14 +75,12 @@ export function SendProvider({ children }: SendProviderProps) {
     try {
       await mutateAsync({
         to: data.to,
-        fromWallet: wallet.accounts[0].address,
         provider: wallet.provider,
         amount: data.amount,
-        symbol: selectedToken.symbol,
         safeAddress: safe.address,
-        chainId: safe.chain.chainId,
-        chainName: safe.chain.name,
-        rpcUrl: safe.chain.rpcUrl
+        tokenContractAddress: selectedToken.address,
+        symbol: selectedToken.symbol,
+        chainId: safe.chain.chainId
       })
 
       toast.success(

@@ -3,19 +3,18 @@ import { useMutation } from '@tanstack/react-query'
 import { EIP1193Provider } from '@web3-onboard/core'
 
 import { createTransactionProposal } from '@utils/web3/transactions/createTransactionProposal'
-import SMART_SAFE_ABI from '@utils/web3/ABIs/SmartSafe.json'
 import { queryClient } from '@lib/reactQuery'
+import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { SmartSafe__factory as SmartSafe } from '@utils/web3/typings/factories/SmartSafe__factory'
 
 interface SendProposalFunctionInput {
   provider: EIP1193Provider
   to: string
   safeAddress: string
-  fromWallet: string
+  tokenContractAddress: string
+  symbol: string
   amount: number
   chainId: string
-  chainName: string
-  symbol: string
-  rpcUrl: string
 }
 
 export interface SendProposalFunctionOutput {
@@ -25,32 +24,49 @@ export interface SendProposalFunctionOutput {
 async function sendProposalFunction(
   input: SendProposalFunctionInput
 ): Promise<SendProposalFunctionOutput> {
-  const provider = new ethers.BrowserProvider(input.provider, {
-    chainId: parseInt(input.chainId, 16),
-    name: input.chainName
-  })
+  const chain = CHAINS_ATTRIBUTES.find(chain => input.chainId === chain.chainId)
 
+  if (!chain) throw new Error('Chain not supported')
+
+  const provider = new ethers.BrowserProvider(input.provider, {
+    chainId: parseInt(chain.chainId, 16),
+    name: chain.name
+  })
   const signer = await provider.getSigner()
-  const smartSafeProxy = new ethers.Contract(
-    input.safeAddress,
-    SMART_SAFE_ABI,
-    signer
-  )
+
+  const contract = SmartSafe.connect(input.safeAddress, signer)
+
   const transactionNonce = (
-    await smartSafeProxy.getFunction('transactionNonce')()
+    await contract.getFunction('transactionNonce')()
   ).toString()
+
+  const IERC20 = ['function transfer(address _to, uint256 _amount)']
 
   const amountInWei = ethers.parseEther(String(input.amount))
 
-  const txData = '0x'
+  const tokenData =
+    input.symbol === chain.symbol
+      ? {
+          toAddress: input.to,
+          amountInWei,
+          data: '0x'
+        }
+      : {
+          toAddress: input.tokenContractAddress,
+          amountInWei: 0,
+          data: new ethers.Interface(IERC20).encodeFunctionData('transfer', [
+            input.to,
+            amountInWei
+          ])
+        }
 
   const transaction = {
-    chainId: parseInt(input.chainId, 16),
+    chainId: parseInt(chain.chainId, 16),
     from: input.safeAddress,
-    to: input.to,
+    to: tokenData.toAddress,
     transactionNonce: Number(transactionNonce),
-    value: amountInWei.toString(),
-    data: ethers.keccak256(txData)
+    value: tokenData.amountInWei.toString(),
+    data: ethers.keccak256(tokenData.data)
   }
 
   const { signedTypedDataHash } = await createTransactionProposal({
@@ -58,16 +74,14 @@ async function sendProposalFunction(
     transaction
   })
 
-  const proposal = await smartSafeProxy.getFunction(
-    'createTransactionProposal'
-  )(
-    input.to,
-    amountInWei.toString(),
-    txData,
+  const proposal = await contract.getFunction('createTransactionProposal')(
+    tokenData.toAddress,
+    tokenData.amountInWei.toString(),
+    tokenData.data,
     0,
     await signer.getAddress(),
     signedTypedDataHash,
-    { value: amountInWei.toString() }
+    { value: tokenData.amountInWei.toString() }
   )
 
   await proposal.wait()

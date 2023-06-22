@@ -22,8 +22,7 @@ interface FetchSafeTokensInput {
 }
 
 export interface FetchSafeTokensOutput {
-  rpcUrl: string
-  explorerUrl: string
+  address: string
   symbol: string
   icon: string
   balance: number
@@ -32,6 +31,7 @@ export interface FetchSafeTokensOutput {
 interface GetTokenPricesResponse {
   data: {
     items: {
+      contract_address: string
       contract_ticker_symbol: string
       contract_decimals: number
       logo_url: string
@@ -71,11 +71,10 @@ export async function fetchSafeTokens(
   })
 
   const formattedTokens = response.data.data.items.map(token => ({
+    address: token.contract_address,
     symbol: token.contract_ticker_symbol,
     icon: `${logoUrl}/${token.contract_ticker_symbol.toLowerCase()}.svg`,
-    rpcUrl: safeChain.rpcUrl,
-    balance: +ethers.formatUnits(token.balance, token.contract_decimals),
-    explorerUrl: safeChain.explorerUrl
+    balance: +ethers.formatUnits(token.balance, token.contract_decimals)
   }))
 
   return formattedTokens
