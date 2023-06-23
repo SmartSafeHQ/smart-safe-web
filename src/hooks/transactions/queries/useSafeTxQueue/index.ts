@@ -51,8 +51,7 @@ export async function fetchSafeTxQueue(
 
     const transactionData = await formatTransactionToQueueList(
       transaction,
-      contract,
-      safeChain.chainId
+      contract
     )
 
     let formattedTransaction: TransacitonTypes
@@ -63,7 +62,7 @@ export async function fetchSafeTxQueue(
         transactionData
       )
     } else {
-      formattedTransaction = formatSafeSendTokensTx(
+      formattedTransaction = await formatSafeSendTokensTx(
         transactionData,
         Number(transaction[7]),
         safeChain.chainId

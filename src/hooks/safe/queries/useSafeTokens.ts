@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import axios from 'axios'
 
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
+import { getTokenIconUrl } from '@utils/web3'
 
 const CHAIN_NAMES_MAINNET = new Map<string, string>([
   ['ETH', 'eth-mainnet'],
@@ -61,8 +62,6 @@ export async function fetchSafeTokens(
   if (!chainName || !safeChain) throw new Error('Chain not supported')
 
   const reqUrl = `https://api.covalenthq.com/v1/${chainName}/address/${input.safeAddress}/balances_v2/?quote-currency=usd&no-spam=true`
-  const logoUrl =
-    'https://cdn.jsdelivr.net/gh/atomiclabs/cryptocurrency-icons@1a63530be6e374711a8554f31b17e4cb92c25fa5/svg/color'
 
   const response = await axios.get<GetTokenPricesResponse>(reqUrl, {
     headers: {
@@ -73,7 +72,7 @@ export async function fetchSafeTokens(
   const formattedTokens = response.data.data.items.map(token => ({
     address: token.contract_address,
     symbol: token.contract_ticker_symbol,
-    icon: `${logoUrl}/${token.contract_ticker_symbol.toLowerCase()}.svg`,
+    icon: getTokenIconUrl(token.contract_ticker_symbol),
     balance: +ethers.formatUnits(token.balance, token.contract_decimals)
   }))
 

@@ -37,7 +37,7 @@ export async function fetchContacts({
 
   const formattedContactsList = data.map(contact => ({
     ...contact,
-    formattedAddress: formatWalletAddress({ walletAddress: contact.address })
+    formattedAddress: formatWalletAddress(contact.address)
   }))
 
   return formattedContactsList

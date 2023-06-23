@@ -98,9 +98,7 @@ export const useSendHook = () => {
     }
 
     try {
-      const formattedTo = formatWalletAddress({
-        walletAddress: data.to
-      })
+      const formattedTo = formatWalletAddress(data.to)
 
       const amountData = {
         usdAmount: +currentAmount * tokenUsdData.usdValue,
