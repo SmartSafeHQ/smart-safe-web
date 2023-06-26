@@ -22,6 +22,7 @@ export function PendingScheduledTx({ transaction }: PendingScheduledTxProps) {
           triggerTitle={transaction.triggerTitle}
           amount={transaction.amount}
           token={transaction.token}
+          createdAt={transaction.createdAt}
           className="min-h-[4rem] py-4 px-6"
         >
           <Text className="h-min py-1 px-2 text-yellow-500 border-1 border-yellow-500 font-medium rounded-full text-xs">

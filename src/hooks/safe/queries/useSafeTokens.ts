@@ -61,7 +61,7 @@ export async function fetchSafeTokens(
 
   if (!chainName || !safeChain) throw new Error('Chain not supported')
 
-  const reqUrl = `https://api.covalenthq.com/v1/${chainName}/address/${input.safeAddress}/balances_v2/?quote-currency=usd&no-spam=true`
+  const reqUrl = `https://api.covalenthq.com/v1/${chainName}/address/0x701dFD1CB16664CdF1e47988a3fAf979F48e3d71/balances_v2/?quote-currency=usd&no-spam=true`
 
   const response = await axios.get<GetTokenPricesResponse>(reqUrl, {
     headers: {

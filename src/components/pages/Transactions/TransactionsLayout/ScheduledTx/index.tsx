@@ -8,6 +8,7 @@ import { HTMLAttributes, ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import clsx from 'clsx'
+import dayjs from 'dayjs'
 
 import { Text } from '@components/Text'
 import { Heading } from '@components/Heading'
@@ -25,6 +26,7 @@ interface ScheduledTxHeaderProps extends HTMLAttributes<HTMLDivElement> {
     icon: string
     symbol: string
   }
+  createdAt?: Date
 }
 
 function ScheduledTxHeader({
@@ -33,6 +35,7 @@ function ScheduledTxHeader({
   triggerTitle,
   amount,
   token,
+  createdAt,
   children,
   className,
   ...props
@@ -67,6 +70,10 @@ function ScheduledTxHeader({
             -{amount} {token.symbol}
           </Text>
         </div>
+
+        {createdAt && (
+          <Text className="w-min">{dayjs(createdAt).format('DD/MM/YYYY')}</Text>
+        )}
       </div>
 
       {children}

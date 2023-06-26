@@ -1,4 +1,4 @@
-import { BrowserProvider, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { useMutation } from '@tanstack/react-query'
 import { EIP1193Provider } from '@web3-onboard/core'
 
@@ -13,6 +13,8 @@ import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 interface CreateAutomationFunctionInput {
   provider: EIP1193Provider
   to: string
+  symbol: string
+  tokenContractAddress: string
   safeAddress: string
   amount: number
   intervalInSeconds: number
@@ -28,34 +30,49 @@ interface CreateAutomationFunctionOutput {
 async function createAutomationFunction(
   input: CreateAutomationFunctionInput
 ): Promise<CreateAutomationFunctionOutput> {
-  const safeChain = CHAINS_ATTRIBUTES.find(
-    chain => chain.chainId === input.chainId
-  )
+  const chain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === input.chainId)
 
-  if (!safeChain) throw new Error('Chain not supported')
+  if (!chain) throw new Error('Chain not supported')
 
-  const provider = new BrowserProvider(input.provider, {
-    chainId: parseInt(input.chainId, 16),
-    name: safeChain.name
+  const provider = new ethers.BrowserProvider(input.provider, {
+    chainId: parseInt(chain.chainId, 16),
+    name: chain.name
   })
 
   const signer = await provider.getSigner()
   const contract = SmartSafe.connect(input.safeAddress, signer)
+
   const transactionNonce = (
     await contract.getFunction('transactionNonce')()
   ).toString()
 
+  const IERC20 = ['function transfer(address _to, uint256 _amount)']
+
   const amountInWei = ethers.parseEther(String(input.amount))
 
-  const txData = '0x'
+  const tokenData =
+    input.symbol === chain.symbol
+      ? {
+          toAddress: input.to,
+          amountInWei,
+          data: '0x'
+        }
+      : {
+          toAddress: input.tokenContractAddress,
+          amountInWei: 0,
+          data: new ethers.Interface(IERC20).encodeFunctionData('transfer', [
+            input.to,
+            amountInWei
+          ])
+        }
 
   const transaction = {
-    chainId: parseInt(input.chainId, 16),
+    chainId: parseInt(chain.chainId, 16),
     from: input.safeAddress,
-    to: input.to,
+    to: tokenData.toAddress,
     transactionNonce: Number(transactionNonce),
-    value: amountInWei.toString(),
-    data: ethers.keccak256(txData)
+    value: tokenData.amountInWei.toString(),
+    data: ethers.keccak256(tokenData.data)
   }
 
   const { signedTypedDataHash } = await createTransactionProposal({
@@ -64,13 +81,13 @@ async function createAutomationFunction(
   })
 
   const proposal = await contract.getFunction('createTransactionProposal')(
-    input.to,
-    amountInWei.toString(),
-    txData,
+    tokenData.toAddress,
+    tokenData.amountInWei.toString(),
+    tokenData.data,
     input.intervalInSeconds,
     await signer.getAddress(),
     signedTypedDataHash,
-    { value: amountInWei.toString() }
+    { value: tokenData.amountInWei.toString() }
   )
 
   await proposal.wait()
@@ -78,7 +95,7 @@ async function createAutomationFunction(
   if (input.threshold === 1) {
     const registerUpKeepResponse = await registerScheduleTxUpKeep({
       signer,
-      symbol: safeChain.symbol,
+      symbol: input.symbol,
       safeAddress: input.safeAddress,
       ownerAddress: input.ownerAddress,
       txNonce: +transactionNonce

@@ -32,8 +32,8 @@ async function sendProposalFunction(
     chainId: parseInt(chain.chainId, 16),
     name: chain.name
   })
-  const signer = await provider.getSigner()
 
+  const signer = await provider.getSigner()
   const contract = SmartSafe.connect(input.safeAddress, signer)
 
   const transactionNonce = (
