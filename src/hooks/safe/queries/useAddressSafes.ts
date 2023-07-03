@@ -64,9 +64,7 @@ export async function fetchAddressSafes(
       safeId: owner.safe.id,
       safeName: owner.safe.name,
       safeAddress: owner.safe.address,
-      safeFormattedAddress: formatWalletAddress({
-        walletAddress: owner.safe.address
-      }),
+      safeFormattedAddress: formatWalletAddress(owner.safe.address),
       chain: deployedChain
     }
   })

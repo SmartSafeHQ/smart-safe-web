@@ -10,7 +10,6 @@ import {
 import { useAutomationsQuery } from '@hooks/automations/queries/useAutomationsQuery'
 import { useCreateAutomationMutation } from '@hooks/automations/mutations/useCreateAutomationMutation'
 import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
-import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
 import { getWe3ErrorMessageWithToast } from '@utils/web3/errors'
 
 export const useAutomationsHook = () => {
@@ -28,7 +27,7 @@ export const useAutomationsHook = () => {
   const { safe } = useSafe()
   const { data: safeTokensData } = useSafeTokens(
     safe?.address,
-    safe?.chain.chainId,
+    safe?.chain.symbol,
     !!safe
   )
 
@@ -60,17 +59,14 @@ export const useAutomationsHook = () => {
   const onSubmitCreateAutomation: SubmitHandler<
     CreateTimeBasedAutomationFieldValues
   > = async data => {
-    if (!wallet || !safe) return
+    if (!wallet || !safe || !safeTokensData) return
 
     try {
-      const checkTokenExists = CHAINS_ATTRIBUTES.find(
+      const checkTokenExists = safeTokensData.find(
         token => token.symbol === data.tokenSymbol
       )
 
-      if (!checkTokenExists) {
-        toast.error('token not found')
-        return
-      }
+      if (!checkTokenExists) throw new Error('Token not supported')
 
       await mutateAsync({
         ...data,
@@ -79,7 +75,9 @@ export const useAutomationsHook = () => {
         provider: wallet.provider,
         ownerAddress: wallet.accounts[0].address,
         threshold: safe.threshold,
-        chainId: checkTokenExists.chainId
+        symbol: data.tokenSymbol,
+        tokenContractAddress: checkTokenExists?.address,
+        chainId: safe.chain.chainId
       })
 
       toast.success(

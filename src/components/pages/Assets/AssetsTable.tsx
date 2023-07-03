@@ -5,7 +5,7 @@ import { ReactNode, ThHTMLAttributes } from 'react'
 import { Text } from '@components/Text'
 import { Skeleton } from '@components/FetchingStates/Skeleton'
 
-import { useSafeTokenBalance } from '@hooks/chains/queries/useSafeTokenBalance'
+import { useTokenUsdValue } from '@hooks/chains/queries/useTokenUsdValue'
 
 interface AssetsTableThProps extends ThHTMLAttributes<HTMLTableCellElement> {
   children: ReactNode
@@ -27,23 +27,13 @@ function AssetsTableTh({ children, className }: AssetsTableThProps) {
 AssetsTableTh.displayName = 'AssetsTable.Th'
 
 interface AssetsTableTrProps {
-  safeAddress: string
   symbol: string
-  rpcUrl: string
   icon: string
+  balance: number
 }
 
-function AssetsTableTr({
-  safeAddress,
-  symbol,
-  rpcUrl,
-  icon
-}: AssetsTableTrProps) {
-  const { data, isLoading, isFetching } = useSafeTokenBalance(
-    safeAddress,
-    symbol,
-    rpcUrl
-  )
+function AssetsTableTr({ symbol, icon, balance }: AssetsTableTrProps) {
+  const { data, isLoading, isFetching } = useTokenUsdValue(symbol)
 
   return (
     <tr className="[&>*]:min-w-[7rem] font-medium border-b-1 border-zinc-300 dark:border-zinc-700 text-sm">
@@ -69,7 +59,7 @@ function AssetsTableTr({
                 'animate-pulse': isFetching
               })}
             >
-              {data.balance.toFixed(4)} {symbol}
+              {balance.toPrecision(4)} {symbol}
             </Text>
           )}
         </Skeleton>
@@ -83,7 +73,7 @@ function AssetsTableTr({
                 'animate-pulse': isFetching
               })}
             >
-              {data?.usdBalance.toFixed(4)} usd
+              {(data.usdValue * balance).toPrecision(4)} usd
             </Text>
           )}
         </Skeleton>

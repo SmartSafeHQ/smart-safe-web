@@ -12,7 +12,7 @@ export function AssetsList() {
     data: assets,
     error,
     isLoading
-  } = useSafeTokens(safe?.address, safe?.chain.chainId, !!safe)
+  } = useSafeTokens(safe?.address, safe?.chain.symbol, !!safe)
 
   return (
     <ScrollArea className="px-2">
@@ -46,10 +46,9 @@ export function AssetsList() {
               {assets.map(asset => (
                 <AssetsTable.Tr
                   key={asset.symbol}
-                  safeAddress={safe.address}
                   symbol={asset.symbol}
-                  rpcUrl={asset.rpcUrl}
                   icon={asset.icon}
+                  balance={asset.balance}
                 />
               ))}
             </tbody>

@@ -39,7 +39,7 @@ async function approveTransactionFunction(
 
   const provider = new BrowserProvider(input.provider, {
     chainId: parseInt(input.chainId, 16),
-    name: safeChain.networkName
+    name: safeChain.name
   })
 
   const signer = await provider.getSigner()
@@ -127,9 +127,6 @@ export function useApproveTransactionMutation() {
       )
     },
     onSettled: (_data, _error, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: ['safeTokenBalance', variables.safeAddress]
-      })
       queryClient.invalidateQueries({
         queryKey: ['safeTxQueue', variables.safeAddress]
       })

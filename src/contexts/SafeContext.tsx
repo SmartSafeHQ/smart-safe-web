@@ -50,9 +50,9 @@ export function SafeProvider({ children }: SafeProviderProps) {
   useEffect(() => {
     if (!wallet || wallet?.accounts.length === 0) return
 
-    const formattedOwnerAddress = formatWalletAddress({
-      walletAddress: wallet.accounts[0].address
-    })
+    const formattedOwnerAddress = formatWalletAddress(
+      wallet.accounts[0].address
+    )
 
     setFormattedOwnerAddress(formattedOwnerAddress)
   }, [wallet?.accounts])
@@ -120,7 +120,7 @@ export function SafeProvider({ children }: SafeProviderProps) {
         if (!isChangedApproved) {
           push('/').then(() =>
             toast.error(
-              `Please connect to ${checkSafeExists.chain.networkName} to manage ${checkSafeExists.safeName} safe`
+              `Please connect to ${checkSafeExists.chain.name} to manage ${checkSafeExists.safeName} safe`
             )
           )
           setSafe(null)

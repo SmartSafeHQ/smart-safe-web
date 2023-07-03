@@ -22,7 +22,7 @@ type SafeLinkItemProps = {
   safeName: string
   safeFormattedAddress: string
   hexColor: string
-  networkName: string
+  name: string
 }
 
 export function SafeLinkItem({
@@ -31,7 +31,7 @@ export function SafeLinkItem({
   safeName,
   safeFormattedAddress,
   hexColor,
-  networkName
+  name
 }: SafeLinkItemProps) {
   const safeIndexLastDigit = index % 10
 
@@ -67,7 +67,7 @@ export function SafeLinkItem({
           />
 
           <Text className="text-xs text-zinc-600 dark:text-zinc-500">
-            {networkName}
+            {name}
           </Text>
         </div>
       </div>

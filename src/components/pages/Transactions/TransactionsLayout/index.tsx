@@ -77,9 +77,7 @@ function TransactionTxInfos({
         </Text>
 
         <div className="flex items-center gap-2">
-          <Text className="text-sm">
-            {formatWalletAddress({ walletAddress: txHash })}
-          </Text>
+          <Text className="text-sm">{formatWalletAddress(txHash)}</Text>
 
           <button
             onClick={() => handleCopyToClipboard(txHash)}

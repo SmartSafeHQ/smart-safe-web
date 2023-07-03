@@ -7,8 +7,6 @@ import { Skeleton } from '@components/FetchingStates/Skeleton'
 
 import { useSend } from '@contexts/SendContext'
 import { FetchSafeTokensOutput } from '@hooks/safe/queries/useSafeTokens'
-import { useSafeTokenBalance } from '@hooks/chains/queries/useSafeTokenBalance'
-import { useSafe } from '@contexts/SafeContext'
 
 interface SendSelectTokenProps {
   tokensIsLoading: boolean
@@ -21,15 +19,7 @@ export function SendSelectToken({
   tokensIsLoading,
   handleChangeToken
 }: SendSelectTokenProps) {
-  const { safe } = useSafe()
   const { selectedToken } = useSend()
-
-  const { data, isLoading } = useSafeTokenBalance(
-    safe?.address,
-    selectedToken?.symbol,
-    selectedToken?.rpcUrl,
-    !!safe && !!selectedToken
-  )
 
   return (
     <>
@@ -92,17 +82,13 @@ export function SendSelectToken({
                 {selectedToken?.symbol}
               </Heading>
 
-              <Skeleton isLoading={isLoading} className="w-28 h-6">
-                {data && (
-                  <div className="flex items-center gap-1">
-                    <Text className="capitalize">balance:</Text>
+              <div className="flex items-center gap-1">
+                <Text className="capitalize">balance:</Text>
 
-                    <Text className="font-semibold">
-                      {data.balance.toFixed(3)}
-                    </Text>
-                  </div>
-                )}
-              </Skeleton>
+                <Text className="font-semibold">
+                  {selectedToken.balance.toPrecision(4)}
+                </Text>
+              </div>
             </div>
           </div>
         )}

@@ -15,9 +15,9 @@ export function NetworkFeeEst() {
     isFetching: feeIsFetching,
     isPreviousData: feeIsPreviousData
   } = useDeploySmartSafeProxyFee(
-    safeInfos?.chain.rpcUrl ?? '',
-    safeInfos?.chain.symbol ?? '',
     [ownersFields[0].address],
+    safeInfos?.chain.rpcUrl,
+    safeInfos?.chain.symbol,
     !!safeInfos
   )
 
@@ -47,7 +47,7 @@ export function NetworkFeeEst() {
 
           {feeData && (
             <Text className="uppercase">
-              {feeData.valueInToken.slice(0, 5)} {safeInfos.chain.symbol}
+              {feeData.valueInToken.toPrecision(2)} {safeInfos.chain.symbol}
             </Text>
           )}
         </Skeleton>

@@ -9,7 +9,7 @@ interface CurrentSafeItemProps {
   safeName: string
   safeFormattedAddress: string
   hexColor: string
-  networkName: string
+  name: string
   explorerUrl: string
 }
 
@@ -18,7 +18,7 @@ export function CurrentSafeItem({
   safeName,
   safeFormattedAddress,
   hexColor,
-  networkName,
+  name,
   explorerUrl
 }: CurrentSafeItemProps) {
   return (
@@ -64,7 +64,7 @@ export function CurrentSafeItem({
           />
 
           <Text className="text-xs text-zinc-600 dark:text-zinc-500">
-            {networkName}
+            {name}
           </Text>
         </div>
       </div>

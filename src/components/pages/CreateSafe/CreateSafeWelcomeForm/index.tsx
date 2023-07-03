@@ -66,7 +66,7 @@ export function CreateSafeWelcomeForm() {
                           }}
                         />
 
-                        <Text>{chain.networkName}</Text>
+                        <Text>{chain.name}</Text>
                       </div>
                     </SelectInput.Item>
                   ))}

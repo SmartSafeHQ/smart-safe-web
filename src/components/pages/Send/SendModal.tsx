@@ -7,6 +7,7 @@ import { SendFeeEst } from '@components/pages/Send/SendFeeEst'
 import { SendAddresses } from '@components/pages/Send/SendAddresses'
 
 import { useSend } from '@contexts/SendContext'
+import { useSafe } from '@contexts/SafeContext'
 
 export function SendModal() {
   const {
@@ -19,6 +20,7 @@ export function SendModal() {
     resetSendMutation,
     handleSendTransaction
   } = useSend()
+  const { safe } = useSafe()
 
   if (!transaction || !selectedToken) return <></>
 
@@ -39,12 +41,13 @@ export function SendModal() {
             <>
               <DialogModal.Header className="gap-3">
                 <DialogModal.Title className="text-3xl">
-                  Send ${transaction.usdAmount.slice(0, 8)}
+                  Send ${transaction.usdAmount.toPrecision(3)}
                 </DialogModal.Title>
 
                 <div className="w-full flex items-center justify-center gap-2">
                   <DialogModal.Description className="text-center text-xl font-semibold uppercase">
-                    {transaction.formattedTokenAmount} {selectedToken.symbol}
+                    {transaction.tokenAmount.toPrecision(1)}{' '}
+                    {selectedToken.symbol}
                   </DialogModal.Description>
 
                   <Image
@@ -80,7 +83,7 @@ export function SendModal() {
             </>
           ) : (
             <SendSuccess
-              transactionUrl={`${selectedToken.explorerUrl}/tx/${txData.transactionHash}`}
+              transactionUrl={`${safe?.chain.explorerUrl}/tx/${txData.transactionHash}`}
             />
           )}
         </div>

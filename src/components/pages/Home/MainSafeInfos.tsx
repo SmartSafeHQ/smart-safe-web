@@ -74,7 +74,7 @@ export function MainSafeInfos() {
               />
 
               <Text className="text-xs text-zinc-600 dark:text-zinc-500">
-                {safe?.chain.networkName}
+                {safe?.chain.name}
               </Text>
             </Skeleton>
           </div>

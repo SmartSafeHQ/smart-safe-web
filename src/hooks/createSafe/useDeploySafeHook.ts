@@ -136,7 +136,7 @@ export const useDeploySafeHook = () => {
         deployWalletAddress: wallet.accounts[0].address,
         chain: {
           id: safeInfos.chain.chainId,
-          name: safeInfos.chain.networkName,
+          name: safeInfos.chain.name,
           symbol: safeInfos.chain.symbol
         },
         threshold: +data.threshold,
@@ -150,12 +150,7 @@ export const useDeploySafeHook = () => {
         }
       ])
 
-      // 1 - XDC addresses starts with `xdc` instead of `0x` e.g: `xdc8E6f42979b5517206Cf9e69A969Fac961D1b36B7`
-      // for this reason, `await transaction.wait()` will throw an error, because it expects XDC network to return
-      // and address starting with `0x`, but the network returns and address stating with `xdc`
-      if (!safeInfos.chain.networkName.startsWith('XDC')) {
-        await transaction.wait()
-      }
+      await transaction.wait()
 
       await mutateSaveSmartSafeProxyData({
         chainId: safeInfos.chain.chainId,

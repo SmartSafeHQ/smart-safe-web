@@ -54,7 +54,7 @@ export function SendSuccess({ transactionUrl }: SendSuccessProps) {
           </div>
 
           <Text className="text-sm">
-            {transaction.formattedTokenAmount} {selectedToken?.symbol}
+            {transaction.tokenAmount.toPrecision(2)} {selectedToken?.symbol}
           </Text>
         </div>
 

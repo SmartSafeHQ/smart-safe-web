@@ -19,18 +19,17 @@ import { useSafe } from '@contexts/SafeContext'
 type SendProviderProps = PropsWithChildren<Record<string, unknown>>
 
 export interface TokenProps {
+  address: string
   symbol: string
   icon: string
-  rpcUrl: string
-  explorerUrl: string
+  balance: number
 }
 
 export interface TransactionProps {
-  usdAmount: string
+  usdAmount: number
   tokenAmount: number
   to: string
   formattedTo: string
-  formattedTokenAmount: string
 }
 
 export interface HandleSendTransactionProps {
@@ -71,19 +70,17 @@ export function SendProvider({ children }: SendProviderProps) {
   } = useSendProposalMutation()
 
   async function handleSendTransaction(data: HandleSendTransactionProps) {
-    if (!safe || !wallet) return
+    if (!safe || !wallet || !selectedToken) return
 
     try {
       await mutateAsync({
         to: data.to,
-        safeAddress: safe.address,
-        fromWallet: wallet.accounts[0].address,
-        chainName: safe.chain.networkName,
         provider: wallet.provider,
         amount: data.amount,
-        chainId: safe.chain.chainId,
-        symbol: safe.chain.symbol,
-        rpcUrl: safe.chain.rpcUrl
+        safeAddress: safe.address,
+        tokenContractAddress: selectedToken.address,
+        symbol: selectedToken.symbol,
+        chainId: safe.chain.chainId
       })
 
       toast.success(

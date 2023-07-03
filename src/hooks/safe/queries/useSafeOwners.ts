@@ -27,9 +27,7 @@ async function fetchSafeOwners({
 
   const formattedOwners = [...owners].map(owner => ({
     address: owner,
-    formattedAddress: formatWalletAddress({
-      walletAddress: owner
-    })
+    formattedAddress: formatWalletAddress(owner)
   }))
 
   return formattedOwners

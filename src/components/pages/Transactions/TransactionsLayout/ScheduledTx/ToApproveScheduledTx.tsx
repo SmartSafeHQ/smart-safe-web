@@ -28,6 +28,7 @@ export function ToApproveScheduledTx({
         triggerType={transaction.triggerType}
         triggerTitle={transaction.triggerTitle}
         amount={transaction.amount}
+        createdAt={transaction.createdAt}
         token={transaction.token}
         className="min-h-[4rem] py-4 px-6"
       >

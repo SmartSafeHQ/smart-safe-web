@@ -1,5 +1,10 @@
-import { TransactionDescription, ethers, formatUnits } from 'ethers'
-import { formatWalletAddress } from '@utils/web3'
+import {
+  JsonRpcProvider,
+  TransactionDescription,
+  ethers,
+  formatUnits
+} from 'ethers'
+import { formatWalletAddress, getTokenIconUrl } from '@utils/web3'
 
 import { SmartSafe } from '@utils/web3/typings/SmartSafe'
 import {
@@ -7,10 +12,9 @@ import {
   DefaultTxProps,
   OwnerApproveStatus,
   OwnerSignaturesProps,
-  ScheduledTxProps,
-  SendTxProps,
   ThresholdTxProps,
-  TransacitonTypes
+  TransacitonTypes,
+  SendScheduleTypes
 } from '@hooks/transactions/queries/useSafeTxQueue/interfaces'
 import { TransactionApprovalStatus } from '@hooks/transactions/useTransactionsQueue'
 import { CHAINS_ATTRIBUTES } from '@utils/web3/chains/supportedChains'
@@ -39,24 +43,13 @@ export const AUTOMATION_TIME_TRIGGERS = new Map([
 
 export async function formatTransactionToQueueList(
   transaction: any,
-  contract: SmartSafe,
-  chainId: string
+  contract: SmartSafe
 ): Promise<DefaultTxProps> {
-  const from = transaction[0]
   const to = transaction[1]
   const nonce = Number(transaction[2])
   const value = transaction[3]
   const createdAt = new Date(ethers.toNumber(transaction[4]) * 1000)
   const data = transaction[5]
-
-  const transactionData = {
-    chainId: parseInt(chainId, 16),
-    from,
-    to,
-    transactionNonce: nonce,
-    value: value.toString(),
-    data: ethers.keccak256(data)
-  }
 
   const approvals = await contract.getFunction('getTransactionApprovals')(nonce)
 
@@ -77,9 +70,7 @@ export async function formatTransactionToQueueList(
 
     ownersSignatures.push({
       address: signatureAddress,
-      formattedAddress: formatWalletAddress({
-        walletAddress: signatureAddress
-      }),
+      formattedAddress: formatWalletAddress(signatureAddress),
       status: signatureStatus
     })
   })
@@ -93,9 +84,7 @@ export async function formatTransactionToQueueList(
       approvesCount
     },
     to,
-    formattedAddress: formatWalletAddress({
-      walletAddress: transactionData.to
-    }),
+    formattedAddress: formatWalletAddress(to),
     data,
     hash: '0x5f195e0bbeb09b1bbf89b3917d57be79a9c20237379fb392af7ac6beb901de4d'
   }
@@ -121,40 +110,61 @@ export function formatSafeSettingsUpdateTx(
   return formatedTx
 }
 
-export function formatSafeSendTokensTx(
+export async function formatSafeSendTokensTx(
   transactionData: DefaultTxProps,
   scheduledTrigger: number,
   chainId: string
-): TransacitonTypes {
-  const isScheduledTransaction = Number(scheduledTrigger)
-
-  let formatedTx: TransacitonTypes
-
-  if (isScheduledTransaction) {
-    formatedTx = formatScheduledTxToQueue(
-      transactionData,
-      isScheduledTransaction,
-      chainId
-    )
-  } else {
-    formatedTx = formatSendTxToQueue(transactionData, chainId)
-  }
-
-  return formatedTx
-}
-
-export function formatSendTxToQueue(
-  transaction: DefaultTxProps,
-  chainId: string
-): SendTxProps {
+): Promise<TransacitonTypes> {
   const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
 
-  return {
-    ...transaction,
-    type: 'SEND',
-    token: {
-      symbol: safeChain?.symbol ?? 'matic',
-      icon: safeChain?.icon ?? '/networks/polygon-logo.svg'
+  if (!safeChain) throw new Error('chain not supported')
+
+  const isScheduledTransaction = Number(scheduledTrigger)
+
+  const token = {
+    symbol: safeChain.symbol,
+    icon: safeChain.icon
+  }
+
+  if (transactionData.data !== '0x') {
+    const provider = new JsonRpcProvider(safeChain.rpcUrl)
+    const erc20ABI = ['function symbol() view returns (string)']
+    const contract = new ethers.Contract(transactionData.to, erc20ABI, provider)
+
+    const symbol = await contract.getFunction('symbol')()
+
+    const IERC20 = ['function transfer(address _to, uint256 _amount)']
+    const transferDecodedData = new ethers.Interface(IERC20).decodeFunctionData(
+      'transfer',
+      transactionData.data
+    )
+
+    token.symbol = symbol
+    token.icon = getTokenIconUrl(symbol)
+
+    transactionData.amount = Number(
+      formatUnits(transferDecodedData[1], 'ether')
+    )
+    transactionData.to = transferDecodedData[0]
+    transactionData.formattedAddress = formatWalletAddress(
+      transferDecodedData[0]
+    )
+  }
+
+  if (isScheduledTransaction) {
+    const scheduleData = formatScheduledTxToQueue(isScheduledTransaction)
+
+    return {
+      ...transactionData,
+      ...scheduleData,
+      type: 'SCHEDULED',
+      token
+    }
+  } else {
+    return {
+      ...transactionData,
+      type: 'SEND',
+      token
     }
   }
 }
@@ -169,9 +179,7 @@ export function formatAddOwnerTxToQueue(
     ...transaction,
     type: 'ADD_OWNER',
     ownerAddress,
-    formattedAddress: formatWalletAddress({
-      walletAddress: ownerAddress
-    })
+    formattedAddress: formatWalletAddress(ownerAddress)
   }
 }
 
@@ -188,13 +196,7 @@ export function formatThresholdTxToQueue(
   }
 }
 
-export function formatScheduledTxToQueue(
-  transaction: DefaultTxProps,
-  trigger: number,
-  chainId: string
-): ScheduledTxProps {
-  const safeChain = CHAINS_ATTRIBUTES.find(chain => chain.chainId === chainId)
-
+export function formatScheduledTxToQueue(trigger: number) {
   const scheduledTransaction = AUTOMATION_TIME_TRIGGERS.get(trigger)
 
   if (!scheduledTransaction) {
@@ -202,14 +204,8 @@ export function formatScheduledTxToQueue(
   }
 
   return {
-    ...transaction,
-    type: 'SCHEDULED',
     triggerTitle: scheduledTransaction.title,
-    triggerType: 'time',
-    token: {
-      symbol: safeChain?.symbol ?? 'matic',
-      icon: safeChain?.icon ?? '/networks/polygon-logo.svg'
-    }
+    triggerType: 'time' as SendScheduleTypes
   }
 }
 

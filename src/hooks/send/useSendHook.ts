@@ -7,7 +7,6 @@ import { ethers } from 'ethers'
 
 import { useTokenUsdValue } from '@hooks/chains/queries/useTokenUsdValue'
 import { useSafeTokens } from '@hooks/safe/queries/useSafeTokens'
-import { useSafeTokenBalance } from '@hooks/chains/queries/useSafeTokenBalance'
 import { useSend } from '@contexts/SendContext'
 import { formatWalletAddress } from '@utils/web3'
 import { useSafe } from '@contexts/SafeContext'
@@ -50,20 +49,14 @@ export const useSendHook = () => {
 
   const { data: tokens, isLoading: tokensIsLoading } = useSafeTokens(
     safe?.address,
-    safe?.chain.chainId,
+    safe?.chain.symbol,
     !!safe
   )
   const { data: tokenUsdData, isFetching: tokenUsdIsFetching } =
     useTokenUsdValue(selectedToken?.symbol)
 
-  const { data: tokenBalanceData } = useSafeTokenBalance(
-    safe?.address,
-    selectedToken?.symbol,
-    selectedToken?.rpcUrl,
-    !!safe && !!selectedToken
-  )
-
   const currentAmount = watch()?.amount ?? '0'
+  const contactSearch = watch('to')
   const usdAmount = +currentAmount * (tokenUsdData?.usdValue ?? 0)
 
   useEffect(() => {
@@ -93,16 +86,11 @@ export const useSendHook = () => {
   }
 
   const onSubmit: SubmitHandler<SendFieldValues> = async data => {
-    if (
-      !selectedToken ||
-      !tokenUsdData ||
-      !tokenBalanceData ||
-      +data.amount <= 0
-    ) {
+    if (!selectedToken || !tokenUsdData || +data.amount <= 0) {
       return
     }
 
-    if (+data.amount > tokenBalanceData.balance) {
+    if (+data.amount > selectedToken.balance) {
       setError('amount', {
         message: 'Insufficient funds in the safe for the transaction'
       })
@@ -110,14 +98,11 @@ export const useSendHook = () => {
     }
 
     try {
-      const formattedTo = formatWalletAddress({
-        walletAddress: data.to
-      })
+      const formattedTo = formatWalletAddress(data.to)
 
       const amountData = {
-        usdAmount: String(+currentAmount * tokenUsdData.usdValue),
-        tokenAmount: +currentAmount,
-        formattedTokenAmount: currentAmount
+        usdAmount: +currentAmount * tokenUsdData.usdValue,
+        tokenAmount: +currentAmount
       }
 
       setTransaction({
@@ -139,10 +124,12 @@ export const useSendHook = () => {
     handleChangeToken,
     handleChangeAmountInput,
     register,
+    setValue,
     handleSubmit,
     errors,
     onSubmit,
     tokenUsdIsFetching,
-    usdAmount
+    usdAmount,
+    contactSearch
   }
 }

@@ -90,9 +90,7 @@ export async function fetchAutomations(
       },
       wallet: {
         address: to,
-        formattedAddress: formatWalletAddress({
-          walletAddress: to
-        })
+        formattedAddress: formatWalletAddress(to)
       },
       recipientName: recipentContact?.name
     }

@@ -10,7 +10,6 @@ import { ContactsTextInput } from '@components/Inputs/ContactsTextInput'
 
 import { useAutomationsHook } from '@hooks/automations/useAutomationsHook'
 import { AUTOMATION_TIME_TRIGGERS } from '@utils/web3/transactions/transactionQueue'
-import { ContactProps } from '@contexts/ContactsContext'
 
 export function TimeBasedAutomationForm() {
   const {
@@ -33,9 +32,7 @@ export function TimeBasedAutomationForm() {
       <div className="w-full flex flex-col justify-center items-stretch gap-6 py-6 px-4 sm:px-8">
         <ContactsTextInput.Root
           search={contactSearch}
-          handleSelectContact={(contact: ContactProps) =>
-            setValue('to', contact.address)
-          }
+          handleSelectContact={contact => setValue('to', contact.address)}
         >
           <ContactsTextInput.Input
             {...register('to')}
